@@ -22,7 +22,7 @@ def abmil(foundational_model, latent_dim, work_dir, train_source, tissue_patchin
     experiment = ExperimentFactory.finetune(
                     split = f'{work_dir}/{train_source}/{task_name}/k=train.tsv',
                     task_config = f'{work_dir}/{train_source}/{task_name}/config.yaml',
-                    patch_embeddings_dirs = f'{work_dir}/{train_source}/{tissue_patching}/features_{foundational_model}/',
+                    patch_embeddings_dirs = f'{work_dir}/features/{train_source}/features_{foundational_model}_monai/',
                     saveto = f'{work_dir}/{train_source}/{task_name}/abmil/{foundational_model}_{tissue_patching}_train_eval',
                     combine_slides_per_patient = False,
                     model_name = 'abmil',
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for eval training set")
     parser.add_argument("--foundational_model", type=str)
     parser.add_argument("--latent_dim", type=int)
-    parser.add_argument("--work_dir", type=str)
+    parser.add_argument("--work_dir", type=str, default="/shared/home/JKP6679/Patho-Ensemble/PARADIS/datos")
     parser.add_argument("--train_source", type=str)
     parser.add_argument("--tissue_patching", type=str)
     parser.add_argument("--task_name", type=str)

@@ -114,7 +114,7 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for evaluate ensemble")
     parser.add_argument("--foundational_models", nargs='+', type=str)
-    parser.add_argument("--work_dir", type=str)
+    parser.add_argument("--work_dir", type=str, default="/shared/home/JKP6679/Patho-Ensemble/PARADIS/datos")
     parser.add_argument("--train_source", type=str)
     parser.add_argument("--tissue_patching", type=str)
     parser.add_argument("--task_name", type=str)

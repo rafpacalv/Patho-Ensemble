@@ -88,7 +88,8 @@ class Ensemble(nn.Module):
         self.model_names = model_names
         self.reweight_by_model_importance = reweight_by_model_importance
         self.reweight_temperature = reweight_temperature
-        self.reweight_weights = None  # Se calcula en forward()
+        self.reweight_weights = None  # Dict {model: weight}, se calcula en forward()
+        self.reweight_scales = None   # Array [n_features], se calcula en forward()
 
         # Validar inputs
         self._validate_directories()
@@ -145,19 +146,25 @@ class Ensemble(nn.Module):
             if not os.path.exists(preds_path):
                 raise FileNotFoundError(f"Missing preds.npy in {d}")
 
-    def _reweight_features(self, X_train, X_val, X_test, num_models):
+    def _compute_reweight_scales(self, X_train, y_train, num_models):
         """
         Entrena un LogisticRegression auxiliar para determinar la importancia de
-        cada modelo base, y reescala las features de entrada multiplicando cada
-        bloque por su peso correspondiente.
+        cada modelo base, y calcula un vector de escalas para reponderar features.
 
-        Retorna X_train, X_val, X_test reescalados y el dict de pesos.
+        Args:
+            X_train: features de entrenamiento
+            y_train: labels de entrenamiento
+            num_models: número de modelos base
+
+        Returns:
+            scales: array [n_features] con pesos por feature
+            weights: dict {model_name/idx: weight} con importancia por modelo
         """
         from utils import model_importance_from_coefs
 
         # Entrenar LR auxiliar
         lr_aux = LogisticRegression(max_iter=1000)
-        lr_aux.fit(X_train, self.y_train)
+        lr_aux.fit(X_train, y_train)
 
         # Calcular pesos por bloque
         num_classes = X_train.shape[1] // num_models
@@ -176,12 +183,7 @@ class Ensemble(nn.Module):
             end = (i + 1) * num_classes
             scales[start:end] = weight
 
-        # Aplicar reescalado
-        X_train_rw = X_train * scales
-        X_val_rw = X_val * scales
-        X_test_rw = X_test * scales
-
-        return X_train_rw, X_val_rw, X_test_rw, weights
+        return scales, weights
 
     def forward(self):
         """
@@ -260,15 +262,16 @@ class Ensemble(nn.Module):
         X_train = self._transform(X_train, num_models)
         X_val = self._transform(X_val, num_models)
 
-        # ========== REESCALADO OPCIONAL POR IMPORTANCIA DE MODELO ==========
+        # ========== REESCALADO OPCIONAL POR IMPORTANCIA DE MODELO (PRE-ENTRENAMIENTO) ==========
         if self.reweight_by_model_importance:
-            self.y_train = y_train  # Necesario para _reweight_features
-            X_train, X_val, X_test, reweight_weights = self._reweight_features(
-                X_train, X_val, X_test, num_models
+            self.reweight_scales, self.reweight_weights = self._compute_reweight_scales(
+                X_train, y_train, num_models
             )
-            self.reweight_weights = reweight_weights
-            print(f"✓ Features reescaladas por importancia de modelo: {reweight_weights}")
+            X_train = X_train * self.reweight_scales
+            X_val = X_val * self.reweight_scales
+            print(f"✓ Features reescaladas por importancia de modelo: {self.reweight_weights}")
         else:
+            self.reweight_scales = None
             self.reweight_weights = None
 
         # ========== ENTRENAR META-LEARNER ==========
@@ -333,6 +336,12 @@ class Ensemble(nn.Module):
             X_test = torch.cat(tpreds, dim=1).cpu().numpy()
 
         X_test = self._transform(X_test, num_models)
+
+        # ========== REESCALADO OPCIONAL POR IMPORTANCIA DE MODELO (POST-ENTRENAMIENTO) ==========
+        # Se aplica después de haber entrenado el meta-modelo, para rescalar X_test
+        # con los mismos pesos que se usaron en train/val
+        if self.reweight_by_model_importance and self.reweight_scales is not None:
+            X_test = X_test * self.reweight_scales
 
         # ========== PREDICCIÓN ==========
         probs = self.meta_model.predict_proba(X_test)

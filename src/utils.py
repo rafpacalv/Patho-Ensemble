@@ -382,7 +382,8 @@ class MetricDistance:
         return np.array(weights)
 
 
-def model_importance_from_coefs(coefs, num_models, model_names=None, temperature=1.0):
+def model_importance_from_coefs(coefs, num_models, model_names=None, temperature=1.0,
+                                 method="norm_ratio"):
     """
     Agrega coeficientes de un modelo lineal (coef_) por bloque de modelo base
     y devuelve pesos normalizados por modelo (media 1.0 = neutro).
@@ -399,16 +400,31 @@ def model_importance_from_coefs(coefs, num_models, model_names=None, temperature
             block_size = n_features // num_models
         model_names (list, optional): lista de nombres de modelos en orden.
             Si se proporciona, devuelve dict {name: weight}; si no, dict {idx: weight}.
-        temperature (float): exponente de suavizado
-            - 0.0: todos los pesos = 1.0 (no-op)
-            - 1.0 (default): lineal, pesos proporcionales a norms
-            - >1.0: acentúa diferencias (winner-take-more)
+        temperature (float): exponente/temperatura de suavizado. Su semántica
+            depende de `method` (ver abajo) — con "softmax" el sentido está
+            invertido respecto a "norm_ratio".
+        method (str): cómo agregar las normas por bloque en un peso escalar:
+            - "norm_ratio" (default): weight_i = (norm_i / mean(norms)) ** temperature,
+              renormalizado a media 1.0.
+                - temperature=0.0: todos los pesos = 1.0 (no-op)
+                - temperature=1.0: lineal, proporcional a la norma
+                - temperature>1.0: acentúa diferencias (winner-take-more)
+              Sin cota superior: un modelo con norma mucho mayor que el resto
+              puede producir un peso arbitrariamente grande.
+            - "softmax": weight_i = num_models * softmax(norms / temperature)_i.
+              Acotado en (0, num_models] por construcción.
+                - temperature→0: casi one-hot sobre el modelo dominante
+                - temperature→∞ (o muy alta): uniforme, todos ≈ 1.0
+              Nótese que aquí el sentido de la temperatura es el inverso al
+              de "norm_ratio" (temperatura baja = más agresivo, no al revés).
 
     Returns:
         dict: {model_name/index: weight}
               - Promedio de pesos = 1.0
               - Orden coincide con el de foundational_models en el CLI
     """
+    if method not in ("norm_ratio", "softmax"):
+        raise ValueError(f"method desconocido: {method!r} (usa 'norm_ratio' o 'softmax')")
     coefs = np.asarray(coefs)
 
     if coefs.ndim == 1:
@@ -440,7 +456,21 @@ def model_importance_from_coefs(coefs, num_models, model_names=None, temperature
 
     # Normalizar para que promedio sea 1.0
     if mean_norms.sum() > 0:
-        if temperature == 0.0:
+        if method == "softmax":
+            if temperature <= 0.0:
+                # temperature→0 en softmax es el límite one-hot (división por
+                # cero); no tiene un no-op natural, así que se trata como
+                # "extremadamente agresivo" en vez de fallar.
+                hard = np.zeros(num_models)
+                hard[np.argmax(mean_norms)] = 1.0
+                weights = num_models * hard
+            else:
+                z = mean_norms / temperature
+                z = z - z.max()  # estabilidad numérica, no cambia el softmax
+                exp_z = np.exp(z)
+                softmax = exp_z / exp_z.sum()
+                weights = num_models * softmax  # renormaliza a media 1.0
+        elif temperature == 0.0:
             weights = np.ones(num_models)
         else:
             # weight_i = (norm_i / mean(norm)) ** temperature

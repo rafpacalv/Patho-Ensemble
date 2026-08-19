@@ -75,7 +75,8 @@ class Ensemble(nn.Module):
 
     def __init__(self, xdirs, vdirs, tdirs, meta_model, device="cpu", results_subdir="ensemble4",
                  feature_space="prob", drop_redundant_class=False, model_names=None,
-                 reweight_by_model_importance=False, reweight_temperature=1.0):
+                 reweight_by_model_importance=False, reweight_temperature=1.0,
+                 reweight_method="norm_ratio"):
         super().__init__()
         self.xdirs = xdirs
         self.vdirs = vdirs
@@ -88,6 +89,7 @@ class Ensemble(nn.Module):
         self.model_names = model_names
         self.reweight_by_model_importance = reweight_by_model_importance
         self.reweight_temperature = reweight_temperature
+        self.reweight_method = reweight_method
         self.reweight_weights = None  # Dict {model: weight}, se calcula en forward()
         self.reweight_scales = None   # Array [n_features], se calcula en forward()
 
@@ -151,6 +153,14 @@ class Ensemble(nn.Module):
         Entrena un LogisticRegression auxiliar para determinar la importancia de
         cada modelo base, y calcula un vector de escalas para reponderar features.
 
+        self.reweight_method controla cómo se traduce la LR auxiliar en escalas:
+            - "norm_ratio" / "softmax": un escalar por modelo (repetido en todo
+              su bloque de columnas), agregando la norma L2 del bloque — ver
+              utils.model_importance_from_coefs.
+            - "signed": un escalar por columna, a partir del coeficiente CON
+              signo de esa columna (no de la norma del bloque). Solo definido
+              para clasificación binaria (lr_aux.coef_ con una sola fila).
+
         Args:
             X_train: features de entrenamiento
             y_train: labels de entrenamiento
@@ -159,6 +169,8 @@ class Ensemble(nn.Module):
         Returns:
             scales: array [n_features] con pesos por feature
             weights: dict {model_name/idx: weight} con importancia por modelo
+                     (en "signed", el peso reportado por modelo es la media de
+                     las escalas de sus columnas, solo para lectura/logging)
         """
         from utils import model_importance_from_coefs
 
@@ -166,15 +178,60 @@ class Ensemble(nn.Module):
         lr_aux = LogisticRegression(max_iter=1000)
         lr_aux.fit(X_train, y_train)
 
-        # Calcular pesos por bloque
         num_classes = X_train.shape[1] // num_models
+
+        if self.reweight_method == "signed":
+            if lr_aux.coef_.shape[0] != 1:
+                raise ValueError(
+                    f"reweight_method='signed' solo está definido para clasificación "
+                    f"binaria (LogisticRegression.coef_ con 1 fila); esta tarea tiene "
+                    f"{lr_aux.coef_.shape[0]} filas (multiclase). Usa "
+                    f"--reweight_method norm_ratio o softmax en su lugar."
+                )
+            if num_classes != 1:
+                # Sin drop_redundant_class, cada bloque tiene num_classes columnas
+                # complementarias (softmax suma 1), así que sus coeficientes salen
+                # con signos opuestos y magnitud similar: el escalado firmado
+                # amplifica una columna y anula la otra DEL MISMO modelo, en vez
+                # de diferenciar entre modelos (verificado empíricamente: la
+                # columna más informativa del bloque puede quedar en scale=0).
+                # "signed" solo tiene la semántica pretendida con 1 columna/modelo.
+                raise ValueError(
+                    f"reweight_method='signed' requiere --drop_redundant_class "
+                    f"(1 columna por modelo; aquí hay {num_classes}). Sin él, las "
+                    f"columnas complementarias del mismo modelo tienen coeficientes "
+                    f"de signo opuesto y el escalado deja de reflejar importancia "
+                    f"por modelo. Usa --reweight_method norm_ratio o softmax si no "
+                    f"quieres activar drop_redundant_class."
+                )
+            coefs = lr_aux.coef_[0]
+            max_abs = np.max(np.abs(coefs))
+            if max_abs > 0:
+                # ratio en [-1, 1]; con temperature<=1 nunca cambia el signo
+                # de la feature original (scale >= 0). Con temperature>1 sí
+                # podría, así que se recorta a 0 como suelo defensivo.
+                scales = 1.0 + self.reweight_temperature * (coefs / max_abs)
+                scales = np.clip(scales, 0.0, None)
+            else:
+                scales = np.ones(X_train.shape[1])
+
+            weights = {}
+            for i in range(num_models):
+                model_name = self.model_names[i] if self.model_names else i
+                start = i * num_classes
+                end = (i + 1) * num_classes
+                weights[model_name] = float(scales[start:end].mean())
+
+            return scales, weights
+
+        # "norm_ratio" / "softmax": un escalar por modelo, repetido en su bloque
         weights = model_importance_from_coefs(
             lr_aux.coef_[0], num_models,
             model_names=self.model_names,
-            temperature=self.reweight_temperature
+            temperature=self.reweight_temperature,
+            method=self.reweight_method,
         )
 
-        # Construir vector de escalas [n_features]
         scales = np.ones(X_train.shape[1])
         for i in range(num_models):
             model_name = self.model_names[i] if self.model_names else i
@@ -357,7 +414,8 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
          fge_n_cycles=6, fge_cycle_length=3, fge_lr_1=1e-3, fge_lr_2=1e-5,
          fge_cycle_patience=2, meta_features="insample", feature_space="prob",
          drop_redundant_class=False, n_members=6, meta_svm_c=1.0, meta_svm_kernel="linear",
-         meta_knn_k=5, reweight_by_model_importance=False, reweight_temperature=1.0):
+         meta_knn_k=5, reweight_by_model_importance=False, reweight_temperature=1.0,
+         reweight_method="norm_ratio"):
     """
     Ejecuta ensamble meta-learner para múltiples folds.
 
@@ -658,7 +716,8 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
                     drop_redundant_class=drop_redundant_class,
                     model_names=foundational_models,
                     reweight_by_model_importance=reweight_by_model_importance,
-                    reweight_temperature=reweight_temperature
+                    reweight_temperature=reweight_temperature,
+                    reweight_method=reweight_method,
                 )()
 
                 all_preds.append(preds.detach().cpu().numpy())
@@ -767,6 +826,12 @@ if __name__ == "__main__":
                        help="Reweight features by model importance (via auxiliary LogisticRegression). Default: False")
     parser.add_argument("--reweight_temperature", type=float, default=1.0,
                        help="Softening exponent for reweighting (0=no-op, 1=linear, >1=accentuate). Default: 1.0")
+    parser.add_argument("--reweight_method", type=str, choices=["norm_ratio", "softmax", "signed"],
+                       default="norm_ratio",
+                       help="How the auxiliary LR is turned into scales: 'norm_ratio' (default, "
+                            "per-model block scale from L2 norm ratio), 'softmax' (same but bounded "
+                            "via softmax over block norms), 'signed' (per-column scale from signed "
+                            "coefficients, binary tasks only). See INFORME_REWEIGHT_METACLASIFICADOR.md")
 
     args = parser.parse_args()
     main(**vars(args))

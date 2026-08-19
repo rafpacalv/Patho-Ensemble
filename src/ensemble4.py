@@ -74,7 +74,8 @@ class Ensemble(nn.Module):
     """
 
     def __init__(self, xdirs, vdirs, tdirs, meta_model, device="cpu", results_subdir="ensemble4",
-                 feature_space="prob", drop_redundant_class=False):
+                 feature_space="prob", drop_redundant_class=False, model_names=None,
+                 reweight_by_model_importance=False, reweight_temperature=1.0):
         super().__init__()
         self.xdirs = xdirs
         self.vdirs = vdirs
@@ -84,6 +85,10 @@ class Ensemble(nn.Module):
         self.results_subdir = results_subdir
         self.feature_space = feature_space
         self.drop_redundant_class = drop_redundant_class
+        self.model_names = model_names
+        self.reweight_by_model_importance = reweight_by_model_importance
+        self.reweight_temperature = reweight_temperature
+        self.reweight_weights = None  # Se calcula en forward()
 
         # Validar inputs
         self._validate_directories()
@@ -139,6 +144,44 @@ class Ensemble(nn.Module):
                 raise FileNotFoundError(f"Missing labels.npy in {d}")
             if not os.path.exists(preds_path):
                 raise FileNotFoundError(f"Missing preds.npy in {d}")
+
+    def _reweight_features(self, X_train, X_val, X_test, num_models):
+        """
+        Entrena un LogisticRegression auxiliar para determinar la importancia de
+        cada modelo base, y reescala las features de entrada multiplicando cada
+        bloque por su peso correspondiente.
+
+        Retorna X_train, X_val, X_test reescalados y el dict de pesos.
+        """
+        from utils import model_importance_from_coefs
+
+        # Entrenar LR auxiliar
+        lr_aux = LogisticRegression(max_iter=1000)
+        lr_aux.fit(X_train, self.y_train)
+
+        # Calcular pesos por bloque
+        num_classes = X_train.shape[1] // num_models
+        weights = model_importance_from_coefs(
+            lr_aux.coef_[0], num_models,
+            model_names=self.model_names,
+            temperature=self.reweight_temperature
+        )
+
+        # Construir vector de escalas [n_features]
+        scales = np.ones(X_train.shape[1])
+        for i in range(num_models):
+            model_name = self.model_names[i] if self.model_names else i
+            weight = weights[model_name]
+            start = i * num_classes
+            end = (i + 1) * num_classes
+            scales[start:end] = weight
+
+        # Aplicar reescalado
+        X_train_rw = X_train * scales
+        X_val_rw = X_val * scales
+        X_test_rw = X_test * scales
+
+        return X_train_rw, X_val_rw, X_test_rw, weights
 
     def forward(self):
         """
@@ -217,6 +260,17 @@ class Ensemble(nn.Module):
         X_train = self._transform(X_train, num_models)
         X_val = self._transform(X_val, num_models)
 
+        # ========== REESCALADO OPCIONAL POR IMPORTANCIA DE MODELO ==========
+        if self.reweight_by_model_importance:
+            self.y_train = y_train  # Necesario para _reweight_features
+            X_train, X_val, X_test, reweight_weights = self._reweight_features(
+                X_train, X_val, X_test, num_models
+            )
+            self.reweight_weights = reweight_weights
+            print(f"✓ Features reescaladas por importancia de modelo: {reweight_weights}")
+        else:
+            self.reweight_weights = None
+
         # ========== ENTRENAR META-LEARNER ==========
         _fit_meta_model(self.meta_model, X_train, y_train, X_val, y_val)
 
@@ -247,6 +301,15 @@ class Ensemble(nn.Module):
             else:
                 new = np.array([odds])
             np.save(odds_path, new)
+
+        # Guardar pesos de reweighting si se aplicaron
+        if self.reweight_weights is not None:
+            import json
+            # Guardar como JSON para legibilidad
+            weights_path = base_path / "model_importance_weights.json"
+            with open(weights_path, "w") as f:
+                json.dump(self.reweight_weights, f, indent=2)
+            print(f"✓ Model importance weights guardados en {weights_path}")
 
         # ========== TEST SET ==========
         tlabels_ref, tpreds = None, []
@@ -285,7 +348,7 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
          fge_n_cycles=6, fge_cycle_length=3, fge_lr_1=1e-3, fge_lr_2=1e-5,
          fge_cycle_patience=2, meta_features="insample", feature_space="prob",
          drop_redundant_class=False, n_members=6, meta_svm_c=1.0, meta_svm_kernel="linear",
-         meta_knn_k=5):
+         meta_knn_k=5, reweight_by_model_importance=False, reweight_temperature=1.0):
     """
     Ejecuta ensamble meta-learner para múltiples folds.
 
@@ -583,7 +646,10 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
                     device=device,
                     results_subdir=results_subdir,
                     feature_space=feature_space,
-                    drop_redundant_class=drop_redundant_class
+                    drop_redundant_class=drop_redundant_class,
+                    model_names=foundational_models,
+                    reweight_by_model_importance=reweight_by_model_importance,
+                    reweight_temperature=reweight_temperature
                 )()
 
                 all_preds.append(preds.detach().cpu().numpy())
@@ -688,6 +754,10 @@ if __name__ == "__main__":
                        help="Kernel type for SVM (svm only). Default: linear")
     parser.add_argument("--meta_knn_k", type=int, default=5,
                        help="Number of neighbors for KNN (knn only). Default: 5")
+    parser.add_argument("--reweight_by_model_importance", action="store_true",
+                       help="Reweight features by model importance (via auxiliary LogisticRegression). Default: False")
+    parser.add_argument("--reweight_temperature", type=float, default=1.0,
+                       help="Softening exponent for reweighting (0=no-op, 1=linear, >1=accentuate). Default: 1.0")
 
     args = parser.parse_args()
     main(**vars(args))

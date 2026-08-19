@@ -1,4 +1,5 @@
 import os
+import glob
 from tqdm import tqdm
 import json
 import pandas as pd
@@ -16,6 +17,98 @@ from optuna.distributions import FloatDistribution
 
 from patho_bench.experiments.utils.ClassificationMixin import ClassificationMixin
 from patho_bench.experiments.BaseExperiment import BaseExperiment
+
+
+def get_features_dir(work_dir, train_source, foundational_model, features_root=None):
+    """
+    Resuelve el directorio real de features HDF5 para un foundational_model,
+    sin asumir ni crear symlinks.
+
+    En PARADIS los embeddings y los splits NO cuelgan del mismo raíz: los
+    features viven en `datos/features/{dataset}` mientras que los splits y los
+    resultados viven en `datos/patches/{dataset}/{task}`. Por eso se prueban dos
+    bases: `{work_dir}/features` (convención antigua, work_dir=.../datos) y
+    `{work_dir}/../features` (work_dir=.../datos/patches). Dentro de cada base se
+    prueba primero la convención con sufijo `_monai` y luego la que no lo lleva
+    (p.ej. cptac_brca tiene `features_uni_v2` sin sufijo).
+
+    Args:
+        work_dir (str): Directorio raíz de trabajo (ej. PARADIS/datos/patches).
+        train_source (str): Dataset (ej. cptac_brca).
+        foundational_model (str): Nombre del modelo (ej. uni_v2, ctranspath).
+        features_root (str, optional): Raíz explícita de features. Si se indica,
+            se usa sólo esa y se ignora la deducción a partir de work_dir.
+
+    Returns:
+        str: Ruta absoluta a la carpeta de features existente.
+
+    Raises:
+        FileNotFoundError: si ninguna combinación existe en disco.
+    """
+    if features_root:
+        bases = [f"{features_root}/{train_source}"]
+    else:
+        parent = os.path.dirname(os.path.normpath(work_dir))
+        bases = [
+            f"{work_dir}/features/{train_source}",   # work_dir=.../datos
+            f"{parent}/features/{train_source}",     # work_dir=.../datos/patches
+        ]
+
+    tried = []
+    for base in bases:
+        for suffix in ("_monai", ""):
+            path = f"{base}/features_{foundational_model}{suffix}"
+            tried.append(path)
+            if os.path.isdir(path):
+                return path
+
+    raise FileNotFoundError(
+        "No se encontró carpeta de features para "
+        f"foundational_model='{foundational_model}' en train_source='{train_source}'. "
+        "Rutas probadas:\n  - " + "\n  - ".join(tried)
+    )
+
+
+def detect_latent_dim(features_dir):
+    """
+    Lee la dimensión real de embedding del primer .h5 del directorio.
+
+    Evita el error recurrente de pasar un --latent_dim que no coincide con los
+    embeddings (768 vs 1536 vs 2560), que se manifiesta como un size mismatch al
+    construir o cargar el modelo.
+
+    Args:
+        features_dir (str): Carpeta devuelta por get_features_dir().
+
+    Returns:
+        int: Dimensión del embedding (features.shape[1]).
+
+    Raises:
+        FileNotFoundError: si la carpeta no contiene ningún .h5.
+    """
+    h5_files = sorted(glob.glob(f"{features_dir}/*.h5"))
+    if not h5_files:
+        raise FileNotFoundError(f"Sin ficheros .h5 en {features_dir}")
+    with h5py.File(h5_files[0], "r") as f:
+        return int(f["features"].shape[1])
+
+
+def resolve_latent_dim(work_dir, train_source, foundational_model,
+                       latent_dim=None, features_root=None):
+    """
+    Devuelve la dimensión de embedding a usar: la explícita si se pasó, o la
+    auto-detectada del .h5 en caso contrario.
+
+    Pensado para llamarse una vez al principio de main(), de modo que
+    --latent_dim sea opcional en la CLI sin cambiar la firma de
+    load_features_cached().
+    """
+    if latent_dim is not None:
+        return latent_dim
+    feats_dir = get_features_dir(work_dir, train_source, foundational_model, features_root)
+    dim = detect_latent_dim(feats_dir)
+    print(f"  latent_dim auto-detectado: {dim}  (de {os.path.basename(feats_dir)})")
+    return dim
 
 
 class Metrics(ClassificationMixin, BaseExperiment):
@@ -72,8 +165,16 @@ class Metrics(ClassificationMixin, BaseExperiment):
         else:
             # If multiple folds and multiple samples per fold, save per-fold results
             for f in range(self.num_folds):
+                fold_labels = self.all_labels_across_folds[f]
+                fold_preds = self.all_preds_across_folds[f]
+
+                # Skip empty folds (e.g., folds with no test data)
+                if len(fold_labels) == 0 or len(fold_preds) == 0:
+                    print(f"  Skipping fold {f} (empty: {len(fold_labels)} labels, {len(fold_preds)} preds)")
+                    continue
+
                 per_fold_save_dir = os.path.join(self.results_dir, f'{self.split}_metrics', f'fold_{f}')
-                scores.append(self._compute_metrics(self.all_labels_across_folds[f], self.all_preds_across_folds[f], per_fold_save_dir))
+                scores.append(self._compute_metrics(fold_labels, fold_preds, per_fold_save_dir))
 
         # After collecting all folds, either do bootstrapping or an average across folds
         summary = self._finalize_metrics(self.split, labels, preds, scores)
@@ -128,9 +229,13 @@ class Metrics(ClassificationMixin, BaseExperiment):
                     json.dump(metrics_dict, f, indent=4)
 
             return self.get_95_ci(scores_across_folds)
-        else:
-            # Report mean ± SE across folds
+        elif len(scores_across_folds) > 0:
+            # Report mean ± SE across folds (if we have per-fold scores)
             return self.get_mean_se(scores_across_folds)
+        else:
+            # No data available — return empty summary
+            print(f"⚠️  No {split} data available to compute metrics")
+            return {}
 
 
 class MetricDistance:
@@ -144,34 +249,211 @@ class MetricDistance:
                  fold: int):
         self.metric = metric
         self.fold = fold
+        self.work_dir = work_dir
+        self.train_source = train_source
+        self.tissue_patching = tissue_patching
+        self.task_name = task_name
+        self.foundational_models = foundational_models
 
+        # Try val_metrics first, fall back to test_metrics if not found
+        self.metric_type = 'val'
         self.dirs = [os.path.join(work_dir, train_source, task_name, "abmil", f'{f}_{tissue_patching}', 'val_metrics') for f in foundational_models]
 
+        # Check if any val_metrics directories exist
+        if not any(os.path.exists(d) for d in self.dirs):
+            # Fall back to test_metrics
+            print(f"  ℹ️  No validation metrics found, using test metrics for weighting")
+            self.metric_type = 'test'
+            self.dirs = [os.path.join(work_dir, train_source, task_name, "abmil", f'{f}_{tissue_patching}', 'test_metrics') for f in foundational_models]
+
         for d in self.dirs:
-            assert os.path.exists(d), f"Missing path: {d}"
+            if not os.path.exists(d):
+                raise FileNotFoundError(f"Missing path: {d}")
+
+    def _map_metric_name(self, metric_key):
+        """Map metric name variations to actual JSON keys."""
+        # Map user-friendly names to actual metric keys
+        metric_mapping = {
+            'auc_roc': ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'],
+            'auc-roc': ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc_roc'],
+            'f1': ['macro-f1', 'weighted-f1', 'f1-score'],
+            'accuracy': ['acc', 'accuracy'],
+        }
+
+        # If exact match exists, use it
+        if metric_key in metric_mapping:
+            return metric_mapping[metric_key]
+        # Otherwise return the key as-is (might be exact match)
+        return [metric_key]
+
+    def _get_metric_value(self, metrics_dict, metric_key):
+        """Extract metric value from metrics dict, trying multiple possible keys."""
+        overall = metrics_dict.get("overall", {})
+
+        # Try direct key first
+        if metric_key in overall:
+            return overall[metric_key]
+
+        # Try mapped variations
+        possible_keys = self._map_metric_name(metric_key)
+        for key in possible_keys:
+            if key in overall:
+                return overall[key]
+
+        # If nothing found, raise informative error
+        available_keys = list(overall.keys())
+        raise KeyError(f"Metric '{metric_key}' not found. Available metrics: {available_keys}")
 
     def run(self):
         fold_values = []
-        for dir in self.dirs:
+        # Show which metric will be used (for debugging - print only once)
+        possible_keys = self._map_metric_name(self.metric)
+
+        for model_idx, dir in enumerate(self.dirs):
+            if model_idx == 0:  # Print only for first model to avoid spam
+                print(f"  Using metric: {self.metric} (will try: {possible_keys})")
             metrics_path = os.path.join(dir, f"fold_{self.fold}/metrics.json")
-            if not os.path.exists(metrics_path):
-                metrics_path = os.path.join(dir, f"bootstrap_{self.fold}/metrics.json")
-                if not os.path.exists(metrics_path):
-                    raise FileNotFoundError(f"{dir}/... does not exist")
-                metrics_path = os.path.join(os.path.dirname(dir), "val_metrics_summary.json")
-                with open(metrics_path, "r") as f:
-                    metrics = json.load(f)
-                fold_values.append(metrics[self.metric]["mean"])
+
+            # Try fold-specific metrics first
+            if os.path.exists(metrics_path):
+                try:
+                    with open(metrics_path, "r") as f:
+                        metrics = json.load(f)
+                    value = self._get_metric_value(metrics, self.metric)
+                    fold_values.append(value)
+                except KeyError as e:
+                    print(f"  ⚠️  Error in {dir}: {e}")
+                    print(f"       Using equal weight for this fold")
+                    fold_values.append(1.0)
             else:
-                with open(metrics_path, "r") as f:
-                    metrics = json.load(f)
-                fold_values.append(metrics["overall"][self.metric])
+                # Try bootstrap metrics
+                metrics_path = os.path.join(dir, f"bootstrap_{self.fold}/metrics.json")
+                if os.path.exists(metrics_path):
+                    try:
+                        with open(metrics_path, "r") as f:
+                            metrics = json.load(f)
+                        value = self._get_metric_value(metrics, self.metric)
+                        fold_values.append(value)
+                    except KeyError as e:
+                        print(f"  ⚠️  Error in {dir}: {e}")
+                        print(f"       Using equal weight for this fold")
+                        fold_values.append(1.0)
+                else:
+                    # Try summary file as fallback
+                    summary_path = os.path.join(dir, f"{self.metric_type}_metrics_summary.json")
+                    if os.path.exists(summary_path):
+                        try:
+                            with open(summary_path, "r") as f:
+                                metrics = json.load(f)
+                            # Try to extract mean value from summary
+                            possible_keys = self._map_metric_name(self.metric)
+                            found = False
+                            for key in possible_keys:
+                                if key in metrics and "mean" in metrics[key]:
+                                    fold_values.append(metrics[key]["mean"])
+                                    found = True
+                                    break
+                            if not found:
+                                print(f"  ⚠️  Could not extract metric from {summary_path}, using equal weight")
+                                fold_values.append(1.0)
+                        except Exception as e:
+                            print(f"  ⚠️  Error reading {summary_path}: {e}")
+                            fold_values.append(1.0)
+                    else:
+                        print(f"  ⚠️  No metrics found in {dir} for fold {self.fold}, using equal weight")
+                        fold_values.append(1.0)
 
         fold_values = np.array(fold_values, dtype=float)
 
-        if fold_values.sum() == 0:
+        # Compute weights using softmax normalization
+        if fold_values.sum() == 0 or np.all(fold_values == 1.0):
+            # All values are 0, NaN, or all fallback values — use equal weights
             weights = np.ones_like(fold_values) / len(fold_values)
         else:
-            weights = fold_values / fold_values.sum()
+            # Normalize using min-max to [0, 1] then softmax
+            min_val = fold_values.min()
+            max_val = fold_values.max()
+            if max_val > min_val:
+                normalized = (fold_values - min_val) / (max_val - min_val)
+            else:
+                normalized = fold_values
+            weights = normalized / normalized.sum()
 
         return np.array(weights)
+
+
+def model_importance_from_coefs(coefs, num_models, model_names=None, temperature=1.0):
+    """
+    Agrega coeficientes de un modelo lineal (coef_) por bloque de modelo base
+    y devuelve pesos normalizados por modelo (media 1.0 = neutro).
+
+    Calcula la norma L2 de los coeficientes de cada modelo base y normaliza
+    para que el promedio sea 1.0, permitiendo interpretar qué modelo pesa más
+    en las predicciones del meta-clasificador lineal.
+
+    Args:
+        coefs: array de coeficientes
+            - Si 1D: [n_features] — coeficientes de un fold individual
+            - Si 2D: [n_folds, n_features] — acumulado de múltiples folds
+        num_models (int): número de modelos base concatenados en las features.
+            block_size = n_features // num_models
+        model_names (list, optional): lista de nombres de modelos en orden.
+            Si se proporciona, devuelve dict {name: weight}; si no, dict {idx: weight}.
+        temperature (float): exponente de suavizado
+            - 0.0: todos los pesos = 1.0 (no-op)
+            - 1.0 (default): lineal, pesos proporcionales a norms
+            - >1.0: acentúa diferencias (winner-take-more)
+
+    Returns:
+        dict: {model_name/index: weight}
+              - Promedio de pesos = 1.0
+              - Orden coincide con el de foundational_models en el CLI
+    """
+    coefs = np.asarray(coefs)
+
+    if coefs.ndim == 1:
+        coefs = coefs[np.newaxis, :]  # reshape a [1, n_features]
+
+    n_features = coefs.shape[1]
+    block_size = n_features // num_models
+
+    if n_features % num_models != 0:
+        raise ValueError(
+            f"n_features ({n_features}) no es divisible entre num_models ({num_models}). "
+            f"Comprueba drop_redundant_class: ¿reduce columnas uniformemente?"
+        )
+
+    # Calcular norma L2 por modelo base y fold
+    norms_per_fold = []
+    for fold_coefs in coefs:
+        fold_norms = []
+        for i in range(num_models):
+            start = i * block_size
+            end = (i + 1) * block_size
+            norm_i = np.linalg.norm(fold_coefs[start:end], ord=2)
+            fold_norms.append(norm_i)
+        norms_per_fold.append(fold_norms)
+
+    # Promediar entre folds
+    norms_per_fold = np.array(norms_per_fold)  # [n_folds, num_models]
+    mean_norms = norms_per_fold.mean(axis=0)  # [num_models]
+
+    # Normalizar para que promedio sea 1.0
+    if mean_norms.sum() > 0:
+        if temperature == 0.0:
+            weights = np.ones(num_models)
+        else:
+            # weight_i = (norm_i / mean(norm)) ** temperature
+            norm_ratio = mean_norms / mean_norms.mean()
+            weights = np.power(norm_ratio, temperature)
+            weights /= weights.mean()  # renormalizar a media 1.0
+    else:
+        weights = np.ones(num_models)
+
+    # Mapear a nombres o índices
+    if model_names is not None:
+        if len(model_names) != num_models:
+            raise ValueError(f"len(model_names)={len(model_names)} != num_models={num_models}")
+        return {name: w for name, w in zip(model_names, weights)}
+    else:
+        return {i: w for i, w in enumerate(weights)}

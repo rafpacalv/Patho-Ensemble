@@ -132,7 +132,8 @@ RAN=()
 # Ejecutar cada configuración de meta-learner
 # ---------------------------------------------------------------------------
 for CFG in $META_CONFIGS; do
-    IFS=':' read -r NAME META BASE FEATS SPACE DROPC <<< "$CFG"
+    IFS=':' read -r NAME META BASE FEATS SPACE DROPC REWEIGHT <<< "$CFG"
+    REWEIGHT="${REWEIGHT:-0}"  # default a 0 si la fila trae menos campos (retrocompatibilidad)
 
     echo ""
     echo "╔════════════════════════════════════════════════════════════════════════╗"
@@ -158,6 +159,9 @@ for CFG in $META_CONFIGS; do
     DROP_FLAG=""
     [ "$DROPC" = "1" ] && DROP_FLAG="--drop_redundant_class"
 
+    REWEIGHT_FLAG=""
+    [ "$REWEIGHT" = "1" ] && REWEIGHT_FLAG="--reweight_by_model_importance"
+
     START=$(date +%s)
     if python src/ensemble4.py \
         --foundational_models $MODELS \
@@ -170,6 +174,7 @@ for CFG in $META_CONFIGS; do
         --meta_features "$FEATS" \
         --feature_space "$SPACE" \
         $DROP_FLAG \
+        $REWEIGHT_FLAG \
         2>&1 | tee -a "$LOG_DIR/${NAME}.log"; then
 
         DUR=$(( $(date +%s) - START ))
@@ -224,7 +229,7 @@ METRICS = [("macro-ovr-auc", "AUC-ROC"), ("weighted_kappa", "Kappa"),
            ("macro-f1", "Macro-F1"), ("bacc", "Balanced acc"), ("acc", "Accuracy")]
 
 
-def subdir_for(meta, base, feats, space, dropc):
+def subdir_for(meta, base, feats, space, dropc, reweight="0"):
     """Reproduce la construcción del subdirectorio que hace ensemble4.py."""
     sub = SUBDIR.get(meta, f"ensemble4_{meta}")
     if base != "standard":
@@ -235,6 +240,8 @@ def subdir_for(meta, base, feats, space, dropc):
         sub += f"_{space}"
     if dropc == "1":
         sub += "_dropc"
+    if reweight == "1":
+        sub += "_reweighted"
     return sub
 
 
@@ -246,7 +253,8 @@ for cfg in os.environ["META_CONFIGS"].split():
     feats = parts[3] if len(parts) > 3 else "insample"
     space = parts[4] if len(parts) > 4 else "prob"
     dropc = parts[5] if len(parts) > 5 else "0"
-    configs.append((name, subdir_for(meta, base, feats, space, dropc)))
+    reweight = parts[6] if len(parts) > 6 else "0"
+    configs.append((name, subdir_for(meta, base, feats, space, dropc, reweight)))
 
 # Sólo se leen resultados de configuraciones que han corrido en ESTA ejecución.
 # Un test_metrics_summary.json antiguo se leería como si fuera de ahora.

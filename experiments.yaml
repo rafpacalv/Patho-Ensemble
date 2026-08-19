@@ -1,0 +1,254 @@
+# ============================================================================
+# Matriz de experimentos — Patho-Ensemble
+# ============================================================================
+# Los .sbatch leen este fichero vía src/experiment_config.py.
+# Añadir un experimento o una variante FGE es una línea; no hay que tocar scripts.
+#
+#   python src/experiment_config.py --list           # ver qué está activo
+#   ./run_full_pipeline.sbatch                       # lanzar lo activo
+#   DATASET=cptac_brca TASK=TP53_mutation ./run_full_pipeline.sbatch
+# ============================================================================
+
+# Raíz de trabajo: contiene {dataset}/{task}/ con splits y resultados.
+# Los embeddings se resuelven solos en ../features/{dataset}/.
+work_dir: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches
+
+defaults:
+  models: [ctranspath, uni_v2, virchow_v1]
+  tissue_patching: 20x_224px_0px_overlap
+  epochs: 100
+
+  # max_folds NO se declara aqui a proposito: es una decision por dataset, y
+  # ponerlo en defaults capa en silencio los folds de cualquier dataset que
+  # tenga mas. Se declara en la fila de cada experimento (ver `experiments`).
+  # Sin declarar = recorrer todos los folds del k=all.tsv.
+
+  # latent_dim se auto-detecta del .h5 — no se declara a propósito.
+
+  # ---------------------------------------------------------------------
+  # Variantes FGE. Cada una escribe en su propio árbol (checkpoints_{name}/,
+  # val_outputs_{name}/, _train_eval_{name}/), así que conviven sin pisarse.
+  #
+  # Motivación (medido en cptac_brca/TP53_mutation, 50 folds × 3 modelos):
+  # con la config `fge_orig` los snapshots quedaron ~0.04 AUC POR DEBAJO del
+  # modelo convergido en el 70-76 % de los folds, y el early stopping cortaba
+  # en 2.5 snapshots de media (nunca se alcanzaban los 6 ciclos). Las tres
+  # variantes siguientes atacan cada una un motivo distinto.
+  # ---------------------------------------------------------------------
+  fge_variants:
+    # Referencia: la configuración con la que se obtuvieron esas cifras.
+    - name: fge_orig
+      lr_1: 2e-4
+      lr_2: 2e-5
+      cycle_length: 4
+      n_cycles: 6
+      cycle_patience: 2
+      include_base: false
+
+    # (1) El modelo convergido entra en el promedio. Si los snapshots son
+    #     peores que el base, promediar SIN él sólo puede empeorar; incluirlo
+    #     convierte FGE en una ampliación del base en vez de un reemplazo.
+    - name: fge_wbase
+      lr_1: 2e-4
+      lr_2: 2e-5
+      cycle_length: 4
+      n_cycles: 6
+      cycle_patience: 2
+      include_base: true
+
+    # (2) Ciclos más suaves y largos: lr_1 4x menor perturba menos el óptimo,
+    #     y 8 épocas por ciclo dan margen a re-converger antes del snapshot.
+    - name: fge_lowlr
+      lr_1: 5e-5
+      lr_2: 5e-6
+      cycle_length: 8
+      n_cycles: 6
+      cycle_patience: 2
+      include_base: false
+
+    # (3) Más paciencia entre ciclos. Con best_auc inicializado a -1.0 el
+    #     ciclo 1 siempre se acepta, así que la paciencia efectiva es 1 y se
+    #     corta en el tercer ciclo; con 3 se exploran más ciclos.
+    - name: fge_pat3
+      lr_1: 2e-4
+      lr_2: 2e-5
+      cycle_length: 4
+      n_cycles: 6
+      cycle_patience: 3
+      include_base: false
+
+    # ---------------------------------------------------------------------
+    # Snapshot Ensembles (Huang et al., ICLR 2017). schedule: se -> la LR
+    # reinicia en lr_1 y baja con un coseno hasta lr_2 (ver fge_utils.py).
+    #
+    # Motivacion: la ablacion FGE dio nulo y la causa medida es saturacion de
+    # diversidad — los snapshots de un mismo modelo correlacionan r=0.93-0.98,
+    # frente a r=0.797 entre modelos fundacionales distintos. SE reinicia mucho
+    # mas arriba, asi que deberia bajar esa correlacion. La pregunta es si baja
+    # lo suficiente para importar, y a que coste en calidad individual.
+    # ---------------------------------------------------------------------
+    - name: se_orig
+      schedule: se
+      lr_1: 1e-3        # reinicio agresivo (5x el techo de fge_orig)
+      lr_2: 1e-6
+      cycle_length: 15  # ciclos largos, para re-converger tras el reinicio
+      n_cycles: 6
+      cycle_patience: 2
+      include_base: false
+
+    # Mismo schedule que se_orig pero reiniciando al nivel del techo de
+    # fge_orig: aisla el efecto de la FORMA del ciclo del efecto de su
+    # amplitud. Sin esta variante, se_orig vs fge_orig confunde ambos.
+    - name: se_mild
+      schedule: se
+      lr_1: 2e-4
+      lr_2: 2e-6
+      cycle_length: 15
+      n_cycles: 6
+      cycle_patience: 2
+      include_base: false
+
+  # ---------------------------------------------------------------------
+  # Configuraciones de meta-learner. base_source: "standard" o el `name` de
+  # una variante FGE de arriba.
+  # ---------------------------------------------------------------------
+  # Campos por fila (con sus valores por defecto en META_DEFAULTS):
+  #   base_source:    standard | <nombre de variante de snapshots>
+  #   meta_features:  insample (predicciones sobre el propio train, sesgadas)
+  #                 | oof      (out-of-fold, build_oof_features.py)
+  #   feature_space:  prob | logit
+  #   drop_redundant_class: quita una columna softmax por modelo base
+  meta_configs:
+    # --- bloque 1: ablacion de snapshots en los modelos base -------------
+    # Ya ejecutado sobre cptac_brca (job 69943): resultado nulo, ninguna
+    # variante se separa del baseline y el efecto sobre AUC queda acotado
+    # por debajo de +0.017. Se conserva para poder re-ejecutar con las
+    # variantes SE anadidas.
+    - {name: m0_logreg_std,        meta_model: logreg, base_source: standard}
+    - {name: m1_tabpfn_std,        meta_model: tabpfn, base_source: standard}
+
+    - {name: m2_logreg_fge_orig,   meta_model: logreg, base_source: fge_orig}
+    - {name: m3_logreg_fge_wbase,  meta_model: logreg, base_source: fge_wbase}
+    - {name: m4_logreg_fge_lowlr,  meta_model: logreg, base_source: fge_lowlr}
+    - {name: m5_logreg_fge_pat3,   meta_model: logreg, base_source: fge_pat3}
+
+    - {name: m6_tabpfn_fge_wbase,  meta_model: tabpfn, base_source: fge_wbase}
+    - {name: m7_tabpfn_fge_lowlr,  meta_model: tabpfn, base_source: fge_lowlr}
+    - {name: m8_tabpfn_fge_orig,   meta_model: tabpfn, base_source: fge_orig}
+    - {name: m9_tabpfn_fge_pat3,   meta_model: tabpfn, base_source: fge_pat3}
+
+    # Snapshot Ensembles en los modelos base. Basta logreg: aqui se compara
+    # SE contra FGE en las bases, no se re-barre el meta-learner.
+    - {name: s0_logreg_se_orig,    meta_model: logreg, base_source: se_orig}
+    - {name: s1_logreg_se_mild,    meta_model: logreg, base_source: se_mild}
+
+    # --- bloque 2: meta-clasificadores x regimen de features -------------
+    # El cruce insample/oof es el experimento: si el diagnostico es correcto,
+    # los meta-modelos flexibles (mlp, tabpfn, lightgbm) mejoran mucho al pasar
+    # a oof y logreg apenas se mueve. Si tabpfn NO mejora, el diagnostico es
+    # falso y hay que revisarlo.
+    - {name: f0_logreg_ins,        meta_model: logreg,      meta_features: insample}
+    - {name: f1_logreg_oof,        meta_model: logreg,      meta_features: oof}
+
+    - {name: f2_logregLogit_ins,   meta_model: logreg,      meta_features: insample, feature_space: logit, drop_redundant_class: true}
+    - {name: f3_logregLogit_oof,   meta_model: logreg,      meta_features: oof,      feature_space: logit, drop_redundant_class: true}
+
+    - {name: f4_logitavg_ins,      meta_model: logit_avg,   meta_features: insample}
+    - {name: f5_logitavg_oof,      meta_model: logit_avg,   meta_features: oof}
+
+    - {name: f6_mlp_ins,           meta_model: mlp,         meta_features: insample}
+    - {name: f7_mlp_oof,           meta_model: mlp,         meta_features: oof}
+
+    - {name: f8_mlpsnap_ins,       meta_model: mlp_snapshot, meta_features: insample}
+    - {name: f9_mlpsnap_oof,       meta_model: mlp_snapshot, meta_features: oof}
+
+    # mlp_fge nunca se habia ejecutado en el pipeline pese a estar implementado.
+    - {name: f10_mlpfge_ins,       meta_model: mlp_fge,     meta_features: insample}
+    - {name: f11_mlpfge_oof,       meta_model: mlp_fge,     meta_features: oof}
+
+    # Control de mlp_snapshot: si SE no alcanza al ensemble de semillas
+    # independientes, es una aproximacion barata y peor, no un metodo mejor.
+    - {name: f12_mlpdeepens_ins,   meta_model: mlp_deepens, meta_features: insample}
+    - {name: f13_mlpdeepens_oof,   meta_model: mlp_deepens, meta_features: oof}
+
+    - {name: f14_tabpfn_ins,       meta_model: tabpfn,      meta_features: insample}
+    - {name: f15_tabpfn_oof,       meta_model: tabpfn,      meta_features: oof}
+
+    - {name: f16_lightgbm_ins,     meta_model: lightgbm,    meta_features: insample}
+    - {name: f17_lightgbm_oof,     meta_model: lightgbm,    meta_features: oof}
+
+    # SVM, KNN y Naive Bayes: clasificadores que generalmente funcionan mejor
+    # con pocas muestras que las redes neuronales, sin Snapshot Ensemble
+    # (mínimo único, sin landscape cíclico). insample/oof para comparar regímenes.
+    - {name: f19_svm_ins,          meta_model: svm,         meta_features: insample}
+    - {name: f20_svm_oof,          meta_model: svm,         meta_features: oof}
+
+    - {name: f21_knn_ins,          meta_model: knn,         meta_features: insample}
+    - {name: f22_knn_oof,          meta_model: knn,         meta_features: oof}
+
+    - {name: f23_nb_ins,           meta_model: nb,          meta_features: insample}
+    - {name: f24_nb_oof,           meta_model: nb,          meta_features: oof}
+
+    # Solo oof: con features in-sample el gating aprende a confiar en quien
+    # acierta dentro de muestra, que es justo la senal que no transfiere.
+    - {name: f18_gating_oof,       meta_model: gating,      meta_features: oof}
+
+    # --- bloque 3: cuanto del dano de oof es coste muestral ---------------
+    # Resultado medido con n_inner=3 (job 69953): TODOS los meta-modelos salvo
+    # logit_avg empeoran al pasar a oof, y la caida crece con la capacidad
+    # (logreg -0.009, tabpfn -0.049, lightgbm -0.135, mlp -0.093). Falsifica la
+    # prediccion registrada.
+    #
+    # Hipotesis restante: no es que out-of-fold sea erroneo, sino que con 75
+    # muestras de meta-train la CV interna deja los modelos internos en 50
+    # muestras y sus predicciones valen AUC 0.68-0.71 frente a 0.77 en test.
+    # Subiendo n_inner el train interno crece (60 con 5, 67 con 10) y el hueco
+    # deberia cerrarse. Si NO se cierra, el problema no es el tamano muestral y
+    # la correccion out-of-fold simplemente no aplica en este regimen.
+    #
+    # Generar antes las features:
+    #   N_INNER=5  OOF_TAG=oof5  sbatch build_oof_features.sbatch
+    #   N_INNER=10 OOF_TAG=oof10 sbatch build_oof_features.sbatch
+    - {name: g0_logreg_oof5,       meta_model: logreg,   meta_features: oof5}
+    - {name: g1_logreg_oof10,      meta_model: logreg,   meta_features: oof10}
+    - {name: g2_tabpfn_oof5,       meta_model: tabpfn,   meta_features: oof5}
+    - {name: g3_tabpfn_oof10,      meta_model: tabpfn,   meta_features: oof10}
+    - {name: g4_lightgbm_oof5,     meta_model: lightgbm, meta_features: oof5}
+    - {name: g5_lightgbm_oof10,    meta_model: lightgbm, meta_features: oof10}
+    - {name: g6_logitavg_oof5,     meta_model: logit_avg, meta_features: oof5}
+    - {name: g7_logitavg_oof10,    meta_model: logit_avg, meta_features: oof10}
+
+experiments:
+  # --- replica de la ablacion FGE con 50 folds --------------------------
+  # cptac_brca tiene 50 columnas fold_* en k=all.tsv, frente a las 5 de
+  # cervical_subtype. Con n=5 el contraste pareado no tiene potencia: un 5/5
+  # da p=0.031 por test de signos, justo en el limite, y hay 35 contrastes sin
+  # corregir. Con 50 folds la mejora en kappa medida en cervical (+0.048 en
+  # fge_lowlr) se resuelve o se descarta.
+  # Los 3 modelos base ya estan entrenados (50 model.pt cada uno), asi que el
+  # coste es FGE + meta-learners.
+  - {dataset: cptac_brca, task: TP53_mutation, enabled: true, max_folds: 50}
+
+  # --- ya ejecutado (referencia) ---------------------------------------
+  # cervical_subtype: 599 pacientes (1 slide por paciente), 4 clases
+  # (NNeo 204 / LSIL 249 / HSIL 80 / otros 66). fold_0: train=407 val=72 test=120.
+  # Sólo 5 columnas fold_* pese al max_folds: 10 -> EXPECTED_FOLDS = min(10,5) = 5.
+  # Resultados en INFORME_ABLATION_FGE_cervical_subtype.md (job 69936).
+  - {dataset: cervical_subtype, task: subtype, enabled: false, max_folds: 10}
+  - {dataset: cptac_brca, task: PIK3CA_mutation, enabled: false}
+  - {dataset: cptac_brca, task: Immune_class,    enabled: false}
+
+  # --- otros candidatos, por nº de pacientes ---------------------------
+  # imp               5333 pac.  12 dirs de features  (tarea: grade)
+  # cptac_lscc         108 pac.   8 dirs
+  # cptac_hnsc         107 pac.   8 dirs
+  # cptac_ccrcc        103 pac.   8 dirs
+  # cptac_gbm           99 pac.  15 dirs
+  # cptac_coad          94 pac.  12 dirs  <- el más pequeño, no el mayor
+  - {dataset: imp,          task: grade,         enabled: false}
+  - {dataset: cptac_gbm,    task: EGFR_mutation, enabled: false}
+  - {dataset: cptac_coad,   task: TP53_mutation, enabled: false}
+
+  # NOTA: cptac_luad, crc_outcomes y hancook sólo tienen 1 directorio de
+  # features, así que no admiten los 3 modelos base por defecto. Para usarlos
+  # hay que sobrescribir `models` en la propia fila.

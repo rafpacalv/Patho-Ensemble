@@ -138,6 +138,7 @@ dependencies:
       - sqlalchemy==2.0.41
       - stack-data==0.6.3
       - sympy==1.14.0
+      - tabpfn
       - threadpoolctl==3.6.0
       - timm==0.9.16
       - timm-ctp==0.5.4

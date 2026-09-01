@@ -24,6 +24,8 @@ def create_validation_splits(
         random_state=random_state
     )
 
+    skipped_folds = []
+
     for i in range(n_folds):
         col = f"{fold_prefix}{i}"
         if col not in df.columns:
@@ -36,6 +38,16 @@ def create_validation_splits(
         ].index.to_numpy()
 
         if len(train_cases) < 2:
+            # IMPORTANTE: Si solo hay 1 caso, designarlo como validación
+            # para garantizar que SIEMPRE hay validación (al menos mínima)
+            if len(train_cases) == 1:
+                single_case = train_cases[0]
+                mask = df["case_id"] == single_case
+                df.loc[mask, col] = "val"
+                print(f"Fold {i}: Only 1 training case found. Designating it as val (minimal validation).")
+            else:
+                print(f"Fold {i}: No training cases found. Skipping.")
+                skipped_folds.append(i)
             continue
 
         case_mut = df.groupby("case_id")[df.columns[2]].first()
@@ -49,6 +61,8 @@ def create_validation_splits(
 
     df.to_csv(csv_out, sep=sep, index=False)
     print(f"Wrote new file with per-case stratified validation splits to: {csv_out}")
+    if skipped_folds:
+        print(f"⚠️  Folds with no training data (skipped): {skipped_folds}")
 
 
 if __name__ == "__main__":

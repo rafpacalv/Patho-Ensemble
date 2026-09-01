@@ -76,12 +76,15 @@ class Ensemble(nn.Module):
     def __init__(self, xdirs, vdirs, tdirs, meta_model, device="cpu", results_subdir="ensemble4",
                  feature_space="prob", drop_redundant_class=False, model_names=None,
                  reweight_by_model_importance=False, reweight_temperature=1.0,
-                 reweight_method="norm_ratio"):
+                 reweight_method="norm_ratio", work_dir=None, train_source=None,
+                 tissue_patching=None, task_name=None, fold=0, extra_features=None,
+                 meta_model_name=None):
         super().__init__()
         self.xdirs = xdirs
         self.vdirs = vdirs
         self.tdirs = tdirs
         self.meta_model = meta_model
+        self.meta_model_name = meta_model_name or "unknown"
         self.device = device
         self.results_subdir = results_subdir
         self.feature_space = feature_space
@@ -92,9 +95,175 @@ class Ensemble(nn.Module):
         self.reweight_method = reweight_method
         self.reweight_weights = None  # Dict {model: weight}, se calcula en forward()
         self.reweight_scales = None   # Array [n_features], se calcula en forward()
+        # Parámetros para MetricDistance (si reweight_method="auc_based")
+        self.work_dir = work_dir
+        self.train_source = train_source
+        self.tissue_patching = tissue_patching
+        self.task_name = task_name
+        self.fold = fold
+        # Feature engineering
+        self.extra_features = extra_features or []
+        self.fold = fold
 
         # Validar inputs
         self._validate_directories()
+
+    def _load_attn_stats(self, dirs):
+        """Carga atención stats desde directorios de outputs si existen.
+
+        Returns:
+            list de [N, n_attn_stats] arrays, o [] si no existen archivos attn_stats.npy
+        """
+        attn_list = []
+        for d in dirs:
+            attn_file = os.path.join(d, 'attn_stats.npy')
+            if not os.path.exists(attn_file):
+                # Antes se devolvía None y _compute_extra_features lo sustituía
+                # por np.zeros(N): la columna llegaba constante y el escalón
+                # salía idéntico al baseline, indistinguible de "la idea no
+                # aporta". Si se piden features de atención, tienen que existir.
+                raise FileNotFoundError(
+                    f"No existe {attn_file}. Las features de atención requieren "
+                    f"attn_stats.npy en todos los splits; genéralos con "
+                    f"train_abmil.py/test_abmil.py antes de pedir --extra_features attn_*."
+                )
+            attn_list.append(np.load(attn_file))
+        return attn_list
+
+    @staticmethod
+    def _reject_degenerate(X_extra, names, tol=1e-3):
+        """Aborta si alguna columna extra es constante en la práctica.
+
+        Una columna con varianza ~0 la absorbe el intercepto del meta-modelo, así
+        que el escalón sale **idéntico** al baseline (Δ = 0.000000, p = nan) y se
+        lee como "esta feature no aporta" cuando lo que pasa es que no hay feature.
+        Ocurrió de verdad con `attn_entropy_norm`: la atención de ABMIL está
+        colapsada a casi uniforme (entropy_norm ≈ 0.999, sd ≈ 4e-4), así que la
+        columna era constante a efectos numéricos.
+        """
+        if X_extra.size == 0:
+            return
+        sds = X_extra.std(axis=0)
+        bad = [(names[i] if i < len(names) else f"col{i}", float(sds[i]))
+               for i in range(X_extra.shape[1]) if sds[i] < tol]
+        if bad:
+            detail = ", ".join(f"{n} (sd={s:.3g})" for n, s in bad)
+            raise ValueError(
+                f"Features extras degeneradas (sd < {tol}): {detail}. "
+                f"Una columna constante la absorbe el intercepto y produce un "
+                f"resultado idéntico al baseline, no un resultado nulo."
+            )
+
+    def _compute_extra_features(self, X_raw, num_models, num_classes=None, attn_stats_list=None):
+        """
+        Computa features derivadas para agregar a X_meta.
+
+        Features candidatas (se pueden activar via --extra_features):
+        - 'disagreement': Jensen-gap entre modelos (1 columna)
+        - 'entropy_avg': Entropía promedio (1 columna)
+        - 'entropy_per_model': Entropía de cada modelo (num_models columnas)
+        - 'margin_avg': Margen promedio entre modelos (1 columna)
+        - 'attn_entropy_norm': Entropía normalizada de atención (num_models columnas)
+        - 'attn_ess_norm': ESS normalizado de atención (num_models columnas)
+
+        Args:
+            X_raw: [N, num_models * num_classes] probabilidades crudas (antes de transform)
+            num_models: número de modelos
+            num_classes: número de clases (detectado automáticamente si None)
+            attn_stats_list: list de [N, 7] arrays con atención stats (opcional)
+
+        Returns:
+            [N, n_extra_features] array de features extras
+        """
+        if num_classes is None:
+            num_classes = X_raw.shape[1] // num_models
+
+        if X_raw.shape[1] % num_models != 0:
+            # Dimensiones variables, no se puede computar features estructurados
+            return np.array([]).reshape(len(X_raw), 0), []
+
+        X_extra_list = []
+        names = []
+        N = X_raw.shape[0]
+
+        # Reshape a [N, num_models, num_classes] para computar features per-model
+        X_reshaped = X_raw.reshape(N, num_models, num_classes)
+
+        # Clamp para evitar log(0)
+        X_safe = np.clip(X_reshaped, 1e-10, 1.0)
+
+        # === DISAGREEMENT: Jensen-gap entre modelos ===
+        if 'disagreement' in self.extra_features:
+            # H(mean(p_m)) - mean(H(p_m))
+            mean_probs = X_reshaped.mean(axis=1)  # [N, num_classes]
+            mean_probs_safe = np.clip(mean_probs, 1e-10, 1.0)
+
+            # Entropía del promedio
+            H_mean = -(mean_probs_safe * np.log(mean_probs_safe)).sum(axis=1)  # [N]
+
+            # Promedio de entropías individuales
+            H_individual = -(X_safe * np.log(X_safe)).sum(axis=2)  # [N, num_models]
+            H_avg = H_individual.mean(axis=1)  # [N]
+
+            jensen_gap = H_mean - H_avg  # [N]
+            X_extra_list.append(jensen_gap[:, np.newaxis])
+            names.append('disagreement')
+
+        # === ENTROPY PER MODEL ===
+        if 'entropy_per_model' in self.extra_features:
+            H_individual = -(X_safe * np.log(X_safe)).sum(axis=2)  # [N, num_models]
+            X_extra_list.append(H_individual)
+            names += [f'entropy_m{i}' for i in range(num_models)]
+
+        # === ENTROPY AVERAGE ===
+        if 'entropy_avg' in self.extra_features:
+            H_individual = -(X_safe * np.log(X_safe)).sum(axis=2)  # [N, num_models]
+            H_avg = H_individual.mean(axis=1)  # [N]
+            X_extra_list.append(H_avg[:, np.newaxis])
+            names.append('entropy_avg')
+
+        # === MARGIN AVERAGE: |p_class1 - 0.5| ===
+        if 'margin_avg' in self.extra_features:
+            # Para binaria, margen = |p[1] - 0.5|
+            if num_classes == 2:
+                margins = np.abs(X_reshaped[:, :, 1] - 0.5)  # [N, num_models]
+                margin_avg = margins.mean(axis=1)  # [N]
+                X_extra_list.append(margin_avg[:, np.newaxis])
+                names.append('margin_avg')
+
+        # === MAX MARGIN: max(p) - second_max(p) ===
+        if 'max_margin' in self.extra_features:
+            sorted_probs = np.sort(X_reshaped, axis=2)[:, :, ::-1]  # Sort descending
+            max_margin = sorted_probs[:, :, 0] - sorted_probs[:, :, 1]  # [N, num_models]
+            max_margin_avg = max_margin.mean(axis=1)  # [N]
+            X_extra_list.append(max_margin_avg[:, np.newaxis])
+            names.append('max_margin')
+
+        # === ATTENTION STATS ===
+        # _load_attn_stats ya garantiza que no hay None: si falta un attn_stats.npy
+        # aborta en vez de rellenar con ceros.
+        if attn_stats_list is not None:
+            # attn_stats tiene 7 columnas: [entropy_norm, ess_norm, top1pct, top5pct, p90, max, std]
+            # Sólo se consumen las dos primeras; las otras cinco se calculan y guardan sin usarse.
+            def _attn_col(j):
+                return np.column_stack([a[:, j] for a in attn_stats_list])  # [N, num_models]
+
+            if 'attn_entropy_norm' in self.extra_features:
+                X_extra_list.append(_attn_col(0))
+                names += [f'attn_entropy_norm_m{i}' for i in range(len(attn_stats_list))]
+
+            if 'attn_ess_norm' in self.extra_features:
+                X_extra_list.append(_attn_col(1))
+                names += [f'attn_ess_norm_m{i}' for i in range(len(attn_stats_list))]
+
+            if 'attn_entropy_norm_avg' in self.extra_features:
+                X_extra_list.append(_attn_col(0).mean(axis=1)[:, np.newaxis])
+                names.append('attn_entropy_norm_avg')
+
+        if len(X_extra_list) == 0:
+            return np.array([]).reshape(N, 0), []
+
+        return np.hstack(X_extra_list), names
 
     def _transform(self, X, num_models):
         """Aplica las transformaciones de features pedidas, idénticas en train/val/test.
@@ -150,16 +319,12 @@ class Ensemble(nn.Module):
 
     def _compute_reweight_scales(self, X_train, y_train, num_models):
         """
-        Entrena un LogisticRegression auxiliar para determinar la importancia de
-        cada modelo base, y calcula un vector de escalas para reponderar features.
+        Calcula un vector de escalas para reponderar features.
 
-        self.reweight_method controla cómo se traduce la LR auxiliar en escalas:
-            - "norm_ratio" / "softmax": un escalar por modelo (repetido en todo
-              su bloque de columnas), agregando la norma L2 del bloque — ver
-              utils.model_importance_from_coefs.
-            - "signed": un escalar por columna, a partir del coeficiente CON
-              signo de esa columna (no de la norma del bloque). Solo definido
-              para clasificación binaria (lr_aux.coef_ con una sola fila).
+        self.reweight_method controla la fuente de pesos:
+            - "auc_based": usa MetricDistance con AUC/F1 de validación (sin doble aprendizaje)
+            - "norm_ratio" / "softmax": entrena LR auxiliar y agrega por norma L2
+            - "signed": entren LR auxiliar, usa coeficientes con signo (binario)
 
         Args:
             X_train: features de entrenamiento
@@ -169,16 +334,61 @@ class Ensemble(nn.Module):
         Returns:
             scales: array [n_features] con pesos por feature
             weights: dict {model_name/idx: weight} con importancia por modelo
-                     (en "signed", el peso reportado por modelo es la media de
-                     las escalas de sus columnas, solo para lectura/logging)
         """
         from utils import model_importance_from_coefs
 
+        num_classes = X_train.shape[1] // num_models
+
+        # ====== AUC-BASED: Usar MetricDistance sin doble aprendizaje ======
+        if self.reweight_method == "auc_based":
+            if not all([self.work_dir, self.train_source, self.tissue_patching,
+                       self.task_name, self.model_names]):
+                raise ValueError(
+                    "reweight_method='auc_based' requiere work_dir, train_source, "
+                    "tissue_patching, task_name, y model_names (pasar como model_names "
+                    "a Ensemble.__init__)"
+                )
+            # Usar MetricDistance para calcular pesos por validación metrics
+            # IMPORTANTE: Pasar TODOS los modelos a la vez para que MetricDistance
+            # normalice correctamente (si pasamos uno a uno, cada uno se normaliza a 1.0)
+            try:
+                weights_arr = MetricDistance(
+                    foundational_models=self.model_names,
+                    work_dir=self.work_dir,
+                    train_source=self.train_source,
+                    tissue_patching=self.tissue_patching,
+                    task_name=self.task_name,
+                    metric="auc_roc",
+                    fold=self.fold
+                ).run()
+                auc_weights = {name: float(w) for name, w in zip(self.model_names, weights_arr)}
+
+                # MetricDistance ya normaliza a suma=1.0, necesitamos media=1.0
+                weights_list = list(auc_weights.values())
+                mean_w = np.mean(weights_list)
+                if mean_w > 0:
+                    for k in auc_weights:
+                        auc_weights[k] /= mean_w
+
+            except Exception as e:
+                # Fallback: pesos uniformes si MetricDistance falla
+                print(f"⚠️  MetricDistance failed: {e}. Using uniform weights.")
+                auc_weights = {name: 1.0 for name in self.model_names}
+
+            weights = auc_weights
+            scales = np.ones(X_train.shape[1])
+            for i, model_name in enumerate(self.model_names):
+                weight = weights[model_name]
+                start = i * num_classes
+                end = (i + 1) * num_classes
+                scales[start:end] = weight
+
+            return scales, weights
+
+        # ====== MÉTODOS BASADOS EN LR AUXILIAR ======
         # Entrenar LR auxiliar
         lr_aux = LogisticRegression(max_iter=1000)
         lr_aux.fit(X_train, y_train)
-
-        num_classes = X_train.shape[1] // num_models
 
         if self.reweight_method == "signed":
             if lr_aux.coef_.shape[0] != 1:
@@ -316,6 +526,16 @@ class Ensemble(nn.Module):
         y_train = xlabels_ref.cpu().numpy()
         y_val = vlabels_ref.cpu().numpy()
 
+        # Guardar X crudas ANTES de transform (para feature engineering)
+        X_train_raw = X_train.copy()
+        X_val_raw = X_val.copy()
+
+        # Cargar atención stats si están disponibles (Idea 3)
+        attn_train_list = self._load_attn_stats(self.xdirs) if (
+            self.extra_features and any(k in self.extra_features for k in ['attn_entropy_norm', 'attn_ess_norm', 'attn_entropy_norm_avg'])
+        ) else None
+        attn_val_list = self._load_attn_stats(self.vdirs) if attn_train_list is not None else None
+
         X_train = self._transform(X_train, num_models)
         X_val = self._transform(X_val, num_models)
 
@@ -330,6 +550,38 @@ class Ensemble(nn.Module):
         else:
             self.reweight_scales = None
             self.reweight_weights = None
+
+        # ========== FEATURE ENGINEERING (BLOQUE EXTRA AL FINAL) ==========
+        if self.extra_features:
+            # Guard: incompatibilidad con logit_avg/gating que asumen bloques uniformes
+            if self.meta_model_name in ("logit_avg", "gating"):
+                raise ValueError(
+                    f"--extra_features no soportado con meta-modelo '{self.meta_model_name}': "
+                    "estos modelos reconstruyen [N, n_models, C] y no soportan columnas extras. "
+                    "Usa LogReg, MLP, SVM, etc."
+                )
+
+            # num_classes se deriva de X_raw, no de la X ya transformada: con
+            # --drop_redundant_class la transformada tiene num_models*(C-1)
+            # columnas, y usarla daba C=1 y un reshape imposible en binaria.
+            num_classes = (X_train_raw.shape[1] // num_models
+                           if X_train_raw.shape[1] % num_models == 0 else None)
+
+            if num_classes is not None:  # Solo si bloques uniformes
+                X_extra_train, extra_names = self._compute_extra_features(
+                    X_train_raw, num_models, num_classes, attn_stats_list=attn_train_list
+                )
+                X_extra_val, _ = self._compute_extra_features(
+                    X_val_raw, num_models, num_classes, attn_stats_list=attn_val_list
+                )
+
+                if X_extra_train.shape[1] > 0:
+                    X_train = np.concatenate([X_train, X_extra_train], axis=1)
+                    X_val = np.concatenate([X_val, X_extra_val], axis=1)
+                    self.extra_feature_names = extra_names
+                    print(f"✓ Agregadas {X_extra_train.shape[1]} features extras: {extra_names}")
+            else:
+                print(f"⚠️ No se puede agregar features extras con dimensiones variables de embeddings")
 
         # ========== ENTRENAR META-LEARNER ==========
         _fit_meta_model(self.meta_model, X_train, y_train, X_val, y_val)
@@ -392,6 +644,14 @@ class Ensemble(nn.Module):
             N_test = tpreds[0].shape[0]
             X_test = torch.cat(tpreds, dim=1).cpu().numpy()
 
+        # Guardar X crudas ANTES de transform
+        X_test_raw = X_test.copy()
+
+        # Cargar atención stats para test con la MISMA condición que en train
+        attn_test_list = self._load_attn_stats(self.tdirs) if (
+            self.extra_features and any(k in self.extra_features for k in ['attn_entropy_norm', 'attn_ess_norm', 'attn_entropy_norm_avg'])
+        ) else None
+
         X_test = self._transform(X_test, num_models)
 
         # ========== REESCALADO OPCIONAL POR IMPORTANCIA DE MODELO (POST-ENTRENAMIENTO) ==========
@@ -399,6 +659,16 @@ class Ensemble(nn.Module):
         # con los mismos pesos que se usaron en train/val
         if self.reweight_by_model_importance and self.reweight_scales is not None:
             X_test = X_test * self.reweight_scales
+
+        # ========== FEATURE ENGINEERING EN TEST (APLICAR LOS MISMOS EXTRAS) ==========
+        if self.extra_features:
+            if X_test_raw.shape[1] % num_models == 0:
+                num_classes = X_test_raw.shape[1] // num_models
+                X_extra_test, _ = self._compute_extra_features(
+                    X_test_raw, num_models, num_classes, attn_stats_list=attn_test_list
+                )
+                if X_extra_test.shape[1] > 0:
+                    X_test = np.concatenate([X_test, X_extra_test], axis=1)
 
         # ========== PREDICCIÓN ==========
         probs = self.meta_model.predict_proba(X_test)
@@ -414,8 +684,9 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
          fge_n_cycles=6, fge_cycle_length=3, fge_lr_1=1e-3, fge_lr_2=1e-5,
          fge_cycle_patience=2, meta_features="insample", feature_space="prob",
          drop_redundant_class=False, n_members=6, meta_svm_c=1.0, meta_svm_kernel="linear",
+         meta_l1_c=1.0,
          meta_knn_k=5, reweight_by_model_importance=False, reweight_temperature=1.0,
-         reweight_method="norm_ratio"):
+         reweight_method="norm_ratio", extra_features=None, patient_level=False):
     """
     Ejecuta ensamble meta-learner para múltiples folds.
 
@@ -495,7 +766,11 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
 
     # Detectar número de folds
     for idx, d in enumerate(dirs):
-        val_outputs_path = os.path.join(d, f'val_outputs{suffix}')
+        # Determinar path de validación según patient_level
+        if patient_level:
+            val_outputs_path = os.path.join(d, f'patient_outputs')
+        else:
+            val_outputs_path = os.path.join(d, f'val_outputs{suffix}')
 
         if any(name.startswith("fold_") for name in os.listdir(val_outputs_path)):
             # Multi-fold: busca fold_* subdirectories
@@ -506,11 +781,17 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
 
         # test_abmil_fge.py escribe en {..}_train_eval_fge/val_outputs_fge/, así que
         # el sufijo aplica también al subdirectorio, no sólo al dir padre.
-        xdirs.append(os.path.join(f'{d}_train_eval{xsuffix}', f'val_outputs{xsuffix}'))
-        # Cuando meta_features != "insample" (ej. embeddings), validación y test también usan el sufijo
-        # porque test_abmil.py genera val_outputs_embeddings y test_outputs_embeddings
-        vdirs.append(os.path.join(d, f'val_outputs{xsuffix if xsuffix else suffix}'))
-        tdirs.append(os.path.join(d, f'test_outputs{xsuffix if xsuffix else suffix}'))
+        # Si patient_level=True, cargar from patient_outputs (que no tiene sufijo)
+        if patient_level:
+            xdirs.append(os.path.join(f'{d}_train_eval{xsuffix}', f'val_outputs{xsuffix}'))
+            vdirs.append(os.path.join(d, f'patient_outputs'))
+            tdirs.append(os.path.join(d, f'patient_outputs'))
+        else:
+            xdirs.append(os.path.join(f'{d}_train_eval{xsuffix}', f'val_outputs{xsuffix}'))
+            # Cuando meta_features != "insample" (ej. embeddings), validación y test también usan el sufijo
+            # porque test_abmil.py genera val_outputs_embeddings y test_outputs_embeddings
+            vdirs.append(os.path.join(d, f'val_outputs{xsuffix if xsuffix else suffix}'))
+            tdirs.append(os.path.join(d, f'test_outputs{xsuffix if xsuffix else suffix}'))
 
     assert len(set(folds)) == 1, f"Mismatch in number of folds: {set(folds)}"
 
@@ -520,6 +801,7 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
     # Mapeo de meta-model a nombre de subdirectorio de resultados
     results_subdir_map = {
         "logreg": "ensemble4",
+        "logreg_l1": "ensemble4_logreg_l1",
         "mlp": "ensemble4_mlp",
         "mlp_snapshot": "ensemble4_mlp_snapshot",
         "mlp_fge": "ensemble4_mlp_fge",
@@ -549,6 +831,10 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
     # Bases FGE -> resultados en subdirectorio propio (no pisa base_source=standard)
     if base_source != "standard":
         results_subdir = f"{results_subdir}_{base_source}"
+
+    # Patient-level aggregation -> separate results directory
+    if patient_level:
+        results_subdir = f"{results_subdir}_patient"
 
     # Append suffix if provided (for grid search trials)
     if results_subdir_suffix:
@@ -580,6 +866,17 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
                 # Instantiate meta-learner based on meta_model choice
                 if meta_model == "logreg":
                     meta_learner = LogisticRegression(max_iter=1000)
+                elif meta_model == "logreg_l1":
+                    # Apagado APRENDIDO de modelos base. Con
+                    # --feature_space logit --drop_redundant_class y tarea
+                    # binaria, `_transform` deja exactamente una columna por
+                    # modelo, así que la L1 sobre esas columnas es un
+                    # group-lasso sobre modelos: coeficiente 0 = modelo apagado.
+                    # Fuera de ese régimen la L1 sigue siendo válida, pero
+                    # esparsifica columnas sueltas, no modelos enteros.
+                    meta_learner = LogisticRegression(
+                        penalty="l1", solver="liblinear", C=meta_l1_c, max_iter=1000
+                    )
                 elif meta_model == "mlp":
                     meta_learner = MLPMetaClassifier(
                         hidden_dim=meta_hidden_dim,
@@ -718,6 +1015,13 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
                     reweight_by_model_importance=reweight_by_model_importance,
                     reweight_temperature=reweight_temperature,
                     reweight_method=reweight_method,
+                    work_dir=work_dir,
+                    train_source=train_source,
+                    tissue_patching=tissue_patching,
+                    task_name=task_name,
+                    fold=f,
+                    extra_features=extra_features,
+                    meta_model_name=meta_model,
                 )()
 
                 all_preds.append(preds.detach().cpu().numpy())
@@ -760,8 +1064,8 @@ if __name__ == "__main__":
 
     # Meta-learner selection and hyperparameters
     parser.add_argument("--meta_model", type=str,
-                       choices=["logreg", "mlp", "mlp_snapshot", "mlp_fge", "deep_mlp",
-                                "deep_mlp_snapshot", "tabpfn", "tabpfn_snapshot",
+                       choices=["logreg", "logreg_l1", "mlp", "mlp_snapshot", "mlp_fge",
+                                "deep_mlp", "deep_mlp_snapshot", "tabpfn", "tabpfn_snapshot",
                                 "logit_avg", "mlp_deepens", "gating", "lightgbm",
                                 "svm", "knn", "nb"],
                        default="logreg",
@@ -816,6 +1120,10 @@ if __name__ == "__main__":
                        help="Cycles without val AUC improvement before stopping FGE (mlp_fge only). Default: 2")
     parser.add_argument("--results_subdir_suffix", type=str, default="",
                        help="Suffix for results directory (e.g., '_trial_1' → ensemble4_mlp_trial_1). Default: ''")
+    parser.add_argument("--meta_l1_c", type=float, default=1.0,
+                       help="Inverso de la fuerza de regularización L1 (logreg_l1 only). Más bajo "
+                            "= más esparsidad = más modelos base apagados. Barrer sobre validación, "
+                            "nunca sobre test. Default: 1.0")
     parser.add_argument("--meta_svm_c", type=float, default=1.0,
                        help="Regularization parameter C for SVM (svm only). Default: 1.0")
     parser.add_argument("--meta_svm_kernel", type=str, choices=["linear", "rbf"], default="linear",
@@ -826,12 +1134,28 @@ if __name__ == "__main__":
                        help="Reweight features by model importance (via auxiliary LogisticRegression). Default: False")
     parser.add_argument("--reweight_temperature", type=float, default=1.0,
                        help="Softening exponent for reweighting (0=no-op, 1=linear, >1=accentuate). Default: 1.0")
-    parser.add_argument("--reweight_method", type=str, choices=["norm_ratio", "softmax", "signed"],
+    parser.add_argument("--reweight_method", type=str, choices=["auc_based", "norm_ratio", "softmax", "signed"],
                        default="norm_ratio",
-                       help="How the auxiliary LR is turned into scales: 'norm_ratio' (default, "
-                            "per-model block scale from L2 norm ratio), 'softmax' (same but bounded "
-                            "via softmax over block norms), 'signed' (per-column scale from signed "
-                            "coefficients, binary tasks only). See INFORME_REWEIGHT_METACLASIFICADOR.md")
+                       help="How to compute reweight scales. 'auc_based' (NEW, recommended): uses "
+                            "MetricDistance (validation AUC/F1), avoids double learning. Others train "
+                            "auxiliary LR: 'norm_ratio' (default), per-model block scale from L2 norm; "
+                            "'softmax' (bounded); 'signed' (per-column, binary+drop_redundant_class only). "
+                            "See INFORME_REWEIGHT_METACLASIFICADOR.md")
+    parser.add_argument("--extra_features", nargs='+', type=str, default=None,
+                       choices=["disagreement", "entropy_avg", "entropy_per_model", "margin_avg", "max_margin",
+                                "attn_entropy_norm", "attn_ess_norm", "attn_entropy_norm_avg"],
+                       help="Feature engineering: columnas derivadas a agregar a X_meta. "
+                            "disagreement=Jensen-gap (1 col), entropy_avg=promedio (1 col), "
+                            "entropy_per_model=por modelo (n_models cols), margin_avg=promedio margen (1 col), "
+                            "max_margin=margen max (1 col), "
+                            "attn_entropy_norm=entropía de atención normalizada (n_models cols), "
+                            "attn_ess_norm=ESS normalizado de atención (n_models cols), "
+                            "attn_entropy_norm_avg=promedio de entropía normalizada (1 col). "
+                            "Default: None (sin features extras)")
+    parser.add_argument("--patient_level", action="store_true",
+                       help="Load predictions aggregated to patient level (per-patient outputs) "
+                            "instead of per-slide outputs. Requires running aggregate_to_patient.py first. "
+                            "Default: False (use per-slide predictions)")
 
     args = parser.parse_args()
     main(**vars(args))

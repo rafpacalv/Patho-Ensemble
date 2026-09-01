@@ -246,9 +246,11 @@ class MetricDistance:
                  tissue_patching: str,
                  task_name: str,
                  metric: str,
-                 fold: int):
+                 fold: int,
+                 weight_floor: float = 0.0):
         self.metric = metric
         self.fold = fold
+        self.weight_floor = weight_floor
         self.work_dir = work_dir
         self.train_source = train_source
         self.tissue_patching = tissue_patching
@@ -365,18 +367,32 @@ class MetricDistance:
 
         fold_values = np.array(fold_values, dtype=float)
 
-        # Compute weights using softmax normalization
+        # Normalización min-max seguida de reescalado a suma 1.
+        #
+        # NO es un softmax, pese a lo que decían los comentarios anteriores. La
+        # diferencia importa: el min-max manda el mínimo a 0 exactamente, así que
+        # **el peor modelo de cada fold recibe peso 0 y queda apagado**, siempre,
+        # sin umbral ni criterio. Con 3 modelos eso descartaba uno de cada tres;
+        # con un comité de 8 descarta a uno cualquiera que resulte último en ese
+        # fold, aunque su métrica esté a milésimas del penúltimo.
+        #
+        # Se conserva por compatibilidad con los resultados ya publicados
+        # (`weights.npy` cacheado en ensemble.py), pero `weight_floor` permite
+        # acotarlo: con weight_floor>0 ningún modelo se apaga por el mero hecho
+        # de ser el último del fold, y el apagado pasa a ser una decisión
+        # explícita de quien llama.
         if fold_values.sum() == 0 or np.all(fold_values == 1.0):
             # All values are 0, NaN, or all fallback values — use equal weights
             weights = np.ones_like(fold_values) / len(fold_values)
         else:
-            # Normalize using min-max to [0, 1] then softmax
             min_val = fold_values.min()
             max_val = fold_values.max()
             if max_val > min_val:
                 normalized = (fold_values - min_val) / (max_val - min_val)
             else:
                 normalized = fold_values
+            if self.weight_floor > 0:
+                normalized = normalized + self.weight_floor
             weights = normalized / normalized.sum()
 
         return np.array(weights)

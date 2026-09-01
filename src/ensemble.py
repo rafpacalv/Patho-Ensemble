@@ -6,6 +6,7 @@ import os
 import argparse
 
 from utils import Metrics, MetricDistance
+from format_metrics import enrich_metrics_summary, print_metrics_table
 
 
 class Ensemble(nn.Module):
@@ -101,20 +102,35 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
             pbar.update(1)
 
     tqdm.write("🔎 Running metrics across all folds...")
+    results_dir = os.path.join(work_dir, train_source, task_name, 'abmil', 'ensemble')
+    num_classes = len(set(all_labels[0]))
+
     Metrics(task_type='classification',
-            model_kwargs={'num_classes': len(set(all_labels[0]))},
+            model_kwargs={'num_classes': num_classes},
             num_bootstraps=100,
-            results_dir=os.path.join(work_dir, train_source, task_name, 'abmil', 'ensemble'),
+            results_dir=results_dir,
             split='test',
             num_folds=n_folds,
             all_labels_across_folds=all_labels,
             all_preds_across_folds=all_preds).run()
+
+    # Enriquecer métricas con cálculos explícitos (Accuracy, Precision, Recall, F1, etc.)
+    metrics_summary_path = os.path.join(results_dir, 'test_metrics_summary.json')
+    enrich_metrics_summary(metrics_summary_path, all_labels, all_preds, num_classes)
+
+    # Imprimir métricas detalladas
+    import json
+    with open(metrics_summary_path, 'r') as f:
+        summary = json.load(f)
+    if 'all_metrics' in summary:
+        print_metrics_table(summary['all_metrics'])
+
     tqdm.write("✅ Metrics computation finished.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for evaluate ensemble")
     parser.add_argument("--foundational_models", nargs='+', type=str)
-    parser.add_argument("--work_dir", type=str, default="/shared/home/JKP6679/Patho-Ensemble/PARADIS/datos")
+    parser.add_argument("--work_dir", type=str, default="/home/JKP6679/Patho-Ensemble/PARADIS/datos/patches")
     parser.add_argument("--train_source", type=str)
     parser.add_argument("--tissue_patching", type=str)
     parser.add_argument("--task_name", type=str)

@@ -1,0 +1,69 @@
+============================================================================
+OPCIÓN B: Per-Patient Aggregation
+============================================================================
+Dataset: cptac_brca / Task: TP53_mutation
+Models: ctranspath, uni_v2, virchow_v1
+Strategy: Aggregate per-slide predictions to per-patient level
+Fecha: Fri Aug 21 21:02:09 CEST 2026
+============================================================================
+
+============================================================================
+PASO 1: PILOTO - Per-Patient Aggregation (5 folds)
+============================================================================
+
+================================================================================
+Opción B: Per-Patient Aggregation
+================================================================================
+Dataset: cptac_brca / Task: TP53_mutation
+Models: ['ctranspath', 'uni_v2', 'virchow_v1']
+Folds: 0..4 (requested), 50 available
+================================================================================
+
+
+================================================================================
+✓ Per-patient aggregation complete
+Results saved to: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/<model>_20x_224px_0px_overlap/patient_outputs/
+================================================================================
+
+Summary:
+  Total slides processed: 315
+  Total patients processed: 300
+  Average slides per patient: 1.05
+  Statistics saved to: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/patient_aggregation_summary.json
+
+✓ Piloto completado
+
+============================================================================
+PASO 2: ESCALA COMPLETA - Per-Patient Aggregation (50 folds)
+============================================================================
+
+================================================================================
+Opción B: Per-Patient Aggregation
+================================================================================
+Dataset: cptac_brca / Task: TP53_mutation
+Models: ['ctranspath', 'uni_v2', 'virchow_v1']
+Folds: 0..49 (requested), 50 available
+================================================================================
+
+
+================================================================================
+✓ Per-patient aggregation complete
+Results saved to: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/<model>_20x_224px_0px_overlap/patient_outputs/
+================================================================================
+
+Summary:
+  Total slides processed: 3222
+  Total patients processed: 3000
+  Average slides per patient: 1.07
+  Statistics saved to: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/patient_aggregation_summary.json
+
+✓ Escala completa completada
+
+============================================================================
+PASO 3: Meta-Learner Training (Patient-Level)
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_patient/
+❌ Error en fold 0: permute(sparse_coo): number of dimensions in the tensor input does not match the length of the desired ordering of dimensions i.e. input.dim() = 2 is not equal to len(dims) = 3

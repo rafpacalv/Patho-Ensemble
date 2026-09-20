@@ -1,0 +1,378 @@
+==============================================================================
+ Etapa 2 — uni_v2 / smooth (K=2) sobre cptac_brca/TP53_mutation
+ job 70020 en gpu04
+==============================================================================
+NVIDIA A40
+
+==============================================================================
+ A. INERCIA DEL MOTOR (bloqueante)
+==============================================================================
+  omitida (SKIP_INERT=1): ya demostrada en el job 70017, 50/50 folds,
+  los dos caminos bit-idénticos y ningún argmax desplazado.
+
+==============================================================================
+ B. BRAZO ESPACIAL: --arch smooth --arch_tag gnn03
+==============================================================================
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Training: uni_v2
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 1536, Num classes: 2
+  Epochs: 100, Fold: all
+  Arch: smooth (K=2), tag: gnn03, grafo: lattice, shuffle: False, alpha_init: 0.3
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 0: train=75, val=15, test=22
+Fold 0: ABMIL entrenado (val_auc=0.9815, alphas=[0.2985, 0.2985])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 1: train=76, val=13, test=23
+Fold 1: ABMIL entrenado (val_auc=0.8958, alphas=[0.2986, 0.2986])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 2: train=76, val=16, test=20
+Fold 2: ABMIL entrenado (val_auc=0.6071, alphas=[0.3042, 0.3042])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 3: train=76, val=16, test=20
+Fold 3: ABMIL entrenado (val_auc=0.8413, alphas=[0.2978, 0.2978])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 4: train=77, val=15, test=20
+Fold 4: ABMIL entrenado (val_auc=0.9365, alphas=[0.3001, 0.3001])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 5: train=76, val=15, test=21
+Fold 5: ABMIL entrenado (val_auc=0.7302, alphas=[0.2983, 0.2983])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 6: train=74, val=16, test=22
+Fold 6: ABMIL entrenado (val_auc=0.6800, alphas=[0.2999, 0.2999])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 7: train=78, val=13, test=21
+Fold 7: ABMIL entrenado (val_auc=0.8906, alphas=[0.3009, 0.3009])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 8: train=77, val=14, test=21
+Fold 8: ABMIL entrenado (val_auc=0.9455, alphas=[0.302, 0.302])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 9: train=77, val=14, test=21
+Fold 9: ABMIL entrenado (val_auc=0.8571, alphas=[0.2992, 0.2992])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 10: train=75, val=16, test=21
+Fold 10: ABMIL entrenado (val_auc=0.8704, alphas=[0.3024, 0.3024])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 11: train=74, val=15, test=23
+Fold 11: ABMIL entrenado (val_auc=0.5833, alphas=[0.2963, 0.2963])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 12: train=76, val=16, test=20
+Fold 12: ABMIL entrenado (val_auc=0.6667, alphas=[0.2988, 0.2988])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 13: train=75, val=17, test=20
+Fold 13: ABMIL entrenado (val_auc=0.9107, alphas=[0.2967, 0.2967])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 14: train=77, val=14, test=21
+Fold 14: ABMIL entrenado (val_auc=0.5556, alphas=[0.3004, 0.3004])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 15: train=76, val=14, test=22
+Fold 15: ABMIL entrenado (val_auc=0.7143, alphas=[0.3012, 0.3012])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 16: train=77, val=13, test=22
+Fold 16: ABMIL entrenado (val_auc=0.8000, alphas=[0.2995, 0.2995])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 17: train=75, val=16, test=21
+Fold 17: ABMIL entrenado (val_auc=0.8800, alphas=[0.301, 0.301])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 18: train=75, val=16, test=21
+Fold 18: ABMIL entrenado (val_auc=0.6964, alphas=[0.3001, 0.3001])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 19: train=73, val=16, test=23
+Fold 19: ABMIL entrenado (val_auc=0.7222, alphas=[0.2992, 0.2992])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 20: train=76, val=15, test=21
+Fold 20: ABMIL entrenado (val_auc=0.8281, alphas=[0.3027, 0.3027])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 21: train=75, val=13, test=24
+Fold 21: ABMIL entrenado (val_auc=0.6852, alphas=[0.3031, 0.3031])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 22: train=74, val=15, test=23
+Fold 22: ABMIL entrenado (val_auc=0.9600, alphas=[0.3094, 0.3094])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 23: train=75, val=15, test=22
+Fold 23: ABMIL entrenado (val_auc=0.6200, alphas=[0.2941, 0.2941])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 24: train=76, val=14, test=22
+Fold 24: ABMIL entrenado (val_auc=0.6833, alphas=[0.2945, 0.2945])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 25: train=77, val=14, test=21
+Fold 25: ABMIL entrenado (val_auc=0.5455, alphas=[0.3097, 0.3097])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 26: train=77, val=13, test=22
+Fold 26: ABMIL entrenado (val_auc=0.9636, alphas=[0.3032, 0.3032])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 27: train=77, val=14, test=21
+Fold 27: ABMIL entrenado (val_auc=0.8125, alphas=[0.2981, 0.2981])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 28: train=79, val=13, test=20
+Fold 28: ABMIL entrenado (val_auc=0.8281, alphas=[0.3016, 0.3016])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 29: train=77, val=13, test=22
+Fold 29: ABMIL entrenado (val_auc=0.9667, alphas=[0.2989, 0.2989])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 30: train=75, val=16, test=21
+Fold 30: ABMIL entrenado (val_auc=0.7593, alphas=[0.2984, 0.2984])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 31: train=77, val=14, test=21
+Fold 31: ABMIL entrenado (val_auc=0.7636, alphas=[0.3022, 0.3022])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 32: train=77, val=14, test=21
+Fold 32: ABMIL entrenado (val_auc=0.9091, alphas=[0.2957, 0.2957])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 33: train=74, val=15, test=23
+Fold 33: ABMIL entrenado (val_auc=0.9444, alphas=[0.299, 0.299])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 34: train=75, val=14, test=23
+Fold 34: ABMIL entrenado (val_auc=0.8929, alphas=[0.2963, 0.2963])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 35: train=75, val=15, test=22
+Fold 35: ABMIL entrenado (val_auc=0.9630, alphas=[0.2955, 0.2955])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 36: train=78, val=14, test=20
+Fold 36: ABMIL entrenado (val_auc=0.9841, alphas=[0.297, 0.297])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 37: train=75, val=15, test=22
+Fold 37: ABMIL entrenado (val_auc=0.9286, alphas=[0.3011, 0.3011])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 38: train=76, val=14, test=22
+Fold 38: ABMIL entrenado (val_auc=0.8667, alphas=[0.3029, 0.3029])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 39: train=75, val=15, test=22
+Fold 39: ABMIL entrenado (val_auc=0.7037, alphas=[0.2994, 0.2994])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 40: train=77, val=15, test=20
+Fold 40: ABMIL entrenado (val_auc=0.8333, alphas=[0.3028, 0.3028])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 41: train=74, val=16, test=22
+Fold 41: ABMIL entrenado (val_auc=1.0000, alphas=[0.3019, 0.3019])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 42: train=76, val=16, test=20
+Fold 42: ABMIL entrenado (val_auc=0.7292, alphas=[0.3009, 0.3009])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 43: train=77, val=14, test=21
+Fold 43: ABMIL entrenado (val_auc=0.7292, alphas=[0.2963, 0.2963])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 44: train=78, val=14, test=20
+Fold 44: ABMIL entrenado (val_auc=0.7917, alphas=[0.2931, 0.2931])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 45: train=75, val=15, test=22
+Fold 45: ABMIL entrenado (val_auc=0.8519, alphas=[0.3008, 0.3008])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 46: train=77, val=14, test=21
+Fold 46: ABMIL entrenado (val_auc=0.8718, alphas=[0.2998, 0.2998])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 47: train=75, val=13, test=24
+Fold 47: ABMIL entrenado (val_auc=0.9286, alphas=[0.2972, 0.2972])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 48: train=76, val=14, test=22
+Fold 48: ABMIL entrenado (val_auc=0.7091, alphas=[0.2951, 0.2951])
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+Fold 49: train=77, val=13, test=22
+Fold 49: ABMIL entrenado (val_auc=0.8167, alphas=[0.3032, 0.3032])
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+
+ meta-features in-sample del brazo espacial
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Test (predicciones sobre train): uni_v2
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 1536, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  112 grafos, grado medio 7.78, aislados 0/923403 (0.00 %), fallback k-NN en 0 slides
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+
+==============================================================================
+ C. PUERTA DE CORRELACIÓN (decide si el proyecto sigue)
+==============================================================================
+  folds pareados: 50
+  correlación media base<->gnn : r = 0.9661  (min 0.735, max 1.000)
+  suelo inter-modelo publicado : r = 0.797
+  snapshots FGE/SE publicados  : r = 0.92-0.98
+
+  AUC pareado  delta = +0.0053   IC95 [-0.0027, +0.0133]
+  G/E/P = 22/14/14     MDE(80%) = 0.0114
+  -> efecto NO resoluble: acotado por +-0.0114, no ausente
+
+  PUERTA: r=0.966 >= 0.92 — misma saturación que los snapshots.
+  PARAR. Nulo acotado con mecanismo; no correr el barrido completo.
+
+==============================================================================
+ D. TRAYECTORIA DE ALPHA
+==============================================================================
+  alpha inicial   : +0.3000
+  alpha aprendido : mediana +0.29965   media +0.29978   sd 0.00330
+  rango           : [+0.29310, +0.30970]   n=100
+  |alpha| > 0.05  : 100/100
+
+  -> El entrenamiento MANTIENE alpha. El arranque en 0 del run previo
+     SI era el limitante, y aquel nulo no era concluyente.
+
+==============================================================================
+ Etapa 2 completada
+==============================================================================

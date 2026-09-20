@@ -1,0 +1,2950 @@
+================================================================================
+CAMPAÑA COMPLETA — cptac_gbm / TP53_mutation
+Job 70495 — Sun Aug 30 22:18:17 CEST 2026
+================================================================================
+
+### FASE 0 — comprobaciones previas
+  splits    : /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_gbm/TP53_mutation/k=all.tsv
+  folds     : 50
+  slides    : 243   pacientes: 99
+  clases    : 2
+  features  :
+    ✓ ctranspath   dim=768  /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath
+    ✓ uni_v2       dim=1536  /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2
+    ✓ conch_v1_5   dim=768  /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5
+✓ Preflight OK
+
+### FASE 1 — entrenamiento ABMIL base
+
+--- [base] ctranspath --- Sun Aug 30 22:19:00 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 0: train=164, val=31, test=48
+Fold 0: ABMIL entrenado (val_auc=0.9537)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 1: train=159, val=29, test=55
+Fold 1: ABMIL entrenado (val_auc=0.9180)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 2: train=167, val=32, test=44
+Fold 2: ABMIL entrenado (val_auc=0.9597)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 3: train=176, val=24, test=43
+Fold 3: ABMIL entrenado (val_auc=0.8700)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 4: train=170, val=29, test=44
+Fold 4: ABMIL entrenado (val_auc=0.8489)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 5: train=168, val=25, test=50
+Fold 5: ABMIL entrenado (val_auc=0.7000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 6: train=155, val=29, test=59
+Fold 6: ABMIL entrenado (val_auc=0.9000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 7: train=163, val=32, test=48
+Fold 7: ABMIL entrenado (val_auc=0.7817)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 8: train=163, val=31, test=49
+Fold 8: ABMIL entrenado (val_auc=0.6618)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 9: train=171, val=29, test=43
+Fold 9: ABMIL entrenado (val_auc=0.7754)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 10: train=177, val=32, test=34
+Fold 10: ABMIL entrenado (val_auc=0.6921)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 11: train=167, val=31, test=45
+Fold 11: ABMIL entrenado (val_auc=0.9135)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 12: train=177, val=27, test=39
+Fold 12: ABMIL entrenado (val_auc=0.4313)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 13: train=175, val=27, test=41
+Fold 13: ABMIL entrenado (val_auc=0.9886)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 14: train=175, val=28, test=40
+Fold 14: ABMIL entrenado (val_auc=0.5933)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 15: train=173, val=27, test=43
+Fold 15: ABMIL entrenado (val_auc=0.8167)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 16: train=170, val=29, test=44
+Fold 16: ABMIL entrenado (val_auc=0.8140)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 17: train=170, val=31, test=42
+Fold 17: ABMIL entrenado (val_auc=0.5934)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 18: train=171, val=32, test=40
+Fold 18: ABMIL entrenado (val_auc=0.8980)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 19: train=163, val=29, test=51
+Fold 19: ABMIL entrenado (val_auc=0.7808)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 20: train=164, val=34, test=45
+Fold 20: ABMIL entrenado (val_auc=0.4835)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 21: train=178, val=25, test=40
+Fold 21: ABMIL entrenado (val_auc=0.4375)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 22: train=166, val=32, test=45
+Fold 22: ABMIL entrenado (val_auc=0.6857)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 23: train=178, val=25, test=40
+Fold 23: ABMIL entrenado (val_auc=0.8063)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 24: train=170, val=30, test=43
+Fold 24: ABMIL entrenado (val_auc=0.9000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 25: train=173, val=31, test=39
+Fold 25: ABMIL entrenado (val_auc=0.8360)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 26: train=174, val=29, test=40
+Fold 26: ABMIL entrenado (val_auc=0.9266)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 27: train=160, val=30, test=53
+Fold 27: ABMIL entrenado (val_auc=0.5542)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 28: train=165, val=31, test=47
+Fold 28: ABMIL entrenado (val_auc=0.7698)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 29: train=173, val=31, test=39
+Fold 29: ABMIL entrenado (val_auc=0.6769)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 30: train=155, val=31, test=57
+Fold 30: ABMIL entrenado (val_auc=0.8958)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 31: train=158, val=31, test=54
+Fold 31: ABMIL entrenado (val_auc=0.7958)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 32: train=166, val=29, test=48
+Fold 32: ABMIL entrenado (val_auc=0.6285)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 33: train=166, val=26, test=51
+Fold 33: ABMIL entrenado (val_auc=0.9586)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 34: train=168, val=29, test=46
+Fold 34: ABMIL entrenado (val_auc=0.8507)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 35: train=168, val=27, test=48
+Fold 35: ABMIL entrenado (val_auc=0.8466)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 36: train=177, val=24, test=42
+Fold 36: ABMIL entrenado (val_auc=0.8844)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 37: train=170, val=34, test=39
+Fold 37: ABMIL entrenado (val_auc=0.9091)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 38: train=171, val=34, test=38
+Fold 38: ABMIL entrenado (val_auc=0.7789)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 39: train=171, val=32, test=40
+Fold 39: ABMIL entrenado (val_auc=0.8497)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 40: train=179, val=22, test=42
+Fold 40: ABMIL entrenado (val_auc=0.5356)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 41: train=170, val=29, test=44
+Fold 41: ABMIL entrenado (val_auc=0.7643)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 42: train=161, val=27, test=55
+Fold 42: ABMIL entrenado (val_auc=0.7538)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 43: train=174, val=31, test=38
+Fold 43: ABMIL entrenado (val_auc=0.5510)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 44: train=163, val=27, test=53
+Fold 44: ABMIL entrenado (val_auc=0.7556)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 45: train=160, val=32, test=51
+Fold 45: ABMIL entrenado (val_auc=0.8095)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 46: train=177, val=23, test=43
+Fold 46: ABMIL entrenado (val_auc=0.8696)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 47: train=169, val=30, test=44
+Fold 47: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 48: train=179, val=24, test=40
+Fold 48: ABMIL entrenado (val_auc=0.8109)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 49: train=155, val=30, test=58
+Fold 49: ABMIL entrenado (val_auc=0.9226)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+
+--- [base] uni_v2 --- Sun Aug 30 22:34:31 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Training: uni_v2
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 1536, Num classes: 2
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 0: train=164, val=31, test=48
+Fold 0: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 1: train=159, val=29, test=55
+Fold 1: ABMIL entrenado (val_auc=0.9688)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 2: train=167, val=32, test=44
+Fold 2: ABMIL entrenado (val_auc=0.9158)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 3: train=176, val=24, test=43
+Fold 3: ABMIL entrenado (val_auc=0.8111)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 4: train=170, val=29, test=44
+Fold 4: ABMIL entrenado (val_auc=0.7244)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 5: train=168, val=25, test=50
+Fold 5: ABMIL entrenado (val_auc=0.6833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 6: train=155, val=29, test=59
+Fold 6: ABMIL entrenado (val_auc=0.9692)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 7: train=163, val=32, test=48
+Fold 7: ABMIL entrenado (val_auc=0.8770)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 8: train=163, val=31, test=49
+Fold 8: ABMIL entrenado (val_auc=0.7316)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 9: train=171, val=29, test=43
+Fold 9: ABMIL entrenado (val_auc=0.6304)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 10: train=177, val=32, test=34
+Fold 10: ABMIL entrenado (val_auc=0.6921)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 11: train=167, val=31, test=45
+Fold 11: ABMIL entrenado (val_auc=0.9792)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 12: train=177, val=27, test=39
+Fold 12: ABMIL entrenado (val_auc=0.4188)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 13: train=175, val=27, test=41
+Fold 13: ABMIL entrenado (val_auc=0.9962)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 14: train=175, val=28, test=40
+Fold 14: ABMIL entrenado (val_auc=0.4833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 15: train=173, val=27, test=43
+Fold 15: ABMIL entrenado (val_auc=0.6833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 16: train=170, val=29, test=44
+Fold 16: ABMIL entrenado (val_auc=0.8632)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 17: train=170, val=31, test=42
+Fold 17: ABMIL entrenado (val_auc=0.8022)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 18: train=171, val=32, test=40
+Fold 18: ABMIL entrenado (val_auc=0.8322)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 19: train=163, val=29, test=51
+Fold 19: ABMIL entrenado (val_auc=0.8308)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 20: train=164, val=34, test=45
+Fold 20: ABMIL entrenado (val_auc=0.4545)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 21: train=178, val=25, test=40
+Fold 21: ABMIL entrenado (val_auc=0.3090)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 22: train=166, val=32, test=45
+Fold 22: ABMIL entrenado (val_auc=0.6607)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 23: train=178, val=25, test=40
+Fold 23: ABMIL entrenado (val_auc=0.9094)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 24: train=170, val=30, test=43
+Fold 24: ABMIL entrenado (val_auc=0.9083)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 25: train=173, val=31, test=39
+Fold 25: ABMIL entrenado (val_auc=0.8800)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 26: train=174, val=29, test=40
+Fold 26: ABMIL entrenado (val_auc=0.8147)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 27: train=160, val=30, test=53
+Fold 27: ABMIL entrenado (val_auc=0.7833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 28: train=165, val=31, test=47
+Fold 28: ABMIL entrenado (val_auc=0.8770)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 29: train=173, val=31, test=39
+Fold 29: ABMIL entrenado (val_auc=0.7041)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 30: train=155, val=31, test=57
+Fold 30: ABMIL entrenado (val_auc=0.9375)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 31: train=158, val=31, test=54
+Fold 31: ABMIL entrenado (val_auc=0.8000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 32: train=166, val=29, test=48
+Fold 32: ABMIL entrenado (val_auc=0.7535)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 33: train=166, val=26, test=51
+Fold 33: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 34: train=168, val=29, test=46
+Fold 34: ABMIL entrenado (val_auc=0.8194)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 35: train=168, val=27, test=48
+Fold 35: ABMIL entrenado (val_auc=0.9153)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 36: train=177, val=24, test=42
+Fold 36: ABMIL entrenado (val_auc=0.8469)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 37: train=170, val=34, test=39
+Fold 37: ABMIL entrenado (val_auc=0.8712)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 38: train=171, val=34, test=38
+Fold 38: ABMIL entrenado (val_auc=0.6395)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 39: train=171, val=32, test=40
+Fold 39: ABMIL entrenado (val_auc=0.8007)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 40: train=179, val=22, test=42
+Fold 40: ABMIL entrenado (val_auc=0.5480)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 41: train=170, val=29, test=44
+Fold 41: ABMIL entrenado (val_auc=0.6893)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 42: train=161, val=27, test=55
+Fold 42: ABMIL entrenado (val_auc=0.6500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 43: train=174, val=31, test=38
+Fold 43: ABMIL entrenado (val_auc=0.7823)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 44: train=163, val=27, test=53
+Fold 44: ABMIL entrenado (val_auc=0.6259)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 45: train=160, val=32, test=51
+Fold 45: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 46: train=177, val=23, test=43
+Fold 46: ABMIL entrenado (val_auc=0.8294)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 47: train=169, val=30, test=44
+Fold 47: ABMIL entrenado (val_auc=0.9103)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 48: train=179, val=24, test=40
+Fold 48: ABMIL entrenado (val_auc=0.6655)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 49: train=155, val=30, test=58
+Fold 49: ABMIL entrenado (val_auc=0.9048)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+
+--- [base] conch_v1_5 --- Sun Aug 30 22:59:31 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL Training: conch_v1_5
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 0: train=164, val=31, test=48
+Fold 0: ABMIL entrenado (val_auc=0.8519)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 1: train=159, val=29, test=55
+Fold 1: ABMIL entrenado (val_auc=0.8281)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 2: train=167, val=32, test=44
+Fold 2: ABMIL entrenado (val_auc=0.8901)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 3: train=176, val=24, test=43
+Fold 3: ABMIL entrenado (val_auc=0.8235)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 4: train=170, val=29, test=44
+Fold 4: ABMIL entrenado (val_auc=0.7378)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 5: train=168, val=25, test=50
+Fold 5: ABMIL entrenado (val_auc=0.8833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 6: train=155, val=29, test=59
+Fold 6: ABMIL entrenado (val_auc=0.9462)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 7: train=163, val=32, test=48
+Fold 7: ABMIL entrenado (val_auc=0.7341)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 8: train=163, val=31, test=49
+Fold 8: ABMIL entrenado (val_auc=0.9596)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 9: train=171, val=29, test=43
+Fold 9: ABMIL entrenado (val_auc=0.9565)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 10: train=177, val=32, test=34
+Fold 10: ABMIL entrenado (val_auc=0.8000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 11: train=167, val=31, test=45
+Fold 11: ABMIL entrenado (val_auc=0.9965)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 12: train=177, val=27, test=39
+Fold 12: ABMIL entrenado (val_auc=0.8000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 13: train=175, val=27, test=41
+Fold 13: ABMIL entrenado (val_auc=0.9697)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 14: train=175, val=28, test=40
+Fold 14: ABMIL entrenado (val_auc=0.7767)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 15: train=173, val=27, test=43
+Fold 15: ABMIL entrenado (val_auc=0.8100)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 16: train=170, val=29, test=44
+Fold 16: ABMIL entrenado (val_auc=0.8737)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 17: train=170, val=31, test=42
+Fold 17: ABMIL entrenado (val_auc=0.9121)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 18: train=171, val=32, test=40
+Fold 18: ABMIL entrenado (val_auc=0.9770)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 19: train=163, val=29, test=51
+Fold 19: ABMIL entrenado (val_auc=0.8654)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 20: train=164, val=34, test=45
+Fold 20: ABMIL entrenado (val_auc=0.7686)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 21: train=178, val=25, test=40
+Fold 21: ABMIL entrenado (val_auc=0.4931)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 22: train=166, val=32, test=45
+Fold 22: ABMIL entrenado (val_auc=0.9036)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 23: train=178, val=25, test=40
+Fold 23: ABMIL entrenado (val_auc=0.7906)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 24: train=170, val=30, test=43
+Fold 24: ABMIL entrenado (val_auc=0.8833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 25: train=173, val=31, test=39
+Fold 25: ABMIL entrenado (val_auc=0.9840)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 26: train=174, val=29, test=40
+Fold 26: ABMIL entrenado (val_auc=0.6503)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 27: train=160, val=30, test=53
+Fold 27: ABMIL entrenado (val_auc=0.9375)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 28: train=165, val=31, test=47
+Fold 28: ABMIL entrenado (val_auc=0.8532)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 29: train=173, val=31, test=39
+Fold 29: ABMIL entrenado (val_auc=0.8231)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 30: train=155, val=31, test=57
+Fold 30: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 31: train=158, val=31, test=54
+Fold 31: ABMIL entrenado (val_auc=0.8542)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 32: train=166, val=29, test=48
+Fold 32: ABMIL entrenado (val_auc=0.7535)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 33: train=166, val=26, test=51
+Fold 33: ABMIL entrenado (val_auc=0.9724)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 34: train=168, val=29, test=46
+Fold 34: ABMIL entrenado (val_auc=0.7847)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 35: train=168, val=27, test=48
+Fold 35: ABMIL entrenado (val_auc=0.8836)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 36: train=177, val=24, test=42
+Fold 36: ABMIL entrenado (val_auc=0.9219)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 37: train=170, val=34, test=39
+Fold 37: ABMIL entrenado (val_auc=0.8598)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 38: train=171, val=34, test=38
+Fold 38: ABMIL entrenado (val_auc=0.8299)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 39: train=171, val=32, test=40
+Fold 39: ABMIL entrenado (val_auc=0.9091)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 40: train=179, val=22, test=42
+Fold 40: ABMIL entrenado (val_auc=0.7833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 41: train=170, val=29, test=44
+Fold 41: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 42: train=161, val=27, test=55
+Fold 42: ABMIL entrenado (val_auc=0.9385)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 43: train=174, val=31, test=38
+Fold 43: ABMIL entrenado (val_auc=0.8503)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 44: train=163, val=27, test=53
+Fold 44: ABMIL entrenado (val_auc=0.9259)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 45: train=160, val=32, test=51
+Fold 45: ABMIL entrenado (val_auc=0.8294)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 46: train=177, val=23, test=43
+Fold 46: ABMIL entrenado (val_auc=0.9632)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 47: train=169, val=30, test=44
+Fold 47: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 48: train=179, val=24, test=40
+Fold 48: ABMIL entrenado (val_auc=0.7055)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 49: train=155, val=30, test=58
+Fold 49: ABMIL entrenado (val_auc=0.9583)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+
+### FASE 2 — meta-features in-sample
+--- [meta] ctranspath --- Sun Aug 30 23:11:26 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL Test (predicciones sobre train): ctranspath
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+--- [meta] uni_v2 --- Sun Aug 30 23:12:43 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Test (predicciones sobre train): uni_v2
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 1536, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+--- [meta] conch_v1_5 --- Sun Aug 30 23:13:53 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL Test (predicciones sobre train): conch_v1_5
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+
+### FASE 3 — embeddings de slide
+--- [emb] ctranspath --- Sun Aug 30 23:14:35 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL Test (embeddings sobre train): ctranspath
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+✅ Embeddings de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+--- [emb] uni_v2 --- Sun Aug 30 23:15:09 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Test (embeddings sobre train): uni_v2
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 1536, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+✅ Embeddings de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+--- [emb] conch_v1_5 --- Sun Aug 30 23:16:13 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL Test (embeddings sobre train): conch_v1_5
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+✅ Embeddings de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+
+### FASE 3b — vigencia de los embeddings
+  ✓ ctranspath
+  ✓ uni_v2
+  ✓ conch_v1_5
+
+### FASE 4 — snapshot ensembles a nivel base
+
+################################################################
+# fge_trio (schedule=fge lr_1=2e-4 lr_2=2e-5 cycle_length=4)
+################################################################
+--- [fge_trio] ciclos: ctranspath --- Sun Aug 30 23:17:19 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL-FGE Training: ctranspath
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs (convergencia): 100, Fold: all
+  Schedule: fge  (piecewise-linear, Garipov et al.)
+  Ciclos: n_cycles=6, cycle_length=4, lr_1=0.0002, lr_2=2e-05, cycle_patience=2
+  Variante: fge_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 0 (FGE): train=164, val=31, test=48
+Fold 0: base convergido (val_auc=0.9537), iniciando ciclos FGE...
+Fold 0: 4 snapshots FGE (val_auc por snapshot: 0.8981, 0.9120, 0.9444, 0.9444)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 1 (FGE): train=159, val=29, test=55
+Fold 1: base convergido (val_auc=0.9180), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.8555, 0.8438)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 2 (FGE): train=167, val=32, test=44
+Fold 2: base convergido (val_auc=0.9597), iniciando ciclos FGE...
+Fold 2: 3 snapshots FGE (val_auc por snapshot: 0.8425, 0.8535, 0.8498)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 3 (FGE): train=176, val=24, test=43
+Fold 3: base convergido (val_auc=0.8700), iniciando ciclos FGE...
+Fold 3: 4 snapshots FGE (val_auc por snapshot: 0.6687, 0.7988, 0.8328, 0.8019)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 4 (FGE): train=170, val=29, test=44
+Fold 4: base convergido (val_auc=0.8489), iniciando ciclos FGE...
+Fold 4: 2 snapshots FGE (val_auc por snapshot: 0.7378, 0.7378)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 5 (FGE): train=168, val=25, test=50
+Fold 5: base convergido (val_auc=0.7000), iniciando ciclos FGE...
+Fold 5: 6 snapshots FGE (val_auc por snapshot: 0.6167, 0.6042, 0.6417, 0.6542, 0.6875, 0.6333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 6 (FGE): train=155, val=29, test=59
+Fold 6: base convergido (val_auc=0.9000), iniciando ciclos FGE...
+Fold 6: 2 snapshots FGE (val_auc por snapshot: 0.8462, 0.8308)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 7 (FGE): train=163, val=32, test=48
+Fold 7: base convergido (val_auc=0.7817), iniciando ciclos FGE...
+Fold 7: 2 snapshots FGE (val_auc por snapshot: 0.7698, 0.6032)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 8 (FGE): train=163, val=31, test=49
+Fold 8: base convergido (val_auc=0.6618), iniciando ciclos FGE...
+Fold 8: 2 snapshots FGE (val_auc por snapshot: 0.6287, 0.6250)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 9 (FGE): train=171, val=29, test=43
+Fold 9: base convergido (val_auc=0.7754), iniciando ciclos FGE...
+Fold 9: 4 snapshots FGE (val_auc por snapshot: 0.7536, 0.7572, 0.7754, 0.7572)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 10 (FGE): train=177, val=32, test=34
+Fold 10: base convergido (val_auc=0.6921), iniciando ciclos FGE...
+Fold 10: 2 snapshots FGE (val_auc por snapshot: 0.6762, 0.6413)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 11 (FGE): train=167, val=31, test=45
+Fold 11: base convergido (val_auc=0.9135), iniciando ciclos FGE...
+Fold 11: 4 snapshots FGE (val_auc por snapshot: 0.8997, 0.8997, 0.9100, 0.9031)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 12 (FGE): train=177, val=27, test=39
+Fold 12: base convergido (val_auc=0.4313), iniciando ciclos FGE...
+Fold 12: 2 snapshots FGE (val_auc por snapshot: 0.4469, 0.3813)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 13 (FGE): train=175, val=27, test=41
+Fold 13: base convergido (val_auc=0.9886), iniciando ciclos FGE...
+Fold 13: 2 snapshots FGE (val_auc por snapshot: 0.9773, 0.9659)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 14 (FGE): train=175, val=28, test=40
+Fold 14: base convergido (val_auc=0.5933), iniciando ciclos FGE...
+Fold 14: 2 snapshots FGE (val_auc por snapshot: 0.5067, 0.4933)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 15 (FGE): train=173, val=27, test=43
+Fold 15: base convergido (val_auc=0.8167), iniciando ciclos FGE...
+Fold 15: 2 snapshots FGE (val_auc por snapshot: 0.8133, 0.7333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 16 (FGE): train=170, val=29, test=44
+Fold 16: base convergido (val_auc=0.8140), iniciando ciclos FGE...
+Fold 16: 2 snapshots FGE (val_auc por snapshot: 0.8175, 0.7860)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 17 (FGE): train=170, val=31, test=42
+Fold 17: base convergido (val_auc=0.5934), iniciando ciclos FGE...
+Fold 17: 2 snapshots FGE (val_auc por snapshot: 0.4359, 0.3333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 18 (FGE): train=171, val=32, test=40
+Fold 18: base convergido (val_auc=0.8980), iniciando ciclos FGE...
+Fold 18: 2 snapshots FGE (val_auc por snapshot: 0.9079, 0.8454)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 19 (FGE): train=163, val=29, test=51
+Fold 19: base convergido (val_auc=0.7808), iniciando ciclos FGE...
+Fold 19: 2 snapshots FGE (val_auc por snapshot: 0.7769, 0.7154)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 20 (FGE): train=164, val=34, test=45
+Fold 20: base convergido (val_auc=0.4835), iniciando ciclos FGE...
+Fold 20: 3 snapshots FGE (val_auc por snapshot: 0.4215, 0.4380, 0.3760)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 21 (FGE): train=178, val=25, test=40
+Fold 21: base convergido (val_auc=0.4375), iniciando ciclos FGE...
+Fold 21: 2 snapshots FGE (val_auc por snapshot: 0.3785, 0.3715)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 22 (FGE): train=166, val=32, test=45
+Fold 22: base convergido (val_auc=0.6857), iniciando ciclos FGE...
+Fold 22: 6 snapshots FGE (val_auc por snapshot: 0.6393, 0.6643, 0.6750, 0.6393, 0.6821, 0.7036)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 23 (FGE): train=178, val=25, test=40
+Fold 23: base convergido (val_auc=0.8063), iniciando ciclos FGE...
+Fold 23: 3 snapshots FGE (val_auc por snapshot: 0.7812, 0.8250, 0.7875)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 24 (FGE): train=170, val=30, test=43
+Fold 24: base convergido (val_auc=0.9000), iniciando ciclos FGE...
+Fold 24: 2 snapshots FGE (val_auc por snapshot: 0.8042, 0.7333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 25 (FGE): train=173, val=31, test=39
+Fold 25: base convergido (val_auc=0.8360), iniciando ciclos FGE...
+Fold 25: 3 snapshots FGE (val_auc por snapshot: 0.7720, 0.8080, 0.8080)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 26 (FGE): train=174, val=29, test=40
+Fold 26: base convergido (val_auc=0.9266), iniciando ciclos FGE...
+Fold 26: 2 snapshots FGE (val_auc por snapshot: 0.7622, 0.7063)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 27 (FGE): train=160, val=30, test=53
+Fold 27: base convergido (val_auc=0.5542), iniciando ciclos FGE...
+Fold 27: 5 snapshots FGE (val_auc por snapshot: 0.4917, 0.5000, 0.5458, 0.5917, 0.5333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 28 (FGE): train=165, val=31, test=47
+Fold 28: base convergido (val_auc=0.7698), iniciando ciclos FGE...
+Fold 28: 2 snapshots FGE (val_auc por snapshot: 0.7183, 0.6429)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 29 (FGE): train=173, val=31, test=39
+Fold 29: base convergido (val_auc=0.6769), iniciando ciclos FGE...
+Fold 29: 3 snapshots FGE (val_auc por snapshot: 0.6327, 0.6361, 0.6156)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 30 (FGE): train=155, val=31, test=57
+Fold 30: base convergido (val_auc=0.8958), iniciando ciclos FGE...
+Fold 30: 2 snapshots FGE (val_auc por snapshot: 0.8792, 0.8375)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 31 (FGE): train=158, val=31, test=54
+Fold 31: base convergido (val_auc=0.7958), iniciando ciclos FGE...
+Fold 31: 4 snapshots FGE (val_auc por snapshot: 0.7000, 0.6917, 0.7375, 0.7208)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 32 (FGE): train=166, val=29, test=48
+Fold 32: base convergido (val_auc=0.6285), iniciando ciclos FGE...
+Fold 32: 2 snapshots FGE (val_auc por snapshot: 0.5590, 0.5486)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 33 (FGE): train=166, val=26, test=51
+Fold 33: base convergido (val_auc=0.9586), iniciando ciclos FGE...
+Fold 33: 6 snapshots FGE (val_auc por snapshot: 0.9310, 0.9310, 0.9379, 0.9448, 0.9448, 0.9517)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 34 (FGE): train=168, val=29, test=46
+Fold 34: base convergido (val_auc=0.8507), iniciando ciclos FGE...
+Fold 34: 3 snapshots FGE (val_auc por snapshot: 0.8472, 0.8576, 0.8542)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 35 (FGE): train=168, val=27, test=48
+Fold 35: base convergido (val_auc=0.8466), iniciando ciclos FGE...
+Fold 35: 4 snapshots FGE (val_auc por snapshot: 0.8624, 0.8677, 0.8783, 0.8519)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 36 (FGE): train=177, val=24, test=42
+Fold 36: base convergido (val_auc=0.8844), iniciando ciclos FGE...
+Fold 36: 2 snapshots FGE (val_auc por snapshot: 0.8094, 0.7844)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 37 (FGE): train=170, val=34, test=39
+Fold 37: base convergido (val_auc=0.9091), iniciando ciclos FGE...
+Fold 37: 2 snapshots FGE (val_auc por snapshot: 0.8712, 0.8333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 38 (FGE): train=171, val=34, test=38
+Fold 38: base convergido (val_auc=0.7789), iniciando ciclos FGE...
+Fold 38: 2 snapshots FGE (val_auc por snapshot: 0.7449, 0.7177)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 39 (FGE): train=171, val=32, test=40
+Fold 39: base convergido (val_auc=0.8497), iniciando ciclos FGE...
+Fold 39: 2 snapshots FGE (val_auc por snapshot: 0.8112, 0.8077)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 40 (FGE): train=179, val=22, test=42
+Fold 40: base convergido (val_auc=0.5356), iniciando ciclos FGE...
+Fold 40: 2 snapshots FGE (val_auc por snapshot: 0.5975, 0.4551)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 41 (FGE): train=170, val=29, test=44
+Fold 41: base convergido (val_auc=0.7643), iniciando ciclos FGE...
+Fold 41: 3 snapshots FGE (val_auc por snapshot: 0.7179, 0.7286, 0.5500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 42 (FGE): train=161, val=27, test=55
+Fold 42: base convergido (val_auc=0.7538), iniciando ciclos FGE...
+Fold 42: 2 snapshots FGE (val_auc por snapshot: 0.7115, 0.6269)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 43 (FGE): train=174, val=31, test=38
+Fold 43: base convergido (val_auc=0.5510), iniciando ciclos FGE...
+Fold 43: 6 snapshots FGE (val_auc por snapshot: 0.4252, 0.4252, 0.4864, 0.5374, 0.5340, 0.5714)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 44 (FGE): train=163, val=27, test=53
+Fold 44: base convergido (val_auc=0.7556), iniciando ciclos FGE...
+Fold 44: 6 snapshots FGE (val_auc por snapshot: 0.7111, 0.7370, 0.7407, 0.7370, 0.7444, 0.7407)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 45 (FGE): train=160, val=32, test=51
+Fold 45: base convergido (val_auc=0.8095), iniciando ciclos FGE...
+Fold 45: 3 snapshots FGE (val_auc por snapshot: 0.7460, 0.7500, 0.7262)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 46 (FGE): train=177, val=23, test=43
+Fold 46: base convergido (val_auc=0.8696), iniciando ciclos FGE...
+Fold 46: 2 snapshots FGE (val_auc por snapshot: 0.7993, 0.7893)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 47 (FGE): train=169, val=30, test=44
+Fold 47: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 47: 2 snapshots FGE (val_auc por snapshot: 1.0000, 1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 48 (FGE): train=179, val=24, test=40
+Fold 48: base convergido (val_auc=0.8109), iniciando ciclos FGE...
+Fold 48: 2 snapshots FGE (val_auc por snapshot: 0.8036, 0.7491)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 49 (FGE): train=155, val=30, test=58
+Fold 49: base convergido (val_auc=0.9226), iniciando ciclos FGE...
+Fold 49: 2 snapshots FGE (val_auc por snapshot: 0.9048, 0.8810)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (50 folds con datos)
+
+✅ FGE training completed
+--- [fge_trio] meta-features: ctranspath --- Sun Aug 30 23:35:46 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): ctranspath
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+  Variante FGE: fge_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+✅ Predicciones FGE de train generadas para 50/50 folds (0 omitidos por falta de snapshots/datos).
+--- [fge_trio] ciclos: uni_v2 --- Sun Aug 30 23:37:31 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL-FGE Training: uni_v2
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 1536, Num classes: 2
+  Epochs (convergencia): 100, Fold: all
+  Schedule: fge  (piecewise-linear, Garipov et al.)
+  Ciclos: n_cycles=6, cycle_length=4, lr_1=0.0002, lr_2=2e-05, cycle_patience=2
+  Variante: fge_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 0 (FGE): train=164, val=31, test=48
+Fold 0: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.9861, 0.9815)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 1 (FGE): train=159, val=29, test=55
+Fold 1: base convergido (val_auc=0.9688), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.9922, 0.9805)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 2 (FGE): train=167, val=32, test=44
+Fold 2: base convergido (val_auc=0.9158), iniciando ciclos FGE...
+Fold 2: 3 snapshots FGE (val_auc por snapshot: 0.8791, 0.8864, 0.8864)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 3 (FGE): train=176, val=24, test=43
+Fold 3: base convergido (val_auc=0.8111), iniciando ciclos FGE...
+Fold 3: 5 snapshots FGE (val_auc por snapshot: 0.7709, 0.7833, 0.8019, 0.8173, 0.8080)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 4 (FGE): train=170, val=29, test=44
+Fold 4: base convergido (val_auc=0.7244), iniciando ciclos FGE...
+Fold 4: 4 snapshots FGE (val_auc por snapshot: 0.7378, 0.7378, 0.7422, 0.7333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 5 (FGE): train=168, val=25, test=50
+Fold 5: base convergido (val_auc=0.6833), iniciando ciclos FGE...
+Fold 5: 4 snapshots FGE (val_auc por snapshot: 0.5417, 0.5333, 0.5500, 0.5333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 6 (FGE): train=155, val=29, test=59
+Fold 6: base convergido (val_auc=0.9692), iniciando ciclos FGE...
+Fold 6: 3 snapshots FGE (val_auc por snapshot: 0.7846, 0.9385, 0.9308)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 7 (FGE): train=163, val=32, test=48
+Fold 7: base convergido (val_auc=0.8770), iniciando ciclos FGE...
+Fold 7: 2 snapshots FGE (val_auc por snapshot: 0.8532, 0.7937)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 8 (FGE): train=163, val=31, test=49
+Fold 8: base convergido (val_auc=0.7316), iniciando ciclos FGE...
+Fold 8: 3 snapshots FGE (val_auc por snapshot: 0.6949, 0.7206, 0.6581)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 9 (FGE): train=171, val=29, test=43
+Fold 9: base convergido (val_auc=0.6304), iniciando ciclos FGE...
+Fold 9: 2 snapshots FGE (val_auc por snapshot: 0.6087, 0.5978)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 10 (FGE): train=177, val=32, test=34
+Fold 10: base convergido (val_auc=0.6921), iniciando ciclos FGE...
+Fold 10: 4 snapshots FGE (val_auc por snapshot: 0.6000, 0.6444, 0.6794, 0.6190)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 11 (FGE): train=167, val=31, test=45
+Fold 11: base convergido (val_auc=0.9792), iniciando ciclos FGE...
+Fold 11: 3 snapshots FGE (val_auc por snapshot: 0.9446, 0.9516, 0.9516)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 12 (FGE): train=177, val=27, test=39
+Fold 12: base convergido (val_auc=0.4188), iniciando ciclos FGE...
+Fold 12: 4 snapshots FGE (val_auc por snapshot: 0.3875, 0.4156, 0.4250, 0.3812)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 13 (FGE): train=175, val=27, test=41
+Fold 13: base convergido (val_auc=0.9962), iniciando ciclos FGE...
+Fold 13: 2 snapshots FGE (val_auc por snapshot: 0.9886, 0.9848)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 14 (FGE): train=175, val=28, test=40
+Fold 14: base convergido (val_auc=0.4833), iniciando ciclos FGE...
+Fold 14: 2 snapshots FGE (val_auc por snapshot: 0.5233, 0.4833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 15 (FGE): train=173, val=27, test=43
+Fold 15: base convergido (val_auc=0.6833), iniciando ciclos FGE...
+Fold 15: 4 snapshots FGE (val_auc por snapshot: 0.6400, 0.6800, 0.6833, 0.6467)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 16 (FGE): train=170, val=29, test=44
+Fold 16: base convergido (val_auc=0.8632), iniciando ciclos FGE...
+Fold 16: 4 snapshots FGE (val_auc por snapshot: 0.7088, 0.7719, 0.7825, 0.7649)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 17 (FGE): train=170, val=31, test=42
+Fold 17: base convergido (val_auc=0.8022), iniciando ciclos FGE...
+Fold 17: 2 snapshots FGE (val_auc por snapshot: 0.7656, 0.7289)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 18 (FGE): train=171, val=32, test=40
+Fold 18: base convergido (val_auc=0.8322), iniciando ciclos FGE...
+Fold 18: 2 snapshots FGE (val_auc por snapshot: 0.8322, 0.8322)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 19 (FGE): train=163, val=29, test=51
+Fold 19: base convergido (val_auc=0.8308), iniciando ciclos FGE...
+Fold 19: 3 snapshots FGE (val_auc por snapshot: 0.8269, 0.8308, 0.8231)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 20 (FGE): train=164, val=34, test=45
+Fold 20: base convergido (val_auc=0.4545), iniciando ciclos FGE...
+Fold 20: 3 snapshots FGE (val_auc por snapshot: 0.3760, 0.4380, 0.4091)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 21 (FGE): train=178, val=25, test=40
+Fold 21: base convergido (val_auc=0.3090), iniciando ciclos FGE...
+Fold 21: 2 snapshots FGE (val_auc por snapshot: 0.2986, 0.2743)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 22 (FGE): train=166, val=32, test=45
+Fold 22: base convergido (val_auc=0.6607), iniciando ciclos FGE...
+Fold 22: 2 snapshots FGE (val_auc por snapshot: 0.6357, 0.6107)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 23 (FGE): train=178, val=25, test=40
+Fold 23: base convergido (val_auc=0.9094), iniciando ciclos FGE...
+Fold 23: 3 snapshots FGE (val_auc por snapshot: 0.8219, 0.8531, 0.8250)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 24 (FGE): train=170, val=30, test=43
+Fold 24: base convergido (val_auc=0.9083), iniciando ciclos FGE...
+Fold 24: 2 snapshots FGE (val_auc por snapshot: 0.9083, 0.9042)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 25 (FGE): train=173, val=31, test=39
+Fold 25: base convergido (val_auc=0.8800), iniciando ciclos FGE...
+Fold 25: 5 snapshots FGE (val_auc por snapshot: 0.7160, 0.7480, 0.7800, 0.8080, 0.7880)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 26 (FGE): train=174, val=29, test=40
+Fold 26: base convergido (val_auc=0.8147), iniciando ciclos FGE...
+Fold 26: 6 snapshots FGE (val_auc por snapshot: 0.6818, 0.7448, 0.8007, 0.7937, 0.8077, 0.8042)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 27 (FGE): train=160, val=30, test=53
+Fold 27: base convergido (val_auc=0.7833), iniciando ciclos FGE...
+Fold 27: 3 snapshots FGE (val_auc por snapshot: 0.7625, 0.7833, 0.7750)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 28 (FGE): train=165, val=31, test=47
+Fold 28: base convergido (val_auc=0.8770), iniciando ciclos FGE...
+Fold 28: 2 snapshots FGE (val_auc por snapshot: 0.8889, 0.8532)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 29 (FGE): train=173, val=31, test=39
+Fold 29: base convergido (val_auc=0.7041), iniciando ciclos FGE...
+Fold 29: 4 snapshots FGE (val_auc por snapshot: 0.6327, 0.6156, 0.6531, 0.5850)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 30 (FGE): train=155, val=31, test=57
+Fold 30: base convergido (val_auc=0.9375), iniciando ciclos FGE...
+Fold 30: 6 snapshots FGE (val_auc por snapshot: 0.8708, 0.8833, 0.8875, 0.8917, 0.8958, 0.9042)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 31 (FGE): train=158, val=31, test=54
+Fold 31: base convergido (val_auc=0.8000), iniciando ciclos FGE...
+Fold 31: 2 snapshots FGE (val_auc por snapshot: 0.7500, 0.7125)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 32 (FGE): train=166, val=29, test=48
+Fold 32: base convergido (val_auc=0.7535), iniciando ciclos FGE...
+Fold 32: 6 snapshots FGE (val_auc por snapshot: 0.6944, 0.7326, 0.7014, 0.7361, 0.7535, 0.6979)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 33 (FGE): train=166, val=26, test=51
+Fold 33: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 33: 2 snapshots FGE (val_auc por snapshot: 1.0000, 0.9862)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 34 (FGE): train=168, val=29, test=46
+Fold 34: base convergido (val_auc=0.8194), iniciando ciclos FGE...
+Fold 34: 6 snapshots FGE (val_auc por snapshot: 0.7118, 0.7292, 0.7361, 0.7604, 0.7465, 0.7708)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 35 (FGE): train=168, val=27, test=48
+Fold 35: base convergido (val_auc=0.9153), iniciando ciclos FGE...
+Fold 35: 2 snapshots FGE (val_auc por snapshot: 0.8519, 0.8042)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 36 (FGE): train=177, val=24, test=42
+Fold 36: base convergido (val_auc=0.8469), iniciando ciclos FGE...
+Fold 36: 6 snapshots FGE (val_auc por snapshot: 0.6719, 0.7469, 0.7375, 0.7875, 0.8031, 0.7969)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 37 (FGE): train=170, val=34, test=39
+Fold 37: base convergido (val_auc=0.8712), iniciando ciclos FGE...
+Fold 37: 2 snapshots FGE (val_auc por snapshot: 0.8333, 0.8144)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 38 (FGE): train=171, val=34, test=38
+Fold 38: base convergido (val_auc=0.6395), iniciando ciclos FGE...
+Fold 38: 4 snapshots FGE (val_auc por snapshot: 0.5544, 0.6565, 0.6769, 0.6293)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 39 (FGE): train=171, val=32, test=40
+Fold 39: base convergido (val_auc=0.8007), iniciando ciclos FGE...
+Fold 39: 3 snapshots FGE (val_auc por snapshot: 0.7168, 0.7657, 0.7483)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 40 (FGE): train=179, val=22, test=42
+Fold 40: base convergido (val_auc=0.5480), iniciando ciclos FGE...
+Fold 40: 3 snapshots FGE (val_auc por snapshot: 0.5170, 0.5542, 0.5108)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 41 (FGE): train=170, val=29, test=44
+Fold 41: base convergido (val_auc=0.6893), iniciando ciclos FGE...
+Fold 41: 2 snapshots FGE (val_auc por snapshot: 0.5786, 0.5571)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 42 (FGE): train=161, val=27, test=55
+Fold 42: base convergido (val_auc=0.6500), iniciando ciclos FGE...
+Fold 42: 5 snapshots FGE (val_auc por snapshot: 0.5692, 0.5731, 0.5846, 0.6192, 0.6192)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 43 (FGE): train=174, val=31, test=38
+Fold 43: base convergido (val_auc=0.7823), iniciando ciclos FGE...
+Fold 43: 3 snapshots FGE (val_auc por snapshot: 0.6633, 0.7211, 0.6837)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 44 (FGE): train=163, val=27, test=53
+Fold 44: base convergido (val_auc=0.6259), iniciando ciclos FGE...
+Fold 44: 2 snapshots FGE (val_auc por snapshot: 0.7000, 0.6148)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 45 (FGE): train=160, val=32, test=51
+Fold 45: base convergido (val_auc=0.7143), iniciando ciclos FGE...
+Fold 45: 2 snapshots FGE (val_auc por snapshot: 0.6944, 0.6548)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 46 (FGE): train=177, val=23, test=43
+Fold 46: base convergido (val_auc=0.8294), iniciando ciclos FGE...
+Fold 46: 2 snapshots FGE (val_auc por snapshot: 0.8194, 0.8027)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 47 (FGE): train=169, val=30, test=44
+Fold 47: base convergido (val_auc=0.9103), iniciando ciclos FGE...
+Fold 47: 2 snapshots FGE (val_auc por snapshot: 0.8828, 0.8414)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 48 (FGE): train=179, val=24, test=40
+Fold 48: base convergido (val_auc=0.6655), iniciando ciclos FGE...
+Fold 48: 3 snapshots FGE (val_auc por snapshot: 0.5527, 0.6364, 0.6109)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 49 (FGE): train=155, val=30, test=58
+Fold 49: base convergido (val_auc=0.9048), iniciando ciclos FGE...
+Fold 49: 3 snapshots FGE (val_auc por snapshot: 0.8333, 0.9048, 0.8929)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (50 folds con datos)
+
+✅ FGE training completed
+--- [fge_trio] meta-features: uni_v2 --- Mon Aug 31 00:09:51 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): uni_v2
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 1536, Num classes: 2, Folds: 50
+  Variante FGE: fge_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+✅ Predicciones FGE de train generadas para 50/50 folds (0 omitidos por falta de snapshots/datos).
+--- [fge_trio] ciclos: conch_v1_5 --- Mon Aug 31 00:13:04 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL-FGE Training: conch_v1_5
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs (convergencia): 100, Fold: all
+  Schedule: fge  (piecewise-linear, Garipov et al.)
+  Ciclos: n_cycles=6, cycle_length=4, lr_1=0.0002, lr_2=2e-05, cycle_patience=2
+  Variante: fge_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 0 (FGE): train=164, val=31, test=48
+Fold 0: base convergido (val_auc=0.8519), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.7778, 0.7546)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 1 (FGE): train=159, val=29, test=55
+Fold 1: base convergido (val_auc=0.8281), iniciando ciclos FGE...
+Fold 1: 6 snapshots FGE (val_auc por snapshot: 0.7461, 0.7383, 0.7539, 0.7148, 0.7734, 0.7539)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 2 (FGE): train=167, val=32, test=44
+Fold 2: base convergido (val_auc=0.8901), iniciando ciclos FGE...
+Fold 2: 2 snapshots FGE (val_auc por snapshot: 0.8791, 0.8791)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 3 (FGE): train=176, val=24, test=43
+Fold 3: base convergido (val_auc=0.8235), iniciando ciclos FGE...
+Fold 3: 2 snapshots FGE (val_auc por snapshot: 0.8050, 0.8019)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 4 (FGE): train=170, val=29, test=44
+Fold 4: base convergido (val_auc=0.7378), iniciando ciclos FGE...
+Fold 4: 6 snapshots FGE (val_auc por snapshot: 0.7333, 0.7422, 0.7600, 0.7822, 0.7867, 0.7644)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 5 (FGE): train=168, val=25, test=50
+Fold 5: base convergido (val_auc=0.8833), iniciando ciclos FGE...
+Fold 5: 2 snapshots FGE (val_auc por snapshot: 0.8417, 0.7583)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 6 (FGE): train=155, val=29, test=59
+Fold 6: base convergido (val_auc=0.9462), iniciando ciclos FGE...
+Fold 6: 2 snapshots FGE (val_auc por snapshot: 0.9308, 0.9000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 7 (FGE): train=163, val=32, test=48
+Fold 7: base convergido (val_auc=0.7341), iniciando ciclos FGE...
+Fold 7: 3 snapshots FGE (val_auc por snapshot: 0.6786, 0.7103, 0.7103)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 8 (FGE): train=163, val=31, test=49
+Fold 8: base convergido (val_auc=0.9596), iniciando ciclos FGE...
+Fold 8: 4 snapshots FGE (val_auc por snapshot: 0.8382, 0.7978, 0.8566, 0.7426)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 9 (FGE): train=171, val=29, test=43
+Fold 9: base convergido (val_auc=0.9565), iniciando ciclos FGE...
+Fold 9: 4 snapshots FGE (val_auc por snapshot: 0.9275, 0.9130, 0.9384, 0.9022)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 10 (FGE): train=177, val=32, test=34
+Fold 10: base convergido (val_auc=0.8000), iniciando ciclos FGE...
+Fold 10: 2 snapshots FGE (val_auc por snapshot: 0.7397, 0.6825)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 11 (FGE): train=167, val=31, test=45
+Fold 11: base convergido (val_auc=0.9965), iniciando ciclos FGE...
+Fold 11: 5 snapshots FGE (val_auc por snapshot: 0.9585, 0.9827, 0.9931, 0.9965, 0.9758)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 12 (FGE): train=177, val=27, test=39
+Fold 12: base convergido (val_auc=0.8000), iniciando ciclos FGE...
+Fold 12: 2 snapshots FGE (val_auc por snapshot: 0.7875, 0.7312)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 13 (FGE): train=175, val=27, test=41
+Fold 13: base convergido (val_auc=0.9697), iniciando ciclos FGE...
+Fold 13: 2 snapshots FGE (val_auc por snapshot: 0.9508, 0.9242)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 14 (FGE): train=175, val=28, test=40
+Fold 14: base convergido (val_auc=0.7767), iniciando ciclos FGE...
+Fold 14: 2 snapshots FGE (val_auc por snapshot: 0.7100, 0.7033)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 15 (FGE): train=173, val=27, test=43
+Fold 15: base convergido (val_auc=0.8100), iniciando ciclos FGE...
+Fold 15: 5 snapshots FGE (val_auc por snapshot: 0.7933, 0.8033, 0.7967, 0.8167, 0.7967)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 16 (FGE): train=170, val=29, test=44
+Fold 16: base convergido (val_auc=0.8737), iniciando ciclos FGE...
+Fold 16: 4 snapshots FGE (val_auc por snapshot: 0.8105, 0.8386, 0.8667, 0.8316)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 17 (FGE): train=170, val=31, test=42
+Fold 17: base convergido (val_auc=0.9121), iniciando ciclos FGE...
+Fold 17: 2 snapshots FGE (val_auc por snapshot: 0.9414, 0.9194)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 18 (FGE): train=171, val=32, test=40
+Fold 18: base convergido (val_auc=0.9770), iniciando ciclos FGE...
+Fold 18: 5 snapshots FGE (val_auc por snapshot: 0.9243, 0.9342, 0.9605, 0.9901, 0.9836)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 19 (FGE): train=163, val=29, test=51
+Fold 19: base convergido (val_auc=0.8654), iniciando ciclos FGE...
+Fold 19: 2 snapshots FGE (val_auc por snapshot: 0.8231, 0.7346)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 20 (FGE): train=164, val=34, test=45
+Fold 20: base convergido (val_auc=0.7686), iniciando ciclos FGE...
+Fold 20: 2 snapshots FGE (val_auc por snapshot: 0.7025, 0.6942)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 21 (FGE): train=178, val=25, test=40
+Fold 21: base convergido (val_auc=0.4931), iniciando ciclos FGE...
+Fold 21: 3 snapshots FGE (val_auc por snapshot: 0.4340, 0.4410, 0.3681)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 22 (FGE): train=166, val=32, test=45
+Fold 22: base convergido (val_auc=0.9036), iniciando ciclos FGE...
+Fold 22: 2 snapshots FGE (val_auc por snapshot: 0.8821, 0.8750)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 23 (FGE): train=178, val=25, test=40
+Fold 23: base convergido (val_auc=0.7906), iniciando ciclos FGE...
+Fold 23: 2 snapshots FGE (val_auc por snapshot: 0.7219, 0.7219)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 24 (FGE): train=170, val=30, test=43
+Fold 24: base convergido (val_auc=0.8833), iniciando ciclos FGE...
+Fold 24: 6 snapshots FGE (val_auc por snapshot: 0.7458, 0.8375, 0.8500, 0.8375, 0.9292, 0.9250)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 25 (FGE): train=173, val=31, test=39
+Fold 25: base convergido (val_auc=0.9840), iniciando ciclos FGE...
+Fold 25: 2 snapshots FGE (val_auc por snapshot: 0.9520, 0.9520)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 26 (FGE): train=174, val=29, test=40
+Fold 26: base convergido (val_auc=0.6503), iniciando ciclos FGE...
+Fold 26: 4 snapshots FGE (val_auc por snapshot: 0.6084, 0.6154, 0.6329, 0.5490)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 27 (FGE): train=160, val=30, test=53
+Fold 27: base convergido (val_auc=0.9375), iniciando ciclos FGE...
+Fold 27: 5 snapshots FGE (val_auc por snapshot: 0.7833, 0.8542, 0.8500, 0.9125, 0.9000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 28 (FGE): train=165, val=31, test=47
+Fold 28: base convergido (val_auc=0.8532), iniciando ciclos FGE...
+Fold 28: 3 snapshots FGE (val_auc por snapshot: 0.7222, 0.8175, 0.7619)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 29 (FGE): train=173, val=31, test=39
+Fold 29: base convergido (val_auc=0.8231), iniciando ciclos FGE...
+Fold 29: 2 snapshots FGE (val_auc por snapshot: 0.7925, 0.7857)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 30 (FGE): train=155, val=31, test=57
+Fold 30: base convergido (val_auc=0.8333), iniciando ciclos FGE...
+Fold 30: 2 snapshots FGE (val_auc por snapshot: 0.8250, 0.7917)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 31 (FGE): train=158, val=31, test=54
+Fold 31: base convergido (val_auc=0.8542), iniciando ciclos FGE...
+Fold 31: 4 snapshots FGE (val_auc por snapshot: 0.8333, 0.8083, 0.8875, 0.8667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 32 (FGE): train=166, val=29, test=48
+Fold 32: base convergido (val_auc=0.7535), iniciando ciclos FGE...
+Fold 32: 3 snapshots FGE (val_auc por snapshot: 0.6701, 0.7257, 0.7153)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 33 (FGE): train=166, val=26, test=51
+Fold 33: base convergido (val_auc=0.9724), iniciando ciclos FGE...
+Fold 33: 3 snapshots FGE (val_auc por snapshot: 0.9034, 0.9103, 0.9103)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 34 (FGE): train=168, val=29, test=46
+Fold 34: base convergido (val_auc=0.7847), iniciando ciclos FGE...
+Fold 34: 3 snapshots FGE (val_auc por snapshot: 0.7569, 0.7743, 0.7569)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 35 (FGE): train=168, val=27, test=48
+Fold 35: base convergido (val_auc=0.8836), iniciando ciclos FGE...
+Fold 35: 3 snapshots FGE (val_auc por snapshot: 0.8624, 0.8730, 0.7937)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 36 (FGE): train=177, val=24, test=42
+Fold 36: base convergido (val_auc=0.9219), iniciando ciclos FGE...
+Fold 36: 2 snapshots FGE (val_auc por snapshot: 0.9000, 0.8938)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 37 (FGE): train=170, val=34, test=39
+Fold 37: base convergido (val_auc=0.8598), iniciando ciclos FGE...
+Fold 37: 4 snapshots FGE (val_auc por snapshot: 0.7992, 0.8106, 0.8409, 0.8068)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 38 (FGE): train=171, val=34, test=38
+Fold 38: base convergido (val_auc=0.8299), iniciando ciclos FGE...
+Fold 38: 2 snapshots FGE (val_auc por snapshot: 0.8639, 0.8401)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 39 (FGE): train=171, val=32, test=40
+Fold 39: base convergido (val_auc=0.9091), iniciando ciclos FGE...
+Fold 39: 2 snapshots FGE (val_auc por snapshot: 0.8776, 0.8287)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 40 (FGE): train=179, val=22, test=42
+Fold 40: base convergido (val_auc=0.7833), iniciando ciclos FGE...
+Fold 40: 6 snapshots FGE (val_auc por snapshot: 0.7121, 0.7399, 0.7307, 0.7678, 0.7740, 0.7957)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 41 (FGE): train=170, val=29, test=44
+Fold 41: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 41: 2 snapshots FGE (val_auc por snapshot: 1.0000, 1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 42 (FGE): train=161, val=27, test=55
+Fold 42: base convergido (val_auc=0.9385), iniciando ciclos FGE...
+Fold 42: 3 snapshots FGE (val_auc por snapshot: 0.8962, 0.9077, 0.9077)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 43 (FGE): train=174, val=31, test=38
+Fold 43: base convergido (val_auc=0.8503), iniciando ciclos FGE...
+Fold 43: 3 snapshots FGE (val_auc por snapshot: 0.7891, 0.8027, 0.7891)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 44 (FGE): train=163, val=27, test=53
+Fold 44: base convergido (val_auc=0.9259), iniciando ciclos FGE...
+Fold 44: 6 snapshots FGE (val_auc por snapshot: 0.8630, 0.8630, 0.8741, 0.8407, 0.8815, 0.8778)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 45 (FGE): train=160, val=32, test=51
+Fold 45: base convergido (val_auc=0.8294), iniciando ciclos FGE...
+Fold 45: 2 snapshots FGE (val_auc por snapshot: 0.7778, 0.7619)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 46 (FGE): train=177, val=23, test=43
+Fold 46: base convergido (val_auc=0.9632), iniciando ciclos FGE...
+Fold 46: 2 snapshots FGE (val_auc por snapshot: 0.9298, 0.8896)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 47 (FGE): train=169, val=30, test=44
+Fold 47: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 47: 4 snapshots FGE (val_auc por snapshot: 0.9310, 0.9862, 1.0000, 0.9931)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 48 (FGE): train=179, val=24, test=40
+Fold 48: base convergido (val_auc=0.7055), iniciando ciclos FGE...
+Fold 48: 2 snapshots FGE (val_auc por snapshot: 0.6945, 0.6909)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 49 (FGE): train=155, val=30, test=58
+Fold 49: base convergido (val_auc=0.9583), iniciando ciclos FGE...
+Fold 49: 2 snapshots FGE (val_auc por snapshot: 0.9226, 0.9107)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (50 folds con datos)
+
+✅ FGE training completed
+--- [fge_trio] meta-features: conch_v1_5 --- Mon Aug 31 00:32:30 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): conch_v1_5
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+  Variante FGE: fge_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+✅ Predicciones FGE de train generadas para 50/50 folds (0 omitidos por falta de snapshots/datos).
+
+################################################################
+# se_trio (schedule=se lr_1=1e-3 lr_2=1e-6 cycle_length=15)
+################################################################
+--- [se_trio] ciclos: ctranspath --- Mon Aug 31 00:34:06 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL-FGE Training: ctranspath
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs (convergencia): 100, Fold: all
+  Schedule: se  (coseno con reinicios, Huang et al.)
+  Ciclos: n_cycles=6, cycle_length=15, lr_1=0.001, lr_2=1e-06, cycle_patience=2
+  Variante: se_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 0 (FGE): train=164, val=31, test=48
+Fold 0: base convergido (val_auc=0.9537), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.6806, 0.6157)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 1 (FGE): train=159, val=29, test=55
+Fold 1: base convergido (val_auc=0.9180), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.9023, 0.8594)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 2 (FGE): train=167, val=32, test=44
+Fold 2: base convergido (val_auc=0.9597), iniciando ciclos FGE...
+Fold 2: 3 snapshots FGE (val_auc por snapshot: 0.7875, 0.8425, 0.8315)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 3 (FGE): train=176, val=24, test=43
+Fold 3: base convergido (val_auc=0.8700), iniciando ciclos FGE...
+Fold 3: 2 snapshots FGE (val_auc por snapshot: 0.8390, 0.6780)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 4 (FGE): train=170, val=29, test=44
+Fold 4: base convergido (val_auc=0.8489), iniciando ciclos FGE...
+Fold 4: 2 snapshots FGE (val_auc por snapshot: 0.7378, 0.7156)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 5 (FGE): train=168, val=25, test=50
+Fold 5: base convergido (val_auc=0.7000), iniciando ciclos FGE...
+Fold 5: 3 snapshots FGE (val_auc por snapshot: 0.5250, 0.6708, 0.6583)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 6 (FGE): train=155, val=29, test=59
+Fold 6: base convergido (val_auc=0.9000), iniciando ciclos FGE...
+Fold 6: 2 snapshots FGE (val_auc por snapshot: 0.8231, 0.8231)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 7 (FGE): train=163, val=32, test=48
+Fold 7: base convergido (val_auc=0.7817), iniciando ciclos FGE...
+Fold 7: 3 snapshots FGE (val_auc por snapshot: 0.5675, 0.5833, 0.5635)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 8 (FGE): train=163, val=31, test=49
+Fold 8: base convergido (val_auc=0.6618), iniciando ciclos FGE...
+Fold 8: 6 snapshots FGE (val_auc por snapshot: 0.5588, 0.4890, 0.5846, 0.6213, 0.6397, 0.6544)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 9 (FGE): train=171, val=29, test=43
+Fold 9: base convergido (val_auc=0.7754), iniciando ciclos FGE...
+Fold 9: 2 snapshots FGE (val_auc por snapshot: 0.8116, 0.6993)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 10 (FGE): train=177, val=32, test=34
+Fold 10: base convergido (val_auc=0.6921), iniciando ciclos FGE...
+Fold 10: 2 snapshots FGE (val_auc por snapshot: 0.6762, 0.6222)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 11 (FGE): train=167, val=31, test=45
+Fold 11: base convergido (val_auc=0.9135), iniciando ciclos FGE...
+Fold 11: 6 snapshots FGE (val_auc por snapshot: 0.8858, 0.9100, 0.9343, 0.9239, 0.9412, 0.9170)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 12 (FGE): train=177, val=27, test=39
+Fold 12: base convergido (val_auc=0.4313), iniciando ciclos FGE...
+Fold 12: 2 snapshots FGE (val_auc por snapshot: 0.4000, 0.3969)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 13 (FGE): train=175, val=27, test=41
+Fold 13: base convergido (val_auc=0.9886), iniciando ciclos FGE...
+Fold 13: 2 snapshots FGE (val_auc por snapshot: 0.9659, 0.9356)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 14 (FGE): train=175, val=28, test=40
+Fold 14: base convergido (val_auc=0.5933), iniciando ciclos FGE...
+Fold 14: 4 snapshots FGE (val_auc por snapshot: 0.4900, 0.4967, 0.5433, 0.5033)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 15 (FGE): train=173, val=27, test=43
+Fold 15: base convergido (val_auc=0.8167), iniciando ciclos FGE...
+Fold 15: 6 snapshots FGE (val_auc por snapshot: 0.6933, 0.6967, 0.7067, 0.7067, 0.7200, 0.7167)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 16 (FGE): train=170, val=29, test=44
+Fold 16: base convergido (val_auc=0.8140), iniciando ciclos FGE...
+Fold 16: 2 snapshots FGE (val_auc por snapshot: 0.7719, 0.7719)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 17 (FGE): train=170, val=31, test=42
+Fold 17: base convergido (val_auc=0.5934), iniciando ciclos FGE...
+Fold 17: 3 snapshots FGE (val_auc por snapshot: 0.4542, 0.6081, 0.5055)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 18 (FGE): train=171, val=32, test=40
+Fold 18: base convergido (val_auc=0.8980), iniciando ciclos FGE...
+Fold 18: 4 snapshots FGE (val_auc por snapshot: 0.9211, 0.8882, 0.9408, 0.9079)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 19 (FGE): train=163, val=29, test=51
+Fold 19: base convergido (val_auc=0.7808), iniciando ciclos FGE...
+Fold 19: 6 snapshots FGE (val_auc por snapshot: 0.5808, 0.5962, 0.6654, 0.6538, 0.6731, 0.6538)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 20 (FGE): train=164, val=34, test=45
+Fold 20: base convergido (val_auc=0.4835), iniciando ciclos FGE...
+Fold 20: 2 snapshots FGE (val_auc por snapshot: 0.5041, 0.4711)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 21 (FGE): train=178, val=25, test=40
+Fold 21: base convergido (val_auc=0.4375), iniciando ciclos FGE...
+Fold 21: 2 snapshots FGE (val_auc por snapshot: 0.3299, 0.2951)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 22 (FGE): train=166, val=32, test=45
+Fold 22: base convergido (val_auc=0.6857), iniciando ciclos FGE...
+Fold 22: 2 snapshots FGE (val_auc por snapshot: 0.6571, 0.6321)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 23 (FGE): train=178, val=25, test=40
+Fold 23: base convergido (val_auc=0.8063), iniciando ciclos FGE...
+Fold 23: 6 snapshots FGE (val_auc por snapshot: 0.6469, 0.6594, 0.6687, 0.6594, 0.7156, 0.7094)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 24 (FGE): train=170, val=30, test=43
+Fold 24: base convergido (val_auc=0.9000), iniciando ciclos FGE...
+Fold 24: 2 snapshots FGE (val_auc por snapshot: 0.8250, 0.8167)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 25 (FGE): train=173, val=31, test=39
+Fold 25: base convergido (val_auc=0.8360), iniciando ciclos FGE...
+Fold 25: 3 snapshots FGE (val_auc por snapshot: 0.6720, 0.7920, 0.6560)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 26 (FGE): train=174, val=29, test=40
+Fold 26: base convergido (val_auc=0.9266), iniciando ciclos FGE...
+Fold 26: 2 snapshots FGE (val_auc por snapshot: 0.6678, 0.6189)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 27 (FGE): train=160, val=30, test=53
+Fold 27: base convergido (val_auc=0.5542), iniciando ciclos FGE...
+Fold 27: 3 snapshots FGE (val_auc por snapshot: 0.4917, 0.5333, 0.5250)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 28 (FGE): train=165, val=31, test=47
+Fold 28: base convergido (val_auc=0.7698), iniciando ciclos FGE...
+Fold 28: 2 snapshots FGE (val_auc por snapshot: 0.7738, 0.7302)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 29 (FGE): train=173, val=31, test=39
+Fold 29: base convergido (val_auc=0.6769), iniciando ciclos FGE...
+Fold 29: 2 snapshots FGE (val_auc por snapshot: 0.6361, 0.6224)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 30 (FGE): train=155, val=31, test=57
+Fold 30: base convergido (val_auc=0.8958), iniciando ciclos FGE...
+Fold 30: 4 snapshots FGE (val_auc por snapshot: 0.8042, 0.7917, 0.8417, 0.7958)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 31 (FGE): train=158, val=31, test=54
+Fold 31: base convergido (val_auc=0.7958), iniciando ciclos FGE...
+Fold 31: 3 snapshots FGE (val_auc por snapshot: 0.6708, 0.7042, 0.6375)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 32 (FGE): train=166, val=29, test=48
+Fold 32: base convergido (val_auc=0.6285), iniciando ciclos FGE...
+Fold 32: 3 snapshots FGE (val_auc por snapshot: 0.5174, 0.6146, 0.5729)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 33 (FGE): train=166, val=26, test=51
+Fold 33: base convergido (val_auc=0.9586), iniciando ciclos FGE...
+Fold 33: 5 snapshots FGE (val_auc por snapshot: 0.9517, 0.9586, 0.9517, 0.9655, 0.9448)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 34 (FGE): train=168, val=29, test=46
+Fold 34: base convergido (val_auc=0.8507), iniciando ciclos FGE...
+Fold 34: 2 snapshots FGE (val_auc por snapshot: 0.8299, 0.7917)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 35 (FGE): train=168, val=27, test=48
+Fold 35: base convergido (val_auc=0.8466), iniciando ciclos FGE...
+Fold 35: 4 snapshots FGE (val_auc por snapshot: 0.8571, 0.8519, 0.8783, 0.8730)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 36 (FGE): train=177, val=24, test=42
+Fold 36: base convergido (val_auc=0.8844), iniciando ciclos FGE...
+Fold 36: 2 snapshots FGE (val_auc por snapshot: 0.8063, 0.7594)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 37 (FGE): train=170, val=34, test=39
+Fold 37: base convergido (val_auc=0.9091), iniciando ciclos FGE...
+Fold 37: 2 snapshots FGE (val_auc por snapshot: 0.8636, 0.7879)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 38 (FGE): train=171, val=34, test=38
+Fold 38: base convergido (val_auc=0.7789), iniciando ciclos FGE...
+Fold 38: 2 snapshots FGE (val_auc por snapshot: 0.7313, 0.7041)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 39 (FGE): train=171, val=32, test=40
+Fold 39: base convergido (val_auc=0.8497), iniciando ciclos FGE...
+Fold 39: 2 snapshots FGE (val_auc por snapshot: 0.8427, 0.8392)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 40 (FGE): train=179, val=22, test=42
+Fold 40: base convergido (val_auc=0.5356), iniciando ciclos FGE...
+Fold 40: 3 snapshots FGE (val_auc por snapshot: 0.3715, 0.4520, 0.4087)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 41 (FGE): train=170, val=29, test=44
+Fold 41: base convergido (val_auc=0.7643), iniciando ciclos FGE...
+Fold 41: 6 snapshots FGE (val_auc por snapshot: 0.5250, 0.5607, 0.5607, 0.6143, 0.6357, 0.6286)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 42 (FGE): train=161, val=27, test=55
+Fold 42: base convergido (val_auc=0.7538), iniciando ciclos FGE...
+Fold 42: 2 snapshots FGE (val_auc por snapshot: 0.6538, 0.6500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 43 (FGE): train=174, val=31, test=38
+Fold 43: base convergido (val_auc=0.5510), iniciando ciclos FGE...
+Fold 43: 2 snapshots FGE (val_auc por snapshot: 0.3639, 0.3537)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 44 (FGE): train=163, val=27, test=53
+Fold 44: base convergido (val_auc=0.7556), iniciando ciclos FGE...
+Fold 44: 3 snapshots FGE (val_auc por snapshot: 0.7444, 0.7889, 0.7778)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 45 (FGE): train=160, val=32, test=51
+Fold 45: base convergido (val_auc=0.8095), iniciando ciclos FGE...
+Fold 45: 3 snapshots FGE (val_auc por snapshot: 0.7341, 0.7857, 0.7619)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 46 (FGE): train=177, val=23, test=43
+Fold 46: base convergido (val_auc=0.8696), iniciando ciclos FGE...
+Fold 46: 2 snapshots FGE (val_auc por snapshot: 0.7692, 0.7391)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 47 (FGE): train=169, val=30, test=44
+Fold 47: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 47: 3 snapshots FGE (val_auc por snapshot: 0.9793, 0.9862, 0.9793)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 48 (FGE): train=179, val=24, test=40
+Fold 48: base convergido (val_auc=0.8109), iniciando ciclos FGE...
+Fold 48: 2 snapshots FGE (val_auc por snapshot: 0.7636, 0.7491)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+Fold 49 (FGE): train=155, val=30, test=58
+Fold 49: base convergido (val_auc=0.9226), iniciando ciclos FGE...
+Fold 49: 2 snapshots FGE (val_auc por snapshot: 0.9167, 0.8393)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (50 folds con datos)
+
+✅ FGE training completed
+--- [se_trio] meta-features: ctranspath --- Mon Aug 31 01:11:14 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): ctranspath
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+  Variante FGE: se_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_ctranspath...
+
+✅ Predicciones FGE de train generadas para 50/50 folds (0 omitidos por falta de snapshots/datos).
+--- [se_trio] ciclos: uni_v2 --- Mon Aug 31 01:13:04 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL-FGE Training: uni_v2
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 1536, Num classes: 2
+  Epochs (convergencia): 100, Fold: all
+  Schedule: se  (coseno con reinicios, Huang et al.)
+  Ciclos: n_cycles=6, cycle_length=15, lr_1=0.001, lr_2=1e-06, cycle_patience=2
+  Variante: se_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 0 (FGE): train=164, val=31, test=48
+Fold 0: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.9722, 0.8981)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 1 (FGE): train=159, val=29, test=55
+Fold 1: base convergido (val_auc=0.9688), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.9727, 0.9570)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 2 (FGE): train=167, val=32, test=44
+Fold 2: base convergido (val_auc=0.9158), iniciando ciclos FGE...
+Fold 2: 3 snapshots FGE (val_auc por snapshot: 0.9011, 0.9084, 0.9011)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 3 (FGE): train=176, val=24, test=43
+Fold 3: base convergido (val_auc=0.8111), iniciando ciclos FGE...
+Fold 3: 4 snapshots FGE (val_auc por snapshot: 0.8235, 0.7709, 0.8266, 0.7523)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 4 (FGE): train=170, val=29, test=44
+Fold 4: base convergido (val_auc=0.7244), iniciando ciclos FGE...
+Fold 4: 5 snapshots FGE (val_auc por snapshot: 0.7511, 0.7467, 0.7556, 0.7778, 0.7600)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 5 (FGE): train=168, val=25, test=50
+Fold 5: base convergido (val_auc=0.6833), iniciando ciclos FGE...
+Fold 5: 3 snapshots FGE (val_auc por snapshot: 0.5917, 0.6292, 0.6125)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 6 (FGE): train=155, val=29, test=59
+Fold 6: base convergido (val_auc=0.9692), iniciando ciclos FGE...
+Fold 6: 3 snapshots FGE (val_auc por snapshot: 0.9154, 0.9385, 0.9154)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 7 (FGE): train=163, val=32, test=48
+Fold 7: base convergido (val_auc=0.8770), iniciando ciclos FGE...
+Fold 7: 4 snapshots FGE (val_auc por snapshot: 0.7143, 0.7063, 0.7817, 0.7579)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 8 (FGE): train=163, val=31, test=49
+Fold 8: base convergido (val_auc=0.7316), iniciando ciclos FGE...
+Fold 8: 3 snapshots FGE (val_auc por snapshot: 0.6654, 0.6838, 0.6838)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 9 (FGE): train=171, val=29, test=43
+Fold 9: base convergido (val_auc=0.6304), iniciando ciclos FGE...
+Fold 9: 2 snapshots FGE (val_auc por snapshot: 0.6848, 0.6667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 10 (FGE): train=177, val=32, test=34
+Fold 10: base convergido (val_auc=0.6921), iniciando ciclos FGE...
+Fold 10: 3 snapshots FGE (val_auc por snapshot: 0.5905, 0.6921, 0.6889)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 11 (FGE): train=167, val=31, test=45
+Fold 11: base convergido (val_auc=0.9792), iniciando ciclos FGE...
+Fold 11: 3 snapshots FGE (val_auc por snapshot: 0.9585, 0.9654, 0.9239)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 12 (FGE): train=177, val=27, test=39
+Fold 12: base convergido (val_auc=0.4188), iniciando ciclos FGE...
+Fold 12: 2 snapshots FGE (val_auc por snapshot: 0.3406, 0.3250)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 13 (FGE): train=175, val=27, test=41
+Fold 13: base convergido (val_auc=0.9962), iniciando ciclos FGE...
+Fold 13: 2 snapshots FGE (val_auc por snapshot: 0.9886, 0.9886)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 14 (FGE): train=175, val=28, test=40
+Fold 14: base convergido (val_auc=0.4833), iniciando ciclos FGE...
+Fold 14: 2 snapshots FGE (val_auc por snapshot: 0.4800, 0.4567)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 15 (FGE): train=173, val=27, test=43
+Fold 15: base convergido (val_auc=0.6833), iniciando ciclos FGE...
+Fold 15: 4 snapshots FGE (val_auc por snapshot: 0.5967, 0.6933, 0.7033, 0.6633)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 16 (FGE): train=170, val=29, test=44
+Fold 16: base convergido (val_auc=0.8632), iniciando ciclos FGE...
+Fold 16: 4 snapshots FGE (val_auc por snapshot: 0.7789, 0.8000, 0.8035, 0.8000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 17 (FGE): train=170, val=31, test=42
+Fold 17: base convergido (val_auc=0.8022), iniciando ciclos FGE...
+Fold 17: 2 snapshots FGE (val_auc por snapshot: 0.7692, 0.7656)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 18 (FGE): train=171, val=32, test=40
+Fold 18: base convergido (val_auc=0.8322), iniciando ciclos FGE...
+Fold 18: 4 snapshots FGE (val_auc por snapshot: 0.8322, 0.8849, 0.9013, 0.8454)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 19 (FGE): train=163, val=29, test=51
+Fold 19: base convergido (val_auc=0.8308), iniciando ciclos FGE...
+Fold 19: 2 snapshots FGE (val_auc por snapshot: 0.7808, 0.7615)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 20 (FGE): train=164, val=34, test=45
+Fold 20: base convergido (val_auc=0.4545), iniciando ciclos FGE...
+Fold 20: 6 snapshots FGE (val_auc por snapshot: 0.4091, 0.4339, 0.4298, 0.4545, 0.4463, 0.4711)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 21 (FGE): train=178, val=25, test=40
+Fold 21: base convergido (val_auc=0.3090), iniciando ciclos FGE...
+Fold 21: 3 snapshots FGE (val_auc por snapshot: 0.2743, 0.3160, 0.3056)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 22 (FGE): train=166, val=32, test=45
+Fold 22: base convergido (val_auc=0.6607), iniciando ciclos FGE...
+Fold 22: 3 snapshots FGE (val_auc por snapshot: 0.6429, 0.6857, 0.5000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 23 (FGE): train=178, val=25, test=40
+Fold 23: base convergido (val_auc=0.9094), iniciando ciclos FGE...
+Fold 23: 3 snapshots FGE (val_auc por snapshot: 0.8969, 0.9156, 0.9125)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 24 (FGE): train=170, val=30, test=43
+Fold 24: base convergido (val_auc=0.9083), iniciando ciclos FGE...
+Fold 24: 2 snapshots FGE (val_auc por snapshot: 0.9208, 0.9208)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 25 (FGE): train=173, val=31, test=39
+Fold 25: base convergido (val_auc=0.8800), iniciando ciclos FGE...
+Fold 25: 6 snapshots FGE (val_auc por snapshot: 0.7200, 0.8120, 0.8360, 0.8800, 0.9000, 0.8960)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 26 (FGE): train=174, val=29, test=40
+Fold 26: base convergido (val_auc=0.8147), iniciando ciclos FGE...
+Fold 26: 2 snapshots FGE (val_auc por snapshot: 0.7552, 0.7238)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 27 (FGE): train=160, val=30, test=53
+Fold 27: base convergido (val_auc=0.7833), iniciando ciclos FGE...
+Fold 27: 3 snapshots FGE (val_auc por snapshot: 0.8375, 0.8417, 0.7708)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 28 (FGE): train=165, val=31, test=47
+Fold 28: base convergido (val_auc=0.8770), iniciando ciclos FGE...
+Fold 28: 3 snapshots FGE (val_auc por snapshot: 0.8254, 0.8294, 0.7897)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 29 (FGE): train=173, val=31, test=39
+Fold 29: base convergido (val_auc=0.7041), iniciando ciclos FGE...
+Fold 29: 3 snapshots FGE (val_auc por snapshot: 0.5646, 0.6565, 0.6565)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 30 (FGE): train=155, val=31, test=57
+Fold 30: base convergido (val_auc=0.9375), iniciando ciclos FGE...
+Fold 30: 2 snapshots FGE (val_auc por snapshot: 0.8625, 0.8250)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 31 (FGE): train=158, val=31, test=54
+Fold 31: base convergido (val_auc=0.8000), iniciando ciclos FGE...
+Fold 31: 4 snapshots FGE (val_auc por snapshot: 0.7625, 0.7625, 0.7917, 0.7667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 32 (FGE): train=166, val=29, test=48
+Fold 32: base convergido (val_auc=0.7535), iniciando ciclos FGE...
+Fold 32: 3 snapshots FGE (val_auc por snapshot: 0.6181, 0.7708, 0.7535)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 33 (FGE): train=166, val=26, test=51
+Fold 33: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 33: 2 snapshots FGE (val_auc por snapshot: 1.0000, 0.9655)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 34 (FGE): train=168, val=29, test=46
+Fold 34: base convergido (val_auc=0.8194), iniciando ciclos FGE...
+Fold 34: 2 snapshots FGE (val_auc por snapshot: 0.8160, 0.8125)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 35 (FGE): train=168, val=27, test=48
+Fold 35: base convergido (val_auc=0.9153), iniciando ciclos FGE...
+Fold 35: 4 snapshots FGE (val_auc por snapshot: 0.8254, 0.8730, 0.9101, 0.8836)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 36 (FGE): train=177, val=24, test=42
+Fold 36: base convergido (val_auc=0.8469), iniciando ciclos FGE...
+Fold 36: 2 snapshots FGE (val_auc por snapshot: 0.8344, 0.8219)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 37 (FGE): train=170, val=34, test=39
+Fold 37: base convergido (val_auc=0.8712), iniciando ciclos FGE...
+Fold 37: 2 snapshots FGE (val_auc por snapshot: 0.8068, 0.7462)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 38 (FGE): train=171, val=34, test=38
+Fold 38: base convergido (val_auc=0.6395), iniciando ciclos FGE...
+Fold 38: 2 snapshots FGE (val_auc por snapshot: 0.6837, 0.6531)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 39 (FGE): train=171, val=32, test=40
+Fold 39: base convergido (val_auc=0.8007), iniciando ciclos FGE...
+Fold 39: 3 snapshots FGE (val_auc por snapshot: 0.6958, 0.7238, 0.7133)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 40 (FGE): train=179, val=22, test=42
+Fold 40: base convergido (val_auc=0.5480), iniciando ciclos FGE...
+Fold 40: 2 snapshots FGE (val_auc por snapshot: 0.5604, 0.5201)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 41 (FGE): train=170, val=29, test=44
+Fold 41: base convergido (val_auc=0.6893), iniciando ciclos FGE...
+Fold 41: 5 snapshots FGE (val_auc por snapshot: 0.5393, 0.5857, 0.5714, 0.5964, 0.5857)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 42 (FGE): train=161, val=27, test=55
+Fold 42: base convergido (val_auc=0.6500), iniciando ciclos FGE...
+Fold 42: 2 snapshots FGE (val_auc por snapshot: 0.6423, 0.6077)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 43 (FGE): train=174, val=31, test=38
+Fold 43: base convergido (val_auc=0.7823), iniciando ciclos FGE...
+Fold 43: 2 snapshots FGE (val_auc por snapshot: 0.7449, 0.6769)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 44 (FGE): train=163, val=27, test=53
+Fold 44: base convergido (val_auc=0.6259), iniciando ciclos FGE...
+Fold 44: 2 snapshots FGE (val_auc por snapshot: 0.7148, 0.5852)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 45 (FGE): train=160, val=32, test=51
+Fold 45: base convergido (val_auc=0.7143), iniciando ciclos FGE...
+Fold 45: 6 snapshots FGE (val_auc por snapshot: 0.6905, 0.7302, 0.7421, 0.7222, 0.7659, 0.7659)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 46 (FGE): train=177, val=23, test=43
+Fold 46: base convergido (val_auc=0.8294), iniciando ciclos FGE...
+Fold 46: 5 snapshots FGE (val_auc por snapshot: 0.8829, 0.9130, 0.8963, 0.9365, 0.9264)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 47 (FGE): train=169, val=30, test=44
+Fold 47: base convergido (val_auc=0.9103), iniciando ciclos FGE...
+Fold 47: 2 snapshots FGE (val_auc por snapshot: 0.8966, 0.8828)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 48 (FGE): train=179, val=24, test=40
+Fold 48: base convergido (val_auc=0.6655), iniciando ciclos FGE...
+Fold 48: 2 snapshots FGE (val_auc por snapshot: 0.5600, 0.5455)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+Fold 49 (FGE): train=155, val=30, test=58
+Fold 49: base convergido (val_auc=0.9048), iniciando ciclos FGE...
+Fold 49: 2 snapshots FGE (val_auc por snapshot: 0.9048, 0.8869)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (50 folds con datos)
+
+✅ FGE training completed
+--- [se_trio] meta-features: uni_v2 --- Mon Aug 31 02:14:29 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): uni_v2
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 1536, Num classes: 2, Folds: 50
+  Variante FGE: se_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_uni_v2...
+
+✅ Predicciones FGE de train generadas para 50/50 folds (0 omitidos por falta de snapshots/datos).
+--- [se_trio] ciclos: conch_v1_5 --- Mon Aug 31 02:17:24 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL-FGE Training: conch_v1_5
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs (convergencia): 100, Fold: all
+  Schedule: se  (coseno con reinicios, Huang et al.)
+  Ciclos: n_cycles=6, cycle_length=15, lr_1=0.001, lr_2=1e-06, cycle_patience=2
+  Variante: se_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 0 (FGE): train=164, val=31, test=48
+Fold 0: base convergido (val_auc=0.8519), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.7454, 0.5463)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 1 (FGE): train=159, val=29, test=55
+Fold 1: base convergido (val_auc=0.8281), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.7617, 0.7500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 2 (FGE): train=167, val=32, test=44
+Fold 2: base convergido (val_auc=0.8901), iniciando ciclos FGE...
+Fold 2: 2 snapshots FGE (val_auc por snapshot: 0.8498, 0.8278)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 3 (FGE): train=176, val=24, test=43
+Fold 3: base convergido (val_auc=0.8235), iniciando ciclos FGE...
+Fold 3: 2 snapshots FGE (val_auc por snapshot: 0.8545, 0.8297)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 4 (FGE): train=170, val=29, test=44
+Fold 4: base convergido (val_auc=0.7378), iniciando ciclos FGE...
+Fold 4: 2 snapshots FGE (val_auc por snapshot: 0.7244, 0.7111)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 5 (FGE): train=168, val=25, test=50
+Fold 5: base convergido (val_auc=0.8833), iniciando ciclos FGE...
+Fold 5: 3 snapshots FGE (val_auc por snapshot: 0.6667, 0.7417, 0.6833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 6 (FGE): train=155, val=29, test=59
+Fold 6: base convergido (val_auc=0.9462), iniciando ciclos FGE...
+Fold 6: 3 snapshots FGE (val_auc por snapshot: 0.8923, 0.9154, 0.8615)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 7 (FGE): train=163, val=32, test=48
+Fold 7: base convergido (val_auc=0.7341), iniciando ciclos FGE...
+Fold 7: 3 snapshots FGE (val_auc por snapshot: 0.5595, 0.6310, 0.6071)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 8 (FGE): train=163, val=31, test=49
+Fold 8: base convergido (val_auc=0.9596), iniciando ciclos FGE...
+Fold 8: 4 snapshots FGE (val_auc por snapshot: 0.8125, 0.8235, 0.8235, 0.7243)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 9 (FGE): train=171, val=29, test=43
+Fold 9: base convergido (val_auc=0.9565), iniciando ciclos FGE...
+Fold 9: 2 snapshots FGE (val_auc por snapshot: 0.9275, 0.8877)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 10 (FGE): train=177, val=32, test=34
+Fold 10: base convergido (val_auc=0.8000), iniciando ciclos FGE...
+Fold 10: 3 snapshots FGE (val_auc por snapshot: 0.7651, 0.9016, 0.8825)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 11 (FGE): train=167, val=31, test=45
+Fold 11: base convergido (val_auc=0.9965), iniciando ciclos FGE...
+Fold 11: 4 snapshots FGE (val_auc por snapshot: 0.9481, 0.9654, 0.9689, 0.9412)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 12 (FGE): train=177, val=27, test=39
+Fold 12: base convergido (val_auc=0.8000), iniciando ciclos FGE...
+Fold 12: 2 snapshots FGE (val_auc por snapshot: 0.7156, 0.6906)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 13 (FGE): train=175, val=27, test=41
+Fold 13: base convergido (val_auc=0.9697), iniciando ciclos FGE...
+Fold 13: 2 snapshots FGE (val_auc por snapshot: 0.9432, 0.9091)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 14 (FGE): train=175, val=28, test=40
+Fold 14: base convergido (val_auc=0.7767), iniciando ciclos FGE...
+Fold 14: 4 snapshots FGE (val_auc por snapshot: 0.6633, 0.7000, 0.7167, 0.6667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 15 (FGE): train=173, val=27, test=43
+Fold 15: base convergido (val_auc=0.8100), iniciando ciclos FGE...
+Fold 15: 5 snapshots FGE (val_auc por snapshot: 0.7233, 0.7400, 0.7533, 0.7633, 0.7567)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 16 (FGE): train=170, val=29, test=44
+Fold 16: base convergido (val_auc=0.8737), iniciando ciclos FGE...
+Fold 16: 5 snapshots FGE (val_auc por snapshot: 0.8386, 0.8456, 0.9193, 0.9228, 0.9123)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 17 (FGE): train=170, val=31, test=42
+Fold 17: base convergido (val_auc=0.9121), iniciando ciclos FGE...
+Fold 17: 5 snapshots FGE (val_auc por snapshot: 0.8864, 0.9011, 0.9048, 0.9158, 0.9048)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 18 (FGE): train=171, val=32, test=40
+Fold 18: base convergido (val_auc=0.9770), iniciando ciclos FGE...
+Fold 18: 2 snapshots FGE (val_auc por snapshot: 0.9934, 0.9671)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 19 (FGE): train=163, val=29, test=51
+Fold 19: base convergido (val_auc=0.8654), iniciando ciclos FGE...
+Fold 19: 2 snapshots FGE (val_auc por snapshot: 0.7885, 0.7385)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 20 (FGE): train=164, val=34, test=45
+Fold 20: base convergido (val_auc=0.7686), iniciando ciclos FGE...
+Fold 20: 6 snapshots FGE (val_auc por snapshot: 0.6777, 0.6901, 0.7066, 0.7314, 0.7479, 0.7107)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 21 (FGE): train=178, val=25, test=40
+Fold 21: base convergido (val_auc=0.4931), iniciando ciclos FGE...
+Fold 21: 2 snapshots FGE (val_auc por snapshot: 0.3611, 0.3264)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 22 (FGE): train=166, val=32, test=45
+Fold 22: base convergido (val_auc=0.9036), iniciando ciclos FGE...
+Fold 22: 2 snapshots FGE (val_auc por snapshot: 0.8714, 0.8321)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 23 (FGE): train=178, val=25, test=40
+Fold 23: base convergido (val_auc=0.7906), iniciando ciclos FGE...
+Fold 23: 4 snapshots FGE (val_auc por snapshot: 0.6625, 0.7219, 0.7531, 0.7313)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 24 (FGE): train=170, val=30, test=43
+Fold 24: base convergido (val_auc=0.8833), iniciando ciclos FGE...
+Fold 24: 2 snapshots FGE (val_auc por snapshot: 0.8417, 0.7833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 25 (FGE): train=173, val=31, test=39
+Fold 25: base convergido (val_auc=0.9840), iniciando ciclos FGE...
+Fold 25: 2 snapshots FGE (val_auc por snapshot: 0.9640, 0.9520)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 26 (FGE): train=174, val=29, test=40
+Fold 26: base convergido (val_auc=0.6503), iniciando ciclos FGE...
+Fold 26: 3 snapshots FGE (val_auc por snapshot: 0.6364, 0.6818, 0.6503)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 27 (FGE): train=160, val=30, test=53
+Fold 27: base convergido (val_auc=0.9375), iniciando ciclos FGE...
+Fold 27: 3 snapshots FGE (val_auc por snapshot: 0.7250, 0.7958, 0.7542)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 28 (FGE): train=165, val=31, test=47
+Fold 28: base convergido (val_auc=0.8532), iniciando ciclos FGE...
+Fold 28: 6 snapshots FGE (val_auc por snapshot: 0.7421, 0.7659, 0.7579, 0.8333, 0.9206, 0.9127)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 29 (FGE): train=173, val=31, test=39
+Fold 29: base convergido (val_auc=0.8231), iniciando ciclos FGE...
+Fold 29: 4 snapshots FGE (val_auc por snapshot: 0.7891, 0.7857, 0.7993, 0.7959)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 30 (FGE): train=155, val=31, test=57
+Fold 30: base convergido (val_auc=0.8333), iniciando ciclos FGE...
+Fold 30: 4 snapshots FGE (val_auc por snapshot: 0.8167, 0.7625, 0.8333, 0.7500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 31 (FGE): train=158, val=31, test=54
+Fold 31: base convergido (val_auc=0.8542), iniciando ciclos FGE...
+Fold 31: 3 snapshots FGE (val_auc por snapshot: 0.8500, 0.9375, 0.9375)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 32 (FGE): train=166, val=29, test=48
+Fold 32: base convergido (val_auc=0.7535), iniciando ciclos FGE...
+Fold 32: 5 snapshots FGE (val_auc por snapshot: 0.6250, 0.6354, 0.6667, 0.6840, 0.6528)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 33 (FGE): train=166, val=26, test=51
+Fold 33: base convergido (val_auc=0.9724), iniciando ciclos FGE...
+Fold 33: 2 snapshots FGE (val_auc por snapshot: 0.8690, 0.8138)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 34 (FGE): train=168, val=29, test=46
+Fold 34: base convergido (val_auc=0.7847), iniciando ciclos FGE...
+Fold 34: 2 snapshots FGE (val_auc por snapshot: 0.6979, 0.6910)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 35 (FGE): train=168, val=27, test=48
+Fold 35: base convergido (val_auc=0.8836), iniciando ciclos FGE...
+Fold 35: 2 snapshots FGE (val_auc por snapshot: 0.7831, 0.7778)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 36 (FGE): train=177, val=24, test=42
+Fold 36: base convergido (val_auc=0.9219), iniciando ciclos FGE...
+Fold 36: 3 snapshots FGE (val_auc por snapshot: 0.8812, 0.8906, 0.8844)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 37 (FGE): train=170, val=34, test=39
+Fold 37: base convergido (val_auc=0.8598), iniciando ciclos FGE...
+Fold 37: 3 snapshots FGE (val_auc por snapshot: 0.7917, 0.8258, 0.7992)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 38 (FGE): train=171, val=34, test=38
+Fold 38: base convergido (val_auc=0.8299), iniciando ciclos FGE...
+Fold 38: 2 snapshots FGE (val_auc por snapshot: 0.8469, 0.7925)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 39 (FGE): train=171, val=32, test=40
+Fold 39: base convergido (val_auc=0.9091), iniciando ciclos FGE...
+Fold 39: 2 snapshots FGE (val_auc por snapshot: 0.8916, 0.8671)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 40 (FGE): train=179, val=22, test=42
+Fold 40: base convergido (val_auc=0.7833), iniciando ciclos FGE...
+Fold 40: 6 snapshots FGE (val_auc por snapshot: 0.7461, 0.7864, 0.8080, 0.7988, 0.8359, 0.8266)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 41 (FGE): train=170, val=29, test=44
+Fold 41: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 41: 3 snapshots FGE (val_auc por snapshot: 0.9893, 1.0000, 1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 42 (FGE): train=161, val=27, test=55
+Fold 42: base convergido (val_auc=0.9385), iniciando ciclos FGE...
+Fold 42: 2 snapshots FGE (val_auc por snapshot: 0.8462, 0.8154)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 43 (FGE): train=174, val=31, test=38
+Fold 43: base convergido (val_auc=0.8503), iniciando ciclos FGE...
+Fold 43: 3 snapshots FGE (val_auc por snapshot: 0.7313, 0.7687, 0.7211)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 44 (FGE): train=163, val=27, test=53
+Fold 44: base convergido (val_auc=0.9259), iniciando ciclos FGE...
+Fold 44: 3 snapshots FGE (val_auc por snapshot: 0.8333, 0.8407, 0.7593)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 45 (FGE): train=160, val=32, test=51
+Fold 45: base convergido (val_auc=0.8294), iniciando ciclos FGE...
+Fold 45: 2 snapshots FGE (val_auc por snapshot: 0.7857, 0.7103)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 46 (FGE): train=177, val=23, test=43
+Fold 46: base convergido (val_auc=0.9632), iniciando ciclos FGE...
+Fold 46: 2 snapshots FGE (val_auc por snapshot: 0.8863, 0.7960)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 47 (FGE): train=169, val=30, test=44
+Fold 47: base convergido (val_auc=1.0000), iniciando ciclos FGE...
+Fold 47: 4 snapshots FGE (val_auc por snapshot: 0.9448, 0.8621, 1.0000, 1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 48 (FGE): train=179, val=24, test=40
+Fold 48: base convergido (val_auc=0.7055), iniciando ciclos FGE...
+Fold 48: 5 snapshots FGE (val_auc por snapshot: 0.6364, 0.6327, 0.6800, 0.7164, 0.6655)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+Fold 49 (FGE): train=155, val=30, test=58
+Fold 49: base convergido (val_auc=0.9583), iniciando ciclos FGE...
+Fold 49: 2 snapshots FGE (val_auc por snapshot: 0.8869, 0.8393)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (50 folds con datos)
+
+✅ FGE training completed
+--- [se_trio] meta-features: conch_v1_5 --- Mon Aug 31 02:55:50 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): conch_v1_5
+  Dataset: cptac_gbm/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+  Variante FGE: se_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_gbm/features_conch_v1_5...
+
+✅ Predicciones FGE de train generadas para 50/50 folds (0 omitidos por falta de snapshots/datos).
+
+### FASE 5 — suite de metaclasificadores (50 folds)
+========================================================================================================
+SUITE DE METACLASIFICADORES — trío ganador
+========================================================================================================
+Modelos base : ctranspath + uni_v2 + conch_v1_5
+Dataset/tarea: cptac_gbm / TP53_mutation
+Folds        : 50
+Espacios     : ['emb', 'fge_trio', 'prob', 'se_trio']
+Dispositivo  : cuda
+
+Cargando espacio 'emb' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 512, 'uni_v2': 512, 'conch_v1_5': 512}
+  ✓ filas fold_0: train=164 val=31 test=48
+
+Cargando espacio 'fge_trio' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 2, 'uni_v2': 2, 'conch_v1_5': 2}
+  ✓ filas fold_0: train=164 val=31 test=48
+
+Cargando espacio 'prob' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 2, 'uni_v2': 2, 'conch_v1_5': 2}
+  ✓ filas fold_0: train=164 val=31 test=48
+
+Cargando espacio 'se_trio' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 2, 'uni_v2': 2, 'conch_v1_5': 2}
+  ✓ filas fold_0: train=164 val=31 test=48
+
+✓ Todos los brazos comparten exactamente los mismos folds y filas de train/val/test.
+
+Clases         : K=2 [0, 1] (binaria)
+Reparto en test: {0: 1515, 1: 749}  →  mayoritaria=0 (66.9%)
+
+acc=accuracy · bacc=balanced accuracy · macro_f1=F1 macro · f1_pos=F1 de la clase positiva · kappa=Cohen.
+REFERENCIA DEGENERADA (predecir siempre la mayoritaria del train): acc=0.669, bacc=0.500, macro_f1=0.400, kappa=0.000.
+Cualquier accuracy que no supere claramente ese valor no dice nada.
+
+>>> prob:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7556  bacc=0.6770  macro-F1=0.6732
+
+>>> prob:mlp
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.6754  bacc=0.5455  macro-F1=0.4388
+
+>>> prob:mlp_snapshot
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7491  bacc=0.6262  macro-F1=0.6085
+
+>>> prob:svm
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7453  bacc=0.6672  macro-F1=0.6609
+
+>>> prob:knn
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7136  bacc=0.6723  macro-F1=0.6631
+
+>>> prob:nb
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7437  bacc=0.6835  macro-F1=0.6722
+
+>>> emb:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7786  bacc=0.6887  macro-F1=0.6860
+
+>>> emb:mlp
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7443  bacc=0.6139  macro-F1=0.5831
+
+>>> emb:mlp_snapshot
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7731  bacc=0.6884  macro-F1=0.6840
+
+>>> emb:mlp_fge
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7561  bacc=0.6452  macro-F1=0.6327
+
+>>> fge_trio:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7779  bacc=0.7083  macro-F1=0.7060
+
+>>> fge_trio:mlp_snapshot
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7700  bacc=0.6392  macro-F1=0.6194
+
+>>> se_trio:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7825  bacc=0.7126  macro-F1=0.7103
+
+>>> se_trio:mlp_snapshot
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7746  bacc=0.6399  macro-F1=0.6230
+
+======================================================
+RESUMEN A — capacidad de ORDENACIÓN (independiente del umbral)
+======================================================
+Configuración                          auc          ap
+------------------------------------------------------
+prob:logreg                         0.7556      0.6439
+prob:mlp                            0.6754      0.5748
+prob:mlp_snapshot                   0.7491      0.6431
+prob:svm                            0.7453      0.6314
+prob:knn                            0.7136      0.5750
+prob:nb                             0.7437      0.5949
+emb:logreg                          0.7786      0.6674
+emb:mlp                             0.7443      0.6369
+emb:mlp_snapshot                    0.7731      0.6663
+emb:mlp_fge                         0.7561      0.6481
+fge_trio:logreg                     0.7779      0.6703
+fge_trio:mlp_snapshot               0.7700      0.6637
+se_trio:logreg                      0.7825      0.6690
+se_trio:mlp_snapshot                0.7746      0.6636
+------------------------------------------------------
+auc=macro-OvR AUC · ap=average precision (PR-AUC, la métrica de ordenación
+que más pesa bajo desbalance porque ignora los verdaderos negativos)
+
+==========================================================================================
+RESUMEN B — DECISIÓN con umbral 0.5 (argmax; el criterio de ensemble4.py)
+==========================================================================================
+Configuración                          acc        bacc    macro_f1      f1_pos       kappa
+------------------------------------------------------------------------------------------
+prob:logreg                         0.7209      0.6770      0.6732      0.5519      0.3552
+prob:mlp                            0.6037      0.5455      0.4388      0.2861      0.0946
+prob:mlp_snapshot                   0.7110      0.6262      0.6085      0.4264      0.2703
+prob:svm                            0.7063      0.6672      0.6609      0.5409      0.3316
+prob:knn                            0.7070      0.6723      0.6631      0.5470      0.3371
+prob:nb                             0.7060      0.6835      0.6722      0.5734      0.3553
+emb:logreg                          0.7351      0.6887      0.6860      0.5660      0.3827
+emb:mlp                             0.6960      0.6139      0.5831      0.3907      0.2385
+emb:mlp_snapshot                    0.7300      0.6884      0.6840      0.5685      0.3791
+emb:mlp_fge                         0.7113      0.6452      0.6327      0.4770      0.3026
+fge_trio:logreg                     0.7485      0.7083      0.7060      0.5974      0.4205
+fge_trio:mlp_snapshot               0.7183      0.6392      0.6194      0.4421      0.2959
+se_trio:logreg                      0.7538      0.7126      0.7103      0.6010      0.4291
+se_trio:mlp_snapshot                0.7241      0.6399      0.6230      0.4364      0.2949
+------------------------------------------------------------------------------------------
+acc=accuracy · bacc=balanced accuracy · macro_f1=F1 macro · f1_pos=F1 de la clase positiva · kappa=Cohen.
+REFERENCIA DEGENERADA (predecir siempre la mayoritaria del train): acc=0.669, bacc=0.500, macro_f1=0.400, kappa=0.000.
+Cualquier accuracy que no supere claramente ese valor no dice nada.
+
+==========================================================================================
+RESUMEN C — DECISIÓN con umbral ajustado en VALIDACIÓN (máx. bacc)
+==========================================================================================
+Configuración                        acc_t      bacc_t  macro_f1_t    f1_pos_t     kappa_t
+------------------------------------------------------------------------------------------
+prob:logreg                         0.6559      0.6609      0.6177      0.5419      0.2938
+prob:mlp                            0.5990      0.6151      0.5640      0.5104      0.2089
+prob:mlp_snapshot                   0.6579      0.6588      0.6194      0.5430      0.2966
+prob:svm                            0.6464      0.6556      0.6140      0.5487      0.2871
+prob:knn                            0.6668      0.6536      0.6265      0.5289      0.2863
+prob:nb                             0.6475      0.6573      0.6148      0.5502      0.2907
+emb:logreg                          0.6742      0.6891      0.6472      0.5852      0.3422
+emb:mlp                             0.6554      0.6576      0.6229      0.5477      0.2925
+emb:mlp_snapshot                    0.6726      0.6716      0.6333      0.5528      0.3164
+emb:mlp_fge                         0.6674      0.6669      0.6309      0.5540      0.3096
+fge_trio:logreg                     0.6732      0.6778      0.6446      0.5733      0.3332
+fge_trio:mlp_snapshot               0.6723      0.6746      0.6388      0.5608      0.3238
+se_trio:logreg                      0.6840      0.6859      0.6528      0.5773      0.3482
+se_trio:mlp_snapshot                0.6631      0.6785      0.6384      0.5799      0.3292
+------------------------------------------------------------------------------------------
+Mismas métricas, con el umbral elegido en val en vez de fijado a 0.5.
+La diferencia B→C separa un fallo de ORDENACIÓN de un fallo de CORTE.
+
+Umbral medio elegido en validación:
+  prob:logreg                    0.327  (mediana 0.239)
+  prob:mlp                       0.457  (mediana 0.462)
+  prob:mlp_snapshot              0.369  (mediana 0.366)
+  prob:svm                       0.294  (mediana 0.191)
+  prob:knn                       0.394  (mediana 0.334)
+  prob:nb                        0.366  (mediana 0.002)
+  emb:logreg                     0.203  (mediana 0.042)
+  emb:mlp                        0.351  (mediana 0.368)
+  emb:mlp_snapshot               0.288  (mediana 0.127)
+  emb:mlp_fge                    0.340  (mediana 0.321)
+  fge_trio:logreg                0.339  (mediana 0.288)
+  fge_trio:mlp_snapshot          0.363  (mediana 0.361)
+  se_trio:logreg                 0.309  (mediana 0.236)
+  se_trio:mlp_snapshot           0.339  (mediana 0.336)
+
+========================================================================================================
+PAREADO: prob:mlp  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0803      [-0.1258, -0.0384]     16/1/33   0.0020   0.0141   0.0640 *
+ap             -0.0691      [-0.1130, -0.0275]     18/0/32   0.0037   0.0220   0.0602 *
+acc            -0.1173      [-0.1642, -0.0743]      9/4/37   0.0000   0.0001   0.0649 *
+bacc           -0.1315      [-0.1674, -0.0962]      7/0/43   0.0000   0.0000   0.0509 *
+macro_f1       -0.2344      [-0.2787, -0.1905]      3/0/47   0.0000   0.0000   0.0631 *
+f1_pos         -0.2658      [-0.3434, -0.1855]     10/0/40   0.0000   0.0000   0.1138 *
+kappa          -0.2606      [-0.3289, -0.1941]      6/0/44   0.0000   0.0000   0.0972 *
+acc_t          -0.0569      [-0.1005, -0.0176]     19/3/28   0.0836   0.1774   0.0602
+bacc_t         -0.0458      [-0.0782, -0.0160]     19/2/29   0.0155   0.0775   0.0456
+macro_f1_t     -0.0537      [-0.0962, -0.0145]     20/2/28   0.0591   0.1774   0.0588
+f1_pos_t       -0.0315      [-0.0751, +0.0089]     23/2/25   0.1927   0.1927   0.0601
+kappa_t        -0.0850      [-0.1481, -0.0271]     17/2/31   0.0305   0.1218   0.0861
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: prob:mlp_snapshot  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0065      [-0.0156, +0.0024]     21/0/29   0.1139   0.9115   0.0131
+ap             -0.0008      [-0.0123, +0.0108]     22/0/28   0.5591   1.0000   0.0167
+acc            -0.0100      [-0.0304, +0.0095]    17/10/23   0.3265   1.0000   0.0284
+bacc           -0.0508      [-0.0767, -0.0273]     12/3/35   0.0004   0.0039   0.0362 *
+macro_f1       -0.0648      [-0.0951, -0.0367]     13/2/35   0.0001   0.0013   0.0423 *
+f1_pos         -0.1254      [-0.1785, -0.0763]     11/2/37   0.0000   0.0004   0.0743 *
+kappa          -0.0849      [-0.1355, -0.0386]     14/2/34   0.0015   0.0133   0.0693 *
+acc_t          +0.0020      [-0.0198, +0.0220]    23/12/15   0.7885   1.0000   0.0302
+bacc_t         -0.0021      [-0.0183, +0.0128]     25/8/17   0.8857   1.0000   0.0227
+macro_f1_t     +0.0017      [-0.0208, +0.0226]     25/7/18   0.6121   1.0000   0.0314
+f1_pos_t       +0.0011      [-0.0178, +0.0197]     23/7/20   1.0000   1.0000   0.0273
+kappa_t        +0.0027      [-0.0252, +0.0291]     25/7/18   0.5460   1.0000   0.0389
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: prob:svm  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0103      [-0.0168, -0.0045]     16/5/29   0.0045   0.0498   0.0090 *
+ap             -0.0126      [-0.0252, -0.0022]     19/0/31   0.0137   0.1095   0.0164
+acc            -0.0146      [-0.0247, -0.0056]     8/20/22   0.0016   0.0190   0.0138 *
+bacc           -0.0098      [-0.0188, -0.0013]    12/16/22   0.0262   0.1836   0.0126
+macro_f1       -0.0123      [-0.0222, -0.0032]    12/16/22   0.0078   0.0785   0.0135
+f1_pos         -0.0110      [-0.0225, +0.0001]    13/16/21   0.0754   0.4524   0.0162
+kappa          -0.0236      [-0.0428, -0.0063]    12/16/22   0.0101   0.0907   0.0264
+acc_t          -0.0095      [-0.0340, +0.0137]    15/18/17   0.5188   1.0000   0.0343
+bacc_t         -0.0053      [-0.0220, +0.0110]    14/16/20   0.7260   1.0000   0.0240
+macro_f1_t     -0.0038      [-0.0281, +0.0195]    15/15/20   0.7556   1.0000   0.0341
+f1_pos_t       +0.0068      [-0.0140, +0.0304]    16/15/19   0.9347   1.0000   0.0320
+kappa_t        -0.0067      [-0.0415, +0.0264]    15/15/20   0.7309   1.0000   0.0484
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: prob:knn  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0421      [-0.0608, -0.0241]     11/0/39   0.0001   0.0006   0.0263 *
+ap             -0.0690      [-0.0893, -0.0479]      6/0/44   0.0000   0.0000   0.0303 *
+acc            -0.0139      [-0.0267, -0.0011]    15/10/25   0.0580   0.5803   0.0186
+bacc           -0.0047      [-0.0191, +0.0095]     23/4/23   0.7889   1.0000   0.0206
+macro_f1       -0.0102      [-0.0258, +0.0051]     20/4/26   0.3616   1.0000   0.0229
+f1_pos         -0.0048      [-0.0286, +0.0191]     22/5/23   0.7865   1.0000   0.0347
+kappa          -0.0182      [-0.0483, +0.0109]     20/4/26   0.4412   1.0000   0.0427
+acc_t          +0.0109      [-0.0177, +0.0399]     25/5/20   0.7477   1.0000   0.0420
+bacc_t         -0.0073      [-0.0313, +0.0165]     24/2/24   0.6225   1.0000   0.0344
+macro_f1_t     +0.0088      [-0.0206, +0.0382]     27/2/21   0.6298   1.0000   0.0422
+f1_pos_t       -0.0131      [-0.0486, +0.0238]     23/2/25   0.4540   1.0000   0.0526
+kappa_t        -0.0075      [-0.0535, +0.0388]     23/2/25   0.7740   1.0000   0.0666
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: prob:nb  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0119      [-0.0196, -0.0046]     14/1/35   0.0028   0.0308   0.0108 *
+ap             -0.0490      [-0.0691, -0.0295]     15/0/35   0.0000   0.0002   0.0290 *
+acc            -0.0149      [-0.0276, -0.0030]    13/10/27   0.0505   0.4541   0.0177
+bacc           +0.0065      [-0.0047, +0.0180]     25/6/19   0.2778   1.0000   0.0164
+macro_f1       -0.0011      [-0.0139, +0.0115]     21/6/23   0.8702   1.0000   0.0184
+f1_pos         +0.0215      [+0.0047, +0.0401]     28/7/15   0.0450   0.4502   0.0254
+kappa          +0.0001      [-0.0235, +0.0231]     20/6/24   0.8886   1.0000   0.0332
+acc_t          -0.0084      [-0.0318, +0.0127]     21/9/20   0.9123   1.0000   0.0324
+bacc_t         -0.0036      [-0.0231, +0.0150]     21/7/22   0.7720   1.0000   0.0271
+macro_f1_t     -0.0029      [-0.0277, +0.0205]     22/7/21   0.7536   1.0000   0.0351
+f1_pos_t       +0.0083      [-0.0162, +0.0349]     21/7/22   0.7674   1.0000   0.0369
+kappa_t        -0.0031      [-0.0372, +0.0299]     22/7/21   0.9711   1.0000   0.0491
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: emb:logreg  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0230      [+0.0079, +0.0384]     34/0/16   0.0026   0.0314   0.0222 *
+ap             +0.0235      [+0.0024, +0.0456]     31/0/19   0.0678   0.3390   0.0316
+acc            +0.0142      [+0.0026, +0.0257]    27/11/12   0.0382   0.2675   0.0168
+bacc           +0.0117      [-0.0020, +0.0257]     27/4/19   0.1973   0.3946   0.0203
+macro_f1       +0.0127      [-0.0011, +0.0265]     27/4/19   0.1169   0.3508   0.0198
+f1_pos         +0.0141      [-0.0064, +0.0349]     26/4/20   0.2273   0.3946   0.0296
+kappa          +0.0275      [+0.0005, +0.0544]     28/4/18   0.0689   0.3390   0.0386
+acc_t          +0.0183      [-0.0107, +0.0444]     30/3/17   0.0561   0.3367   0.0393
+bacc_t         +0.0282      [+0.0048, +0.0505]     34/2/14   0.0116   0.1279   0.0333
+macro_f1_t     +0.0294      [-0.0003, +0.0578]     31/2/17   0.0240   0.2164   0.0413
+f1_pos_t       +0.0432      [+0.0047, +0.0830]     34/2/14   0.0321   0.2565   0.0564
+kappa_t        +0.0484      [+0.0050, +0.0884]     33/2/15   0.0120   0.1279   0.0603
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: emb:mlp  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0114      [-0.0275, +0.0038]     23/3/24   0.4152   1.0000   0.0229
+ap             -0.0070      [-0.0267, +0.0130]     25/0/25   0.5985   1.0000   0.0283
+acc            -0.0249      [-0.0588, +0.0044]     18/9/23   0.3409   1.0000   0.0460
+bacc           -0.0631      [-0.0936, -0.0344]     16/2/32   0.0005   0.0049   0.0434 *
+macro_f1       -0.0902      [-0.1329, -0.0514]     17/2/31   0.0002   0.0024   0.0587 *
+f1_pos         -0.1611      [-0.2226, -0.1036]     14/2/34   0.0000   0.0001   0.0867 *
+kappa          -0.1167      [-0.1775, -0.0581]     17/2/31   0.0018   0.0158   0.0861 *
+acc_t          -0.0005      [-0.0317, +0.0291]     25/5/20   0.9280   1.0000   0.0442
+bacc_t         -0.0033      [-0.0260, +0.0186]     25/3/22   0.9283   1.0000   0.0324
+macro_f1_t     +0.0051      [-0.0269, +0.0355]     27/3/20   0.5394   1.0000   0.0450
+f1_pos_t       +0.0057      [-0.0276, +0.0414]     24/3/23   0.8739   1.0000   0.0495
+kappa_t        -0.0014      [-0.0471, +0.0421]     26/3/21   0.6491   1.0000   0.0636
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: emb:mlp_snapshot  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0175      [+0.0067, +0.0290]     31/2/17   0.0014   0.0165   0.0160 *
+ap             +0.0224      [+0.0055, +0.0404]     29/0/21   0.0419   0.4613   0.0250
+acc            +0.0091      [-0.0026, +0.0211]    22/14/14   0.1922   1.0000   0.0171
+bacc           +0.0114      [-0.0004, +0.0235]     27/8/15   0.1558   1.0000   0.0175
+macro_f1       +0.0107      [-0.0027, +0.0242]     27/8/15   0.1671   1.0000   0.0196
+f1_pos         +0.0166      [-0.0030, +0.0367]     25/8/17   0.1210   1.0000   0.0285
+kappa          +0.0239      [-0.0005, +0.0493]     27/8/15   0.1195   1.0000   0.0363
+acc_t          +0.0167      [-0.0104, +0.0423]     22/9/19   0.1215   1.0000   0.0376
+bacc_t         +0.0107      [-0.0093, +0.0300]     22/4/24   0.2746   1.0000   0.0281
+macro_f1_t     +0.0156      [-0.0138, +0.0432]     24/5/21   0.2760   1.0000   0.0410
+f1_pos_t       +0.0108      [-0.0175, +0.0416]     23/4/23   0.6581   1.0000   0.0422
+kappa_t        +0.0226      [-0.0160, +0.0602]     23/4/23   0.1539   1.0000   0.0551
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: emb:mlp_fge  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0005      [-0.0124, +0.0124]     25/1/24   0.7465   1.0000   0.0177
+ap             +0.0042      [-0.0116, +0.0210]     24/0/26   0.8859   1.0000   0.0231
+acc            -0.0097      [-0.0364, +0.0106]    16/15/19   0.6116   1.0000   0.0340
+bacc           -0.0318      [-0.0535, -0.0122]     12/6/32   0.0074   0.0814   0.0296
+macro_f1       -0.0406      [-0.0721, -0.0135]     13/6/31   0.0152   0.1521   0.0422
+f1_pos         -0.0749      [-0.1154, -0.0383]     11/6/33   0.0008   0.0101   0.0566 *
+kappa          -0.0526      [-0.0954, -0.0136]     14/6/30   0.0309   0.2777   0.0587
+acc_t          +0.0115      [-0.0181, +0.0388]    24/10/16   0.1662   1.0000   0.0417
+bacc_t         +0.0060      [-0.0162, +0.0281]     26/6/18   0.2990   1.0000   0.0319
+macro_f1_t     +0.0132      [-0.0181, +0.0427]     29/5/16   0.1005   0.8042   0.0448
+f1_pos_t       +0.0121      [-0.0215, +0.0475]     25/5/20   0.7222   1.0000   0.0504
+kappa_t        +0.0158      [-0.0296, +0.0565]     27/5/18   0.1667   1.0000   0.0616
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: fge_trio:logreg  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0223      [+0.0090, +0.0381]     31/0/19   0.0070   0.0488   0.0209 *
+ap             +0.0264      [+0.0083, +0.0454]     33/0/17   0.0072   0.0488   0.0268 *
+acc            +0.0276      [+0.0138, +0.0429]    28/12/10   0.0010   0.0109   0.0209 *
+bacc           +0.0314      [+0.0147, +0.0497]     32/5/13   0.0015   0.0151   0.0253 *
+macro_f1       +0.0327      [+0.0157, +0.0516]     32/5/13   0.0015   0.0151   0.0259 *
+f1_pos         +0.0456      [+0.0201, +0.0731]     32/5/13   0.0024   0.0195   0.0381 *
+kappa          +0.0653      [+0.0315, +0.1013]     31/5/14   0.0009   0.0106   0.0506 *
+acc_t          +0.0173      [-0.0095, +0.0448]     24/6/20   0.2625   0.5251   0.0391
+bacc_t         +0.0169      [-0.0024, +0.0365]     28/2/20   0.1239   0.4117   0.0281
+macro_f1_t     +0.0269      [+0.0015, +0.0527]     29/2/19   0.1029   0.4117   0.0370
+f1_pos_t       +0.0313      [-0.0017, +0.0673]     24/2/24   0.3099   0.5251   0.0496
+kappa_t        +0.0394      [+0.0004, +0.0787]     28/2/20   0.0501   0.2506   0.0563
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: fge_trio:mlp_snapshot  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0144      [+0.0026, +0.0269]     30/1/19   0.0419   0.3354   0.0175
+ap             +0.0198      [-0.0010, +0.0402]     32/0/18   0.0678   0.4746   0.0296
+acc            -0.0026      [-0.0255, +0.0194]     24/3/23   0.9494   0.9494   0.0325
+bacc           -0.0378      [-0.0647, -0.0110]     19/1/30   0.0096   0.0956   0.0388
+macro_f1       -0.0538      [-0.0877, -0.0208]     20/1/29   0.0036   0.0398   0.0480 *
+f1_pos         -0.1098      [-0.1699, -0.0539]     19/1/30   0.0021   0.0249   0.0832 *
+kappa          -0.0593      [-0.1135, -0.0054]     20/1/29   0.0337   0.3032   0.0770
+acc_t          +0.0164      [-0.0078, +0.0414]     25/7/18   0.2181   0.6889   0.0352
+bacc_t         +0.0137      [-0.0070, +0.0334]     26/3/21   0.1722   0.6889   0.0293
+macro_f1_t     +0.0211      [-0.0044, +0.0460]     27/3/20   0.0865   0.5188   0.0366
+f1_pos_t       +0.0188      [-0.0103, +0.0484]     26/5/19   0.3317   0.6889   0.0431
+kappa_t        +0.0300      [-0.0091, +0.0678]     26/3/21   0.1173   0.5866   0.0554
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: se_trio:logreg  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0269      [+0.0098, +0.0453]     33/0/17   0.0054   0.0544   0.0256
+ap             +0.0250      [+0.0011, +0.0494]     34/0/16   0.0186   0.0828   0.0346
+acc            +0.0328      [+0.0138, +0.0533]     31/4/15   0.0031   0.0368   0.0286 *
+bacc           +0.0356      [+0.0128, +0.0605]     32/2/16   0.0081   0.0651   0.0342
+macro_f1       +0.0371      [+0.0140, +0.0613]     32/2/16   0.0070   0.0629   0.0346
+f1_pos         +0.0492      [+0.0161, +0.0855]     31/3/16   0.0118   0.0825   0.0502
+kappa          +0.0739      [+0.0287, +0.1231]     33/2/15   0.0049   0.0544   0.0673
+acc_t          +0.0281      [+0.0000, +0.0556]     27/9/14   0.0543   0.0828   0.0399
+bacc_t         +0.0250      [+0.0062, +0.0439]     30/5/15   0.0152   0.0828   0.0273
+macro_f1_t     +0.0351      [+0.0082, +0.0620]     29/5/16   0.0315   0.0828   0.0388
+f1_pos_t       +0.0353      [+0.0035, +0.0686]     28/5/17   0.0145   0.0828   0.0474
+kappa_t        +0.0543      [+0.0164, +0.0923]     30/6/14   0.0138   0.0828   0.0558
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: se_trio:mlp_snapshot  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0190      [+0.0017, +0.0359]     32/0/18   0.0400   0.3197   0.0247
+ap             +0.0196      [-0.0046, +0.0425]     34/0/16   0.0506   0.3542   0.0340
+acc            +0.0032      [-0.0167, +0.0239]     23/6/21   0.9721   1.0000   0.0295
+bacc           -0.0371      [-0.0651, -0.0090]     18/0/32   0.0122   0.1224   0.0413
+macro_f1       -0.0502      [-0.0831, -0.0178]     18/0/32   0.0032   0.0353   0.0468 *
+f1_pos         -0.1154      [-0.1752, -0.0572]     17/0/33   0.0007   0.0084   0.0847 *
+kappa          -0.0603      [-0.1154, -0.0042]     18/0/32   0.0354   0.3185   0.0812
+acc_t          +0.0072      [-0.0255, +0.0394]     25/3/22   0.5429   1.0000   0.0467
+bacc_t         +0.0176      [-0.0065, +0.0398]     30/1/19   0.0844   0.4219   0.0334
+macro_f1_t     +0.0207      [-0.0121, +0.0522]     28/1/21   0.1683   0.5049   0.0463
+f1_pos_t       +0.0379      [+0.0030, +0.0750]     31/1/18   0.0695   0.4168   0.0521
+kappa_t        +0.0354      [-0.0084, +0.0788]     28/1/21   0.1149   0.4595   0.0633
+--------------------------------------------------------------------------------------------------------
+
+✅ Resultados escritos en /home/JKP6679/Patho-Ensemble/results_campaign_cptac_gbm_TP53_mutation.json
+
+================================================================================
+✅ COMPLETADO — cptac_gbm / TP53_mutation — Mon Aug 31 02:59:09 CEST 2026
+   Resultados: results_campaign_cptac_gbm_TP53_mutation.json
+================================================================================

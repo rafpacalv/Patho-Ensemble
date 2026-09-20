@@ -1,0 +1,994 @@
+============================================================================
+FEATURES OUT-OF-FOLD — cptac_brca / TP53_mutation
+============================================================================
+Inicio:        Sun Aug 16 12:41:54 CEST 2026
+modelos:       ctranspath uni_v2 virchow_v1
+folds:         50  (disponibles: 50)
+folds internos: 5   (etiqueta: oof5)
+============================================================================
+
+╔════════════════════════════════════════════════════════════════════════╗
+║ ctranspath
+╚════════════════════════════════════════════════════════════════════════╝
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+Meta-features out-of-fold: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, clases: 2
+  Folds externos: 50/50, folds internos: 5
+  Salida: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap_train_eval_oof5/val_outputs_oof5/
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+Cargando features:   0%|          | 0/112 [00:00<?, ?it/s]Cargando features:   2%|▏         | 2/112 [00:00<00:08, 13.19it/s]Cargando features:   4%|▎         | 4/112 [00:00<00:10, 10.02it/s]Cargando features:   6%|▋         | 7/112 [00:00<00:07, 13.14it/s]Cargando features:   8%|▊         | 9/112 [00:00<00:08, 12.42it/s]Cargando features:  10%|▉         | 11/112 [00:00<00:07, 13.38it/s]Cargando features:  12%|█▏        | 13/112 [00:00<00:06, 14.31it/s]Cargando features:  13%|█▎        | 15/112 [00:01<00:06, 15.49it/s]Cargando features:  15%|█▌        | 17/112 [00:01<00:06, 15.70it/s]Cargando features:  17%|█▋        | 19/112 [00:01<00:06, 15.29it/s]Cargando features:  20%|█▉        | 22/112 [00:01<00:05, 17.59it/s]Cargando features:  22%|██▏       | 25/112 [00:01<00:04, 19.31it/s]Cargando features:  25%|██▌       | 28/112 [00:01<00:04, 19.05it/s]Cargando features:  28%|██▊       | 31/112 [00:01<00:03, 20.27it/s]Cargando features:  30%|███       | 34/112 [00:02<00:03, 20.67it/s]Cargando features:  33%|███▎      | 37/112 [00:02<00:03, 19.30it/s]Cargando features:  35%|███▍      | 39/112 [00:02<00:04, 18.03it/s]Cargando features:  38%|███▊      | 42/112 [00:02<00:05, 13.34it/s]Cargando features:  40%|████      | 45/112 [00:02<00:04, 16.18it/s]Cargando features:  42%|████▏     | 47/112 [00:02<00:03, 16.60it/s]Cargando features:  49%|████▉     | 55/112 [00:03<00:01, 28.51it/s]Cargando features:  53%|█████▎    | 59/112 [00:03<00:02, 20.62it/s]Cargando features:  58%|█████▊    | 65/112 [00:03<00:01, 25.75it/s]Cargando features:  62%|██████▏   | 69/112 [00:03<00:02, 18.57it/s]Cargando features:  64%|██████▍   | 72/112 [00:04<00:02, 18.90it/s]Cargando features:  71%|███████   | 79/112 [00:04<00:01, 27.29it/s]Cargando features:  78%|███████▊  | 87/112 [00:04<00:00, 33.45it/s]Cargando features:  82%|████████▏ | 92/112 [00:04<00:00, 35.03it/s]Cargando features:  87%|████████▋ | 97/112 [00:04<00:00, 33.92it/s]Cargando features:  93%|█████████▎| 104/112 [00:04<00:00, 41.15it/s]Cargando features:  97%|█████████▋| 109/112 [00:04<00:00, 37.48it/s]Cargando features: 100%|██████████| 112/112 [00:04<00:00, 22.91it/s]
+  Fold 0: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9667)
+    interno 2/5: train=61 retenido=14 (val_auc=0.7857)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8929)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7000)
+  Fold 1: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.8571)
+    interno 2/5: train=61 retenido=15 (val_auc=0.7000)
+    interno 3/5: train=62 retenido=14 (val_auc=0.5238)
+    interno 4/5: train=59 retenido=17 (val_auc=1.0000)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7714)
+  Fold 2: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=1.0000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.9630)
+    interno 3/5: train=59 retenido=17 (val_auc=0.6389)
+    interno 4/5: train=60 retenido=16 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8889)
+  Fold 3: train=76
+    interno 1/5: train=58 retenido=18 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=13 (val_auc=0.9762)
+    interno 3/5: train=60 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=15 (val_auc=0.9667)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9375)
+  Fold 4: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8750)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=15 (val_auc=0.9062)
+    interno 4/5: train=62 retenido=15 (val_auc=0.9524)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8125)
+  Fold 5: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9250)
+    interno 2/5: train=61 retenido=15 (val_auc=0.7037)
+    interno 3/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9500)
+  Fold 6: train=74
+    interno 1/5: train=60 retenido=14 (val_auc=0.8286)
+    interno 2/5: train=59 retenido=15 (val_auc=0.8438)
+    interno 3/5: train=60 retenido=14 (val_auc=0.9688)
+    interno 4/5: train=58 retenido=16 (val_auc=0.9667)
+    interno 5/5: train=59 retenido=15 (val_auc=0.8810)
+  Fold 7: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.7959)
+    interno 2/5: train=63 retenido=15 (val_auc=0.9143)
+    interno 3/5: train=62 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=62 retenido=16 (val_auc=0.9500)
+    interno 5/5: train=63 retenido=15 (val_auc=0.6667)
+  Fold 8: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.8750)
+    interno 2/5: train=60 retenido=17 (val_auc=0.6250)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6389)
+    interno 4/5: train=61 retenido=16 (val_auc=0.5000)
+    interno 5/5: train=63 retenido=14 (val_auc=0.8788)
+  Fold 9: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8704)
+    interno 2/5: train=64 retenido=13 (val_auc=0.9722)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8333)
+    interno 4/5: train=62 retenido=15 (val_auc=0.8750)
+    interno 5/5: train=60 retenido=17 (val_auc=0.8095)
+  Fold 10: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.7500)
+    interno 2/5: train=59 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.6000)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9259)
+    interno 5/5: train=60 retenido=15 (val_auc=0.9000)
+  Fold 11: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.7500)
+    interno 2/5: train=60 retenido=14 (val_auc=0.9500)
+    interno 3/5: train=60 retenido=14 (val_auc=0.9000)
+    interno 4/5: train=60 retenido=14 (val_auc=0.8889)
+    interno 5/5: train=57 retenido=17 (val_auc=1.0000)
+  Fold 12: train=76
+    interno 1/5: train=60 retenido=16 (val_auc=0.7812)
+    interno 2/5: train=62 retenido=14 (val_auc=0.8889)
+    interno 3/5: train=62 retenido=14 (val_auc=0.3611)
+    interno 4/5: train=59 retenido=17 (val_auc=0.6875)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9667)
+  Fold 13: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.9000)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7000)
+  Fold 14: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.6429)
+    interno 2/5: train=63 retenido=14 (val_auc=0.8056)
+    interno 3/5: train=62 retenido=15 (val_auc=0.6818)
+    interno 4/5: train=59 retenido=18 (val_auc=0.8611)
+    interno 5/5: train=62 retenido=15 (val_auc=0.7778)
+  Fold 15: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 3/5: train=61 retenido=15 (val_auc=0.6250)
+    interno 4/5: train=59 retenido=17 (val_auc=0.9688)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9000)
+  Fold 16: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9167)
+    interno 2/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7812)
+    interno 4/5: train=64 retenido=13 (val_auc=0.9167)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9524)
+  Fold 17: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.6000)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9500)
+    interno 3/5: train=60 retenido=15 (val_auc=0.6667)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9722)
+    interno 5/5: train=61 retenido=14 (val_auc=0.6607)
+  Fold 18: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 3/5: train=59 retenido=16 (val_auc=0.9375)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9714)
+    interno 5/5: train=61 retenido=14 (val_auc=0.2727)
+  Fold 19: train=73
+    interno 1/5: train=59 retenido=14 (val_auc=0.6875)
+    interno 2/5: train=59 retenido=14 (val_auc=0.8857)
+    interno 3/5: train=58 retenido=15 (val_auc=0.7500)
+    interno 4/5: train=59 retenido=14 (val_auc=0.8519)
+    interno 5/5: train=57 retenido=16 (val_auc=0.9048)
+  Fold 20: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=0.7619)
+    interno 2/5: train=60 retenido=16 (val_auc=0.5000)
+    interno 3/5: train=61 retenido=15 (val_auc=0.9048)
+    interno 4/5: train=60 retenido=16 (val_auc=0.5143)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7500)
+  Fold 21: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9111)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9714)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8929)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8810)
+    interno 5/5: train=59 retenido=16 (val_auc=0.9000)
+  Fold 22: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.9250)
+    interno 2/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.7333)
+    interno 4/5: train=60 retenido=14 (val_auc=0.8333)
+    interno 5/5: train=58 retenido=16 (val_auc=1.0000)
+  Fold 23: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9583)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8222)
+    interno 4/5: train=59 retenido=16 (val_auc=0.9375)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8611)
+  Fold 24: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.8000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.9500)
+    interno 3/5: train=62 retenido=14 (val_auc=0.7500)
+    interno 4/5: train=61 retenido=15 (val_auc=0.8571)
+    interno 5/5: train=60 retenido=16 (val_auc=0.6750)
+  Fold 25: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=14 (val_auc=0.6905)
+    interno 3/5: train=64 retenido=13 (val_auc=0.8095)
+    interno 4/5: train=59 retenido=18 (val_auc=0.9167)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8958)
+  Fold 26: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7000)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7917)
+    interno 4/5: train=63 retenido=14 (val_auc=0.8750)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8611)
+  Fold 27: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8500)
+    interno 2/5: train=62 retenido=15 (val_auc=0.9259)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6389)
+    interno 4/5: train=60 retenido=17 (val_auc=0.5278)
+    interno 5/5: train=64 retenido=13 (val_auc=1.0000)
+  Fold 28: train=79
+    interno 1/5: train=62 retenido=17 (val_auc=1.0000)
+    interno 2/5: train=62 retenido=17 (val_auc=0.8056)
+    interno 3/5: train=63 retenido=16 (val_auc=0.8500)
+    interno 4/5: train=65 retenido=14 (val_auc=0.7000)
+    interno 5/5: train=64 retenido=15 (val_auc=0.6333)
+  Fold 29: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.8148)
+    interno 2/5: train=60 retenido=17 (val_auc=0.5833)
+    interno 3/5: train=63 retenido=14 (val_auc=0.8286)
+    interno 4/5: train=61 retenido=16 (val_auc=0.6857)
+    interno 5/5: train=62 retenido=15 (val_auc=0.8929)
+  Fold 30: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.9643)
+    interno 4/5: train=61 retenido=14 (val_auc=0.9333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8500)
+  Fold 31: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.8750)
+    interno 2/5: train=60 retenido=17 (val_auc=0.9375)
+    interno 3/5: train=63 retenido=14 (val_auc=0.9333)
+    interno 4/5: train=61 retenido=16 (val_auc=0.8125)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9000)
+  Fold 32: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.8889)
+    interno 2/5: train=61 retenido=16 (val_auc=0.9111)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7333)
+    interno 4/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9048)
+  Fold 33: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.6429)
+    interno 2/5: train=59 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.9000)
+    interno 4/5: train=59 retenido=15 (val_auc=0.6750)
+    interno 5/5: train=60 retenido=14 (val_auc=0.8250)
+  Fold 34: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.7143)
+    interno 2/5: train=59 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7750)
+    interno 4/5: train=61 retenido=14 (val_auc=0.7381)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8750)
+  Fold 35: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.6000)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 3/5: train=58 retenido=17 (val_auc=0.7333)
+    interno 4/5: train=60 retenido=15 (val_auc=0.6071)
+    interno 5/5: train=61 retenido=14 (val_auc=0.9000)
+  Fold 36: train=78
+    interno 1/5: train=63 retenido=15 (val_auc=0.8125)
+    interno 2/5: train=63 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=17 (val_auc=0.8125)
+    interno 5/5: train=63 retenido=15 (val_auc=0.8056)
+  Fold 37: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 3/5: train=60 retenido=15 (val_auc=0.9286)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7037)
+  Fold 38: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.7812)
+    interno 2/5: train=61 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=59 retenido=17 (val_auc=0.8571)
+    interno 4/5: train=61 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9000)
+  Fold 39: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.7429)
+    interno 2/5: train=61 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=58 retenido=17 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8571)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8000)
+  Fold 40: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9630)
+    interno 2/5: train=64 retenido=13 (val_auc=0.8889)
+    interno 3/5: train=59 retenido=18 (val_auc=0.9722)
+    interno 4/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 5/5: train=60 retenido=17 (val_auc=0.9643)
+  Fold 41: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.9444)
+    interno 2/5: train=60 retenido=14 (val_auc=0.8571)
+    interno 3/5: train=59 retenido=15 (val_auc=0.7619)
+    interno 4/5: train=60 retenido=14 (val_auc=0.9429)
+    interno 5/5: train=58 retenido=16 (val_auc=0.8667)
+  Fold 42: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9643)
+    interno 2/5: train=62 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=15 (val_auc=0.9167)
+    interno 4/5: train=60 retenido=16 (val_auc=0.7037)
+    interno 5/5: train=59 retenido=17 (val_auc=0.8286)
+  Fold 43: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.9722)
+    interno 2/5: train=61 retenido=16 (val_auc=0.7222)
+    interno 3/5: train=63 retenido=14 (val_auc=0.6750)
+    interno 4/5: train=59 retenido=18 (val_auc=0.6667)
+    interno 5/5: train=63 retenido=14 (val_auc=0.9375)
+  Fold 44: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.7222)
+    interno 2/5: train=62 retenido=16 (val_auc=0.7250)
+    interno 3/5: train=62 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=62 retenido=16 (val_auc=0.8250)
+    interno 5/5: train=64 retenido=14 (val_auc=0.6571)
+  Fold 45: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8611)
+    interno 3/5: train=60 retenido=15 (val_auc=0.6857)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 5/5: train=60 retenido=15 (val_auc=1.0000)
+  Fold 46: train=77
+    interno 1/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 2/5: train=60 retenido=17 (val_auc=0.5667)
+    interno 3/5: train=64 retenido=13 (val_auc=0.7500)
+    interno 4/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8889)
+  Fold 47: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.9333)
+    interno 2/5: train=58 retenido=17 (val_auc=0.8000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7407)
+    interno 4/5: train=60 retenido=15 (val_auc=0.5714)
+    interno 5/5: train=61 retenido=14 (val_auc=1.0000)
+  Fold 48: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.7917)
+    interno 2/5: train=59 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=16 (val_auc=0.8667)
+    interno 4/5: train=62 retenido=14 (val_auc=0.8222)
+    interno 5/5: train=61 retenido=15 (val_auc=0.8000)
+  Fold 49: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.9722)
+    interno 2/5: train=64 retenido=13 (val_auc=0.8857)
+    interno 3/5: train=60 retenido=17 (val_auc=0.8000)
+    interno 4/5: train=62 retenido=15 (val_auc=0.7667)
+    interno 5/5: train=59 retenido=18 (val_auc=0.8571)
+
+✅ Features out-of-fold generadas para 50/50 folds (0 omitidos).
+[Sun Aug 16 12:57:26 CEST 2026] ✓ ctranspath — 15 min, 50/50 folds
+
+╔════════════════════════════════════════════════════════════════════════╗
+║ uni_v2
+╚════════════════════════════════════════════════════════════════════════╝
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+Meta-features out-of-fold: uni_v2
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 1536, clases: 2
+  Folds externos: 50/50, folds internos: 5
+  Salida: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/uni_v2_20x_224px_0px_overlap_train_eval_oof5/val_outputs_oof5/
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Cargando features:   0%|          | 0/112 [00:00<?, ?it/s]Cargando features:   1%|          | 1/112 [00:00<00:29,  3.81it/s]Cargando features:   2%|▏         | 2/112 [00:00<00:24,  4.48it/s]Cargando features:   3%|▎         | 3/112 [00:00<00:18,  5.81it/s]Cargando features:   4%|▍         | 5/112 [00:00<00:14,  7.57it/s]Cargando features:   5%|▌         | 6/112 [00:01<00:17,  5.97it/s]Cargando features:   6%|▋         | 7/112 [00:01<00:17,  5.95it/s]Cargando features:   7%|▋         | 8/112 [00:01<00:19,  5.46it/s]Cargando features:   8%|▊         | 9/112 [00:02<00:38,  2.68it/s]Cargando features:   9%|▉         | 10/112 [00:02<00:30,  3.37it/s]Cargando features:  10%|▉         | 11/112 [00:02<00:26,  3.88it/s]Cargando features:  11%|█         | 12/112 [00:02<00:24,  4.03it/s]Cargando features:  12%|█▏        | 13/112 [00:02<00:23,  4.27it/s]Cargando features:  12%|█▎        | 14/112 [00:03<00:29,  3.30it/s]Cargando features:  14%|█▍        | 16/112 [00:03<00:19,  4.94it/s]Cargando features:  15%|█▌        | 17/112 [00:03<00:21,  4.40it/s]Cargando features:  16%|█▌        | 18/112 [00:04<00:19,  4.85it/s]Cargando features:  17%|█▋        | 19/112 [00:04<00:24,  3.79it/s]Cargando features:  18%|█▊        | 20/112 [00:04<00:25,  3.61it/s]Cargando features:  19%|█▉        | 21/112 [00:04<00:22,  3.98it/s]Cargando features:  20%|█▉        | 22/112 [00:05<00:25,  3.60it/s]Cargando features:  21%|██        | 23/112 [00:05<00:20,  4.26it/s]Cargando features:  22%|██▏       | 25/112 [00:05<00:17,  5.08it/s]Cargando features:  23%|██▎       | 26/112 [00:05<00:15,  5.70it/s]Cargando features:  24%|██▍       | 27/112 [00:06<00:19,  4.44it/s]Cargando features:  25%|██▌       | 28/112 [00:06<00:23,  3.61it/s]Cargando features:  26%|██▌       | 29/112 [00:06<00:19,  4.32it/s]Cargando features:  27%|██▋       | 30/112 [00:06<00:16,  4.85it/s]Cargando features:  29%|██▊       | 32/112 [00:07<00:14,  5.64it/s]Cargando features:  29%|██▉       | 33/112 [00:07<00:14,  5.56it/s]Cargando features:  30%|███       | 34/112 [00:07<00:16,  4.75it/s]Cargando features:  31%|███▏      | 35/112 [00:08<00:23,  3.34it/s]Cargando features:  32%|███▏      | 36/112 [00:08<00:19,  3.97it/s]Cargando features:  33%|███▎      | 37/112 [00:08<00:19,  3.83it/s]Cargando features:  34%|███▍      | 38/112 [00:09<00:22,  3.23it/s]Cargando features:  35%|███▍      | 39/112 [00:09<00:20,  3.55it/s]Cargando features:  36%|███▌      | 40/112 [00:09<00:20,  3.59it/s]Cargando features:  37%|███▋      | 41/112 [00:09<00:16,  4.26it/s]Cargando features:  38%|███▊      | 42/112 [00:09<00:16,  4.28it/s]Cargando features:  38%|███▊      | 43/112 [00:10<00:15,  4.33it/s]Cargando features:  39%|███▉      | 44/112 [00:10<00:15,  4.30it/s]Cargando features:  40%|████      | 45/112 [00:10<00:16,  4.03it/s]Cargando features:  41%|████      | 46/112 [00:11<00:19,  3.37it/s]Cargando features:  42%|████▏     | 47/112 [00:11<00:22,  2.89it/s]Cargando features:  44%|████▍     | 49/112 [00:12<00:19,  3.26it/s]Cargando features:  45%|████▍     | 50/112 [00:12<00:18,  3.43it/s]Cargando features:  46%|████▌     | 51/112 [00:12<00:14,  4.12it/s]Cargando features:  46%|████▋     | 52/112 [00:12<00:12,  4.72it/s]Cargando features:  47%|████▋     | 53/112 [00:12<00:15,  3.86it/s]Cargando features:  49%|████▉     | 55/112 [00:13<00:11,  4.90it/s]Cargando features:  50%|█████     | 56/112 [00:13<00:10,  5.21it/s]Cargando features:  51%|█████     | 57/112 [00:13<00:09,  5.65it/s]Cargando features:  53%|█████▎    | 59/112 [00:13<00:10,  5.13it/s]Cargando features:  54%|█████▎    | 60/112 [00:14<00:11,  4.36it/s]Cargando features:  54%|█████▍    | 61/112 [00:14<00:11,  4.51it/s]Cargando features:  55%|█████▌    | 62/112 [00:14<00:11,  4.40it/s]Cargando features:  56%|█████▋    | 63/112 [00:15<00:18,  2.66it/s]Cargando features:  57%|█████▋    | 64/112 [00:15<00:15,  3.04it/s]Cargando features:  58%|█████▊    | 65/112 [00:15<00:12,  3.73it/s]Cargando features:  60%|█████▉    | 67/112 [00:15<00:08,  5.15it/s]Cargando features:  61%|██████    | 68/112 [00:16<00:07,  5.78it/s]Cargando features:  62%|██████▎   | 70/112 [00:16<00:06,  6.92it/s]Cargando features:  63%|██████▎   | 71/112 [00:16<00:08,  5.03it/s]Cargando features:  64%|██████▍   | 72/112 [00:16<00:07,  5.05it/s]Cargando features:  65%|██████▌   | 73/112 [00:16<00:06,  5.58it/s]Cargando features:  66%|██████▌   | 74/112 [00:17<00:07,  5.06it/s]Cargando features:  67%|██████▋   | 75/112 [00:18<00:14,  2.55it/s]Cargando features:  68%|██████▊   | 76/112 [00:18<00:12,  2.90it/s]Cargando features:  69%|██████▉   | 77/112 [00:18<00:11,  3.09it/s]Cargando features:  70%|██████▉   | 78/112 [00:18<00:09,  3.53it/s]Cargando features:  71%|███████   | 79/112 [00:19<00:08,  3.83it/s]Cargando features:  71%|███████▏  | 80/112 [00:19<00:08,  3.69it/s]Cargando features:  72%|███████▏  | 81/112 [00:19<00:08,  3.59it/s]Cargando features:  74%|███████▍  | 83/112 [00:19<00:05,  4.91it/s]Cargando features:  75%|███████▌  | 84/112 [00:20<00:06,  4.63it/s]Cargando features:  76%|███████▌  | 85/112 [00:20<00:06,  4.21it/s]Cargando features:  77%|███████▋  | 86/112 [00:20<00:05,  4.88it/s]Cargando features:  79%|███████▊  | 88/112 [00:20<00:03,  6.17it/s]Cargando features:  80%|████████  | 90/112 [00:20<00:03,  7.00it/s]Cargando features:  82%|████████▏ | 92/112 [00:21<00:02,  8.67it/s]Cargando features:  83%|████████▎ | 93/112 [00:21<00:03,  6.20it/s]Cargando features:  84%|████████▍ | 94/112 [00:21<00:03,  5.98it/s]Cargando features:  86%|████████▌ | 96/112 [00:21<00:02,  6.16it/s]Cargando features:  87%|████████▋ | 97/112 [00:22<00:02,  6.59it/s]Cargando features:  88%|████████▊ | 98/112 [00:22<00:03,  4.48it/s]Cargando features:  88%|████████▊ | 99/112 [00:22<00:02,  4.76it/s]Cargando features:  89%|████████▉ | 100/112 [00:22<00:02,  4.85it/s]Cargando features:  90%|█████████ | 101/112 [00:23<00:02,  4.28it/s]Cargando features:  91%|█████████ | 102/112 [00:23<00:02,  4.89it/s]Cargando features:  92%|█████████▏| 103/112 [00:23<00:01,  4.66it/s]Cargando features:  94%|█████████▍| 105/112 [00:23<00:01,  6.21it/s]Cargando features:  95%|█████████▍| 106/112 [00:24<00:01,  4.93it/s]Cargando features:  96%|█████████▌| 107/112 [00:24<00:01,  4.43it/s]Cargando features:  96%|█████████▋| 108/112 [00:24<00:00,  4.90it/s]Cargando features:  97%|█████████▋| 109/112 [00:24<00:00,  4.26it/s]Cargando features:  98%|█████████▊| 110/112 [00:25<00:00,  3.74it/s]Cargando features:  99%|█████████▉| 111/112 [00:26<00:00,  2.07it/s]Cargando features: 100%|██████████| 112/112 [00:26<00:00,  2.12it/s]Cargando features: 100%|██████████| 112/112 [00:26<00:00,  4.21it/s]
+  Fold 0: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9333)
+    interno 2/5: train=61 retenido=14 (val_auc=0.6667)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8571)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7000)
+  Fold 1: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.7857)
+    interno 2/5: train=61 retenido=15 (val_auc=0.8000)
+    interno 3/5: train=62 retenido=14 (val_auc=0.5238)
+    interno 4/5: train=59 retenido=17 (val_auc=0.9714)
+    interno 5/5: train=60 retenido=16 (val_auc=0.6857)
+  Fold 2: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=0.9375)
+    interno 2/5: train=60 retenido=16 (val_auc=0.9630)
+    interno 3/5: train=59 retenido=17 (val_auc=0.6667)
+    interno 4/5: train=60 retenido=16 (val_auc=0.9000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8222)
+  Fold 3: train=76
+    interno 1/5: train=58 retenido=18 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=13 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=16 (val_auc=0.9667)
+    interno 4/5: train=61 retenido=15 (val_auc=0.9333)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9167)
+  Fold 4: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9062)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=15 (val_auc=0.9375)
+    interno 4/5: train=62 retenido=15 (val_auc=0.8810)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8750)
+  Fold 5: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9750)
+    interno 2/5: train=61 retenido=15 (val_auc=0.6667)
+    interno 3/5: train=60 retenido=16 (val_auc=0.5278)
+    interno 4/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8000)
+  Fold 6: train=74
+    interno 1/5: train=60 retenido=14 (val_auc=0.8286)
+    interno 2/5: train=59 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=60 retenido=14 (val_auc=0.8750)
+    interno 4/5: train=58 retenido=16 (val_auc=0.9667)
+    interno 5/5: train=59 retenido=15 (val_auc=0.7857)
+  Fold 7: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.8980)
+    interno 2/5: train=63 retenido=15 (val_auc=0.8000)
+    interno 3/5: train=62 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=62 retenido=16 (val_auc=0.9500)
+    interno 5/5: train=63 retenido=15 (val_auc=0.5556)
+  Fold 8: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.7812)
+    interno 2/5: train=60 retenido=17 (val_auc=0.5000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=61 retenido=16 (val_auc=0.4762)
+    interno 5/5: train=63 retenido=14 (val_auc=0.8788)
+  Fold 9: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9444)
+    interno 2/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8889)
+    interno 4/5: train=62 retenido=15 (val_auc=0.7917)
+    interno 5/5: train=60 retenido=17 (val_auc=0.8333)
+  Fold 10: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.6389)
+    interno 2/5: train=59 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.5429)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8148)
+    interno 5/5: train=60 retenido=15 (val_auc=0.9333)
+  Fold 11: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8611)
+    interno 2/5: train=60 retenido=14 (val_auc=0.9500)
+    interno 3/5: train=60 retenido=14 (val_auc=0.9333)
+    interno 4/5: train=60 retenido=14 (val_auc=0.8148)
+    interno 5/5: train=57 retenido=17 (val_auc=1.0000)
+  Fold 12: train=76
+    interno 1/5: train=60 retenido=16 (val_auc=0.9375)
+    interno 2/5: train=62 retenido=14 (val_auc=0.6296)
+    interno 3/5: train=62 retenido=14 (val_auc=0.5556)
+    interno 4/5: train=59 retenido=17 (val_auc=0.7500)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9333)
+  Fold 13: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9143)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.9667)
+    interno 5/5: train=59 retenido=16 (val_auc=0.6333)
+  Fold 14: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.6905)
+    interno 2/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=15 (val_auc=0.7955)
+    interno 4/5: train=59 retenido=18 (val_auc=0.8333)
+    interno 5/5: train=62 retenido=15 (val_auc=0.7778)
+  Fold 15: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 3/5: train=61 retenido=15 (val_auc=0.8333)
+    interno 4/5: train=59 retenido=17 (val_auc=0.8438)
+    interno 5/5: train=62 retenido=14 (val_auc=1.0000)
+  Fold 16: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8333)
+    interno 2/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8125)
+    interno 4/5: train=64 retenido=13 (val_auc=0.9722)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9524)
+  Fold 17: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.5667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.7750)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 5/5: train=61 retenido=14 (val_auc=0.5536)
+  Fold 18: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.6667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 3/5: train=59 retenido=16 (val_auc=0.7812)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8286)
+    interno 5/5: train=61 retenido=14 (val_auc=0.1818)
+  Fold 19: train=73
+    interno 1/5: train=59 retenido=14 (val_auc=0.7500)
+    interno 2/5: train=59 retenido=14 (val_auc=0.8000)
+    interno 3/5: train=58 retenido=15 (val_auc=0.7857)
+    interno 4/5: train=59 retenido=14 (val_auc=0.7778)
+    interno 5/5: train=57 retenido=16 (val_auc=0.8571)
+  Fold 20: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=0.7857)
+    interno 2/5: train=60 retenido=16 (val_auc=0.6500)
+    interno 3/5: train=61 retenido=15 (val_auc=0.7619)
+    interno 4/5: train=60 retenido=16 (val_auc=0.4286)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7857)
+  Fold 21: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.7333)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9714)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8571)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8810)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8667)
+  Fold 22: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8250)
+    interno 2/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.8000)
+    interno 4/5: train=60 retenido=14 (val_auc=0.9444)
+    interno 5/5: train=58 retenido=16 (val_auc=1.0000)
+  Fold 23: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7111)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8125)
+    interno 5/5: train=60 retenido=15 (val_auc=0.5833)
+  Fold 24: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.8000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.8250)
+    interno 3/5: train=62 retenido=14 (val_auc=0.8500)
+    interno 4/5: train=61 retenido=15 (val_auc=0.7143)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7500)
+  Fold 25: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=14 (val_auc=0.7619)
+    interno 3/5: train=64 retenido=13 (val_auc=0.8571)
+    interno 4/5: train=59 retenido=18 (val_auc=0.9722)
+    interno 5/5: train=61 retenido=16 (val_auc=0.9375)
+  Fold 26: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 4/5: train=63 retenido=14 (val_auc=0.7812)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8611)
+  Fold 27: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.6500)
+    interno 2/5: train=62 retenido=15 (val_auc=0.8148)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6389)
+    interno 4/5: train=60 retenido=17 (val_auc=0.4722)
+    interno 5/5: train=64 retenido=13 (val_auc=1.0000)
+  Fold 28: train=79
+    interno 1/5: train=62 retenido=17 (val_auc=0.9333)
+    interno 2/5: train=62 retenido=17 (val_auc=0.6944)
+    interno 3/5: train=63 retenido=16 (val_auc=0.7500)
+    interno 4/5: train=65 retenido=14 (val_auc=0.7333)
+    interno 5/5: train=64 retenido=15 (val_auc=0.6667)
+  Fold 29: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.6296)
+    interno 2/5: train=60 retenido=17 (val_auc=0.7500)
+    interno 3/5: train=63 retenido=14 (val_auc=0.8857)
+    interno 4/5: train=61 retenido=16 (val_auc=0.7714)
+    interno 5/5: train=62 retenido=15 (val_auc=1.0000)
+  Fold 30: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.8667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7500)
+    interno 4/5: train=61 retenido=14 (val_auc=0.9333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8000)
+  Fold 31: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.7750)
+    interno 2/5: train=60 retenido=17 (val_auc=0.7500)
+    interno 3/5: train=63 retenido=14 (val_auc=0.8667)
+    interno 4/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 5/5: train=62 retenido=15 (val_auc=0.7333)
+  Fold 32: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.8148)
+    interno 2/5: train=61 retenido=16 (val_auc=0.9111)
+    interno 3/5: train=61 retenido=16 (val_auc=0.9000)
+    interno 4/5: train=62 retenido=15 (val_auc=0.9500)
+    interno 5/5: train=62 retenido=15 (val_auc=0.8810)
+  Fold 33: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8214)
+    interno 2/5: train=59 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.8500)
+    interno 4/5: train=59 retenido=15 (val_auc=0.5000)
+    interno 5/5: train=60 retenido=14 (val_auc=0.8750)
+  Fold 34: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.7143)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9688)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7750)
+    interno 4/5: train=61 retenido=14 (val_auc=0.7381)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8500)
+  Fold 35: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.5333)
+    interno 2/5: train=61 retenido=14 (val_auc=0.9500)
+    interno 3/5: train=58 retenido=17 (val_auc=0.7333)
+    interno 4/5: train=60 retenido=15 (val_auc=0.5714)
+    interno 5/5: train=61 retenido=14 (val_auc=0.9250)
+  Fold 36: train=78
+    interno 1/5: train=63 retenido=15 (val_auc=0.7812)
+    interno 2/5: train=63 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.9333)
+    interno 4/5: train=61 retenido=17 (val_auc=0.7812)
+    interno 5/5: train=63 retenido=15 (val_auc=0.8611)
+  Fold 37: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8571)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8958)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8929)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9167)
+    interno 5/5: train=59 retenido=16 (val_auc=0.6296)
+  Fold 38: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9062)
+    interno 2/5: train=61 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=59 retenido=17 (val_auc=0.8214)
+    interno 4/5: train=61 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8000)
+  Fold 39: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.5714)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8000)
+    interno 3/5: train=58 retenido=17 (val_auc=0.7812)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7667)
+  Fold 40: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=1.0000)
+    interno 2/5: train=64 retenido=13 (val_auc=0.9444)
+    interno 3/5: train=59 retenido=18 (val_auc=0.9167)
+    interno 4/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 5/5: train=60 retenido=17 (val_auc=1.0000)
+  Fold 41: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.7778)
+    interno 2/5: train=60 retenido=14 (val_auc=0.8286)
+    interno 3/5: train=59 retenido=15 (val_auc=0.7619)
+    interno 4/5: train=60 retenido=14 (val_auc=0.9714)
+    interno 5/5: train=58 retenido=16 (val_auc=0.8667)
+  Fold 42: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.8571)
+    interno 2/5: train=62 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=15 (val_auc=0.9167)
+    interno 4/5: train=60 retenido=16 (val_auc=0.8519)
+    interno 5/5: train=59 retenido=17 (val_auc=0.7429)
+  Fold 43: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 2/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 3/5: train=63 retenido=14 (val_auc=0.7000)
+    interno 4/5: train=59 retenido=18 (val_auc=0.5556)
+    interno 5/5: train=63 retenido=14 (val_auc=0.7812)
+  Fold 44: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.8889)
+    interno 2/5: train=62 retenido=16 (val_auc=0.7000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=62 retenido=16 (val_auc=0.8500)
+    interno 5/5: train=64 retenido=14 (val_auc=0.5143)
+  Fold 45: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 3/5: train=60 retenido=15 (val_auc=0.6286)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9333)
+    interno 5/5: train=60 retenido=15 (val_auc=1.0000)
+  Fold 46: train=77
+    interno 1/5: train=60 retenido=17 (val_auc=0.9643)
+    interno 2/5: train=60 retenido=17 (val_auc=0.6667)
+    interno 3/5: train=64 retenido=13 (val_auc=0.8214)
+    interno 4/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8889)
+  Fold 47: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 2/5: train=58 retenido=17 (val_auc=0.9667)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8148)
+    interno 4/5: train=60 retenido=15 (val_auc=0.7857)
+    interno 5/5: train=61 retenido=14 (val_auc=0.8750)
+  Fold 48: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.8333)
+    interno 2/5: train=59 retenido=17 (val_auc=0.8889)
+    interno 3/5: train=60 retenido=16 (val_auc=0.8000)
+    interno 4/5: train=62 retenido=14 (val_auc=0.8000)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9000)
+  Fold 49: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.9722)
+    interno 2/5: train=64 retenido=13 (val_auc=0.9429)
+    interno 3/5: train=60 retenido=17 (val_auc=0.9333)
+    interno 4/5: train=62 retenido=15 (val_auc=0.9000)
+    interno 5/5: train=59 retenido=18 (val_auc=1.0000)
+
+✅ Features out-of-fold generadas para 50/50 folds (0 omitidos).
+[Sun Aug 16 13:28:25 CEST 2026] ✓ uni_v2 — 30 min, 50/50 folds
+
+╔════════════════════════════════════════════════════════════════════════╗
+║ virchow_v1
+╚════════════════════════════════════════════════════════════════════════╝
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+
+============================================================
+Meta-features out-of-fold: virchow_v1
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 2560, clases: 2
+  Folds externos: 50/50, folds internos: 5
+  Salida: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/virchow_v1_20x_224px_0px_overlap_train_eval_oof5/val_outputs_oof5/
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+Cargando features:   0%|          | 0/112 [00:00<?, ?it/s]Cargando features:   1%|          | 1/112 [00:00<00:12,  8.76it/s]Cargando features:   2%|▏         | 2/112 [00:00<00:12,  8.82it/s]Cargando features:   3%|▎         | 3/112 [00:00<00:12,  9.06it/s]Cargando features:   4%|▎         | 4/112 [00:00<00:12,  8.85it/s]Cargando features:   4%|▍         | 5/112 [00:00<00:13,  8.18it/s]Cargando features:   6%|▋         | 7/112 [00:00<00:11,  8.81it/s]Cargando features:   8%|▊         | 9/112 [00:00<00:10,  9.65it/s]Cargando features:  10%|▉         | 11/112 [00:01<00:09, 10.68it/s]Cargando features:  12%|█▏        | 13/112 [00:01<00:09, 10.28it/s]Cargando features:  13%|█▎        | 15/112 [00:01<00:09,  9.79it/s]Cargando features:  14%|█▍        | 16/112 [00:01<00:10,  9.43it/s]Cargando features:  16%|█▌        | 18/112 [00:01<00:08, 10.77it/s]Cargando features:  18%|█▊        | 20/112 [00:02<00:11,  7.79it/s]Cargando features:  19%|█▉        | 21/112 [00:02<00:14,  6.18it/s]Cargando features:  20%|█▉        | 22/112 [00:02<00:17,  5.19it/s]Cargando features:  21%|██▏       | 24/112 [00:03<00:18,  4.73it/s]Cargando features:  23%|██▎       | 26/112 [00:03<00:15,  5.73it/s]Cargando features:  25%|██▌       | 28/112 [00:03<00:12,  6.87it/s]Cargando features:  26%|██▌       | 29/112 [00:03<00:11,  7.05it/s]Cargando features:  28%|██▊       | 31/112 [00:04<00:10,  7.88it/s]Cargando features:  29%|██▊       | 32/112 [00:04<00:09,  8.21it/s]Cargando features:  30%|███       | 34/112 [00:04<00:08,  9.32it/s]Cargando features:  32%|███▏      | 36/112 [00:04<00:06, 11.12it/s]Cargando features:  34%|███▍      | 38/112 [00:04<00:06, 12.04it/s]Cargando features:  36%|███▌      | 40/112 [00:05<00:10,  6.59it/s]Cargando features:  38%|███▊      | 42/112 [00:05<00:08,  7.87it/s]Cargando features:  39%|███▉      | 44/112 [00:05<00:09,  6.86it/s]Cargando features:  40%|████      | 45/112 [00:06<00:12,  5.48it/s]Cargando features:  41%|████      | 46/112 [00:06<00:11,  5.96it/s]Cargando features:  42%|████▏     | 47/112 [00:06<00:10,  6.45it/s]Cargando features:  43%|████▎     | 48/112 [00:06<00:09,  6.62it/s]Cargando features:  45%|████▍     | 50/112 [00:06<00:07,  8.40it/s]Cargando features:  46%|████▌     | 51/112 [00:06<00:07,  7.78it/s]Cargando features:  46%|████▋     | 52/112 [00:06<00:08,  6.72it/s]Cargando features:  47%|████▋     | 53/112 [00:06<00:08,  7.29it/s]Cargando features:  48%|████▊     | 54/112 [00:07<00:07,  7.59it/s]Cargando features:  49%|████▉     | 55/112 [00:07<00:07,  7.59it/s]Cargando features:  50%|█████     | 56/112 [00:07<00:06,  8.07it/s]Cargando features:  51%|█████     | 57/112 [00:07<00:07,  7.65it/s]Cargando features:  53%|█████▎    | 59/112 [00:07<00:06,  8.36it/s]Cargando features:  54%|█████▍    | 61/112 [00:07<00:05,  8.93it/s]Cargando features:  55%|█████▌    | 62/112 [00:08<00:05,  8.87it/s]Cargando features:  57%|█████▋    | 64/112 [00:08<00:04, 10.27it/s]Cargando features:  59%|█████▉    | 66/112 [00:08<00:04,  9.67it/s]Cargando features:  60%|█████▉    | 67/112 [00:08<00:04,  9.04it/s]Cargando features:  62%|██████▏   | 69/112 [00:08<00:04,  9.97it/s]Cargando features:  63%|██████▎   | 71/112 [00:09<00:05,  7.52it/s]Cargando features:  65%|██████▌   | 73/112 [00:09<00:04,  9.16it/s]Cargando features:  67%|██████▋   | 75/112 [00:09<00:03, 10.08it/s]Cargando features:  69%|██████▉   | 77/112 [00:09<00:03,  9.21it/s]Cargando features:  71%|███████   | 79/112 [00:09<00:03,  8.91it/s]Cargando features:  71%|███████▏  | 80/112 [00:09<00:03,  8.89it/s]Cargando features:  73%|███████▎  | 82/112 [00:10<00:02, 10.72it/s]Cargando features:  75%|███████▌  | 84/112 [00:10<00:02, 11.02it/s]Cargando features:  77%|███████▋  | 86/112 [00:10<00:02,  9.97it/s]Cargando features:  79%|███████▊  | 88/112 [00:10<00:02,  9.71it/s]Cargando features:  80%|████████  | 90/112 [00:10<00:01, 11.52it/s]Cargando features:  82%|████████▏ | 92/112 [00:11<00:01, 10.38it/s]Cargando features:  84%|████████▍ | 94/112 [00:11<00:01, 11.54it/s]Cargando features:  86%|████████▌ | 96/112 [00:11<00:01, 11.84it/s]Cargando features:  88%|████████▊ | 98/112 [00:11<00:01,  8.35it/s]Cargando features:  89%|████████▉ | 100/112 [00:11<00:01,  9.04it/s]Cargando features:  91%|█████████ | 102/112 [00:12<00:01,  8.29it/s]Cargando features:  93%|█████████▎| 104/112 [00:12<00:00,  9.34it/s]Cargando features:  95%|█████████▍| 106/112 [00:12<00:00,  8.56it/s]Cargando features:  96%|█████████▋| 108/112 [00:12<00:00,  8.95it/s]Cargando features:  98%|█████████▊| 110/112 [00:13<00:00,  9.63it/s]Cargando features: 100%|██████████| 112/112 [00:13<00:00,  9.96it/s]Cargando features: 100%|██████████| 112/112 [00:13<00:00,  8.48it/s]
+  Fold 0: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9000)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8333)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8214)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7667)
+  Fold 1: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9524)
+    interno 2/5: train=61 retenido=15 (val_auc=0.7500)
+    interno 3/5: train=62 retenido=14 (val_auc=0.6905)
+    interno 4/5: train=59 retenido=17 (val_auc=0.9143)
+    interno 5/5: train=60 retenido=16 (val_auc=0.6286)
+  Fold 2: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=1.0000)
+    interno 2/5: train=60 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=17 (val_auc=0.7778)
+    interno 4/5: train=60 retenido=16 (val_auc=0.9333)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8667)
+  Fold 3: train=76
+    interno 1/5: train=58 retenido=18 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=13 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=16 (val_auc=0.9000)
+    interno 4/5: train=61 retenido=15 (val_auc=0.9667)
+    interno 5/5: train=62 retenido=14 (val_auc=1.0000)
+  Fold 4: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7812)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=15 (val_auc=0.8750)
+    interno 4/5: train=62 retenido=15 (val_auc=0.8571)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8750)
+  Fold 5: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9750)
+    interno 2/5: train=61 retenido=15 (val_auc=0.7037)
+    interno 3/5: train=60 retenido=16 (val_auc=0.4722)
+    interno 4/5: train=60 retenido=16 (val_auc=0.4762)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9000)
+  Fold 6: train=74
+    interno 1/5: train=60 retenido=14 (val_auc=0.8286)
+    interno 2/5: train=59 retenido=15 (val_auc=0.7812)
+    interno 3/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 4/5: train=58 retenido=16 (val_auc=1.0000)
+    interno 5/5: train=59 retenido=15 (val_auc=0.8810)
+  Fold 7: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.8571)
+    interno 2/5: train=63 retenido=15 (val_auc=0.8000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.9583)
+    interno 4/5: train=62 retenido=16 (val_auc=0.7750)
+    interno 5/5: train=63 retenido=15 (val_auc=0.6296)
+  Fold 8: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.7500)
+    interno 2/5: train=60 retenido=17 (val_auc=0.9167)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8056)
+    interno 4/5: train=61 retenido=16 (val_auc=0.4762)
+    interno 5/5: train=63 retenido=14 (val_auc=0.7273)
+  Fold 9: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7222)
+    interno 2/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6389)
+    interno 4/5: train=62 retenido=15 (val_auc=0.8542)
+    interno 5/5: train=60 retenido=17 (val_auc=0.8095)
+  Fold 10: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8889)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9500)
+    interno 3/5: train=61 retenido=14 (val_auc=0.6286)
+    interno 4/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8667)
+  Fold 11: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8889)
+    interno 2/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=14 (val_auc=0.8667)
+    interno 4/5: train=60 retenido=14 (val_auc=0.9259)
+    interno 5/5: train=57 retenido=17 (val_auc=0.8889)
+  Fold 12: train=76
+    interno 1/5: train=60 retenido=16 (val_auc=0.9688)
+    interno 2/5: train=62 retenido=14 (val_auc=0.6667)
+    interno 3/5: train=62 retenido=14 (val_auc=0.5000)
+    interno 4/5: train=59 retenido=17 (val_auc=0.6875)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9667)
+  Fold 13: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.8333)
+    interno 2/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.9250)
+    interno 4/5: train=59 retenido=16 (val_auc=0.9000)
+    interno 5/5: train=59 retenido=16 (val_auc=0.6667)
+  Fold 14: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.6667)
+    interno 2/5: train=63 retenido=14 (val_auc=0.8889)
+    interno 3/5: train=62 retenido=15 (val_auc=0.7273)
+    interno 4/5: train=59 retenido=18 (val_auc=0.8333)
+    interno 5/5: train=62 retenido=15 (val_auc=0.6111)
+  Fold 15: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.8000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.5556)
+    interno 3/5: train=61 retenido=15 (val_auc=0.7917)
+    interno 4/5: train=59 retenido=17 (val_auc=0.9688)
+    interno 5/5: train=62 retenido=14 (val_auc=1.0000)
+  Fold 16: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9167)
+    interno 2/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.9375)
+    interno 4/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9762)
+  Fold 17: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.6667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9722)
+    interno 5/5: train=61 retenido=14 (val_auc=0.7143)
+  Fold 18: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.7667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 3/5: train=59 retenido=16 (val_auc=0.8750)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8286)
+    interno 5/5: train=61 retenido=14 (val_auc=0.4545)
+  Fold 19: train=73
+    interno 1/5: train=59 retenido=14 (val_auc=0.6875)
+    interno 2/5: train=59 retenido=14 (val_auc=0.7714)
+    interno 3/5: train=58 retenido=15 (val_auc=0.9286)
+    interno 4/5: train=59 retenido=14 (val_auc=0.8889)
+    interno 5/5: train=57 retenido=16 (val_auc=0.9524)
+  Fold 20: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=0.8095)
+    interno 2/5: train=60 retenido=16 (val_auc=0.7000)
+    interno 3/5: train=61 retenido=15 (val_auc=0.7381)
+    interno 4/5: train=60 retenido=16 (val_auc=0.6000)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7143)
+  Fold 21: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.8889)
+    interno 2/5: train=59 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=15 (val_auc=0.9286)
+    interno 4/5: train=61 retenido=14 (val_auc=0.9048)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7000)
+  Fold 22: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8500)
+    interno 2/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.8000)
+    interno 4/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=58 retenido=16 (val_auc=1.0000)
+  Fold 23: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.9667)
+    interno 2/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7111)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8750)
+    interno 5/5: train=60 retenido=15 (val_auc=0.7778)
+  Fold 24: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9250)
+    interno 2/5: train=60 retenido=16 (val_auc=0.7500)
+    interno 3/5: train=62 retenido=14 (val_auc=0.9250)
+    interno 4/5: train=61 retenido=15 (val_auc=0.7619)
+    interno 5/5: train=60 retenido=16 (val_auc=0.6000)
+  Fold 25: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8636)
+    interno 2/5: train=63 retenido=14 (val_auc=0.7619)
+    interno 3/5: train=64 retenido=13 (val_auc=0.8810)
+    interno 4/5: train=59 retenido=18 (val_auc=0.6944)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8333)
+  Fold 26: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8333)
+    interno 4/5: train=63 retenido=14 (val_auc=0.7812)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8056)
+  Fold 27: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8750)
+    interno 2/5: train=62 retenido=15 (val_auc=0.8519)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7222)
+    interno 4/5: train=60 retenido=17 (val_auc=0.4722)
+    interno 5/5: train=64 retenido=13 (val_auc=0.8333)
+  Fold 28: train=79
+    interno 1/5: train=62 retenido=17 (val_auc=0.9333)
+    interno 2/5: train=62 retenido=17 (val_auc=0.7778)
+    interno 3/5: train=63 retenido=16 (val_auc=0.8000)
+    interno 4/5: train=65 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=64 retenido=15 (val_auc=0.6667)
+  Fold 29: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.7037)
+    interno 2/5: train=60 retenido=17 (val_auc=0.7083)
+    interno 3/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=16 (val_auc=0.8571)
+    interno 5/5: train=62 retenido=15 (val_auc=1.0000)
+  Fold 30: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.8667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8929)
+    interno 4/5: train=61 retenido=14 (val_auc=0.9667)
+    interno 5/5: train=59 retenido=16 (val_auc=1.0000)
+  Fold 31: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.9000)
+    interno 2/5: train=60 retenido=17 (val_auc=0.8125)
+    interno 3/5: train=63 retenido=14 (val_auc=0.9667)
+    interno 4/5: train=61 retenido=16 (val_auc=0.9062)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9000)
+  Fold 32: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.7037)
+    interno 2/5: train=61 retenido=16 (val_auc=0.9556)
+    interno 3/5: train=61 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=15 (val_auc=0.8571)
+  Fold 33: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.6786)
+    interno 2/5: train=59 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.9000)
+    interno 4/5: train=59 retenido=15 (val_auc=0.7500)
+    interno 5/5: train=60 retenido=14 (val_auc=0.8750)
+  Fold 34: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.7714)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9062)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8250)
+    interno 4/5: train=61 retenido=14 (val_auc=0.7619)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8750)
+  Fold 35: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.5667)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 3/5: train=58 retenido=17 (val_auc=0.7333)
+    interno 4/5: train=60 retenido=15 (val_auc=0.7143)
+    interno 5/5: train=61 retenido=14 (val_auc=0.9500)
+  Fold 36: train=78
+    interno 1/5: train=63 retenido=15 (val_auc=0.8125)
+    interno 2/5: train=63 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.9667)
+    interno 4/5: train=61 retenido=17 (val_auc=0.8750)
+    interno 5/5: train=63 retenido=15 (val_auc=0.8611)
+  Fold 37: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8857)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 3/5: train=60 retenido=15 (val_auc=0.7857)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8889)
+    interno 5/5: train=59 retenido=16 (val_auc=0.4074)
+  Fold 38: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.8438)
+    interno 2/5: train=61 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=59 retenido=17 (val_auc=0.9643)
+    interno 4/5: train=61 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9250)
+  Fold 39: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.7714)
+    interno 2/5: train=61 retenido=14 (val_auc=0.7500)
+    interno 3/5: train=58 retenido=17 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8000)
+  Fold 40: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9630)
+    interno 2/5: train=64 retenido=13 (val_auc=0.9444)
+    interno 3/5: train=59 retenido=18 (val_auc=0.8056)
+    interno 4/5: train=64 retenido=13 (val_auc=0.9444)
+    interno 5/5: train=60 retenido=17 (val_auc=1.0000)
+  Fold 41: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8889)
+    interno 2/5: train=60 retenido=14 (val_auc=0.8000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.5952)
+    interno 4/5: train=60 retenido=14 (val_auc=0.8571)
+    interno 5/5: train=58 retenido=16 (val_auc=0.8667)
+  Fold 42: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9643)
+    interno 2/5: train=62 retenido=14 (val_auc=0.9286)
+    interno 3/5: train=61 retenido=15 (val_auc=0.8611)
+    interno 4/5: train=60 retenido=16 (val_auc=0.8889)
+    interno 5/5: train=59 retenido=17 (val_auc=0.7429)
+  Fold 43: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 2/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 3/5: train=63 retenido=14 (val_auc=0.4750)
+    interno 4/5: train=59 retenido=18 (val_auc=0.4444)
+    interno 5/5: train=63 retenido=14 (val_auc=0.9688)
+  Fold 44: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.7778)
+    interno 2/5: train=62 retenido=16 (val_auc=0.8000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=62 retenido=16 (val_auc=0.7000)
+    interno 5/5: train=64 retenido=14 (val_auc=0.5714)
+  Fold 45: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9444)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 5/5: train=60 retenido=15 (val_auc=1.0000)
+  Fold 46: train=77
+    interno 1/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 2/5: train=60 retenido=17 (val_auc=0.5667)
+    interno 3/5: train=64 retenido=13 (val_auc=0.7500)
+    interno 4/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8889)
+  Fold 47: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.7333)
+    interno 2/5: train=58 retenido=17 (val_auc=0.9333)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7037)
+    interno 4/5: train=60 retenido=15 (val_auc=0.6786)
+    interno 5/5: train=61 retenido=14 (val_auc=0.7500)
+  Fold 48: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9583)
+    interno 2/5: train=59 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=16 (val_auc=0.9000)
+    interno 4/5: train=62 retenido=14 (val_auc=0.8667)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9750)
+  Fold 49: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.9722)
+    interno 2/5: train=64 retenido=13 (val_auc=0.8857)
+    interno 3/5: train=60 retenido=17 (val_auc=0.7667)
+    interno 4/5: train=62 retenido=15 (val_auc=0.9000)
+    interno 5/5: train=59 retenido=18 (val_auc=0.9286)
+
+✅ Features out-of-fold generadas para 50/50 folds (0 omitidos).
+[Sun Aug 16 14:03:30 CEST 2026] ✓ virchow_v1 — 35 min, 50/50 folds
+
+╔════════════════════════════════════════════════════════════════════════╗
+║ VERIFICACIÓN: caída de AUC in-sample -> out-of-fold
+╚════════════════════════════════════════════════════════════════════════╝
+
+modelo           in-sample   out-of-fold     test    caída
+------------------------------------------------------------
+ctranspath          0.9436        0.7303   0.7948  +0.2133   (50 folds)
+uni_v2              0.9340        0.7225   0.7658  +0.2115   (50 folds)
+virchow_v1          0.9259        0.6778   0.7639  +0.2482   (50 folds)
+
+✓ Las features out-of-fold ya no son optimistas. Fase 2 puede continuar.
+
+============================================================================
+RESUMEN — cptac_brca / TP53_mutation
+============================================================================
+Duración total: 1 h 21 min
+
+  ctranspath: 50/50 folds
+  uni_v2: 50/50 folds
+  virchow_v1: 50/50 folds
+
+✓ TODO CORRECTO
+
+Siguiente paso:
+  DATASET=cptac_brca TASK=TP53_mutation sbatch run_3_experiments_v2_improved.sbatch
+
+Fin: Sun Aug 16 14:03:44 CEST 2026
+============================================================================

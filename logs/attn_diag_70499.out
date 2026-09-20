@@ -1,0 +1,39 @@
+Job 70499 en gpu07 — Sun Aug 30 22:59:25 CEST 2026
+====================================================================================================
+DIAGNÓSTICO DE ATENCIÓN — ¿por qué unos modelos atienden y otros no?
+====================================================================================================
+cptac_brca/TP53_mutation · fold 0 · 25 slides · cpu
+
+  ✓ ctranspath   in_dim=768   entropía=0.9282
+  ✓ uni_v2       in_dim=1536  entropía=0.9942
+  ✓ conch_v1_5   in_dim=768   entropía=0.8879
+  ✓ virchow_v1   in_dim=2560  entropía=0.9993
+  ✓ uni_v1       in_dim=1024  entropía=0.9974
+  ✓ phikon_v2    in_dim=1024  entropía=0.9764
+  ✓ hoptimus1    in_dim=1536  entropía=0.9279
+  ✓ virchow2     in_dim=2560  entropía=0.9981
+
+====================================================================================================
+modelo        in_dim  compr.  parches  entropía       ±  ess_norm  logit_sd  cos_var_raw  cos_var_proj
+----------------------------------------------------------------------------------------------------
+ctranspath       768     1.5x    3719    0.9282  0.0379    0.3886    0.9797      0.01610       0.01057
+conch_v1_5       768     1.5x    3719    0.8879  0.0305    0.2227    1.2856      0.01207       0.00703
+uni_v1          1024     2.0x    6582    0.9974  0.0017    0.9577    0.2009      0.02171       0.01284
+phikon_v2       1024     2.0x    6582    0.9764  0.0133    0.7029    0.6196      0.03171       0.02254
+uni_v2          1536     3.0x    6582    0.9942  0.0024    0.9065    0.3000      0.02770       0.01821
+hoptimus1       1536     3.0x    6582    0.9279  0.0586    0.3827    0.8277      0.03641       0.01360
+virchow_v1      2560     5.0x    3719    0.9993  0.0005    0.9889    0.1013      0.02594       0.00121
+virchow2        2560     5.0x    6582    0.9981  0.0007    0.9689    0.1755      0.04538       0.00669
+----------------------------------------------------------------------------------------------------
+
+HIPÓTESIS A — ¿la entropía crece con la dimensión de entrada?
+  Pearson  in_dim vs entropía : r=+0.603  p=0.113
+  Spearman in_dim vs entropía : ρ=+0.732  p=0.039
+
+HIPÓTESIS B — ¿o crece con el número de parches?
+  Pearson  parches vs entropía: r=+0.485  p=0.223
+
+  (n=8 modelos: la correlación es orientativa, no un test)
+
+✅ results_attention_diagnostics_cptac_brca_TP53_mutation.json
+✅ Sun Aug 30 23:00:44 CEST 2026

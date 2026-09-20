@@ -1,0 +1,307 @@
+============================================================================
+PRE-FLIGHT CHECKS — cptac_brca / TP53_mutation
+============================================================================
+✓ All base models available
+
+============================================================================
+TESTING: SVM with norm_ratio (baseline) vs auc_based (FIXED) — cptac_brca / TP53_mutation
+============================================================================
+Start time: Wed Aug 19 14:21:21 CEST 2026
+Base models: ctranspath uni_v2 virchow_v1
+============================================================================
+
+╔════════════════════════════════════════════════════════════════════════╗
+║ svm_norm_ratio (reweight_method=norm_ratio)
+╚════════════════════════════════════════════════════════════════════════╝
+
+
+Evaluating ensemble with meta-model: svm
+Results will be saved to: .../ensemble4_svm_nr_fixed/
+  0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   2%|▏         | 1/50 [00:00<00:31,  1.54fold/s]Evaluating fold 2/50:   2%|▏         | 1/50 [00:00<00:31,  1.54fold/s]Evaluating fold 2/50:   4%|▍         | 2/50 [00:01<00:23,  2.02fold/s]Evaluating fold 3/50:   4%|▍         | 2/50 [00:01<00:23,  2.02fold/s]Evaluating fold 3/50:   6%|▌         | 3/50 [00:01<00:18,  2.52fold/s]Evaluating fold 4/50:   6%|▌         | 3/50 [00:01<00:18,  2.52fold/s]Evaluating fold 4/50:   8%|▊         | 4/50 [00:01<00:15,  2.91fold/s]Evaluating fold 5/50:   8%|▊         | 4/50 [00:01<00:15,  2.91fold/s]Evaluating fold 5/50:  10%|█         | 5/50 [00:01<00:15,  2.86fold/s]Evaluating fold 6/50:  10%|█         | 5/50 [00:01<00:15,  2.86fold/s]Evaluating fold 6/50:  12%|█▏        | 6/50 [00:02<00:15,  2.77fold/s]Evaluating fold 7/50:  12%|█▏        | 6/50 [00:02<00:15,  2.77fold/s]Evaluating fold 7/50:  14%|█▍        | 7/50 [00:02<00:14,  3.01fold/s]Evaluating fold 8/50:  14%|█▍        | 7/50 [00:02<00:14,  3.01fold/s]Evaluating fold 8/50:  16%|█▌        | 8/50 [00:02<00:13,  3.18fold/s]Evaluating fold 9/50:  16%|█▌        | 8/50 [00:02<00:13,  3.18fold/s]Evaluating fold 9/50:  18%|█▊        | 9/50 [00:03<00:12,  3.40fold/s]Evaluating fold 10/50:  18%|█▊        | 9/50 [00:03<00:12,  3.40fold/s]Evaluating fold 10/50:  20%|██        | 10/50 [00:03<00:13,  2.86fold/s]Evaluating fold 11/50:  20%|██        | 10/50 [00:03<00:13,  2.86fold/s]Evaluating fold 11/50:  22%|██▏       | 11/50 [00:03<00:12,  3.01fold/s]Evaluating fold 12/50:  22%|██▏       | 11/50 [00:03<00:12,  3.01fold/s]Evaluating fold 12/50:  24%|██▍       | 12/50 [00:04<00:11,  3.21fold/s]Evaluating fold 13/50:  24%|██▍       | 12/50 [00:04<00:11,  3.21fold/s]Evaluating fold 13/50:  26%|██▌       | 13/50 [00:04<00:11,  3.11fold/s]Evaluating fold 14/50:  26%|██▌       | 13/50 [00:04<00:11,  3.11fold/s]Evaluating fold 14/50:  28%|██▊       | 14/50 [00:04<00:11,  3.09fold/s]Evaluating fold 15/50:  28%|██▊       | 14/50 [00:04<00:11,  3.09fold/s]Evaluating fold 15/50:  30%|███       | 15/50 [00:05<00:11,  2.97fold/s]Evaluating fold 16/50:  30%|███       | 15/50 [00:05<00:11,  2.97fold/s]Evaluating fold 16/50:  32%|███▏      | 16/50 [00:05<00:10,  3.25fold/s]Evaluating fold 17/50:  32%|███▏      | 16/50 [00:05<00:10,  3.25fold/s]Evaluating fold 17/50:  34%|███▍      | 17/50 [00:05<00:10,  3.18fold/s]Evaluating fold 18/50:  34%|███▍      | 17/50 [00:05<00:10,  3.18fold/s]Evaluating fold 18/50:  36%|███▌      | 18/50 [00:06<00:09,  3.25fold/s]Evaluating fold 19/50:  36%|███▌      | 18/50 [00:06<00:09,  3.25fold/s]Evaluating fold 19/50:  38%|███▊      | 19/50 [00:06<00:09,  3.27fold/s]Evaluating fold 20/50:  38%|███▊      | 19/50 [00:06<00:09,  3.27fold/s]Evaluating fold 20/50:  40%|████      | 20/50 [00:06<00:10,  2.95fold/s]Evaluating fold 21/50:  40%|████      | 20/50 [00:06<00:10,  2.95fold/s]Evaluating fold 21/50:  42%|████▏     | 21/50 [00:07<00:08,  3.26fold/s]Evaluating fold 22/50:  42%|████▏     | 21/50 [00:07<00:08,  3.26fold/s]Evaluating fold 22/50:  44%|████▍     | 22/50 [00:07<00:08,  3.25fold/s]Evaluating fold 23/50:  44%|████▍     | 22/50 [00:07<00:08,  3.25fold/s]✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.0081431122412774), 'uni_v2': np.float64(1.4552902686169695), 'virchow_v1': np.float64(0.536566619141753)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.5970680051808323), 'uni_v2': np.float64(0.68423559405056), 'virchow_v1': np.float64(1.7186964007686079)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.6941604009035193), 'uni_v2': np.float64(1.3634304787986253), 'virchow_v1': np.float64(0.9424091202978553)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.5308294993017588), 'uni_v2': np.float64(0.7477078520828441), 'virchow_v1': np.float64(0.7214626486153972)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.8754997275675868), 'uni_v2': np.float64(1.224922558360576), 'virchow_v1': np.float64(0.8995777140718368)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.4888710211725076), 'uni_v2': np.float64(1.0142576821150147), 'virchow_v1': np.float64(0.496871296712478)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.0858873899945145), 'uni_v2': np.float64(1.0258325362107743), 'virchow_v1': np.float64(0.8882800737947111)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.0165600304611602), 'uni_v2': np.float64(0.38309574235745575), 'virchow_v1': np.float64(1.6003442271813841)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.4764136983038951), 'uni_v2': np.float64(0.933852527196989), 'virchow_v1': np.float64(0.5897337744991159)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.1840366545670324), 'uni_v2': np.float64(0.7120037022596778), 'virchow_v1': np.float64(0.10395964317329003)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.7612280412077802), 'uni_v2': np.float64(1.5278991924929781), 'virchow_v1': np.float64(0.7108727662992416)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.0098416058337507), 'uni_v2': np.float64(1.2052177345037582), 'virchow_v1': np.float64(0.7849406596624912)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.5872268551916817), 'uni_v2': np.float64(1.2910680072284233), 'virchow_v1': np.float64(0.12170513757989512)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.9286663537809576), 'uni_v2': np.float64(1.3000752894828165), 'virchow_v1': np.float64(0.7712583567362259)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.015948461342817), 'uni_v2': np.float64(0.8752929538517956), 'virchow_v1': np.float64(0.10875858480538698)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.4146398809281935), 'uni_v2': np.float64(0.8134299146513783), 'virchow_v1': np.float64(0.7719302044204285)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.7557461637629067), 'uni_v2': np.float64(0.8987427503936213), 'virchow_v1': np.float64(1.345511085843472)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.3538081708984917), 'uni_v2': np.float64(1.0319316974982626), 'virchow_v1': np.float64(0.6142601316032453)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.7555356357959604), 'uni_v2': np.float64(0.33868077411208297), 'virchow_v1': np.float64(0.9057835900919567)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.6352668212277527), 'uni_v2': np.float64(1.73078562598366), 'virchow_v1': np.float64(0.6339475527885868)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.9975263137232996), 'uni_v2': np.float64(0.25896159828831317), 'virchow_v1': np.float64(1.743512087988387)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.4984104225605834), 'uni_v2': np.float64(0.886724059469744), 'virchow_v1': np.float64(0.6148655179696726)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.241612785960671), 'uni_v2': np.float64(0.2836520714952274), 'virchow_v1': np.float64(1.474735142544102)}
+Evaluating fold 23/50:  46%|████▌     | 23/50 [00:07<00:08,  3.35fold/s]Evaluating fold 24/50:  46%|████▌     | 23/50 [00:07<00:08,  3.35fold/s]Evaluating fold 24/50:  48%|████▊     | 24/50 [00:07<00:08,  3.11fold/s]Evaluating fold 25/50:  48%|████▊     | 24/50 [00:07<00:08,  3.11fold/s]Evaluating fold 25/50:  50%|█████     | 25/50 [00:08<00:08,  3.02fold/s]Evaluating fold 26/50:  50%|█████     | 25/50 [00:08<00:08,  3.02fold/s]Evaluating fold 26/50:  52%|█████▏    | 26/50 [00:08<00:07,  3.25fold/s]Evaluating fold 27/50:  52%|█████▏    | 26/50 [00:08<00:07,  3.25fold/s]Evaluating fold 27/50:  54%|█████▍    | 27/50 [00:08<00:06,  3.54fold/s]Evaluating fold 28/50:  54%|█████▍    | 27/50 [00:08<00:06,  3.54fold/s]Evaluating fold 28/50:  56%|█████▌    | 28/50 [00:09<00:06,  3.41fold/s]Evaluating fold 29/50:  56%|█████▌    | 28/50 [00:09<00:06,  3.41fold/s]Evaluating fold 29/50:  58%|█████▊    | 29/50 [00:09<00:05,  3.58fold/s]Evaluating fold 30/50:  58%|█████▊    | 29/50 [00:09<00:05,  3.58fold/s]Evaluating fold 30/50:  60%|██████    | 30/50 [00:09<00:05,  3.48fold/s]Evaluating fold 31/50:  60%|██████    | 30/50 [00:09<00:05,  3.48fold/s]Evaluating fold 31/50:  62%|██████▏   | 31/50 [00:09<00:05,  3.42fold/s]Evaluating fold 32/50:  62%|██████▏   | 31/50 [00:09<00:05,  3.42fold/s]Evaluating fold 32/50:  64%|██████▍   | 32/50 [00:10<00:05,  3.30fold/s]Evaluating fold 33/50:  64%|██████▍   | 32/50 [00:10<00:05,  3.30fold/s]Evaluating fold 33/50:  66%|██████▌   | 33/50 [00:10<00:04,  3.52fold/s]Evaluating fold 34/50:  66%|██████▌   | 33/50 [00:10<00:04,  3.52fold/s]Evaluating fold 34/50:  68%|██████▊   | 34/50 [00:10<00:04,  3.62fold/s]Evaluating fold 35/50:  68%|██████▊   | 34/50 [00:10<00:04,  3.62fold/s]Evaluating fold 35/50:  70%|███████   | 35/50 [00:11<00:04,  3.66fold/s]Evaluating fold 36/50:  70%|███████   | 35/50 [00:11<00:04,  3.66fold/s]Evaluating fold 36/50:  72%|███████▏  | 36/50 [00:11<00:04,  3.19fold/s]Evaluating fold 37/50:  72%|███████▏  | 36/50 [00:11<00:04,  3.19fold/s]Evaluating fold 37/50:  74%|███████▍  | 37/50 [00:11<00:03,  3.39fold/s]Evaluating fold 38/50:  74%|███████▍  | 37/50 [00:11<00:03,  3.39fold/s]Evaluating fold 38/50:  76%|███████▌  | 38/50 [00:11<00:03,  3.53fold/s]Evaluating fold 39/50:  76%|███████▌  | 38/50 [00:11<00:03,  3.53fold/s]Evaluating fold 39/50:  78%|███████▊  | 39/50 [00:12<00:03,  3.54fold/s]Evaluating fold 40/50:  78%|███████▊  | 39/50 [00:12<00:03,  3.54fold/s]Evaluating fold 40/50:  80%|████████  | 40/50 [00:12<00:03,  3.25fold/s]Evaluating fold 41/50:  80%|████████  | 40/50 [00:12<00:03,  3.25fold/s]Evaluating fold 41/50:  82%|████████▏ | 41/50 [00:12<00:02,  3.44fold/s]Evaluating fold 42/50:  82%|████████▏ | 41/50 [00:12<00:02,  3.44fold/s]Evaluating fold 42/50:  84%|████████▍ | 42/50 [00:13<00:02,  3.67fold/s]Evaluating fold 43/50:  84%|████████▍ | 42/50 [00:13<00:02,  3.67fold/s]Evaluating fold 43/50:  86%|████████▌ | 43/50 [00:13<00:02,  3.36fold/s]Evaluating fold 44/50:  86%|████████▌ | 43/50 [00:13<00:02,  3.36fold/s]Evaluating fold 44/50:  88%|████████▊ | 44/50 [00:13<00:01,  3.24fold/s]Evaluating fold 45/50:  88%|████████▊ | 44/50 [00:13<00:01,  3.24fold/s]Evaluating fold 45/50:  90%|█████████ | 45/50 [00:14<00:01,  3.30fold/s]Evaluating fold 46/50:  90%|█████████ | 45/50 [00:14<00:01,  3.30fold/s]✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.6846645674000288), 'uni_v2': np.float64(1.0546577925421567), 'virchow_v1': np.float64(1.2606776400578146)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.6850578892994725), 'uni_v2': np.float64(1.7283336305970791), 'virchow_v1': np.float64(0.5866084801034488)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.9233994439379154), 'uni_v2': np.float64(1.3065796897535813), 'virchow_v1': np.float64(0.7700208663085034)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.9364525960069735), 'uni_v2': np.float64(1.0907821325183678), 'virchow_v1': np.float64(0.9727652714746584)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.7368699554779337), 'uni_v2': np.float64(0.8525197551556094), 'virchow_v1': np.float64(0.41061028936645694)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.5001751557752757), 'uni_v2': np.float64(0.5008403161315585), 'virchow_v1': np.float64(1.9989845280931657)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.8101599435886486), 'uni_v2': np.float64(0.4569091371130021), 'virchow_v1': np.float64(0.7329309192983491)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.0537023944308146), 'uni_v2': np.float64(0.4017994088770001), 'virchow_v1': np.float64(0.5444981966921852)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.3063098599623577), 'uni_v2': np.float64(1.0227015538393391), 'virchow_v1': np.float64(0.6709885861983034)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.2173785270044655), 'uni_v2': np.float64(1.2751681406487434), 'virchow_v1': np.float64(0.5074533323467907)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.6697545834446679), 'uni_v2': np.float64(1.0059766365394176), 'virchow_v1': np.float64(1.3242687800159145)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.5536558765462958), 'uni_v2': np.float64(2.0893556572301573), 'virchow_v1': np.float64(0.35698846622354724)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.1740676184831111), 'uni_v2': np.float64(0.5398643421085534), 'virchow_v1': np.float64(1.2860680394083355)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.5814880861969687), 'uni_v2': np.float64(0.9915517728375193), 'virchow_v1': np.float64(1.4269601409655117)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.5769769452623663), 'uni_v2': np.float64(0.8313421241309654), 'virchow_v1': np.float64(1.5916809306066686)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.6166008775639956), 'uni_v2': np.float64(0.71577288532201), 'virchow_v1': np.float64(1.6676262371139947)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.9733737270749607), 'uni_v2': np.float64(0.4311171415171633), 'virchow_v1': np.float64(0.5955091314078759)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.7047388498705622), 'uni_v2': np.float64(0.5971701169114383), 'virchow_v1': np.float64(1.6980910332179993)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.7501874060153546), 'uni_v2': np.float64(1.688864393035142), 'virchow_v1': np.float64(0.5609482009495035)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.5047806592322996), 'uni_v2': np.float64(1.4573653900553187), 'virchow_v1': np.float64(0.037853950712381686)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.6369935792857984), 'uni_v2': np.float64(1.1398878458668993), 'virchow_v1': np.float64(0.22311857484730244)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.47103407309199874), 'uni_v2': np.float64(0.9047807054963996), 'virchow_v1': np.float64(1.6241852214116017)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+Evaluating fold 46/50:  92%|█████████▏| 46/50 [00:14<00:01,  3.29fold/s]Evaluating fold 47/50:  92%|█████████▏| 46/50 [00:14<00:01,  3.29fold/s]Evaluating fold 47/50:  94%|█████████▍| 47/50 [00:14<00:00,  3.46fold/s]Evaluating fold 48/50:  94%|█████████▍| 47/50 [00:14<00:00,  3.46fold/s]Evaluating fold 48/50:  96%|█████████▌| 48/50 [00:14<00:00,  3.46fold/s]Evaluating fold 49/50:  96%|█████████▌| 48/50 [00:14<00:00,  3.46fold/s]Evaluating fold 49/50:  98%|█████████▊| 49/50 [00:15<00:00,  3.55fold/s]Evaluating fold 50/50:  98%|█████████▊| 49/50 [00:15<00:00,  3.55fold/s]Evaluating fold 50/50: 100%|██████████| 50/50 [00:15<00:00,  3.70fold/s]Evaluating fold 50/50: 100%|██████████| 50/50 [00:15<00:00,  3.24fold/s]
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.122897109088931), 'uni_v2': np.float64(1.3817843356773), 'virchow_v1': np.float64(0.4953185552337687)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.4560834322148952), 'uni_v2': np.float64(1.0796796027458038), 'virchow_v1': np.float64(0.4642369650393008)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.642066834786287), 'uni_v2': np.float64(0.8508885784792017), 'virchow_v1': np.float64(0.5070445867345114)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.9888540827051875), 'uni_v2': np.float64(0.8278932478441232), 'virchow_v1': np.float64(1.1832526694506893)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.600990729267878), 'uni_v2': np.float64(0.7741861438836922), 'virchow_v1': np.float64(1.6248231268484294)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_nr_fixed/model_importance_weights.json
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+[Wed Aug 19 14:23:01 CEST 2026] ✓ svm_norm_ratio completed (1 min 40 s)
+
+╔════════════════════════════════════════════════════════════════════════╗
+║ svm_auc_based (reweight_method=auc_based)
+╚════════════════════════════════════════════════════════════════════════╝
+
+
+Evaluating ensemble with meta-model: svm
+Results will be saved to: .../ensemble4_svm_auc_fixed/
+  0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   2%|▏         | 1/50 [00:00<00:13,  3.65fold/s]Evaluating fold 2/50:   2%|▏         | 1/50 [00:00<00:13,  3.65fold/s]Evaluating fold 3/50:   4%|▍         | 2/50 [00:00<00:13,  3.65fold/s]Evaluating fold 3/50:   6%|▌         | 3/50 [00:00<00:06,  7.79fold/s]Evaluating fold 4/50:   6%|▌         | 3/50 [00:00<00:06,  7.79fold/s]Evaluating fold 5/50:   8%|▊         | 4/50 [00:00<00:05,  7.79fold/s]Evaluating fold 5/50:  10%|█         | 5/50 [00:00<00:04,  9.77fold/s]Evaluating fold 6/50:  10%|█         | 5/50 [00:00<00:04,  9.77fold/s]Evaluating fold 7/50:  12%|█▏        | 6/50 [00:00<00:04,  9.77fold/s]Evaluating fold 7/50:  14%|█▍        | 7/50 [00:00<00:03, 11.25fold/s]Evaluating fold 8/50:  14%|█▍        | 7/50 [00:00<00:03, 11.25fold/s]Evaluating fold 9/50:  16%|█▌        | 8/50 [00:00<00:03, 11.25fold/s]Evaluating fold 9/50:  18%|█▊        | 9/50 [00:00<00:03, 12.50fold/s]Evaluating fold 10/50:  18%|█▊        | 9/50 [00:00<00:03, 12.50fold/s]Evaluating fold 11/50:  20%|██        | 10/50 [00:00<00:03, 12.50fold/s]Evaluating fold 11/50:  22%|██▏       | 11/50 [00:00<00:02, 13.00fold/s]Evaluating fold 12/50:  22%|██▏       | 11/50 [00:00<00:02, 13.00fold/s]Evaluating fold 13/50:  24%|██▍       | 12/50 [00:01<00:02, 13.00fold/s]Evaluating fold 13/50:  26%|██▌       | 13/50 [00:01<00:02, 13.59fold/s]Evaluating fold 14/50:  26%|██▌       | 13/50 [00:01<00:02, 13.59fold/s]Evaluating fold 15/50:  28%|██▊       | 14/50 [00:01<00:02, 13.59fold/s]Evaluating fold 15/50:  30%|███       | 15/50 [00:01<00:02, 13.89fold/s]Evaluating fold 16/50:  30%|███       | 15/50 [00:01<00:02, 13.89fold/s]Evaluating fold 17/50:  32%|███▏      | 16/50 [00:01<00:02, 13.89fold/s]Evaluating fold 17/50:  34%|███▍      | 17/50 [00:01<00:02, 13.78fold/s]Evaluating fold 18/50:  34%|███▍      | 17/50 [00:01<00:02, 13.78fold/s]Evaluating fold 19/50:  36%|███▌      | 18/50 [00:01<00:02, 13.78fold/s]  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.7499999999999991), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(1.2500000000000009)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.666666666666665), 'uni_v2': np.float64(0.3333333333333348), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(0.8571428571428568), 'virchow_v1': np.float64(2.1428571428571432)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.1428571428571432), 'uni_v2': np.float64(0.8571428571428567), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.4347826086956523), 'uni_v2': np.float64(1.565217391304348), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.999999999999998), 'uni_v2': np.float64(2.000000000000002), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.7272727272727284), 'uni_v2': np.float64(0.27272727272727165), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(3.0), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.875), 'uni_v2': np.float64(1.1250000000000004), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.5), 'uni_v2': np.float64(1.5), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.636363636363637), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(1.363636363636363)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(1.0714285714285712), 'virchow_v1': np.float64(1.9285714285714288)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.666666666666666), 'uni_v2': np.float64(1.333333333333334), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.000000000000001), 'uni_v2': np.float64(0.9999999999999994), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.818181818181819), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(2.181818181818181)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.0), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(1.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(2.9999999999999996), 'virchow_v1': np.float64(6.661338147750939e-16)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(2.999999999999996), 'virchow_v1': np.float64(4.196643033083084e-15)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.6666666666666656), 'uni_v2': np.float64(0.33333333333333415), 'virchow_v1': np.float64(0.0)}
+Evaluating fold 19/50:  38%|███▊      | 19/50 [00:01<00:02, 13.89fold/s]Evaluating fold 20/50:  38%|███▊      | 19/50 [00:01<00:02, 13.89fold/s]Evaluating fold 21/50:  40%|████      | 20/50 [00:01<00:02, 13.89fold/s]Evaluating fold 21/50:  42%|████▏     | 21/50 [00:01<00:02, 14.29fold/s]Evaluating fold 22/50:  42%|████▏     | 21/50 [00:01<00:02, 14.29fold/s]Evaluating fold 23/50:  44%|████▍     | 22/50 [00:01<00:01, 14.29fold/s]Evaluating fold 23/50:  46%|████▌     | 23/50 [00:01<00:01, 14.08fold/s]Evaluating fold 24/50:  46%|████▌     | 23/50 [00:01<00:01, 14.08fold/s]Evaluating fold 25/50:  48%|████▊     | 24/50 [00:01<00:01, 14.08fold/s]Evaluating fold 25/50:  50%|█████     | 25/50 [00:01<00:01, 13.78fold/s]Evaluating fold 26/50:  50%|█████     | 25/50 [00:01<00:01, 13.78fold/s]Evaluating fold 27/50:  52%|█████▏    | 26/50 [00:02<00:01, 13.78fold/s]Evaluating fold 27/50:  54%|█████▍    | 27/50 [00:02<00:01, 13.60fold/s]Evaluating fold 28/50:  54%|█████▍    | 27/50 [00:02<00:01, 13.60fold/s]Evaluating fold 29/50:  56%|█████▌    | 28/50 [00:02<00:01, 13.60fold/s]Evaluating fold 29/50:  58%|█████▊    | 29/50 [00:02<00:01, 13.30fold/s]Evaluating fold 30/50:  58%|█████▊    | 29/50 [00:02<00:01, 13.30fold/s]Evaluating fold 31/50:  60%|██████    | 30/50 [00:02<00:01, 13.30fold/s]Evaluating fold 31/50:  62%|██████▏   | 31/50 [00:02<00:01, 13.75fold/s]Evaluating fold 32/50:  62%|██████▏   | 31/50 [00:02<00:01, 13.75fold/s]Evaluating fold 33/50:  64%|██████▍   | 32/50 [00:02<00:01, 13.75fold/s]Evaluating fold 33/50:  66%|██████▌   | 33/50 [00:02<00:01, 13.71fold/s]Evaluating fold 34/50:  66%|██████▌   | 33/50 [00:02<00:01, 13.71fold/s]Evaluating fold 35/50:  68%|██████▊   | 34/50 [00:02<00:01, 13.71fold/s]Evaluating fold 35/50:  70%|███████   | 35/50 [00:02<00:01, 13.27fold/s]Evaluating fold 36/50:  70%|███████   | 35/50 [00:02<00:01, 13.27fold/s]Evaluating fold 37/50:  72%|███████▏  | 36/50 [00:02<00:01, 13.27fold/s]Evaluating fold 37/50:  74%|███████▍  | 37/50 [00:02<00:00, 13.42fold/s]Evaluating fold 38/50:  74%|███████▍  | 37/50 [00:02<00:00, 13.42fold/s]✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.8000000000000007), 'uni_v2': np.float64(1.1999999999999993), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.2500000000000013), 'uni_v2': np.float64(0.749999999999999), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.5), 'uni_v2': np.float64(1.5), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(0.6666666666666674), 'virchow_v1': np.float64(2.333333333333333)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.8), 'uni_v2': np.float64(1.2000000000000002), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.5), 'uni_v2': np.float64(1.5), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.6363636363636362), 'uni_v2': np.float64(1.3636363636363638), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(3.0), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.6874999999999998), 'uni_v2': np.float64(1.3125000000000002), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.8000000000000007), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(1.1999999999999997)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.764705882352941), 'uni_v2': np.float64(1.235294117647059), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.5454545454545456), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(2.4545454545454546)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.7142857142857149), 'uni_v2': np.float64(1.2857142857142856), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.3125000000000007), 'uni_v2': np.float64(1.6874999999999993), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.5), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(1.5)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.1250000000000004), 'uni_v2': np.float64(1.875), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.6249999999999982), 'uni_v2': np.float64(0.3750000000000021), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.0000000000000036), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(0.9999999999999964)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+Evaluating fold 39/50:  76%|███████▌  | 38/50 [00:02<00:00, 13.42fold/s]Evaluating fold 39/50:  78%|███████▊  | 39/50 [00:03<00:00, 13.69fold/s]Evaluating fold 40/50:  78%|███████▊  | 39/50 [00:03<00:00, 13.69fold/s]Evaluating fold 41/50:  80%|████████  | 40/50 [00:03<00:00, 13.69fold/s]Evaluating fold 41/50:  82%|████████▏ | 41/50 [00:03<00:00, 14.33fold/s]Evaluating fold 42/50:  82%|████████▏ | 41/50 [00:03<00:00, 14.33fold/s]Evaluating fold 43/50:  84%|████████▍ | 42/50 [00:03<00:00, 14.33fold/s]Evaluating fold 43/50:  86%|████████▌ | 43/50 [00:03<00:00, 14.25fold/s]Evaluating fold 44/50:  86%|████████▌ | 43/50 [00:03<00:00, 14.25fold/s]Evaluating fold 45/50:  88%|████████▊ | 44/50 [00:03<00:00, 14.25fold/s]Evaluating fold 45/50:  90%|█████████ | 45/50 [00:03<00:00, 14.44fold/s]Evaluating fold 46/50:  90%|█████████ | 45/50 [00:03<00:00, 14.44fold/s]Evaluating fold 47/50:  92%|█████████▏| 46/50 [00:03<00:00, 14.44fold/s]Evaluating fold 47/50:  94%|█████████▍| 47/50 [00:03<00:00, 14.67fold/s]Evaluating fold 48/50:  94%|█████████▍| 47/50 [00:03<00:00, 14.67fold/s]Evaluating fold 49/50:  96%|█████████▌| 48/50 [00:03<00:00, 14.67fold/s]Evaluating fold 49/50:  98%|█████████▊| 49/50 [00:03<00:00, 15.00fold/s]Evaluating fold 50/50:  98%|█████████▊| 49/50 [00:03<00:00, 15.00fold/s]Evaluating fold 50/50: 100%|██████████| 50/50 [00:03<00:00, 13.25fold/s]
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.875), 'uni_v2': np.float64(1.1250000000000002), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(1.6363636363636367), 'virchow_v1': np.float64(1.3636363636363638)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.9999999999999996), 'uni_v2': np.float64(1.0000000000000007), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(0.8571428571428561), 'virchow_v1': np.float64(2.1428571428571437)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(3.0), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(2.0999999999999996), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(0.9000000000000004)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(1.0000000000000018), 'virchow_v1': np.float64(1.9999999999999982)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.5999999999999988), 'uni_v2': np.float64(2.4000000000000012), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(1.714285714285714), 'uni_v2': np.float64(1.285714285714286), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(2.7272727272727284), 'virchow_v1': np.float64(0.272727272727272)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(3.0), 'uni_v2': np.float64(0.0), 'virchow_v1': np.float64(0.0)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(1.5), 'virchow_v1': np.float64(1.5)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+  Using metric: auc_roc (will try: ['macro-ovr-auc', 'macro-ovo-auc', 'roc_auc', 'auc-roc'])
+✓ Features reescaladas por importancia de modelo: {'ctranspath': np.float64(0.0), 'uni_v2': np.float64(0.8571428571428578), 'virchow_v1': np.float64(2.1428571428571423)}
+✓ Model importance weights guardados en /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_svm_auc_fixed/model_importance_weights.json
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+[Wed Aug 19 14:23:35 CEST 2026] ✓ svm_auc_based completed (0 min 34 s)
+
+╔════════════════════════════════════════════════════════════════════════╗
+║ RESULTS — norm_ratio (baseline) vs. auc_based (FIXED)
+╚════════════════════════════════════════════════════════════════════════╝
+
+====================================================================================================
+cptac_brca / TP53_mutation   —   50 folds
+====================================================================================================
+
+AUC-ROC       baseline=0.7803  auc_based=0.7776  Δ=-0.0027  CI=+0.0108s  wins=22  ties=11  p=0.7694
+Kappa         baseline=0.4387  auc_based=0.4343  Δ=-0.0044  CI=+0.0337s  wins=11  ties=31  p=0.6874
+Macro-F1      baseline=0.7164  auc_based=0.7143  Δ=-0.0022  CI=+0.0172s  wins=11  ties=31  p=0.6874
+Balanced acc  baseline=0.7204  auc_based=0.7174  Δ=-0.0029  CI=+0.0171s  wins=11  ties=31  p=0.7780
+Accuracy      baseline=0.7305  auc_based=0.7281  Δ=-0.0024  CI=+0.0166s  wins=11  ties=32  p=0.5419
+
+╔════════════════════════════════════════════════════════════════════════╗
+║ SUMMARY
+╚════════════════════════════════════════════════════════════════════════╝
+Completed: 2
+Failed:    0
+Total duration: 2 min 16 s
+End time: Wed Aug 19 14:23:37 CEST 2026

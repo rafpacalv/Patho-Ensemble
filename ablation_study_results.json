@@ -1,0 +1,1398 @@
+{
+  "timestamp": "2026-08-13T19:53:27.867842",
+  "baseline": {
+    "auc": 0.744,
+    "f1": 0.672,
+    "acc": 0.701
+  },
+  "all_trials": [
+    {
+      "trial_id": 1,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 128,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7500935867326174,
+      "auc_se": 0.01721299171574173,
+      "f1": 0.42951270289511223,
+      "f1_se": 0.01777020426315823,
+      "acc": 0.5923586543595416,
+      "acc_se": 0.013410327023260367
+    },
+    {
+      "trial_id": 2,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 128,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7500935867326174,
+      "auc_se": 0.01721299171574173,
+      "f1": 0.42951270289511223,
+      "f1_se": 0.01777020426315823,
+      "acc": 0.5923586543595416,
+      "acc_se": 0.013410327023260367
+    },
+    {
+      "trial_id": 3,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 128,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7630226243427772,
+      "auc_se": 0.013705639941979942,
+      "f1": 0.44731606995723816,
+      "f1_se": 0.019825115906881095,
+      "acc": 0.6105890634062772,
+      "acc_se": 0.01287540123767311
+    },
+    {
+      "trial_id": 4,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 128,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7630226243427772,
+      "auc_se": 0.013705639941979942,
+      "f1": 0.44731606995723816,
+      "f1_se": 0.019825115906881095,
+      "acc": 0.6105890634062772,
+      "acc_se": 0.01287540123767311
+    },
+    {
+      "trial_id": 5,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 128,
+        "dropout": 0.4,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7500022192943111,
+      "auc_se": 0.01716716391329498,
+      "f1": 0.4209368307621588,
+      "f1_se": 0.015976304450186916,
+      "acc": 0.5890191367343097,
+      "acc_se": 0.012527506114787085
+    },
+    {
+      "trial_id": 6,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 128,
+        "dropout": 0.4,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7500022192943111,
+      "auc_se": 0.01716716391329498,
+      "f1": 0.4209368307621588,
+      "f1_se": 0.015976304450186916,
+      "acc": 0.5890191367343097,
+      "acc_se": 0.012527506114787085
+    },
+    {
+      "trial_id": 7,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 128,
+        "dropout": 0.4,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7624881248286859,
+      "auc_se": 0.013727230746935309,
+      "f1": 0.453865252573322,
+      "f1_se": 0.020606607656644092,
+      "acc": 0.6155453316278516,
+      "acc_se": 0.012981880259241175
+    },
+    {
+      "trial_id": 8,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 128,
+        "dropout": 0.4,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7624881248286859,
+      "auc_se": 0.013727230746935309,
+      "f1": 0.453865252573322,
+      "f1_se": 0.020606607656644092,
+      "acc": 0.6155453316278516,
+      "acc_se": 0.012981880259241175
+    },
+    {
+      "trial_id": 9,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 256,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7653482111709152,
+      "auc_se": 0.015836695416523494,
+      "f1": 0.4594500946440374,
+      "f1_se": 0.020697287583033592,
+      "acc": 0.6009880462631128,
+      "acc_se": 0.01488094697310534
+    },
+    {
+      "trial_id": 10,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 256,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7653482111709152,
+      "auc_se": 0.015836695416523494,
+      "f1": 0.4594500946440374,
+      "f1_se": 0.020697287583033592,
+      "acc": 0.6009880462631128,
+      "acc_se": 0.01488094697310534
+    },
+    {
+      "trial_id": 11,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 256,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7668160083019777,
+      "auc_se": 0.01548598837244403,
+      "f1": 0.4757527963134151,
+      "f1_se": 0.01988653998440274,
+      "acc": 0.6147133331028628,
+      "acc_se": 0.013202316131238912
+    },
+    {
+      "trial_id": 12,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 256,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7668160083019777,
+      "auc_se": 0.01548598837244403,
+      "f1": 0.4757527963134151,
+      "f1_se": 0.01988653998440274,
+      "acc": 0.6147133331028628,
+      "acc_se": 0.013202316131238912
+    },
+    {
+      "trial_id": 13,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 256,
+        "dropout": 0.4,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7657383267714901,
+      "auc_se": 0.015748185237319957,
+      "f1": 0.4623518730032492,
+      "f1_se": 0.020610588314538967,
+      "acc": 0.6017422609924828,
+      "acc_se": 0.014806686078955461
+    },
+    {
+      "trial_id": 14,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 256,
+        "dropout": 0.4,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7657383267714901,
+      "auc_se": 0.015748185237319957,
+      "f1": 0.4623518730032492,
+      "f1_se": 0.020610588314538967,
+      "acc": 0.6017422609924828,
+      "acc_se": 0.014806686078955461
+    },
+    {
+      "trial_id": 15,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 256,
+        "dropout": 0.4,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7657577553304595,
+      "auc_se": 0.01567511260237772,
+      "f1": 0.48828743107451034,
+      "f1_se": 0.02036342464696897,
+      "acc": 0.6195244049059488,
+      "acc_se": 0.013847916618867738
+    },
+    {
+      "trial_id": 16,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 256,
+        "dropout": 0.4,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7657577553304595,
+      "auc_se": 0.01567511260237772,
+      "f1": 0.48828743107451034,
+      "f1_se": 0.02036342464696897,
+      "acc": 0.6195244049059488,
+      "acc_se": 0.013847916618867738
+    },
+    {
+      "trial_id": 17,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 512,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.760192543897901,
+      "auc_se": 0.015054150881962792,
+      "f1": 0.46370625910963637,
+      "f1_se": 0.02125026404966079,
+      "acc": 0.6104586555118942,
+      "acc_se": 0.014529607487082782
+    },
+    {
+      "trial_id": 18,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 512,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.760192543897901,
+      "auc_se": 0.015054150881962792,
+      "f1": 0.46370625910963637,
+      "f1_se": 0.02125026404966079,
+      "acc": 0.6104586555118942,
+      "acc_se": 0.014529607487082782
+    },
+    {
+      "trial_id": 19,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 512,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7598573915219323,
+      "auc_se": 0.015042679771487157,
+      "f1": 0.5059779618966186,
+      "f1_se": 0.020857893444645097,
+      "acc": 0.638829094596619,
+      "acc_se": 0.010661670079301463
+    },
+    {
+      "trial_id": 20,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 512,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7598573915219323,
+      "auc_se": 0.015042679771487157,
+      "f1": 0.5059779618966186,
+      "f1_se": 0.020857893444645097,
+      "acc": 0.638829094596619,
+      "acc_se": 0.010661670079301463
+    },
+    {
+      "trial_id": 21,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 512,
+        "dropout": 0.4,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7606375967664232,
+      "auc_se": 0.015193122658448379,
+      "f1": 0.46534115433144435,
+      "f1_se": 0.021714216157129512,
+      "acc": 0.6095928546460933,
+      "acc_se": 0.014867849375911344
+    },
+    {
+      "trial_id": 22,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 512,
+        "dropout": 0.4,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7606375967664232,
+      "auc_se": 0.015193122658448379,
+      "f1": 0.46534115433144435,
+      "f1_se": 0.021714216157129512,
+      "acc": 0.6095928546460933,
+      "acc_se": 0.014867849375911344
+    },
+    {
+      "trial_id": 23,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 512,
+        "dropout": 0.4,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05
+      },
+      "auc": 0.7606407634787735,
+      "auc_se": 0.014948953454861675,
+      "f1": 0.5127387410436863,
+      "f1_se": 0.02053117022198504,
+      "acc": 0.6416600406396324,
+      "acc_se": 0.010318488025418812
+    },
+    {
+      "trial_id": 24,
+      "phase": "ablation_single_cycle_large",
+      "type": "single_cycle",
+      "params": {
+        "hidden_dim": 512,
+        "dropout": 0.4,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001
+      },
+      "auc": 0.7606407634787735,
+      "auc_se": 0.014948953454861675,
+      "f1": 0.5127387410436863,
+      "f1_se": 0.02053117022198504,
+      "acc": 0.6416600406396324,
+      "acc_se": 0.010318488025418812
+    },
+    {
+      "trial_id": 25,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 26,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 27,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 28,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 29,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7451513870200094,
+      "auc_se": 0.015117413178708853,
+      "f1": 0.6299749841023302,
+      "f1_se": 0.018775372321581357,
+      "acc": 0.6942105809009091,
+      "acc_se": 0.012998856149189695
+    },
+    {
+      "trial_id": 30,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7449551546809199,
+      "auc_se": 0.015132651888330797,
+      "f1": 0.6291361237830148,
+      "f1_se": 0.01905518720064602,
+      "acc": 0.6952713214026435,
+      "acc_se": 0.01317710598577085
+    },
+    {
+      "trial_id": 31,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 32,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 1e-05,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 33,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 34,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 35,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 36,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 37,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7451513870200094,
+      "auc_se": 0.015117413178708853,
+      "f1": 0.6299749841023302,
+      "f1_se": 0.018775372321581357,
+      "acc": 0.6942105809009091,
+      "acc_se": 0.012998856149189695
+    },
+    {
+      "trial_id": 38,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7449551546809199,
+      "auc_se": 0.015132651888330797,
+      "f1": 0.6291361237830148,
+      "f1_se": 0.01905518720064602,
+      "acc": 0.6952713214026435,
+      "acc_se": 0.01317710598577085
+    },
+    {
+      "trial_id": 39,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 40,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.0001,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 41,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.001,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 42,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.001,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 43,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.001,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 44,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.001,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 45,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.001,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7451513870200094,
+      "auc_se": 0.015117413178708853,
+      "f1": 0.6299749841023302,
+      "f1_se": 0.018775372321581357,
+      "acc": 0.6942105809009091,
+      "acc_se": 0.012998856149189695
+    },
+    {
+      "trial_id": 46,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.001,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7449551546809199,
+      "auc_se": 0.015132651888330797,
+      "f1": 0.6291361237830148,
+      "f1_se": 0.01905518720064602,
+      "acc": 0.6952713214026435,
+      "acc_se": 0.01317710598577085
+    },
+    {
+      "trial_id": 47,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.001,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 48,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.0005,
+        "meta_wd": 0.001,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 49,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 50,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 51,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 52,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 53,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7451513870200094,
+      "auc_se": 0.015117413178708853,
+      "f1": 0.6299749841023302,
+      "f1_se": 0.018775372321581357,
+      "acc": 0.6942105809009091,
+      "acc_se": 0.012998856149189695
+    },
+    {
+      "trial_id": 54,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7449551546809199,
+      "auc_se": 0.015132651888330797,
+      "f1": 0.6291361237830148,
+      "f1_se": 0.01905518720064602,
+      "acc": 0.6952713214026435,
+      "acc_se": 0.01317710598577085
+    },
+    {
+      "trial_id": 55,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 56,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 1e-05,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 57,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 58,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 59,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 60,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 61,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7451513870200094,
+      "auc_se": 0.015117413178708853,
+      "f1": 0.6299749841023302,
+      "f1_se": 0.018775372321581357,
+      "acc": 0.6942105809009091,
+      "acc_se": 0.012998856149189695
+    },
+    {
+      "trial_id": 62,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7449551546809199,
+      "auc_se": 0.015132651888330797,
+      "f1": 0.6291361237830148,
+      "f1_se": 0.01905518720064602,
+      "acc": 0.6952713214026435,
+      "acc_se": 0.01317710598577085
+    },
+    {
+      "trial_id": 63,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 64,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.0001,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 65,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.001,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 66,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.001,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    },
+    {
+      "trial_id": 67,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.001,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 68,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.001,
+        "n_cycles": 4,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.743312669237414,
+      "auc_se": 0.015301928319857248,
+      "f1": 0.6820268644769959,
+      "f1_se": 0.014598306569921502,
+      "acc": 0.7079888759569328,
+      "acc_se": 0.013247456345890002
+    },
+    {
+      "trial_id": 69,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.001,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7451513870200094,
+      "auc_se": 0.015117413178708853,
+      "f1": 0.6299749841023302,
+      "f1_se": 0.018775372321581357,
+      "acc": 0.6942105809009091,
+      "acc_se": 0.012998856149189695
+    },
+    {
+      "trial_id": 70,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.001,
+        "n_cycles": 6,
+        "restart_lr": 0.005,
+        "n_snapshots": 6
+      },
+      "auc": 0.7449551546809199,
+      "auc_se": 0.015132651888330797,
+      "f1": 0.6291361237830148,
+      "f1_se": 0.01905518720064602,
+      "acc": 0.6952713214026435,
+      "acc_se": 0.01317710598577085
+    },
+    {
+      "trial_id": 71,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.001,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 4
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 72,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.001,
+        "meta_wd": 0.001,
+        "n_cycles": 6,
+        "restart_lr": 0.01,
+        "n_snapshots": 6
+      },
+      "auc": 0.7450077428712634,
+      "auc_se": 0.015234573790695384,
+      "f1": 0.6771044462670749,
+      "f1_se": 0.014249651542284534,
+      "acc": 0.7071539965506247,
+      "acc_se": 0.012948176158602276
+    },
+    {
+      "trial_id": 73,
+      "phase": "ablation_snapshot_small",
+      "type": "snapshot",
+      "params": {
+        "hidden_dim": 32,
+        "dropout": 0.3,
+        "meta_lr": 0.005,
+        "meta_wd": 1e-05,
+        "n_cycles": 4,
+        "restart_lr": 0.005,
+        "n_snapshots": 4
+      },
+      "auc": 0.7445944609528794,
+      "auc_se": 0.015221737614206502,
+      "f1": 0.6785263161289217,
+      "f1_se": 0.016415831550701695,
+      "acc": 0.7165425006818085,
+      "acc_se": 0.01354196329800811
+    }
+  ]
+}

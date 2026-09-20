@@ -1,0 +1,62 @@
+============================================================================
+IDEA 4 — PILOTO: EARLY FUSION A NIVEL DE PARCHE
+============================================================================
+Configuración:
+  Dataset: cptac_brca / Task: TP53_mutation
+  Modelos fusionados: ctranspath + virchow_v1
+  Modelo complementario: uni_v2
+  Folds: 0-4 (piloto de 5 folds para validar)
+  Concatenación: por slide, ctranspath[768] ⊕ virchow_v1[2560] → [3328]
+============================================================================
+Fecha: Thu Aug 20 22:20:29 CEST 2026
+
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+Fused latent_dim: 3328 (sum of [768, 2560])
+
+Verifying patch coordinate alignment across ['ctranspath', 'virchow_v1']...
+✓ All slides have identical patch coordinates across models
+Total folds available: 50
+
+Loading and fusing features from ['ctranspath', 'virchow_v1']...
+✓ Loaded 112 slides
+
+============================================================
+Fold 0
+============================================================
+✓ Model trained (val_auc=1.0000)
+
+============================================================
+Fold 1
+============================================================
+✓ Model trained (val_auc=0.9375)
+
+============================================================
+Fold 2
+============================================================
+✓ Model trained (val_auc=0.8214)
+
+============================================================
+Fold 3
+============================================================
+✓ Model trained (val_auc=0.8730)
+
+============================================================
+Fold 4
+============================================================
+✓ Model trained (val_auc=0.8730)
+
+============================================================
+✓ Fused ABMIL training complete
+============================================================
+
+Combining fused model with uni_v2 via stacking...
+
+============================================================================
+Piloto completado: Thu Aug 20 22:21:39 CEST 2026
+============================================================================
+
+Resultados disponibles en:
+  Fused ABMIL: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_virchow_v1_fused_20x_224px_0px_overlap/
+  Stacking: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_virchow_v1_fused_20x_224px_0px_overlap_ctranspath_virchow_v1_fused_uni_v2_stacked/
+

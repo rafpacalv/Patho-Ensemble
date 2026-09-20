@@ -1,0 +1,13 @@
+cptac_gbm/TP53_mutation: n=30  ctranspath==conch_v1_5: 30/30  los tres: 30/30  -> SONDA VIABLE
+    parches: {'ctranspath': 734, 'conch_v1_5': 734, 'uni_v2': 734}
+    parches: {'ctranspath': 1434, 'conch_v1_5': 1434, 'uni_v2': 1434}
+bc_therapy/er_status: n=30  ctranspath==conch_v1_5: 30/30  los tres: 30/30  -> SONDA VIABLE
+    parches: {'ctranspath': 1754, 'conch_v1_5': 1754, 'uni_v2': 1754}
+    parches: {'ctranspath': 3323, 'conch_v1_5': 3323, 'uni_v2': 3323}
+cervical_subtype/subtype: n=30  ctranspath==conch_v1_5: 30/30  los tres: 30/30  -> SONDA VIABLE
+    parches: {'ctranspath': 10374, 'conch_v1_5': 10374, 'uni_v2': 10374}
+    parches: {'ctranspath': 9027, 'conch_v1_5': 9027, 'uni_v2': 9027}
+cptac_brca/TP53_mutation: n=30  ctranspath==conch_v1_5: 30/30  los tres: 0/30  -> SONDA VIABLE
+    parches: {'ctranspath': 4101, 'conch_v1_5': 4101, 'uni_v2': 5487}
+    parches: {'ctranspath': 662, 'conch_v1_5': 662, 'uni_v2': 1135}
+✅ Sun Aug 30 23:04:12 CEST 2026

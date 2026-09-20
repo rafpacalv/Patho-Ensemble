@@ -1,0 +1,13 @@
+{
+  "method": "nelder_mead_vs_logreg",
+  "mean_delta_auc": 0.005191201159951149,
+  "ci_lower": 0.0007359203296703131,
+  "ci_upper": 0.01057593482905982,
+  "wins_ties_losses": [
+    26,
+    11,
+    13
+  ],
+  "p_value": 0.058055285653275494,
+  "n_folds": 50
+}

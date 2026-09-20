@@ -1,0 +1,34 @@
+Job 70502 en gpu07 — Mon Aug 31 02:59:28 CEST 2026
+====================================================================================================
+DIAGNÓSTICO DE ATENCIÓN — ¿por qué unos modelos atienden y otros no?
+====================================================================================================
+cptac_gbm/TP53_mutation · fold 0 · 25 slides · cpu
+
+  ✓ ctranspath   in_dim=768   entropía=0.7751
+  ✓ uni_v2       in_dim=1536  entropía=0.9699
+  ✓ conch_v1_5   in_dim=768   entropía=0.8736
+  ⚠ virchow_v1: sin checkpoint, se omite
+  ⚠ uni_v1: sin checkpoint, se omite
+  ⚠ phikon_v2: sin checkpoint, se omite
+  ⚠ hoptimus1: sin checkpoint, se omite
+  ⚠ virchow2: sin checkpoint, se omite
+
+====================================================================================================
+modelo        in_dim  compr.  parches  entropía       ±  ess_norm  logit_sd  cos_var_raw  cos_var_proj
+----------------------------------------------------------------------------------------------------
+ctranspath       768     1.5x    5872    0.7751  0.1187    0.1371    1.7415      0.02057       0.01610
+conch_v1_5       768     1.5x    5872    0.8736  0.0536    0.1847    1.2275      0.01160       0.00668
+uni_v2          1536     3.0x    5872    0.9699  0.0175    0.6605    0.6999      0.02717       0.02144
+----------------------------------------------------------------------------------------------------
+
+HIPÓTESIS A — ¿la entropía crece con la dimensión de entrada?
+  Pearson  in_dim vs entropía : r=+0.863  p=0.337
+  Spearman in_dim vs entropía : ρ=+0.866  p=0.333
+
+HIPÓTESIS B — ¿o crece con el número de parches?
+  Pearson  parches vs entropía: r=+nan  p=nan
+
+  (n=3 modelos: la correlación es orientativa, no un test)
+
+✅ results_attention_diagnostics_cptac_gbm_TP53_mutation.json
+✅ Mon Aug 31 02:59:42 CEST 2026

@@ -1,0 +1,108 @@
+================================================================================
+🚀 EXPERIMENTO: Embeddings Ponderados + 4 Meta-Modelos
+================================================================================
+
+Configuración:
+  Dataset: cptac_brca / TP53_mutation
+  Modelos base: ctranspath, uni_v2, virchow_v1
+  Meta-modelos: LogReg, MLP, Snapshot, FGE (todos con AdamW)
+  Embeddings: 512-dim ponderados × 3 modelos = 1536-dim flexible
+
+📝 PASO 1: Generando embeddings ponderados in-sample...
+----------------------------------------------------------------------
+  • ctranspath...
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Test (embeddings sobre train): ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+✅ Embeddings de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+  • uni_v2...
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Test (embeddings sobre train): uni_v2
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 1536, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+✅ Embeddings de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+  • virchow_v1...
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+
+============================================================
+ABMIL Test (embeddings sobre train): virchow_v1
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 2560, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+✅ Embeddings de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+✅ Paso 1 completado
+
+🧠 PASO 2: Entrenando 4 meta-modelos...
+----------------------------------------------------------------------
+
+  [1/4] Logistic Regression (baseline)...
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_embeddings/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+      ✓ Completado
+
+  [2/4] MLP (CosineAnnealingLR + early stopping)...
+
+
+Evaluating ensemble with meta-model: mlp
+Results will be saved to: .../ensemble4_mlp_embeddings/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+      ✓ Completado
+
+  [3/4] Snapshot MLP (CosineAnnealingWarmRestarts)...
+
+
+Evaluating ensemble with meta-model: mlp_snapshot
+Results will be saved to: .../ensemble4_mlp_snapshot_embeddings/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+      ✓ Completado
+
+  [4/4] FGE MLP (warm-up + FGE cycles)...
+
+
+Evaluating ensemble with meta-model: mlp_fge
+Results will be saved to: .../ensemble4_mlp_fge_embeddings/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+      ✓ Completado
+
+================================================================================
+✅ EXPERIMENTO COMPLETADO
+================================================================================
+
+Resultados en:
+  /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/
+
+Por meta-modelo:
+  • ensemble4_embeddings/                (LogReg)
+  • ensemble4_mlp_embeddings/            (MLP)
+  • ensemble4_mlp_snapshot_embeddings/   (Snapshot)
+  • ensemble4_mlp_fge_embeddings/        (FGE)
+
+Cada uno contiene:
+  • test_metrics_summary.json            (métricas agregadas)
+  • test_metrics/fold_*/metrics.json     (métricas por fold)
+
+⏱️  Tiempo total: Ver logs en embeddings_4models_70054.out
+

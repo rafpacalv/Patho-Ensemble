@@ -1,0 +1,43 @@
+Job 70614 en gpu07 — Tue Sep  1 00:04:27 CEST 2026
+================================================================================
+================================================================================================
+CURVA DE TAMAÑO DE ENTRENAMIENTO — ¿manda n, o manda el dataset?
+================================================================================================
+Dataset   : cptac_gbm / TP53_mutation
+Modelos   : ctranspath + uni_v2 + conch_v1_5
+Meta-model: logreg   espacios: ['prob', 'emb']
+Folds     : 50   submuestreos por fold: 5
+  ✓ 'prob': 2 col/modelo, 6 features
+  ✓ 'emb': 512 col/modelo, 1536 features
+  ✓ alineado. Clases: [0, 1]. Train por fold: min=155 max=179 media=169
+  n=  40 (efectivo 40): prob AUC=0.7557  emb AUC=0.7610   Δ AUC=+0.0053 [-0.0037,+0.0138]
+  n=  55 (efectivo 55): prob AUC=0.7555  emb AUC=0.7724   Δ AUC=+0.0169 [+0.0072,+0.0269]
+  n=  75 (efectivo 75): prob AUC=0.7558  emb AUC=0.7694   Δ AUC=+0.0137 [+0.0018,+0.0254]
+  n=  95 (efectivo 95): prob AUC=0.7545  emb AUC=0.7746   Δ AUC=+0.0201 [+0.0088,+0.0317]
+  n= 120 (efectivo 120): prob AUC=0.7548  emb AUC=0.7718   Δ AUC=+0.0170 [+0.0042,+0.0297]
+  n= 145 (efectivo 145): prob AUC=0.7560  emb AUC=0.7758   Δ AUC=+0.0198 [+0.0057,+0.0335]
+  n=full (efectivo 169): prob AUC=0.7556  emb AUC=0.7786   Δ AUC=+0.0230 [+0.0077,+0.0380]
+
+================================================================================================
+CURVA — Δ AUC de 'emb' menos 'prob' según filas de meta-train
+================================================================================================
+ n meta-train     prob AUC      emb AUC     Δ AUC                  IC 95%      G/E/P   p Holm
+------------------------------------------------------------------------------------------------
+           40       0.7557       0.7610   +0.0053      [-0.0037, +0.0138]    28/0/22   0.8569
+           55       0.7555       0.7724   +0.0169      [+0.0072, +0.0269]    31/0/19   0.0126 *
+           75       0.7558       0.7694   +0.0137      [+0.0018, +0.0254]    34/0/16   0.0903
+           95       0.7545       0.7746   +0.0201      [+0.0088, +0.0317]    34/0/16   0.0080 *
+          120       0.7548       0.7718   +0.0170      [+0.0042, +0.0297]    33/0/17   0.0470 *
+          145       0.7560       0.7758   +0.0198      [+0.0057, +0.0335]    32/1/17   0.0298 *
+          169       0.7556       0.7786   +0.0230      [+0.0077, +0.0380]    34/0/16   0.0131 *
+------------------------------------------------------------------------------------------------
+
+VEREDICTO
+  El Δ es positivo en TODOS los tamaños, incluido el más pequeño.
+  ⇒ n NO explica el signo. La diferencia con cptac_brca viene de
+     otra cosa (tejido, tarea, parches/slide, calidad de los modelos base).
+  Rango del Δ: +0.0053 (n=40) → +0.0230 (n=169)
+
+✅ results_train_size_curve_cptac_gbm_TP53_mutation.json
+
+✅ COMPLETADO — Tue Sep  1 00:07:08 CEST 2026

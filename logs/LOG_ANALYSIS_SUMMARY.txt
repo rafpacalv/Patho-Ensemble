@@ -1,0 +1,208 @@
+====================================================================================================
+PATHO-ENSEMBLE LOG ANALYSIS SUMMARY
+====================================================================================================
+
+GLOBAL STATISTICS
+----------------------------------------------------------------------------------------------------
+Total Log Files:        56
+Successful:             20 (35%)
+Failed:                 6 (10%)
+Unknown Status:         30 (53%)
+
+EXECUTIONS BY TYPE
+----------------------------------------------------------------------------------------------------
+
+BASE-TRAINING
+  Total: 1 | Success: 1 | Failed: 0 | Unknown: 0
+
+  Best Executions:
+    - train_base_models_69938.out
+      Dataset: cptac_brca/TP53_mutation
+      Models: ctranspath, uni_v2, virchow_v1
+      Duration: 0 h 2 m
+
+EXPERIMENTAL-STAGE
+  Total: 8 | Success: 0 | Failed: 1 | Unknown: 7
+
+  Failed Executions:
+    - stage2_spatial_70005.err
+      Error: Traceback
+
+FGE-TRAINING
+  Total: 12 | Success: 6 | Failed: 0 | Unknown: 6
+
+META-EXPERIMENTS
+  Total: 14 | Success: 4 | Failed: 4 | Unknown: 6
+
+  Failed Executions:
+    - svm_knn_nb_reweight_fixed_70089.err
+      Error: Traceback
+    - svm_knn_nb_reweight_70088.err
+      Error: Traceback
+
+META-LEARNERS
+  Total: 4 | Success: 4 | Failed: 0 | Unknown: 0
+
+  Best Executions:
+    - run_meta_experiments_69958.out
+      Dataset: cptac_brca/TP53_mutation
+      Models: ctranspath, gating, lightgbm, logit_avg, logreg
+      Meta-learners: gating, lightgbm, logit_avg, logreg, logreg_fge
+      Duration: 28 m
+    - run_meta_experiments_69953.out
+      Dataset: cptac_brca/TP53_mutation
+      Models: ctranspath, gating, lightgbm, logit_avg, logreg
+      Meta-learners: gating, lightgbm, logit_avg, logreg, logreg_fge
+      Duration: 22 m
+    - run_meta_experiments_69943.out
+      Dataset: cptac_brca/TP53_mutation
+      Models: ctranspath, logreg, tabpfn, uni_v2, virchow_v1
+      Meta-learners: logreg, logreg_fge, tabpfn, tabpfn_fge
+      Metrics: AUC: [0.7918, 0.7978]
+      Duration: 13 m
+
+OOF-FEATURES
+  Total: 6 | Success: 3 | Failed: 0 | Unknown: 3
+
+  Best Executions:
+    - build_oof_69957.out
+      Dataset: cptac_brca/TP53_mutation
+      Models: ctranspath, uni_v2, virchow_v1
+      Duration: 2 h 56 m
+    - build_oof_69956.out
+      Dataset: cptac_brca/TP53_mutation
+      Models: ctranspath, uni_v2, virchow_v1
+      Duration: 1 h 21 m
+    - build_oof_69950.out
+      Dataset: cptac_brca/TP53_mutation
+      Models: ctranspath, uni_v2, virchow_v1
+      Duration: 0 h 39 m
+
+UNKNOWN
+  Total: 11 | Success: 2 | Failed: 1 | Unknown: 8
+
+
+====================================================================================================
+DETAILED EXECUTION LOG
+====================================================================================================
+
+Log File                                      Status     Type                      Dataset/Task              Models              
+-----------------------------------------------------------------------------------------------------------------------------
+auc_fixed_70091.err                           UNKNOWN    meta-experiments                                    N/A                 
+auc_fixed_70091.out                           SUCCESS    meta-experiments          cptac_brca/TP53_mutation  ctranspath, svm, un 
+auc_based_reweight_70090.err                  UNKNOWN    meta-experiments                                    N/A                 
+auc_based_reweight_70090.out                  SUCCESS    meta-experiments          cptac_brca/TP53_mutation  knn, svm            
+svm_knn_nb_reweight_fixed_70089.err           FAILED     meta-experiments                                    N/A                 
+svm_knn_nb_reweight_fixed_70089.out           SUCCESS    meta-experiments          cptac_brca/TP53_mutation  knn, svm            
+svm_knn_nb_reweight_70088.err                 FAILED     meta-experiments                                    N/A                 
+svm_knn_nb_reweight_70088.out                 SUCCESS    meta-experiments          cptac_brca/TP53_mutation  knn, svm            
+extended_fixed_v7_70065.err                   UNKNOWN    meta-experiments          fold/s                    N/A                 
+extended_fixed_v7_70065.out                   UNKNOWN    meta-experiments                                    deep_mlp_snapshot,  
+extended_fixed_v6_70064.err                   FAILED     meta-experiments          fold/s                    N/A                 
+extended_fixed_v6_70064.out                   UNKNOWN    meta-experiments                                    deep_mlp_snapshot,  
+extended_models_fixed_70058.err               UNKNOWN    meta-experiments          home/JKP6679              N/A                 
+extended_models_fixed_70058.out               FAILED     meta-experiments          con/sin                   deep_mlp_snapshot   
+embeddings_4models_70054.err                  UNKNOWN    unknown                   it/s                      N/A                 
+embeddings_4models_70054.out                  SUCCESS    unknown                   cptac_brca/TP53_mutation  (todos, FGE, LogReg 
+stage3_shuffle_70022.err                      UNKNOWN    experimental-stage        it/s                      N/A                 
+stage3_shuffle_70022.out                      UNKNOWN    experimental-stage        cptac_brca/TP53_mutation  N/A                 
+stage2_spatial_70020.err                      UNKNOWN    experimental-stage        it/s                      N/A                 
+stage2_spatial_70020.out                      UNKNOWN    experimental-stage        cptac_brca/TP53_mutation  N/A                 
+stage2_spatial_70017.err                      UNKNOWN    experimental-stage        it/s                      N/A                 
+stage2_spatial_70017.out                      UNKNOWN    experimental-stage        cptac_brca/TP53_mutation  N/A                 
+stage2_spatial_70005.err                      FAILED     experimental-stage        it/s                      N/A                 
+stage2_spatial_70005.out                      UNKNOWN    experimental-stage        ctranspath/smooth         N/A                 
+test_spatial_gnn_70003.err                    UNKNOWN    unknown                   shared/home               N/A                 
+test_spatial_gnn_70003.out                    FAILED     unknown                   home/JKP6679              N/A                 
+run_meta_experiments_69958.err                UNKNOWN    unknown                                             N/A                 
+run_meta_experiments_69958.out                SUCCESS    meta-learners             cptac_brca/TP53_mutation  ctranspath, gating, 
+build_oof_69957.err                           UNKNOWN    oof-features                                        N/A                 
+build_oof_69957.out                           SUCCESS    oof-features              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+build_oof_69956.err                           UNKNOWN    oof-features                                        N/A                 
+build_oof_69956.out                           SUCCESS    oof-features              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+run_meta_experiments_69953.err                UNKNOWN    unknown                                             N/A                 
+run_meta_experiments_69953.out                SUCCESS    meta-learners             cptac_brca/TP53_mutation  ctranspath, gating, 
+train_base_models_fge_69952.err               UNKNOWN    fge-training                                        N/A                 
+train_base_models_fge_69952.out               SUCCESS    fge-training              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+train_base_models_fge_69951.err               UNKNOWN    fge-training                                        N/A                 
+train_base_models_fge_69951.out               SUCCESS    fge-training              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+build_oof_69950.err                           UNKNOWN    oof-features                                        N/A                 
+build_oof_69950.out                           SUCCESS    oof-features              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+run_meta_experiments_69943.err                UNKNOWN    unknown                                             N/A                 
+run_meta_experiments_69943.out                SUCCESS    meta-learners             cptac_brca/TP53_mutation  ctranspath, logreg, 
+train_base_models_fge_69942.err               UNKNOWN    fge-training                                        N/A                 
+train_base_models_fge_69942.out               SUCCESS    fge-training              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+train_base_models_fge_69941.err               UNKNOWN    fge-training                                        N/A                 
+train_base_models_fge_69941.out               SUCCESS    fge-training              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+train_base_models_fge_69940.err               UNKNOWN    fge-training                                        N/A                 
+train_base_models_fge_69940.out               SUCCESS    fge-training              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+train_base_models_fge_69939.err               UNKNOWN    fge-training                                        N/A                 
+train_base_models_fge_69939.out               SUCCESS    fge-training              cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+train_base_models_69938.err                   UNKNOWN    unknown                                             N/A                 
+train_base_models_69938.out                   SUCCESS    base-training             cptac_brca/TP53_mutation  ctranspath, uni_v2, 
+pipeline_submit_69937.err                     UNKNOWN    unknown                                             N/A                 
+pipeline_submit_69937.out                     SUCCESS    unknown                   cptac_brca/TP53_mutation  N/A                 
+run_meta_experiments_69936.err                UNKNOWN    unknown                                             N/A                 
+run_meta_experiments_69936.out                SUCCESS    meta-learners             cervical_subtype/subtype  ctranspath, logreg, 
+
+
+====================================================================================================
+FAILED EXECUTIONS & ERROR DETAILS
+====================================================================================================
+
+
+svm_knn_nb_reweight_fixed_70089.err
+----------------------------------------------------------------------------------------------------
+
+Errors:
+  1. Traceback
+
+svm_knn_nb_reweight_70088.err
+----------------------------------------------------------------------------------------------------
+
+Errors:
+  1. Traceback
+
+extended_fixed_v6_70064.err
+----------------------------------------------------------------------------------------------------
+Dataset/Task: fold/s
+
+Errors:
+  1. Traceback
+
+extended_models_fixed_70058.out
+----------------------------------------------------------------------------------------------------
+Dataset/Task: con/sin
+Models: deep_mlp_snapshot
+
+Errors:
+  1. Traceback
+
+stage2_spatial_70005.err
+----------------------------------------------------------------------------------------------------
+Dataset/Task: it/s
+
+Errors:
+  1. Traceback
+
+test_spatial_gnn_70003.out
+----------------------------------------------------------------------------------------------------
+Dataset/Task: home/JKP6679
+
+
+====================================================================================================
+KEY FINDINGS
+====================================================================================================
+
+Datasets Used: cervical_subtype, con, cptac_brca, ctranspath, fold, home, it, shared
+Tasks: JKP6679, TP53_mutation, home, s, sin, smooth, subtype
+Foundational Models: , (todos, FGE, LogReg, MLP, Snapshot, ctranspath, deep_mlp_snapshot, gating, knn
+
+Meta-learners Evaluated: gating, lightgbm, logit_avg, logreg, logreg_fge, tabpfn, tabpfn_fge
+
+Metrics Summary:
+  AUC:
+    - Average: 0.8456
+    - Range: [0.7918, 0.9471]
+
+====================================================================================================

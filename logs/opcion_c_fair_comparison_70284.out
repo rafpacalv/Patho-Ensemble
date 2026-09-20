@@ -1,0 +1,43 @@
+============================================================================
+OPCIÓN C — FAIR COMPARISON: Late vs Early Fusion + Meta-learner
+============================================================================
+Fecha: Fri Aug 21 23:24:49 CEST 2026
+Dataset: cptac_brca / Task: TP53_mutation
+Modelos: ctranspath, virchow_v1, conch_v1_5
+============================================================================
+
+⚠ conch_v1_5 already trained, skipping
+
+============================================================================
+FASE 1: Generar meta-features para Late Fusion Baseline
+============================================================================
+
+  Generando meta-features para ctranspath...
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Test (predicciones sobre train): ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+  ✓ ctranspath meta-features done
+
+  Generando meta-features para virchow_v1...
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+
+============================================================
+ABMIL Test (predicciones sobre train): virchow_v1
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 2560, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+  ✓ virchow_v1 meta-features done
+
+  Generando meta-features para conch_v1_5...

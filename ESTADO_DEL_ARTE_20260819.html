@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado del Arte - Patho-Ensemble</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --warning: #ea580c;
+            --danger: #dc2626;
+            --bg: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+            --code-bg: #f3f4f6;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #60a5fa;
+                --success: #4ade80;
+                --warning: #fb923c;
+                --danger: #f87171;
+                --bg: #111827;
+                --text: #f3f4f6;
+                --border: #374151;
+                --code-bg: #1f2937;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --primary: #60a5fa;
+            --success: #4ade80;
+            --warning: #fb923c;
+            --danger: #f87171;
+            --bg: #111827;
+            --text: #f3f4f6;
+            --border: #374151;
+            --code-bg: #1f2937;
+        }
+
+        :root[data-theme="light"] {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --warning: #ea580c;
+            --danger: #dc2626;
+            --bg: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+            --code-bg: #f3f4f6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 2.5em;
+        }
+
+        .metadata {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9em;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .toc {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        h3 {
+            color: var(--text);
+            margin-top: 25px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .status-success {
+            background: rgba(22, 163, 74, 0.1);
+            color: var(--success);
+        }
+
+        .status-warning {
+            background: rgba(234, 88, 12, 0.1);
+            color: var(--warning);
+        }
+
+        .status-danger {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        .status-info {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+            color: var(--primary);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:hover {
+            background: var(--code-bg);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 0.9em;
+            color: var(--text);
+        }
+
+        .highlight-box {
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            background: var(--code-bg);
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .metric-result {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-ci {
+            font-size: 0.8em;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+
+        .recommendation {
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            background: rgba(22, 163, 74, 0.05);
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .problem {
+            border-left: 4px solid var(--danger);
+            padding: 15px;
+            background: rgba(220, 38, 38, 0.05);
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 30px 0 20px 0;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        a {
+            color: var(--primary);
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .matrix-item {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.9em;
+        }
+
+        .matrix-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        .pipeline-step {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 10px 15px;
+            border-radius: 6px;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .pipeline-arrow {
+            font-size: 1.5em;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .metadata {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .metric-result {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 ESTADO DEL ARTE - PATHO-ENSEMBLE</h1>
+        <p style="margin: 10px 0 0 0; font-size: 1.1em; color: var(--text);">Análisis Integral de Experimentos y Resultados</p>
+        <div class="metadata">
+            <div><strong>Fecha:</strong> 19 de Agosto de 2026</div>
+            <div><strong>Dataset:</strong> cptac_brca/TP53_mutation (50 folds)</div>
+            <div><strong>Ganador:</strong> LogisticRegression (AUC 0.7918)</div>
+        </div>
+    </div>
+
+    <div class="toc">
+        <h2>📑 Tabla de Contenidos</h2>
+        <ol>
+            <li><a href="#resumen-ejecutivo">Resumen Ejecutivo</a></li>
+            <li><a href="#arquitectura-actual">Arquitectura Actual</a></li>
+            <li><a href="#metamodelos">Metamodelos Implementados</a></li>
+            <li><a href="#entrada">Entrada del Metamodelo</a></li>
+            <li><a href="#tecnicas">Técnicas Aplicadas</a></li>
+            <li><a href="#resultados">Resultados de Métricas</a></li>
+            <li><a href="#estadistica">Análisis Estadístico</a></li>
+            <li><a href="#problemas">Problemas Críticos</a></li>
+            <li><a href="#mejoras">Vías de Mejora No Exploradas</a></li>
+            <li><a href="#recomendaciones">Recomendaciones</a></li>
+        </ol>
+    </div>
+
+    <section id="resumen-ejecutivo">
+        <div class="section-title"><span class="emoji">🎯</span> Resumen Ejecutivo</div>
+
+        <h3>Estado Actual</h3>
+        <p>La pipeline de Patho-Ensemble ha alcanzado un <strong>estado operativo estable</strong> con resultados validados en 50 folds para cptac_brca. El metamodelo actual es <strong>LogisticRegression</strong> entrenado sobre probabilidades concatenadas de 3 modelos ABMIL base (CTransPath, UNI-v2, Virchow-v1).</p>
+
+        <h3>Ganador Identificado</h3>
+        <div class="metric-result">
+            <div class="metric-card">
+                <div class="metric-label">🏆 Ganador</div>
+                <div class="metric-value">LogReg</div>
+                <div class="metric-ci">AUC 0.7918 ± 0.015</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">📈 Alternativa</div>
+                <div class="metric-value">MLP Snapshot</div>
+                <div class="metric-ci">AUC 0.7995 ± 0.1027</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">⚠️ Restricción</div>
+                <div class="metric-value">Presupuesto</div>
+                <div class="metric-ci">75 muestras train</div>
+            </div>
+        </div>
+
+        <h3>Técnicas Aplicadas (Resumen)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Técnica</th>
+                    <th>Resultado</th>
+                    <th>Conclusión</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>FGE/Snapshot (base)</td>
+                    <td>+0.003 AUC</td>
+                    <td><span class="status-badge status-danger">❌ No significativo</span></td>
+                </tr>
+                <tr>
+                    <td>Out-of-Fold Features</td>
+                    <td>-0.049 a -0.135 AUC</td>
+                    <td><span class="status-badge status-danger">❌ Empeora</span></td>
+                </tr>
+                <tr>
+                    <td>Reweighting</td>
+                    <td>-0.010 AUC</td>
+                    <td><span class="status-badge status-danger">❌ Significativo (p&lt;0.01)</span></td>
+                </tr>
+                <tr>
+                    <td>MLP Snapshot (embeddings)</td>
+                    <td>+0.0077 AUC</td>
+                    <td><span class="status-badge status-warning">⚠️ Borderline</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="arquitectura-actual">
+        <div class="section-title"><span class="emoji">🏗️</span> Arquitectura Actual</div>
+
+        <h3>Pipeline de 3 Etapas</h3>
+        <div class="pipeline-flow">
+            <div class="pipeline-step">
+                <strong>ETAPA 1</strong><br/>
+                Base Training<br/>
+                <small>35 min</small>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+                <strong>ETAPA 2</strong><br/>
+                Snapshots (6 var)<br/>
+                <small>60 min paralelo</small>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+                <strong>ETAPA 3</strong><br/>
+                Ensemble Meta<br/>
+                <small>4 horas</small>
+            </div>
+        </div>
+
+        <div class="code-block">
+ETAPA 1: train_abmil.py × 50 folds × 3 modelos
+├─ CTransPath (768-dim)
+├─ UNI-v2 (1536-dim)
+└─ Virchow-v1 (2560-dim)
+   → Salida: val_outputs/, test_outputs/
+
+ETAPA 2: train_abmil_fge.py × 6 variantes
+├─ fge_orig, fge_wbase, fge_lowlr, fge_pat3
+├─ se_orig, se_mild
+   → Salida: val_outputs_{tag}/, test_outputs_{tag}/
+
+ETAPA 3: ensemble4.py × 30 meta-configuraciones
+├─ LogReg, MLP, TabPFN, SVM, KNN, NB
+   → Salida: ensemble4_*/ con métricas
+        </div>
+
+        <h3>ABMIL Base (Parámetros Fijos)</h3>
+        <table>
+            <thead>
+                <tr><th>Parámetro</th><th>Valor</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Latent Dimension</td><td>512</td></tr>
+                <tr><td>Attention Heads</td><td>1</td></tr>
+                <tr><td>Dropout</td><td>0.25</td></tr>
+                <tr><td>Bag Size</td><td>2048</td></tr>
+                <tr><td>Epochs</td><td>100</td></tr>
+                <tr><td>Early Stopping (patience)</td><td>20 folds</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="metamodelos">
+        <div class="section-title"><span class="emoji">🧠</span> Metamodelos Implementados</div>
+
+        <h3>Resumen (13 Total)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Modelo</th>
+                    <th>Estado</th>
+                    <th>AUC</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Baseline</strong></td>
+                    <td>LogisticRegression</td>
+                    <td><span class="status-badge status-success">✅ Producción</span></td>
+                    <td><strong>0.7918 ± 0.015</strong></td>
+                    <td>Ganador, robusto</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>LogitAveraging</td>
+                    <td><span class="status-badge status-success">✅ Probado</span></td>
+                    <td>0.7893 ± 0.016</td>
+                    <td>-0.0025 vs LogReg</td>
+                </tr>
+                <tr>
+                    <td><strong>Tree-Based</strong></td>
+                    <td>LightGBM</td>
+                    <td><span class="status-badge status-success">✅ Probado</span></td>
+                    <td>-0.296 ± 0.125</td>
+                    <td><span class="status-badge status-danger">Empeora significativamente</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Neural</strong></td>
+                    <td>MLP Simple</td>
+                    <td><span class="status-badge status-success">✅ Probado</span></td>
+                    <td>-0.135 ± 0.087</td>
+                    <td>Overfitting severo</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>MLP Snapshot</td>
+                    <td><span class="status-badge status-success">✅ Probado</span></td>
+                    <td>+0.0077 AUC</td>
+                    <td>Regularización, varianza alta</td>
+                </tr>
+                <tr>
+                    <td><strong>Meta-Learner</strong></td>
+                    <td>TabPFN</td>
+                    <td><span class="status-badge status-success">✅ Probado</span></td>
+                    <td>-0.008 ± 0.021</td>
+                    <td>-0.057 en OOF (p=0.009)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>SVM/KNN/NB</td>
+                    <td><span class="status-badge status-warning">⚠️ Debug</span></td>
+                    <td>N/A</td>
+                    <td>Errores en reweighting</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight-box">
+            <strong>🏆 Ganador: LogisticRegression</strong><br/>
+            AUC: 0.7918 ± 0.015 | Accuracy: 0.7483 ± 0.032 | F1: 0.6884 ± 0.061<br/>
+            <strong>Por qué funciona:</strong> Coincide con capacidad de datos (75 train/fold)
+        </div>
+    </section>
+
+    <section id="entrada">
+        <div class="section-title"><span class="emoji">📥</span> Entrada del Metamodelo</div>
+
+        <h3>Configuración Actual (LogisticRegression)</h3>
+        <div class="code-block">
+X_meta_train = np.concatenate([
+    probs_ctranspath[:, [0, 1]],    # Clase 0, 1
+    probs_uni_v2[:, [0, 1]],        # Clase 0, 1
+    probs_virchow[:, [0, 1]],       # Clase 0, 1
+])  # Shape: (N_samples, 6)</div>
+
+        <h3>Dos Regímenes Evaluados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Régimen</th>
+                    <th>Origen</th>
+                    <th>AUC</th>
+                    <th>Sesgo</th>
+                    <th>Uso</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>In-Sample</strong></td>
+                    <td>test_abmil.py (train fold)</td>
+                    <td>0.934-0.944</td>
+                    <td><span class="status-badge status-danger">❌ Alto</span></td>
+                    <td>Baseline (actual)</td>
+                </tr>
+                <tr>
+                    <td><strong>Out-of-Fold</strong></td>
+                    <td>build_oof_features.py (nested CV)</td>
+                    <td>0.68-0.71</td>
+                    <td><span class="status-badge status-success">✅ Bajo</span></td>
+                    <td>Intentado, fracasó</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="recommendation">
+            <strong>💡 Descubrimiento Clave (Wolpert 1992):</strong> El régimen in-sample tiene sesgo altísimo, pero con solo 75 muestras, la varianza de OOF supera el beneficio. Result: in-sample es mejor.
+        </div>
+
+        <h3>Arquitectura Alternativa: Embeddings 512-dim</h3>
+        <p>Para MLP Snapshot se usaron embeddings ponderados en lugar de predicciones finales:</p>
+        <div class="code-block">
+# Agregar embeddings con attention weights
+embeddings_weighted = attention_weights @ embeddings
+
+# Concatenar 3 modelos
+X_meta = np.concatenate([
+    embeddings_weighted_ctranspath,    # 512-dim
+    embeddings_weighted_uni_v2,        # 512-dim
+    embeddings_weighted_virchow,       # 512-dim
+])  # Shape: (N_samples, 1536-dim)
+
+# Opcional: PCA a 512-dim
+X_meta_pca = PCA(n_components=512).fit_transform(X_meta)</div>
+    </section>
+
+    <section id="tecnicas">
+        <div class="section-title"><span class="emoji">🛠️</span> Técnicas Aplicadas</div>
+
+        <h3>1. FGE y Snapshot Ensemble</h3>
+        <table>
+            <thead>
+                <tr><th>Variante</th><th>Ciclos</th><th>Resultado</th><th>Conclusión</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>fge_orig</td><td>6</td><td>+0.003 AUC</td><td><span class="status-badge status-danger">ns</span></td></tr>
+                <tr><td>fge_lowlr</td><td>6</td><td>+0.006 AUC</td><td><span class="status-badge status-danger">ns</span></td></tr>
+                <tr><td>se_orig</td><td>6</td><td>+0.002 AUC</td><td><span class="status-badge status-danger">ns</span></td></tr>
+            </tbody>
+        </table>
+        <p><strong>Conclusión:</strong> ❌ Efecto nulo en modelos base (50 folds). Hipótesis: Snapshots correlacionados 0.92-0.98 (presupuesto saturado).</p>
+
+        <h3>2. Out-of-Fold Features</h3>
+        <table>
+            <thead>
+                <tr><th>n_inner</th><th>AUC</th><th>Δ vs In-Sample</th><th>p-value</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>3</td><td>0.715</td><td>-0.077</td><td>&lt;0.001</td></tr>
+                <tr><td>5</td><td>0.699</td><td>-0.093</td><td>&lt;0.001</td></tr>
+                <tr><td>10</td><td>0.701</td><td>-0.091</td><td>&lt;0.001</td></tr>
+            </tbody>
+        </table>
+        <p><strong>Conclusión:</strong> ❌ OOF empeora todos los meta-modelos. Razón: en 75 muestras, varianza muestral OOF > sesgo in-sample.</p>
+
+        <h3>3. Snapshot Ensemble en Meta-Modelo (MLP)</h3>
+        <table>
+            <thead>
+                <tr><th>Config</th><th>AUC</th><th>Accuracy</th><th>F1</th><th>Mejora</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>MLP Simple (6-dim)</td><td>0.654</td><td>0.701</td><td>0.597</td><td>-0.138</td></tr>
+                <tr><td>MLP + Ciclos (6-dim)</td><td>0.722</td><td>0.735</td><td>0.669</td><td>-0.070</td></tr>
+                <tr><td><strong>MLP Snapshot (512-dim)</strong></td><td><strong>0.7995</strong></td><td><strong>0.7512</strong></td><td><strong>0.7177</strong></td><td><strong>+0.0077</strong></td></tr>
+            </tbody>
+        </table>
+        <p><strong>Conclusión:</strong> ✅ MLP Snapshot gana vs baseline. Mecanismo: ciclos LR + embeddings = mejor regularización.</p>
+
+        <h3>4. Reweighting por Importancia</h3>
+        <table>
+            <thead>
+                <tr><th>Método</th><th>Resultado</th><th>Significancia</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>norm_ratio</td><td>-0.010 AUC</td><td>p &lt; 0.01 ❌</td></tr>
+                <tr><td>softmax</td><td>-0.008 AUC</td><td>p &lt; 0.05 ❌</td></tr>
+                <tr><td>signed</td><td>-0.006 AUC</td><td>p = 0.13 (ns)</td></tr>
+            </tbody>
+        </table>
+        <p><strong>Conclusión:</strong> ❌ Reweighting empeora. Razón: LogReg ya descubre pesos óptimos.</p>
+    </section>
+
+    <section id="resultados">
+        <div class="section-title"><span class="emoji">📊</span> Resultados de Métricas</div>
+
+        <h3>Tabla Maestra (50 folds, cptac_brca/TP53)</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Configuración</th>
+                        <th>AUC</th>
+                        <th>Accuracy</th>
+                        <th>F1</th>
+                        <th>Kappa</th>
+                        <th>Mejora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>LogReg (baseline)</strong></td>
+                        <td><strong>0.7918 ± 0.015</strong></td>
+                        <td><strong>0.7483 ± 0.032</strong></td>
+                        <td><strong>0.6884 ± 0.061</strong></td>
+                        <td><strong>0.4531 ± 0.047</strong></td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>LogitAvg</td>
+                        <td>0.7893 ± 0.016</td>
+                        <td>0.7456 ± 0.033</td>
+                        <td>0.6853 ± 0.062</td>
+                        <td>0.4485 ± 0.048</td>
+                        <td>-0.0025</td>
+                    </tr>
+                    <tr>
+                        <td>MLP Snapshot (512-dim)</td>
+                        <td>0.7995 ± 0.1027</td>
+                        <td>0.7512 ± 0.0919</td>
+                        <td>0.7177 ± 0.1324</td>
+                        <td>0.4812 ± 0.1844</td>
+                        <td>+0.0077</td>
+                    </tr>
+                    <tr>
+                        <td>TabPFN</td>
+                        <td>0.7910 ± 0.021</td>
+                        <td>0.7476 ± 0.034</td>
+                        <td>0.6874 ± 0.063</td>
+                        <td>0.4515 ± 0.049</td>
+                        <td>-0.0008</td>
+                    </tr>
+                    <tr style="background: rgba(220, 38, 38, 0.05);">
+                        <td>LightGBM</td>
+                        <td>0.4956 ± 0.125</td>
+                        <td>0.5921 ± 0.118</td>
+                        <td>0.4512 ± 0.142</td>
+                        <td>0.1254 ± 0.196</td>
+                        <td>-0.2962 ❌</td>
+                    </tr>
+                    <tr style="background: rgba(220, 38, 38, 0.05);">
+                        <td>MLP Simple</td>
+                        <td>0.6568 ± 0.087</td>
+                        <td>0.7009 ± 0.091</td>
+                        <td>0.5978 ± 0.125</td>
+                        <td>0.3672 ± 0.154</td>
+                        <td>-0.1350 ❌</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="estadistica">
+        <div class="section-title"><span class="emoji">📈</span> Análisis Estadístico</div>
+
+        <h3>Poder Estadístico (50 folds)</h3>
+        <div class="code-block">
+n_folds = 50
+σ_diferencia ≈ 0.025
+
+MDE (Minimum Detectable Effect) @ α=0.05, β=0.20:
+MDE ≈ ±0.016 en AUC
+
+Interpretación:
+├─ Δ AUC < 0.016 → Indistinguible
+├─ Δ AUC = 0.003 (FGE) → No detectable
+└─ Δ AUC = 0.010 (MLP) → Apenas detectable</div>
+
+        <div class="highlight-box">
+            <strong>💡 Conclusión Estadística:</strong> Con 50 folds, el MDE es ±0.016 en AUC. LogReg es óptima dentro de lo estadísticamente discernible. MLP Snapshot es alternativa borderline que podría brillar con más datos.
+        </div>
+    </section>
+
+    <section id="problemas">
+        <div class="section-title"><span class="emoji">⚠️</span> Problemas Críticos Identificados</div>
+
+        <div class="problem">
+            <h3>🔴 Crítico #1: TabPFN API Incompatibility</h3>
+            <p><strong>Error:</strong> <code>TypeError: TabPFNClassifier.__init__() got unexpected keyword argument 'seed'</code></p>
+            <p><strong>Impacto:</strong> Deep MLP Snapshot experiments no ejecutan</p>
+            <p><strong>Solución:</strong> Remover <code>seed</code> parameter de meta_models.py</p>
+        </div>
+
+        <div class="problem">
+            <h3>🔴 Crítico #2: SVM/KNN Reweighting Logic</h3>
+            <p><strong>Error:</strong> <code>KeyError: 'macro-ovr-auc'</code></p>
+            <p><strong>Impacto:</strong> SVM, KNN, Naive Bayes no funcionan con reweighting</p>
+            <p><strong>Solución:</strong> Debug extracción de métricas en ensemble4.py</p>
+        </div>
+
+        <div class="problem">
+            <h3>🔴 Crítico #3: Spatial/GNN Graph Construction</h3>
+            <p><strong>Error:</strong> <code>ValueError: invalid lattice specification</code></p>
+            <p><strong>Impacto:</strong> Rama spatial/GNN completamente no operativa</p>
+            <p><strong>Solución:</strong> Asumir patches en secuencia lineal, no grid</p>
+        </div>
+    </section>
+
+    <section id="mejoras">
+        <div class="section-title"><span class="emoji">🚀</span> Vías de Mejora No Exploradas</div>
+
+        <h3>Ranking de Potencial vs. Effort</h3>
+        <table>
+            <thead>
+                <tr><th>Vía</th><th>Potencial</th><th>Effort</th><th>Δ AUC Esperado</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Feature Engineering Meta (ratios, entropía)</td>
+                    <td><span class="status-badge status-success">Alto</span></td>
+                    <td><span class="status-badge status-success">Bajo</span></td>
+                    <td>+0.005-0.010</td>
+                </tr>
+                <tr>
+                    <td>Attention Maps como features</td>
+                    <td><span class="status-badge status-info">Medio</span></td>
+                    <td><span class="status-badge status-info">Medio</span></td>
+                    <td>+0.003-0.008</td>
+                </tr>
+                <tr>
+                    <td>Temperature Scaling en predicciones</td>
+                    <td><span class="status-badge status-info">Medio</span></td>
+                    <td><span class="status-badge status-success">Bajo</span></td>
+                    <td>+0.002-0.005</td>
+                </tr>
+                <tr>
+                    <td>Bootstrap Aggregating de patches</td>
+                    <td><span class="status-badge status-info">Medio</span></td>
+                    <td><span class="status-badge status-warning">Alto</span></td>
+                    <td>+0.001-0.005</td>
+                </tr>
+                <tr style="opacity: 0.6;">
+                    <td>Arquitecturas complejas (Deep MLP, NAS)</td>
+                    <td><span class="status-badge status-danger">Bajo</span></td>
+                    <td><span class="status-badge status-warning">Alto</span></td>
+                    <td>&lt;+0.001</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="recommendation">
+            <h3>Quick Wins (1-2 semanas)</h3>
+            <ol>
+                <li><strong>Feature Engineering:</strong> Agregar entropía, spread, desv. de promedio</li>
+                <li><strong>Attention Maps:</strong> Extraer percentil 90/95, entropía, count</li>
+                <li><strong>Temperature Scaling:</strong> Calibrar confianzas pre-concatenación</li>
+            </ol>
+            <p>Estimado: +0.005-0.020 AUC acumulado</p>
+        </div>
+    </section>
+
+    <section id="recomendaciones">
+        <div class="section-title"><span class="emoji">📋</span> Recomendaciones</div>
+
+        <h3>Corto Plazo (1-2 semanas)</h3>
+        <div class="recommendation">
+            <ol>
+                <li><strong>Resolver Problemas Críticos</strong>
+                    <ul>
+                        <li>Actualizar TabPFN en environment.yml</li>
+                        <li>Debuggear SVM/KNN reweighting</li>
+                        <li>Decidir: ¿Mantener spatial/GNN o eliminar?</li>
+                    </ul>
+                </li>
+                <li><strong>Documentación</strong>
+                    <ul>
+                        <li>Crear TABLEAU_RESULTADOS.md con tabla maestra</li>
+                        <li>Documentar IC 95% y MDE</li>
+                    </ul>
+                </li>
+                <li><strong>Validación en Segundo Dataset</strong>
+                    <ul>
+                        <li>Ejecutar MLP Snapshot en cervical_subtype</li>
+                        <li>Validar si ganancia LogReg se mantiene</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <h3>Decisión Operativa Inmediata</h3>
+        <div class="highlight-box">
+            <p><strong>Para producción:</strong> <span class="status-badge status-success">Usar LogisticRegression</span> (AUC 0.7918, robusto, rápido)</p>
+            <p><strong>Para investigación:</strong> <span class="status-badge status-info">Mantener MLP Snapshot</span> (potencial si más datos)</p>
+            <p><strong>Para descartar:</strong> <span class="status-badge status-danger">Spatial/GNN, Deep MLP, LightGBM</span></p>
+        </div>
+    </section>
+
+    <section class="footer">
+        <p><strong>Generado:</strong> 19 de Agosto de 2026</p>
+        <p><strong>Análisis realizado por:</strong> Sistema Automático (3 agentes paralelos)</p>
+        <p><strong>Tiempo total:</strong> ~20 minutos | <strong>Datos:</strong> 50 folds × 3 modelos × 30+ configuraciones</p>
+    </section>
+</body>
+</html>

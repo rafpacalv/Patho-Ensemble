@@ -1,0 +1,13 @@
+{
+  "method": "weighted_early_fusion_vs_nelder_mead",
+  "mean_delta_auc": -0.018239010989010974,
+  "ci_lower": -0.04205363629426128,
+  "ci_upper": 0.006149781237281245,
+  "wins_ties_losses": [
+    20,
+    1,
+    29
+  ],
+  "p_value": 0.15312891898319395,
+  "n_folds": 50
+}

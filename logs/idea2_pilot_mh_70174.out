@@ -1,0 +1,175 @@
+============================================================================
+IDEA 2 — PILOTO: MULTI-HEAD GATED ATTENTION EN ABMIL
+============================================================================
+Configuración:
+  Dataset: cptac_brca / Task: TP53_mutation
+  Modelo: ctranspath
+  Folds: 0-4 (piloto de 5 folds para validar)
+  n_attention_heads: 4
+  Combinación: mean-pool
+============================================================================
+
+=== BASELINE: Single-head Gated Attention ===
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 0
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 0: train=75, val=15, test=22
+Fold 0: ABMIL entrenado (val_auc=1.0000)
+
+✅ Training completed
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 1
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 1: train=76, val=13, test=23
+Fold 1: ABMIL entrenado (val_auc=0.9792)
+
+✅ Training completed
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 2
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 2: train=76, val=16, test=20
+Fold 2: ABMIL entrenado (val_auc=0.7143)
+
+✅ Training completed
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 3
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 3: train=76, val=16, test=20
+Fold 3: ABMIL entrenado (val_auc=0.9206)
+
+✅ Training completed
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 4
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 4: train=77, val=15, test=20
+Fold 4: ABMIL entrenado (val_auc=0.9365)
+
+✅ Training completed
+✓ Baseline completado
+
+=== MULTI-HEAD: 4-head Gated Attention ===
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 0
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 0: train=75, val=15, test=22
+Fold 0: ABMIL entrenado (val_auc=0.9444)
+
+✅ Training completed
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 1
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 1: train=76, val=13, test=23
+Fold 1: ABMIL entrenado (val_auc=0.9583)
+
+✅ Training completed
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 2
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 2: train=76, val=16, test=20
+Fold 2: ABMIL entrenado (val_auc=0.7500)
+
+✅ Training completed
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 3
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 3: train=76, val=16, test=20
+Fold 3: ABMIL entrenado (val_auc=0.9048)
+
+✅ Training completed
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: 4
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 4: train=77, val=15, test=20
+Fold 4: ABMIL entrenado (val_auc=0.9365)
+
+✅ Training completed
+✓ MultiHead completado
+
+============================================================================
+Piloto completado: Thu Aug 20 12:55:14 CEST 2026
+============================================================================
+
+Comparar resultados:
+  Baseline: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/test_metrics/
+  MultiHead: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_multihead_4_20x_224px_0px_overlap/test_metrics/
+

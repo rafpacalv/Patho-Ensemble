@@ -1,0 +1,104 @@
+{
+  "ctranspath": {
+    "n_patches": 3719.32,
+    "entropy_norm": 0.9282283435515462,
+    "ess_norm": 0.38855738878250123,
+    "logit_std": 0.9796788251399994,
+    "cos_var_raw": 0.016097134333103894,
+    "cos_var_proj": 0.010568042788654565,
+    "entropy_sd": 0.037851944253126796,
+    "in_dim": 768,
+    "compression": 1.5
+  },
+  "uni_v2": {
+    "n_patches": 6582.28,
+    "entropy_norm": 0.994220303299464,
+    "ess_norm": 0.9065359377861023,
+    "logit_std": 0.2999728855490684,
+    "cos_var_raw": 0.027703165113925933,
+    "cos_var_proj": 0.01821260392665863,
+    "entropy_sd": 0.002407677967244057,
+    "in_dim": 1536,
+    "compression": 3.0
+  },
+  "conch_v1_5": {
+    "n_patches": 3719.32,
+    "entropy_norm": 0.8878650040471306,
+    "ess_norm": 0.2226531246304512,
+    "logit_std": 1.2855946016311646,
+    "cos_var_raw": 0.012069238815456629,
+    "cos_var_proj": 0.007027652775868773,
+    "entropy_sd": 0.03050624130101372,
+    "in_dim": 768,
+    "compression": 1.5
+  },
+  "virchow_v1": {
+    "n_patches": 3719.32,
+    "entropy_norm": 0.9992843054190186,
+    "ess_norm": 0.9889195370674133,
+    "logit_std": 0.1012877906113863,
+    "cos_var_raw": 0.025940463226288558,
+    "cos_var_proj": 0.0012136486143572256,
+    "entropy_sd": 0.0005126457811052197,
+    "in_dim": 2560,
+    "compression": 5.0
+  },
+  "uni_v1": {
+    "n_patches": 6582.28,
+    "entropy_norm": 0.9974450397135683,
+    "ess_norm": 0.957720890045166,
+    "logit_std": 0.20086414098739624,
+    "cos_var_raw": 0.021709236986935138,
+    "cos_var_proj": 0.012844157479703426,
+    "entropy_sd": 0.0016814029865259072,
+    "in_dim": 1024,
+    "compression": 2.0
+  },
+  "phikon_v2": {
+    "n_patches": 6582.28,
+    "entropy_norm": 0.976440925618993,
+    "ess_norm": 0.7029132318496704,
+    "logit_std": 0.6195501470565796,
+    "cos_var_raw": 0.0317125453427434,
+    "cos_var_proj": 0.02253945656120777,
+    "entropy_sd": 0.01333586148633383,
+    "in_dim": 1024,
+    "compression": 2.0
+  },
+  "hoptimus1": {
+    "n_patches": 6582.28,
+    "entropy_norm": 0.9279396833248056,
+    "ess_norm": 0.382654415294528,
+    "logit_std": 0.8276707923412323,
+    "cos_var_raw": 0.036413649842143056,
+    "cos_var_proj": 0.013598343352787196,
+    "entropy_sd": 0.05856344138494978,
+    "in_dim": 1536,
+    "compression": 3.0
+  },
+  "virchow2": {
+    "n_patches": 6582.28,
+    "entropy_norm": 0.9981180541691876,
+    "ess_norm": 0.9689415454864502,
+    "logit_std": 0.17549684554338454,
+    "cos_var_raw": 0.04537651404738426,
+    "cos_var_proj": 0.006690952116623521,
+    "entropy_sd": 0.0006513484464165793,
+    "in_dim": 2560,
+    "compression": 5.0
+  },
+  "_correlations": {
+    "pearson_in_dim": [
+      0.6032024935248007,
+      0.11339525015930582
+    ],
+    "spearman_in_dim": [
+      0.7319250547114,
+      0.03899827398782232
+    ],
+    "pearson_n_patches": [
+      0.4854057081752264,
+      0.22272217537807693
+    ]
+  }
+}

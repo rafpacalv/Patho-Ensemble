@@ -1,0 +1,632 @@
+============================================================================
+OPCIÓN C — FAIR COMPARISON: Late vs Early Fusion + Meta-learner
+============================================================================
+Fecha: Fri Aug 21 13:37:15 CEST 2026
+Dataset: cptac_brca / Task: TP53_mutation
+Modelos: ctranspath, virchow_v1, conch_v1_5
+============================================================================
+
+⚠ conch_v1_5 already trained, skipping
+
+============================================================================
+FASE 1: Generar meta-features para Late Fusion Baseline
+============================================================================
+
+  Generando meta-features para ctranspath...
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Test (predicciones sobre train): ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+  ✓ ctranspath meta-features done
+
+  Generando meta-features para virchow_v1...
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+
+============================================================
+ABMIL Test (predicciones sobre train): virchow_v1
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 2560, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+  ✓ virchow_v1 meta-features done
+
+  Generando meta-features para conch_v1_5...
+  latent_dim auto-detectado: 768  (de features_conch_v1_5_monai)
+
+============================================================
+ABMIL Test (predicciones sobre train): conch_v1_5
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+  ✓ conch_v1_5 meta-features done
+
+✓ All meta-features for Late Fusion generated
+
+============================================================================
+FASE 2: Entrenando Late Fusion + LogisticRegression (Baseline)
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_opcion_c_late_fusion_baseline/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+
+✓ Late Fusion + LogReg training complete
+
+============================================================================
+FASE 3: Entrenando Early Fusion (ctranspath ⊕ virchow_v1 ⊕ conch_v1_5)
+============================================================================
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+  latent_dim auto-detectado: 768  (de features_conch_v1_5_monai)
+Fused latent_dim: 4096 (sum of [768, 2560, 768])
+
+Verifying patch coordinate alignment across ['ctranspath', 'virchow_v1', 'conch_v1_5']...
+✓ All slides have identical patch coordinates across models
+Total folds available: 50
+
+Loading and fusing features from ['ctranspath', 'virchow_v1', 'conch_v1_5']...
+✓ Loaded 112 slides
+
+============================================================
+Fold 0
+============================================================
+✓ Model trained (val_auc=1.0000)
+
+============================================================
+Fold 1
+============================================================
+✓ Model trained (val_auc=0.8958)
+
+============================================================
+Fold 2
+============================================================
+✓ Model trained (val_auc=0.8214)
+
+============================================================
+Fold 3
+============================================================
+✓ Model trained (val_auc=0.8889)
+
+============================================================
+Fold 4
+============================================================
+✓ Model trained (val_auc=0.9048)
+
+============================================================
+Fold 5
+============================================================
+✓ Model trained (val_auc=0.6825)
+
+============================================================
+Fold 6
+============================================================
+✓ Model trained (val_auc=0.7400)
+
+============================================================
+Fold 7
+============================================================
+✓ Model trained (val_auc=0.9688)
+
+============================================================
+Fold 8
+============================================================
+✓ Model trained (val_auc=0.8182)
+
+============================================================
+Fold 9
+============================================================
+✓ Model trained (val_auc=0.9048)
+
+============================================================
+Fold 10
+============================================================
+✓ Model trained (val_auc=0.8148)
+
+============================================================
+Fold 11
+============================================================
+✓ Model trained (val_auc=0.5000)
+
+============================================================
+Fold 12
+============================================================
+✓ Model trained (val_auc=0.6984)
+
+============================================================
+Fold 13
+============================================================
+✓ Model trained (val_auc=0.8929)
+
+============================================================
+Fold 14
+============================================================
+✓ Model trained (val_auc=0.6667)
+
+============================================================
+Fold 15
+============================================================
+✓ Model trained (val_auc=0.9286)
+
+============================================================
+Fold 16
+============================================================
+✓ Model trained (val_auc=0.8182)
+
+============================================================
+Fold 17
+============================================================
+✓ Model trained (val_auc=0.8200)
+
+============================================================
+Fold 18
+============================================================
+✓ Model trained (val_auc=0.7321)
+
+============================================================
+Fold 19
+============================================================
+✓ Model trained (val_auc=0.7407)
+
+============================================================
+Fold 20
+============================================================
+✓ Model trained (val_auc=0.9219)
+
+============================================================
+Fold 21
+============================================================
+✓ Model trained (val_auc=0.8148)
+
+============================================================
+Fold 22
+============================================================
+✓ Model trained (val_auc=0.9600)
+
+============================================================
+Fold 23
+============================================================
+✓ Model trained (val_auc=0.9600)
+
+============================================================
+Fold 24
+============================================================
+✓ Model trained (val_auc=0.7667)
+
+============================================================
+Fold 25
+============================================================
+✓ Model trained (val_auc=0.5455)
+
+============================================================
+Fold 26
+============================================================
+✓ Model trained (val_auc=1.0000)
+
+============================================================
+Fold 27
+============================================================
+✓ Model trained (val_auc=0.7917)
+
+============================================================
+Fold 28
+============================================================
+✓ Model trained (val_auc=0.9062)
+
+============================================================
+Fold 29
+============================================================
+✓ Model trained (val_auc=0.9167)
+
+============================================================
+Fold 30
+============================================================
+✓ Model trained (val_auc=0.9259)
+
+============================================================
+Fold 31
+============================================================
+✓ Model trained (val_auc=0.7273)
+
+============================================================
+Fold 32
+============================================================
+✓ Model trained (val_auc=0.9273)
+
+============================================================
+Fold 33
+============================================================
+✓ Model trained (val_auc=0.9630)
+
+============================================================
+Fold 34
+============================================================
+✓ Model trained (val_auc=0.8929)
+
+============================================================
+Fold 35
+============================================================
+✓ Model trained (val_auc=0.9815)
+
+============================================================
+Fold 36
+============================================================
+✓ Model trained (val_auc=0.9841)
+
+============================================================
+Fold 37
+============================================================
+✓ Model trained (val_auc=0.9464)
+
+============================================================
+Fold 38
+============================================================
+✓ Model trained (val_auc=0.8667)
+
+============================================================
+Fold 39
+============================================================
+✓ Model trained (val_auc=0.7963)
+
+============================================================
+Fold 40
+============================================================
+✓ Model trained (val_auc=0.8125)
+
+============================================================
+Fold 41
+============================================================
+✓ Model trained (val_auc=1.0000)
+
+============================================================
+Fold 42
+============================================================
+✓ Model trained (val_auc=0.6458)
+
+============================================================
+Fold 43
+============================================================
+✓ Model trained (val_auc=0.7917)
+
+============================================================
+Fold 44
+============================================================
+✓ Model trained (val_auc=0.9375)
+
+============================================================
+Fold 45
+============================================================
+✓ Model trained (val_auc=0.9259)
+
+============================================================
+Fold 46
+============================================================
+✓ Model trained (val_auc=0.9231)
+
+============================================================
+Fold 47
+============================================================
+✓ Model trained (val_auc=0.9821)
+
+============================================================
+Fold 48
+============================================================
+✓ Model trained (val_auc=0.8364)
+
+============================================================
+Fold 49
+============================================================
+✓ Model trained (val_auc=0.9667)
+
+============================================================
+✓ Fused ABMIL training complete
+============================================================
+
+✓ No external model for stacking (--other_model not specified)
+Fused model outputs available at: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_virchow_v1_conch_v1_5_fused_20x_224px_0px_overlap
+
+✓ Early Fusion training complete
+
+============================================================================
+FASE 4: Generar meta-features para Early Fusion
+============================================================================
+✓ Early Fusion meta-features already generated by ensemble5.py
+
+============================================================================
+FASE 5: Entrenando Early Fusion + LogisticRegression (Hybrid)
+============================================================================
+
+================================================================================
+Training meta-learner on: ctranspath_virchow_v1_conch_v1_5_fused
+Dataset: cptac_brca / Task: TP53_mutation
+Meta-model: logreg
+Folds: 50
+================================================================================
+
+Meta-features dir: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_virchow_v1_conch_v1_5_fused_20x_224px_0px_overlap_train_eval/val_outputs
+Results subdir: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_ctranspath_virchow_v1_conch_v1_5_fused_logreg
+
+
+Processing fold 0...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.6875, Acc: 0.6364, Prec: 0.5000, Rec: 0.6250, F1: 0.5556
+
+Processing fold 1...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (23, 2), labels: (23,)
+  AUC: 0.6984, Acc: 0.6522, Prec: 0.6000, Rec: 0.3333, F1: 0.4286
+
+Processing fold 2...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.7812, Acc: 0.7500, Prec: 0.7143, Rec: 0.6250, F1: 0.6667
+
+Processing fold 3...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.7396, Acc: 0.7500, Prec: 0.6667, Rec: 0.7500, F1: 0.7059
+
+Processing fold 4...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.7188, Acc: 0.8500, Prec: 0.8571, Rec: 0.7500, F1: 0.8000
+
+Processing fold 5...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.9038, Acc: 0.7619, Prec: 0.8000, Rec: 0.5000, F1: 0.6154
+
+Processing fold 6...
+  Train meta-features: (74, 2), labels: (74,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.9196, Acc: 0.8182, Prec: 0.7000, Rec: 0.8750, F1: 0.7778
+
+Processing fold 7...
+  Train meta-features: (78, 2), labels: (78,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.8654, Acc: 0.7619, Prec: 0.7143, Rec: 0.6250, F1: 0.6667
+
+Processing fold 8...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.8889, Acc: 0.7619, Prec: 0.7000, Rec: 0.7778, F1: 0.7368
+
+Processing fold 9...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.8365, Acc: 0.7143, Prec: 0.6667, Rec: 0.5000, F1: 0.5714
+
+Processing fold 10...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.8462, Acc: 0.7619, Prec: 0.7143, Rec: 0.6250, F1: 0.6667
+
+Processing fold 11...
+  Train meta-features: (74, 2), labels: (74,)
+  Test predictions: (23, 2), labels: (23,)
+  AUC: 0.8095, Acc: 0.7391, Prec: 0.6667, Rec: 0.6667, F1: 0.6667
+
+Processing fold 12...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.5938, Acc: 0.7000, Prec: 1.0000, Rec: 0.2500, F1: 0.4000
+
+Processing fold 13...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.6667, Acc: 0.7000, Prec: 0.7500, Rec: 0.3750, F1: 0.5000
+
+Processing fold 14...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.5741, Acc: 0.5238, Prec: 0.4444, Rec: 0.4444, F1: 0.4444
+
+Processing fold 15...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.7863, Acc: 0.7727, Prec: 0.7500, Rec: 0.6667, F1: 0.7059
+
+Processing fold 16...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.7350, Acc: 0.7273, Prec: 0.7143, Rec: 0.5556, F1: 0.6250
+
+Processing fold 17...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.8558, Acc: 0.7143, Prec: 0.6250, Rec: 0.6250, F1: 0.6250
+
+Processing fold 18...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.8750, Acc: 0.7619, Prec: 0.7143, Rec: 0.6250, F1: 0.6667
+
+Processing fold 19...
+  Train meta-features: (73, 2), labels: (73,)
+  Test predictions: (23, 2), labels: (23,)
+  AUC: 0.8000, Acc: 0.7391, Prec: 0.7000, Rec: 0.7000, F1: 0.7000
+
+Processing fold 20...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.8462, Acc: 0.7143, Prec: 0.6250, Rec: 0.6250, F1: 0.6250
+
+Processing fold 21...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (24, 2), labels: (24,)
+  AUC: 0.8444, Acc: 0.7500, Prec: 0.6154, Rec: 0.8889, F1: 0.7273
+
+Processing fold 22...
+  Train meta-features: (74, 2), labels: (74,)
+  Test predictions: (23, 2), labels: (23,)
+  AUC: 0.6333, Acc: 0.6087, Prec: 0.4545, Rec: 0.6250, F1: 0.5263
+
+Processing fold 23...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.8000, Acc: 0.7727, Prec: 0.7778, Rec: 0.7000, F1: 0.7368
+
+Processing fold 24...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.9375, Acc: 0.8182, Prec: 0.8333, Rec: 0.6250, F1: 0.7143
+
+Processing fold 25...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.6944, Acc: 0.6667, Prec: 1.0000, Rec: 0.2222, F1: 0.3636
+
+Processing fold 26...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.6786, Acc: 0.5909, Prec: 0.4444, Rec: 0.5000, F1: 0.4706
+
+Processing fold 27...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.9074, Acc: 0.7143, Prec: 1.0000, Rec: 0.3333, F1: 0.5000
+
+Processing fold 28...
+  Train meta-features: (79, 2), labels: (79,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.9062, Acc: 0.8500, Prec: 0.8571, Rec: 0.7500, F1: 0.8000
+
+Processing fold 29...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.7436, Acc: 0.6818, Prec: 0.5833, Rec: 0.7778, F1: 0.6667
+
+Processing fold 30...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.8365, Acc: 0.7143, Prec: 0.6250, Rec: 0.6250, F1: 0.6250
+
+Processing fold 31...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.9135, Acc: 0.9048, Prec: 0.8750, Rec: 0.8750, F1: 0.8750
+
+Processing fold 32...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.6481, Acc: 0.6190, Prec: 0.5556, Rec: 0.5556, F1: 0.5556
+
+Processing fold 33...
+  Train meta-features: (74, 2), labels: (74,)
+  Test predictions: (23, 2), labels: (23,)
+  AUC: 0.8308, Acc: 0.7826, Prec: 0.8571, Rec: 0.6000, F1: 0.7059
+
+Processing fold 34...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (23, 2), labels: (23,)
+  AUC: 0.8333, Acc: 0.8261, Prec: 0.8571, Rec: 0.6667, F1: 0.7500
+
+Processing fold 35...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.8291, Acc: 0.7727, Prec: 1.0000, Rec: 0.4444, F1: 0.6154
+
+Processing fold 36...
+  Train meta-features: (78, 2), labels: (78,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.7083, Acc: 0.7000, Prec: 0.6250, Rec: 0.6250, F1: 0.6250
+
+Processing fold 37...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.8750, Acc: 0.8636, Prec: 0.7778, Rec: 0.8750, F1: 0.8235
+
+Processing fold 38...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.7436, Acc: 0.6364, Prec: 0.5455, Rec: 0.6667, F1: 0.6000
+
+Processing fold 39...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.8482, Acc: 0.8182, Prec: 0.7500, Rec: 0.7500, F1: 0.7500
+
+Processing fold 40...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.7604, Acc: 0.7500, Prec: 0.7143, Rec: 0.6250, F1: 0.6667
+
+Processing fold 41...
+  Train meta-features: (74, 2), labels: (74,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.7500, Acc: 0.6364, Prec: 0.5000, Rec: 0.1250, F1: 0.2000
+
+Processing fold 42...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.8125, Acc: 0.7500, Prec: 0.6667, Rec: 0.7500, F1: 0.7059
+
+Processing fold 43...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.6442, Acc: 0.6190, Prec: 0.5000, Rec: 0.6250, F1: 0.5556
+
+Processing fold 44...
+  Train meta-features: (78, 2), labels: (78,)
+  Test predictions: (20, 2), labels: (20,)
+  AUC: 0.8958, Acc: 0.9000, Prec: 1.0000, Rec: 0.7500, F1: 0.8571
+
+Processing fold 45...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.8462, Acc: 0.6818, Prec: 0.5714, Rec: 0.8889, F1: 0.6957
+
+Processing fold 46...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (21, 2), labels: (21,)
+  AUC: 0.7685, Acc: 0.5238, Prec: 0.4667, Rec: 0.7778, F1: 0.5833
+
+Processing fold 47...
+  Train meta-features: (75, 2), labels: (75,)
+  Test predictions: (24, 2), labels: (24,)
+  AUC: 0.8594, Acc: 0.7500, Prec: 0.6667, Rec: 0.5000, F1: 0.5714
+
+Processing fold 48...
+  Train meta-features: (76, 2), labels: (76,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.8889, Acc: 0.7727, Prec: 0.7000, Rec: 0.7778, F1: 0.7368
+
+Processing fold 49...
+  Train meta-features: (77, 2), labels: (77,)
+  Test predictions: (22, 2), labels: (22,)
+  AUC: 0.6964, Acc: 0.7727, Prec: 0.8000, Rec: 0.5000, F1: 0.6154
+
+================================================================================
+✓ Meta-learner training complete (50 folds)
+Results saved to: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_ctranspath_virchow_v1_conch_v1_5_fused_logreg
+================================================================================
+
+Summary:
+  Mean AUC: 0.7913 ± 0.0917
+  Min AUC: 0.5741
+  Max AUC: 0.9375
+
+✓ Early Fusion + LogReg training complete
+
+============================================================================
+FASE 6: Comparación Pareada Late Fusion vs Early Fusion
+============================================================================
+✓ Loaded Late Fusion AUCs: 0 folds
+✓ Loaded Early Fusion AUCs: 0 folds
+ERROR: No metrics found

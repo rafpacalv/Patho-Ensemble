@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patho-Ensemble — Informe consolidado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ── Tokens: tema claro completo en :root ─────────────────────────── */
+:root{
+  --ground:      #fbfafc;
+  --surface:     #ffffff;
+  --surface-alt: #f4f1f7;
+  --ink:         #1a1520;
+  --ink-soft:    #4a4256;
+  --ink-mute:    #756c82;
+  --rule:        #e2dce8;
+  --rule-strong: #cdc3d6;
+
+  /* Hematoxilina / eosina — la paleta viene de la tinción H&E */
+  --accent:      #5b3f7a;
+  --accent-soft: #ede6f4;
+  --accent-ink:  #4a3266;
+
+  --neg:         #a8455e;   /* deltas negativos, regresiones */
+  --neg-soft:    #fbeaee;
+  --pos:         #2c6b62;   /* empates favorables, recuperación */
+  --pos-soft:    #e4f1ee;
+  --warn:        #8a6414;
+  --warn-soft:   #f8f0dc;
+
+  --shadow: 0 1px 2px rgba(26,21,32,.05), 0 8px 24px -12px rgba(26,21,32,.12);
+
+  --measure: 68ch;
+  --fs-step: 1.2;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:      #131019;
+    --surface:     #1b1723;
+    --surface-alt: #221d2c;
+    --ink:         #eee9f2;
+    --ink-soft:    #b8b0c4;
+    --ink-mute:    #8b8299;
+    --rule:        #322b3d;
+    --rule-strong: #453d53;
+
+    --accent:      #b79ad6;
+    --accent-soft: #2a2137;
+    --accent-ink:  #cbb4e4;
+
+    --neg:         #e08599;
+    --neg-soft:    #33202a;
+    --pos:         #77bfb2;
+    --pos-soft:    #1c2e2c;
+    --warn:        #d6ab55;
+    --warn-soft:   #2e2718;
+
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+
+:root[data-theme="dark"]{
+  --ground:      #131019;
+  --surface:     #1b1723;
+  --surface-alt: #221d2c;
+  --ink:         #eee9f2;
+  --ink-soft:    #b8b0c4;
+  --ink-mute:    #8b8299;
+  --rule:        #322b3d;
+  --rule-strong: #453d53;
+
+  --accent:      #b79ad6;
+  --accent-soft: #2a2137;
+  --accent-ink:  #cbb4e4;
+
+  --neg:         #e08599;
+  --neg-soft:    #33202a;
+  --pos:         #77bfb2;
+  --pos-soft:    #1c2e2c;
+  --warn:        #d6ab55;
+  --warn-soft:   #2e2718;
+
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+  background: var(--ground);
+  color: var(--ink);
+  font-family:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 clamp(1rem,4vw,3rem) 6rem;
+}
+
+/* prosa estrecha, tablas anchas */
+.col{ max-width:var(--measure); }
+
+/* ── Tipografía ───────────────────────────────────────────────────── */
+h1,h2,h3,h4{
+  font-family:Newsreader,"Iowan Old Style",Georgia,serif;
+  font-weight:500;
+  text-wrap:balance;
+  line-height:1.14;
+  margin:0;
+}
+h1{ font-size:clamp(2.4rem,5.4vw,3.9rem); letter-spacing:-.018em; }
+h2{ font-size:clamp(1.65rem,3vw,2.25rem); letter-spacing:-.012em; }
+h3{ font-size:1.28rem; letter-spacing:-.006em; }
+h4{ font-size:1.06rem; font-weight:600; }
+
+p{ margin:0; }
+strong{ font-weight:600; color:var(--ink); }
+em{ font-style:italic; }
+
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.lede{
+  font-size:1.2rem;
+  line-height:1.55;
+  color:var(--ink-soft);
+}
+.note{
+  font-size:.9rem;
+  line-height:1.55;
+  color:var(--ink-mute);
+}
+code,.mono{
+  font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  font-variant-numeric:tabular-nums;
+}
+p code, li code, td code, th code{
+  font-size:.86em;
+  background:var(--surface-alt);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:.08em .34em;
+}
+
+/* ── Cabecera ─────────────────────────────────────────────────────── */
+header.masthead{
+  display:flex; flex-direction:column; gap:1.4rem;
+  padding:clamp(3rem,8vw,5.5rem) 0 2.5rem;
+  border-bottom:2px solid var(--ink);
+}
+.meta-row{
+  display:flex; flex-wrap:wrap; gap:.5rem 1.6rem;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.76rem;
+  color:var(--ink-mute);
+  font-variant-numeric:tabular-nums;
+}
+.meta-row span b{ color:var(--ink-soft); font-weight:500; }
+
+/* ── Secciones ────────────────────────────────────────────────────── */
+section{
+  display:flex; flex-direction:column; gap:1.35rem;
+  padding-top:clamp(3rem,6vw,4.5rem);
+}
+.sec-head{ display:flex; flex-direction:column; gap:.45rem; }
+
+/* ── Tiles de cifras clave ────────────────────────────────────────── */
+.tiles{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:1px;
+  background:var(--rule);
+  border:1px solid var(--rule);
+  border-radius:10px;
+  overflow:hidden;
+}
+.tile{
+  background:var(--surface);
+  padding:1.15rem 1.25rem 1.25rem;
+  display:flex; flex-direction:column; gap:.3rem;
+}
+.tile .k{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-mute);
+}
+.tile .v{
+  font-family:Newsreader,Georgia,serif;
+  font-size:2.1rem; font-weight:500;
+  font-variant-numeric:tabular-nums;
+  line-height:1.05;
+  color:var(--ink);
+}
+.tile .v.accent{ color:var(--accent); }
+.tile .v.neg{ color:var(--neg); }
+.tile .s{ font-size:.85rem; color:var(--ink-mute); line-height:1.45; }
+
+/* ── Tablas ───────────────────────────────────────────────────────── */
+.tscroll{
+  overflow-x:auto;
+  border:1px solid var(--rule);
+  border-radius:10px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:.88rem;
+  min-width:640px;
+}
+caption{
+  text-align:left;
+  padding:.95rem 1.1rem .7rem;
+  font-size:.8rem;
+  color:var(--ink-mute);
+  border-bottom:1px solid var(--rule);
+}
+caption b{ color:var(--ink-soft); font-weight:600; }
+th,td{
+  padding:.56rem .85rem;
+  text-align:left;
+  border-bottom:1px solid var(--rule);
+  vertical-align:baseline;
+}
+thead th{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; font-weight:500;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-mute);
+  background:var(--surface-alt);
+  white-space:nowrap;
+  border-bottom:1px solid var(--rule-strong);
+}
+tbody tr:last-child td{ border-bottom:none; }
+td.num,th.num{
+  text-align:right;
+  font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+td.name{ white-space:nowrap; }
+td.name .mono{ font-size:.86rem; }
+tr.base{ background:var(--accent-soft); }
+tr.base td{ font-weight:600; }
+tr.best td.num.hl{ color:var(--pos); font-weight:600; }
+td.d-neg{ color:var(--neg); }
+td.d-pos{ color:var(--pos); }
+td.ci{ font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-mute); white-space:nowrap; }
+
+/* ── Chips de veredicto ───────────────────────────────────────────── */
+.chip{
+  display:inline-block;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.66rem; font-weight:500;
+  letter-spacing:.05em;
+  padding:.16rem .5rem;
+  border-radius:999px;
+  white-space:nowrap;
+  border:1px solid transparent;
+}
+.chip.tie{  background:var(--pos-soft);   color:var(--pos);    border-color:var(--pos); }
+.chip.bad{  background:var(--neg-soft);   color:var(--neg);    border-color:var(--neg); }
+.chip.warn{ background:var(--warn-soft);  color:var(--warn);   border-color:var(--warn); }
+.chip.flat{ background:var(--surface-alt);color:var(--ink-mute);border-color:var(--rule-strong); }
+.sig{ color:var(--neg); font-weight:600; }
+
+/* ── Bloque destacado ─────────────────────────────────────────────── */
+.callout{
+  border-left:3px solid var(--accent);
+  background:var(--surface);
+  border-top:1px solid var(--rule);
+  border-right:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  border-radius:0 10px 10px 0;
+  padding:1.25rem 1.4rem;
+  display:flex; flex-direction:column; gap:.7rem;
+}
+.callout.neg{ border-left-color:var(--neg); }
+.callout h4{ color:var(--accent-ink); }
+.callout.neg h4{ color:var(--neg); }
+
+/* ── Listas ───────────────────────────────────────────────────────── */
+ol.findings{
+  list-style:none;
+  counter-reset:f;
+  margin:0; padding:0;
+  display:flex; flex-direction:column; gap:1.15rem;
+}
+ol.findings > li{
+  counter-increment:f;
+  display:grid;
+  grid-template-columns:2.1rem 1fr;
+  gap:.9rem;
+  align-items:start;
+}
+ol.findings > li::before{
+  content:counter(f);
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem; font-weight:600;
+  color:var(--accent);
+  background:var(--accent-soft);
+  border-radius:6px;
+  height:1.85rem;
+  display:flex; align-items:center; justify-content:center;
+}
+ul.plain{
+  margin:0; padding:0; list-style:none;
+  display:flex; flex-direction:column; gap:.75rem;
+}
+ul.plain > li{
+  padding-left:1.05rem;
+  position:relative;
+}
+ul.plain > li::before{
+  content:"";
+  position:absolute; left:0; top:.66em;
+  width:5px; height:5px; border-radius:50%;
+  background:var(--rule-strong);
+}
+
+/* ── Código ───────────────────────────────────────────────────────── */
+pre{
+  margin:0;
+  background:var(--surface-alt);
+  border:1px solid var(--rule);
+  border-radius:8px;
+  padding:.95rem 1.1rem;
+  overflow-x:auto;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+pre .c{ color:var(--ink-mute); font-style:italic; }
+pre .f{ color:var(--accent); }
+
+/* ── Diagrama de espacios de features ─────────────────────────────── */
+.spaces{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;
+}
+.space{
+  border:1px solid var(--rule);
+  border-radius:10px;
+  background:var(--surface);
+  padding:1.1rem 1.2rem;
+  display:flex; flex-direction:column; gap:.6rem;
+}
+.space .tag{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent);
+}
+.space .dim{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.78rem;
+  color:var(--ink-mute);
+  font-variant-numeric:tabular-nums;
+}
+
+hr.rule{
+  border:none;
+  border-top:1px solid var(--rule);
+  margin:0;
+}
+
+footer{
+  padding-top:3.5rem;
+  border-top:2px solid var(--ink);
+  margin-top:4rem;
+  display:flex; flex-direction:column; gap:1rem;
+}
+
+a{ color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px; }
+a:focus-visible,
+button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Patho-Ensemble · Informe consolidado</div>
+  <h1>Ensembles de modelos fundacionales en patología digital</h1>
+  <p class="lede col">Tres semanas de campaña experimental, veintitrés experimentos, cuatro
+    datasets y ocho modelos fundacionales, para responder a una sola pregunta:
+    <strong>¿dónde está el margen de mejora de un ensemble — en qué modelos se eligen, o en cómo
+    se combinan?</strong> La respuesta está medida y es inequívoca: elegir qué modelos entran
+    vale unas siete veces más que elegir cómo se combinan.</p>
+  <div class="meta-row">
+    <span><b>Cierre</b> 1-sep-2026</span>
+    <span><b>Periodo</b> 11-ago – 1-sep</span>
+    <span><b>Datasets</b> 4</span>
+    <span><b>Modelos base</b> 8</span>
+    <span><b>Experimentos</b> 6 positivos · 18 negativos · 2 incompletos</span>
+    <span><b>MDE</b> ≈ ±0.016 AUC</span>
+  </div>
+  <p class="note col">Este documento sustituye a todos los informes parciales previos. Recoge
+    <strong>únicamente resultados vigentes</strong>: donde una medición fue posteriormente
+    corregida o invalidada, aquí figura solo el valor final. Todas las cifras se han verificado
+    contra los ficheros <code>results_*.json</code> que las produjeron.</p>
+</header>
+
+<!-- ══════════════ RESUMEN ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">Resumen</div>
+    <h2>Las palancas, ordenadas por lo que valen</h2>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="k">Cambiar un modelo base</div>
+      <div class="v accent">+0.037</div>
+      <div class="s">AUC. <code>virchow_v1</code> → <code>conch_v1_5</code>. p ≈ 1.4·10⁻⁴</div>
+    </div>
+    <div class="tile">
+      <div class="k">Cambiar el combinador</div>
+      <div class="v neg">≤ 0</div>
+      <div class="s">Nueve alternativas a LogReg. Ninguna gana en ningún dataset.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Techo del stacking</div>
+      <div class="v">+0.008</div>
+      <div class="s">Lo que aporta el metaclasificador sobre el mejor modelo suelto.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Suelo de reproducibilidad</div>
+      <div class="v">±0.004</div>
+      <div class="s">Lo que se mueve el AUC al relanzar el mismo trabajo. Por fold, ±0.032.</div>
+    </div>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Todas las palancas medidas</b> · Δ AUC frente a la configuración de referencia de cada bloque</caption>
+      <thead><tr>
+        <th>Palanca</th><th class="num">Δ AUC</th><th>¿Significativo?</th>
+      </tr></thead>
+      <tbody>
+        <tr class="base"><td><b>Cambiar un modelo base</b> (<code>virchow_v1</code> → <code>conch_v1_5</code>)</td><td class="num d-pos">+0.037</td><td>✅ Sí, p ≈ 1.4·10⁻⁴</td></tr>
+        <tr><td>Espacio de entrada: probabilidades → embeddings, en datasets grandes</td><td class="num d-pos">+0.023</td><td>✅ Sí, p = 0.031 (solo <code>cptac_gbm</code>)</td></tr>
+        <tr><td>Snapshot Ensembles sobre los modelos base, en datasets grandes</td><td class="num d-pos">+0.022</td><td>✅ Sí, las 5 métricas (solo <code>cptac_gbm</code>)</td></tr>
+        <tr><td>Pooling duro top-10 de atención, en datasets grandes</td><td class="num d-pos">+0.039</td><td>✅ Sí, p Holm &lt; 0.001 (solo <code>cptac_gbm</code>)</td></tr>
+        <tr><td>El stacking, frente al mejor modelo individual</td><td class="num">+0.008</td><td><span class="chip warn">marginal</span></td></tr>
+        <tr><td>Optimización de pesos (Nelder-Mead)</td><td class="num">+0.005</td><td><span class="chip flat">bajo el suelo</span></td></tr>
+        <tr><td>Ampliar, enrutar o seleccionar dinámicamente el comité</td><td class="num">&lt; +0.003</td><td><span class="chip bad">no</span></td></tr>
+        <tr><td>Fusión temprana a nivel de parche</td><td class="num d-neg">−0.006</td><td><span class="chip bad">no</span></td></tr>
+        <tr><td>Cambiar el metaclasificador (9 alternativas)</td><td class="num d-neg">≤ 0</td><td><span class="chip bad">ninguna gana</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout col">
+    <h4>Los dos hallazgos que resumen la campaña</h4>
+    <p><strong>1. Un único modelo bien escogido</strong> (<code>conch_v1_5</code>, AUC 0.7902)
+      <strong>supera al ensemble completo de tres modelos mal escogidos</strong> (0.7616). Nueve
+      intentos de mejorar la regla de combinación no han producido ninguna ganancia que sobreviva
+      a la corrección por comparaciones múltiples.</p>
+    <p><strong>2. Varios resultados cerrados como «nulos» eran falta de potencia estadística.</strong>
+      Al replicar en datasets con más pacientes (<code>cptac_gbm</code>: 164 slides de
+      entrenamiento frente a 75), los embeddings, los Snapshot Ensembles y el pooling duro top-K de
+      atención pasan los tres a dar ganancias significativas. El tamaño del cohorte gobierna casi
+      todo lo demás — y en los tres casos el patrón es idéntico: nulo acotado en
+      <code>cptac_brca</code>, significativo en <code>cptac_gbm</code> (ver P2 y P7).</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════════ 1 · MÉTRICAS ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">1 · Métricas</div>
+    <h2>Qué se mide, y qué cifra es buena</h2>
+  </div>
+
+  <h3>1.1 Las métricas que se calculan</h3>
+  <p class="col">El pipeline calcula 12 métricas por brazo y por fold. Siete son primarias; cinco
+    son las mismas métricas de decisión recalculadas con un umbral reajustado (§1.3).</p>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Las siete métricas primarias</b></caption>
+      <thead><tr><th>Métrica</th><th>Qué mide</th><th>Cómo se lee</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="name"><code>auc</code><br><span class="note">macro-OvR</span></td>
+          <td>Capacidad de <strong>ordenar</strong>: probabilidad de que un positivo al azar
+            reciba mayor puntuación que un negativo al azar. Métrica primaria de reporte.</td>
+          <td>0.5 = azar. <strong>No depende del umbral.</strong> Invariante a la proporción de
+            clases, pero pierde sensibilidad si la clase positiva es muy rara. Aquí los modelos
+            rondan <b>0.68–0.80</b>, y 0.94 en <code>cervical_subtype</code>.</td>
+        </tr>
+        <tr>
+          <td class="name"><code>ap</code><br><span class="note">PR-AUC</span></td>
+          <td>Ordenación ignorando los verdaderos negativos. La que más pesa bajo desbalance.</td>
+          <td>Su suelo es la prevalencia, no 0.5. Se exige que <b><code>auc</code> y <code>ap</code>
+            se muevan en el mismo sentido</b>: si no, el efecto es sospechoso.</td>
+        </tr>
+        <tr>
+          <td class="name"><code>acc</code></td>
+          <td>Fracción de aciertos.</td>
+          <td><strong>La columna menos informativa.</strong> Predecir siempre la clase mayoritaria
+            ya saca 0.60 en <code>cptac_brca</code> y 0.70 en <code>bc_therapy</code>.</td>
+        </tr>
+        <tr>
+          <td class="name"><code>bacc</code></td>
+          <td>Media de la sensibilidad por clase; corrige el desbalance.</td>
+          <td><strong>Suelo degenerado exacto: 0.500</strong> en binaria y <strong>0.250</strong>
+            con 4 clases. Es la lectura honesta de «accuracy».</td>
+        </tr>
+        <tr>
+          <td class="name"><code>macro_f1</code></td>
+          <td>Media no ponderada del F1 por clase.</td>
+          <td>Suelo degenerado entre 0.15 y 0.41 según el dataset (§1.2).</td>
+        </tr>
+        <tr>
+          <td class="name"><code>f1_pos</code></td>
+          <td>F1 de la clase positiva.</td>
+          <td><strong>Engañosa según qué clase sea mayoritaria.</strong> En <code>bc_therapy</code>
+            la positiva (er+) es la mayoritaria y el degenerado ya saca <b>0.821</b>. En
+            <code>cptac_brca</code> saca 0.000. No usar sola.</td>
+        </tr>
+        <tr class="base">
+          <td class="name"><code>kappa</code><br><span class="note">κ de Cohen, pond. cuadrática</span></td>
+          <td>Acuerdo <strong>corregido por el acuerdo esperado por azar</strong>:
+            κ = (p₀ − pₑ)/(1 − pₑ).</td>
+          <td><strong>Suelo degenerado: 0.000 siempre.</strong> <b>La métrica más sensible del
+            conjunto</b> y la que mejor separa un fallo de ordenación de un fallo de umbral.
+            Valores del proyecto: 0.35 → 0.49.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Advertencia sobre la ponderación de κ</h4>
+    <p>Por defecto se usa ponderación <strong>cuadrática</strong>, que penaliza los errores según
+      el cuadrado de la distancia entre clase predicha y real. Esto <strong>cambia
+      conclusiones</strong>: en la ablación FGE sobre <code>cervical_subtype</code>, la ventaja de
+      una variante pasaba de <b>+0.0477 (5/5 folds, p = 0.024)</b> con ponderación cuadrática a
+      <b>+0.0149 (3/5, p = 0.316)</b> sin ponderar. La ponderación solo tiene sentido si las clases
+      son ordinales; en <code>cervical_subtype</code> (NNeo → LSIL → HSIL → otros) ese supuesto es
+      solo parcialmente válido.</p>
+  </div>
+
+  <h3>1.2 El suelo real: el clasificador degenerado</h3>
+  <p class="col">Antes de juzgar cualquier cifra hay que saber qué saca un clasificador que
+    <strong>ignora por completo las imágenes</strong> y siempre predice la clase mayoritaria.</p>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Suelos degenerados verificados</b> · lo que da no hacer nada</caption>
+      <thead><tr>
+        <th>Dataset / tarea</th><th class="num">acc</th><th class="num">bacc</th>
+        <th class="num">macro_f1</th><th class="num">f1_pos</th><th class="num">kappa</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="name"><code>cptac_brca</code> / TP53</td><td class="num">0.598</td><td class="num hl">0.500</td><td class="num">0.374</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+        <tr><td class="name"><code>cptac_gbm</code> / TP53</td><td class="num">0.669</td><td class="num hl">0.500</td><td class="num">0.400</td><td class="num">0.000</td><td class="num">0.000</td></tr>
+        <tr><td class="name"><code>bc_therapy</code> / er_status</td><td class="num">0.697</td><td class="num hl">0.500</td><td class="num">0.411</td><td class="num d-neg">0.821</td><td class="num">0.000</td></tr>
+        <tr><td class="name"><code>cervical_subtype</code> <span class="note">(4 clases)</span></td><td class="num">0.416</td><td class="num hl">0.250</td><td class="num">0.147</td><td class="num">—</td><td class="num">0.000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col"><strong>Lectura para la tesis:</strong> una accuracy de 0.70 en
+    <code>bc_therapy</code> no es un resultado — es exactamente lo que da no hacer nada. Solo
+    <code>bacc</code> y <code>kappa</code> tienen un suelo interpretable y constante.</p>
+
+  <h3>1.3 Las métricas <code>_t</code> (umbral reajustado)</h3>
+  <p class="col">Las cinco métricas de decisión se recalculan también con el umbral que maximiza la
+    balanced accuracy <strong>elegido en validación</strong> (nunca en test). Existen como
+    <strong>diagnóstico, no como configuración de producción</strong>, y sirven para separar dos
+    fallos que se confunden:</p>
+  <ul class="plain col">
+    <li><strong>Fallo de ordenación</strong> — el modelo no sabe qué caso es más probable. Se ve en
+      <code>auc</code> bajo.</li>
+    <li><strong>Fallo de corte</strong> — el modelo ordena bien pero el umbral 0.5 está mal puesto
+      para el desbalance. Se ve en <code>auc</code> alto con <code>kappa</code> bajo, que se
+      recupera al reajustar.</li>
+  </ul>
+  <p class="col">Ejemplo medido (<code>cptac_brca</code>, 50 folds): <code>prob:mlp</code> tiene
+    κ = 0.034 con umbral 0.5 y κ = 0.328 reajustado (<b>+0.294</b>). En cambio LogReg, SVM y NB
+    <strong>empeoran</strong> al reajustar (−0.029 a −0.045) porque ya estaban bien calibrados.
+    <strong>No se adopta el reajuste en el pipeline</strong>: con ~15 slides de validación por
+    fold, el umbral estimado es más ruidoso que fijar 0.5.</p>
+
+  <h3>1.4 El aparato estadístico</h3>
+  <p class="col">Todas las configuraciones se evalúan sobre <strong>los mismos folds</strong>, de
+    modo que las comparaciones son <strong>pareadas</strong>.</p>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Qué se reporta por cada métrica, y por qué</b></caption>
+      <thead><tr><th>Elemento</th><th>Qué es</th><th>Por qué está</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>Δ pareado + IC 95 %</b></td><td>Diferencia media fold a fold, con intervalo bootstrap (1 000–10 000 remuestreos).</td><td>Comparar IC <em>independientes</em> en vez de pareados llegó a ocultar un efecto sistemático real.</td></tr>
+        <tr><td class="name"><b>W/T/L</b></td><td>Folds ganados / empatados / perdidos. <strong>Los empates se cuentan.</strong></td><td>Con ~22 slides de test por fold, κ puede empatar en hasta 22 de 50 folds. Un W/T/L sin empates visibles es sospechoso.</td></tr>
+        <tr><td class="name"><b>Wilcoxon + Holm</b></td><td>Sobre la familia de métricas de cada comparación.</td><td>Con 5 folds, un «5 de 5, p = 0.024» sin corregir <strong>no replicó</strong> a 50 folds y el signo se invirtió.</td></tr>
+        <tr><td class="name"><b>MDE al 80 %</b></td><td>Mínimo efecto detectable: <code>(t_crít + t_pot)·σ/√n</code>. Con 50 folds, <b>±0.016–0.026</b> de AUC.</td><td>Convierte un «no encontramos nada» en un <strong>nulo acotado</strong> («no hay efecto mayor que X»), que sí es un resultado.</td></tr>
+        <tr class="base"><td class="name"><b>Suelo de reproducibilidad<br>≈ 0.004 AUC</b></td><td>Reentrenar la configuración idéntica mueve el AUC agregado ~0.004, y cada fold hasta <b>±0.032</b>, solo por no determinismo de GPU.</td><td><strong>Criterio más exigente que el MDE.</strong> Descarta por sí solo Nelder-Mead (+0.005), la GNN espacial (+0.008) y la augmentación de bolsa (+0.008).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Una advertencia que conviene llevar a la defensa</h4>
+    <p><strong>Los 50 folds no son 50 experimentos independientes.</strong> La suma de los tamaños
+      de test es 9.6 veces el número de slides, y cada slide cae en test entre 3 y 17 veces: es
+      remuestreo repetido y solapado, no una partición <em>k</em>-fold clásica.
+      <code>cptac_brca</code> 9.59 apariciones por slide (3–16) · <code>cptac_gbm</code> 9.32 (2–17)
+      · <code>bc_therapy</code> 9.94 (4–17) · <code>cervical_subtype</code> <b>1.00</b> (partición
+      real).</p>
+    <p><strong>Consecuencia:</strong> los IC bootstrap sobre folds <strong>subestiman</strong> la
+      incertidumbre real de generalizar a pacientes nuevos. Los Δ pareados siguen siendo válidos
+      como comparación entre configuraciones (todas ven los mismos folds), pero los valores
+      absolutos de AUC deben citarse con esta cautela.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════════ 1.5 · ENTROPÍA ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">1.5 · Entropía</div>
+    <h2>Qué es, por qué se usa y cómo se interpreta</h2>
+  </div>
+
+  <p class="lede col">La entropía aparece en este proyecto en <strong>dos lugares completamente
+    distintos</strong> que conviene no confundir. Y hay un tercer sitio donde mucha gente asume que
+    está y <strong>no está</strong>.</p>
+
+  <div class="spaces">
+    <div class="space">
+      <div class="tag">Uso a</div>
+      <h4>Entropía de la atención</h4>
+      <div class="dim">−Σ aᵢ·log(aᵢ) / log(N)</div>
+      <p class="note">Sobre los pesos de atención del ABMIL a los parches. Diagnóstico de
+        <strong>selectividad</strong>. Variable explicativa, no criterio del pipeline.</p>
+    </div>
+    <div class="space">
+      <div class="tag">Uso b</div>
+      <h4>Entropía de las predicciones</h4>
+      <div class="dim">H(p) = −Σ p<sub>c</sub>·log(p<sub>c</sub>)</div>
+      <p class="note">Sobre las probabilidades de clase. Probada como meta-característica.
+        <strong>Resultado: nulo.</strong></p>
+    </div>
+    <div class="space">
+      <div class="tag">No es</div>
+      <h4>Criterio de apagado</h4>
+      <div class="dim">—</div>
+      <p class="note">El enrutado del comité <strong>no usa entropía</strong>. Usa AUC de
+        validación, Brier, log-loss y average precision.</p>
+    </div>
+  </div>
+
+  <h3>(a) Entropía de la atención — diagnóstico de selectividad del ABMIL</h3>
+  <p class="col">El ABMIL asigna un peso <em>aᵢ</em> a cada uno de los <em>N</em> parches de una
+    slide (softmax, así que Σaᵢ = 1). Su entropía normalizada es:</p>
+
+<pre>entropy_norm = <span class="f">−Σ aᵢ·log(aᵢ) / log(N)</span>
+
+<span class="c"># Se normaliza por log(N) para que el valor no dependa del número de parches,
+# que varía entre 3.700 y 6.600 según el modelo. Sin normalizar, un modelo con
+# más parches saldría "más entrópico" por construcción.</span></pre>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Cómo se interpreta el valor</b></caption>
+      <thead><tr><th class="num">Valor</th><th>Significado</th></tr></thead>
+      <tbody>
+        <tr class="base"><td class="num">1.0</td><td>Atención perfectamente uniforme. El ABMIL <strong>no está decidiendo nada</strong>: es exactamente equivalente a <em>mean pooling</em> sobre todos los parches.</td></tr>
+        <tr><td class="num">0.85–0.95</td><td>Atención moderadamente selectiva: concentra el peso en una fracción de los parches.</td></tr>
+        <tr><td class="num">→ 0</td><td>Atención extremadamente concentrada en unos pocos parches.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col"><strong>Para qué se usa:</strong> para responder <em>por qué</em> unos modelos
+    rinden más que otros, y <em>por qué</em> el espacio de embeddings a veces gana y a veces
+    pierde. Se acompaña siempre de otros dos diagnósticos: <code>logit_sd</code> (desviación de los
+    logits de atención <strong>antes</strong> del softmax — si es ≈0, el modelo directamente no
+    discrimina) y «retiene geometría» (porcentaje de la varianza de similitud coseno entre parches
+    que sobrevive a la proyección <code>in_dim → 512</code>).</p>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Los 8 modelos base</b> · <code>cptac_brca</code>, fold 0, 25 slides</caption>
+      <thead><tr>
+        <th>Modelo</th><th class="num">in_dim</th><th class="num">Compr.</th>
+        <th class="num">Entropía</th><th class="num">logit_sd</th><th class="num">Retiene</th>
+        <th class="num">AUC test</th>
+      </tr></thead>
+      <tbody>
+        <tr class="base"><td class="name"><code>conch_v1_5</code></td><td class="num">768</td><td class="num">1.5×</td><td class="num hl">0.8879</td><td class="num hl">1.286</td><td class="num">58 %</td><td class="num hl">0.7902</td></tr>
+        <tr><td class="name"><code>hoptimus1</code></td><td class="num">1536</td><td class="num">3.0×</td><td class="num">0.9279</td><td class="num">0.828</td><td class="num">37 %</td><td class="num">0.7450</td></tr>
+        <tr><td class="name"><code>ctranspath</code></td><td class="num">768</td><td class="num">1.5×</td><td class="num">0.9282</td><td class="num">0.980</td><td class="num">66 %</td><td class="num">0.7571</td></tr>
+        <tr><td class="name"><code>phikon_v2</code></td><td class="num">1024</td><td class="num">2.0×</td><td class="num">0.9764</td><td class="num">0.620</td><td class="num">71 %</td><td class="num">0.7685</td></tr>
+        <tr><td class="name"><code>uni_v2</code></td><td class="num">1536</td><td class="num">3.0×</td><td class="num">0.9942</td><td class="num d-neg">0.300</td><td class="num">66 %</td><td class="num">0.7634</td></tr>
+        <tr><td class="name"><code>uni_v1</code></td><td class="num">1024</td><td class="num">2.0×</td><td class="num">0.9974</td><td class="num">0.201</td><td class="num">59 %</td><td class="num">0.7732</td></tr>
+        <tr><td class="name"><code>virchow2</code></td><td class="num">2560</td><td class="num">5.0×</td><td class="num">0.9981</td><td class="num">0.176</td><td class="num d-neg">15 %</td><td class="num">0.7771</td></tr>
+        <tr><td class="name"><code>virchow_v1</code></td><td class="num">2560</td><td class="num">5.0×</td><td class="num d-neg">0.9993</td><td class="num d-neg">0.101</td><td class="num d-neg">5 %</td><td class="num d-neg">0.6823</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ol class="findings col">
+    <li><div><strong>La entropía NO predice el AUC de forma monótona.</strong>
+      <code>uni_v1</code> (0.9974, casi uniforme) es el 3.º mejor modelo y <code>virchow2</code>
+      (0.9981) el 2.º. Atender mucho no garantiza rendir: la entropía sola no basta, hay que
+      cruzarla con la retención de geometría.</div></li>
+    <li><div><strong>La dimensión de entrada no es la causa de la atención plana.</strong>
+      <code>hoptimus1</code> y <code>uni_v2</code> comparten <code>in_dim</code> (1536), compresión
+      (3×), número de parches (6 582) y arquitectura, y sus entropías divergen (0.928 vs 0.994).
+      Lo que localiza el fallo de <code>uni_v2</code> es <code>logit_sd</code> = 0.30: su cabeza de
+      atención emite logits casi constantes. <strong>Es un problema de optimización, no un límite
+      arquitectónico.</strong></div></li>
+    <li><div><strong>Donde la dimensión sí muerde es en 2560 D.</strong> <code>virchow_v1</code>
+      retiene solo el <strong>5 %</strong> de la geometría entre parches tras la proyección, y es
+      el peor modelo del proyecto (0.6823). Es la primera explicación <em>mecánica</em> de por qué
+      es prescindible.</div></li>
+  </ol>
+
+  <div class="callout col">
+    <h4>Y la entropía se ha manipulado, no solo observado</h4>
+    <p>Forzar atención uniforme (<code>attn_mean</code>, es decir <em>mean pooling</em>) cuesta
+      <strong>−0.0333 de AUC en <code>cptac_brca</code></strong> (p Holm = 0.00046) y
+      <strong>−0.0479 en <code>cptac_gbm</code></strong> (p Holm = 0.00090). Es decir:
+      <strong>la atención sí aporta</strong>, y aporta más en el dataset con más datos.</p>
+  </div>
+
+  <h3>(b) Entropía de las predicciones — como meta-característica</h3>
+
+<pre><span class="c"># Entropía de Shannon sobre las probabilidades de clase</span>
+H(p) = <span class="f">−Σ_c p_c · log(p_c)</span>          <span class="c"># rango [0, log 2] ≈ [0, 0.69] en binaria</span>
+
+<span class="c"># Jensen-gap: descomposición de la incertidumbre del comité</span>
+Jensen_gap = <span class="f">H(media_m p_m) − media_m H(p_m)</span>
+             <span class="c">└─ incertidumbre total = incertidumbre media + DESACUERDO entre modelos</span></pre>
+
+  <p class="col"><strong>Por qué el Jensen-gap.</strong> Es la descomposición estándar de la
+    incertidumbre en <em>ensemble learning</em>: la incertidumbre total del comité se separa en
+    <strong>incertidumbre media</strong> (lo que ninguno sabe) más <strong>desacuerdo entre
+    modelos</strong> (lo que unos saben y otros no). Es la única característica de una sola columna
+    que resume información <em>entre</em> modelos.</p>
+
+  <p class="col"><strong>Por qué la entropía por modelo.</strong> <code>H(p)</code> es simétrica:
+    vale lo mismo en p = 0.1 que en p = 0.9. Ninguna combinación lineal de <code>[p, 1−p]</code>
+    puede reproducirla, así que <em>en teoría</em> añade expresividad a un metaclasificador
+    lineal.</p>
+
+  <p class="col"><strong>Resultado medido: nulo.</strong> La escalera de características
+    (E0 = 6 probabilidades → +desacuerdo → +margen → +entropía por modelo) da Δ = −0.0014, no
+    significativo, en <code>cptac_brca</code> con 50 folds. Con 6 probabilidades y 75 filas de
+    meta-entrenamiento, LogReg ya extrae prácticamente toda la señal disponible; las
+    transformaciones no lineales explícitas no aportan información nueva y sí consumen grados de
+    libertad.</p>
+
+  <div class="callout neg col">
+    <h4>Una trampa metodológica que costó un experimento</h4>
+    <p>Al probar la entropía <em>de la atención</em> como columna extra del metaclasificador, el
+      resultado salió <strong>idéntico al baseline</strong> (Δ = 0.000000, p = nan). No era un
+      nulo: la atención de ABMIL está tan colapsada hacia lo uniforme
+      (<code>entropy_norm</code> ≈ 0.999, sd ≈ 4·10⁻⁴) que la columna era <strong>constante a
+      efectos numéricos</strong>, y una columna constante la absorbe el intercepto del modelo.</p>
+    <p>El código ahora aborta explícitamente ante columnas con sd &lt; 10⁻³
+      (<code>_reject_degenerate</code> en <code>src/ensemble4.py</code>), precisamente para que
+      esto no vuelva a leerse como «esta característica no aporta».</p>
+  </div>
+
+  <h3>(c) Dónde la entropía NO se usa — y conviene decirlo</h3>
+  <div class="callout neg col">
+    <h4>La entropía no es el criterio de apagado dinámico del comité</h4>
+    <p>El estudio de enrutado (§3.3, N13–N14) probó ocho criterios de selección y
+      <strong>ninguno es entrópico</strong>: AUC de validación media, AUC penalizada por
+      inestabilidad entre folds, AUC agrupada, Brier, log-loss, average precision, AUC de
+      meta-entrenamiento (control negativo) y número de modelos.</p>
+    <p>Si en algún borrador de la tesis se afirma que el comité se apaga por la incertidumbre del
+      softmax, <strong>eso no es lo que se implementó ni lo que se midió</strong>. En este proyecto
+      la entropía vive exclusivamente en el plano de «cómo de selectiva es la atención dentro de
+      una slide» (uso a) y como meta-característica descartada (uso b).</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════════ 2 · ESTADO VIGENTE ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">2 · Estado vigente</div>
+    <h2>El pipeline, los datos y los modelos</h2>
+  </div>
+
+  <h3>2.1 Los datos</h3>
+  <div class="tscroll">
+    <table>
+      <caption><b>Los cuatro datasets efectivamente usados</b> · el nº de <em>pacientes</em>, no de slides, es el tamaño muestral efectivo</caption>
+      <thead><tr>
+        <th>Dataset / tarea</th><th class="num">Clases</th><th class="num">Slides</th>
+        <th class="num">Pacientes</th><th class="num">Folds</th><th class="num">Train/fold</th>
+        <th class="num">Test/fold</th><th>Balance</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="name"><code>cptac_brca</code> / TP53_mutation</td><td class="num">2</td><td class="num">112</td><td class="num">103</td><td class="num">50</td><td class="num">75</td><td class="num">21.5</td><td>40.2 % positivos</td></tr>
+        <tr><td class="name"><code>cptac_gbm</code> / TP53_mutation</td><td class="num">2</td><td class="num">243</td><td class="num">99</td><td class="num">50</td><td class="num">164</td><td class="num">45.3</td><td>33.7 % positivos</td></tr>
+        <tr><td class="name"><code>bc_therapy</code> / er_status</td><td class="num">2</td><td class="num">166</td><td class="num">166</td><td class="num">50</td><td class="num">113</td><td class="num">33</td><td>69.3 % positivos</td></tr>
+        <tr><td class="name"><code>cervical_subtype</code> / subtype</td><td class="num">4</td><td class="num">599</td><td class="num">599</td><td class="num d-neg">5</td><td class="num">407</td><td class="num">119.8</td><td>34/42/13/11 %</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col"><strong>Descartados y por qué:</strong> <code>cptac_ccrcc</code>,
+    <code>cptac_hnsc</code>, <code>cptac_lscc</code> (solo tienen <code>uni_v2</code>),
+    <code>tcga_brca</code> (sin <code>uni_v2</code>), <code>hancook</code> y
+    <code>crc_outcomes</code> (sin features), <code>cptac_coad</code> (98 slides, el más pequeño),
+    <code>imp</code> (<strong>1 solo fold</strong>).</p>
+
+  <p class="col"><code>cervical_subtype</code> merece una nota: con 407 slides de entrenamiento
+    debería ser el caso más favorable, pero <strong>no arbitra nada</strong> porque difiere del
+    resto en cuatro ejes a la vez — solo 5 folds, 4 clases en vez de 2, techo de AUC en 0.943
+    (efecto techo) y tejido/tarea distintos. <em>Es un dato, no un contraejemplo limpio.</em></p>
+
+  <h3>2.2 El pipeline</h3>
+<pre>WSI → parcheado 20x_224px_0px_overlap → ~3.700–6.600 parches/slide
+  │
+  ├─ modelo fundacional A → embeddings [N, in_dim] → <span class="f">ABMIL_A</span> → p_A  ┐
+  ├─ modelo fundacional B → embeddings [N, in_dim] → <span class="f">ABMIL_B</span> → p_B  ├─→ <span class="f">metaclasificador</span> → predicción
+  └─ modelo fundacional C → embeddings [N, in_dim] → <span class="f">ABMIL_C</span> → p_C  ┘
+
+<span class="c"># Un ABMIL independiente por modelo y fold  →  FUSIÓN TARDÍA
+# ABMIL: in_dim autodetectado · 1 cabeza · head_dim 512 · dropout 0.25
+#        100 épocas con parada temprana · validación interna agrupada por paciente</span></pre>
+
+<pre><span class="c"># Configuración recomendada</span>
+python src/ensemble4.py \
+    --foundational_models <span class="f">ctranspath uni_v2 conch_v1_5</span> \
+    --work_dir /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches \
+    --train_source cptac_brca --tissue_patching 20x_224px_0px_overlap \
+    --task_name TP53_mutation --meta_model <span class="f">logreg</span></pre>
+
+  <div class="callout col">
+    <h4>Metaclasificadores registrados (15) frente a evaluados (6)</h4>
+    <p>Están implementados <code>logreg</code>, <code>logit_avg</code>, <code>mlp</code>,
+      <code>deep_mlp</code>, <code>mlp_snapshot</code>, <code>deep_mlp_snapshot</code>,
+      <code>mlp_fge</code>, <code>mlp_deepens</code>, <code>gating</code>, <code>nb</code>,
+      <code>knn</code>, <code>svm</code>, <code>lightgbm</code>, <code>tabpfn</code> y
+      <code>tabpfn_snapshot</code>.</p>
+    <p>Los evaluados realmente sobre los checkpoints vigentes son seis: <code>logreg</code>,
+      <code>mlp</code>, <code>mlp_snapshot</code>, <code>svm</code>, <code>knn</code> y
+      <code>nb</code> (sobre probabilidades), más <code>mlp_fge</code> (sobre embeddings).
+      <strong><code>lightgbm</code>, <code>tabpfn</code> y <code>tabpfn_snapshot</code> nunca se
+      han evaluado en la campaña vigente</strong> — solo existen cifras suyas de la etapa previa a
+      la regeneración de checkpoints, que no son reproducibles. Es precisamente el hueco que señala
+      la vía abierta 6.</p>
+  </div>
+
+  <p class="note col"><strong>Una nota sobre <code>ensemble.py</code> (promediado ponderado).</strong>
+    Es la rama alternativa al stacking y no ha sido objeto de la campaña, pero conviene saber que
+    <code>MetricDistance</code> en <code>src/utils.py</code> normaliza los pesos min-max y los
+    reescala a suma 1 (no es un softmax, pese al comentario del código), lo que asigna
+    <strong>peso exactamente 0 al peor modelo de cada fold, siempre</strong>. El comportamiento está
+    ahora documentado y se puede acotar con <code>weight_floor</code> (por defecto 0.0, para no
+    alterar resultados previos). Cualquier cifra que provenga de esta rama debe leerse con ese
+    detalle presente.</p>
+
+  <h3>2.3 Los ocho modelos fundacionales</h3>
+  <div class="tscroll">
+    <table>
+      <caption><b>AUC individual</b> · <code>cptac_brca</code>/TP53_mutation, 50 folds, cada uno con su propio ABMIL, sin ensemble</caption>
+      <thead><tr>
+        <th>Modelo</th><th class="num">in_dim</th><th class="num">AUC test</th>
+        <th class="num">AUC validación</th><th class="num">Brecha train→test</th>
+      </tr></thead>
+      <tbody>
+        <tr class="base"><td class="name"><code>conch_v1_5</code></td><td class="num">768</td><td class="num hl">0.7902</td><td class="num">0.8536</td><td class="num">+0.1591</td></tr>
+        <tr><td class="name"><code>virchow2</code></td><td class="num">2560</td><td class="num">0.7771</td><td class="num">0.8245</td><td class="num">+0.1392</td></tr>
+        <tr><td class="name"><code>uni_v1</code></td><td class="num">1024</td><td class="num">0.7732</td><td class="num">0.8011</td><td class="num">+0.1700</td></tr>
+        <tr><td class="name"><code>phikon_v2</code></td><td class="num">1024</td><td class="num">0.7685</td><td class="num">0.8093</td><td class="num">+0.1895</td></tr>
+        <tr><td class="name"><code>uni_v2</code></td><td class="num">1536</td><td class="num">0.7634</td><td class="num">0.8369</td><td class="num">+0.1052</td></tr>
+        <tr><td class="name"><code>ctranspath</code></td><td class="num">768</td><td class="num">0.7571</td><td class="num">0.8117</td><td class="num">+0.0918</td></tr>
+        <tr><td class="name"><code>hoptimus1</code></td><td class="num">1536</td><td class="num">0.7450</td><td class="num">0.7998</td><td class="num">+0.1962</td></tr>
+        <tr><td class="name"><code>virchow_v1</code></td><td class="num">2560</td><td class="num d-neg">0.6823</td><td class="num">0.7319</td><td class="num">+0.1149</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout col">
+    <h4>El dato que resume toda la campaña</h4>
+    <p><strong><code>conch_v1_5</code> en solitario (0.7902) supera al ensemble completo del trío
+      histórico <code>ctranspath+uni_v2+virchow_v1</code> (0.7616).</strong></p>
+    <p class="note"><strong>Y memorizar más no predice mejor:</strong> <code>phikon_v2</code> es el
+      que más memoriza (0.9580 en meta-entrenamiento) y queda 4.º en test; <code>ctranspath</code>
+      es el que menos memoriza y queda 6.º.</p>
+  </div>
+
+  <h3>2.4 Redundancia entre modelos</h3>
+  <ul class="plain col">
+    <li><code>ctranspath</code> ↔ <code>uni_v2</code> = <strong>0.84</strong> — casi redundantes, y
+      ambos están en el trío ganador.</li>
+    <li><code>virchow_v1</code> (el peor en solitario) es el <strong>más decorrelacionado</strong>
+      de <code>conch_v1_5</code> (0.35).</li>
+    <li><code>hoptimus1</code> es el más independiente del comité en conjunto (0.35–0.66).</li>
+  </ul>
+  <p class="col">El criterio de AUC individual que justificó el cambio de modelo base
+    <strong>no es el que maximiza un comité: la redundancia importa tanto como la calidad</strong>.
+    Que <code>virchow_v1</code> sea el más diverso y aun así prescindible indica que la diversidad,
+    por sí sola, tampoco basta.</p>
+
+  <h3>2.5 Grupos de coordenadas de parche</h3>
+  <p class="col">Para fusionar dos modelos a nivel de parche hacen falta coordenadas idénticas.
+    <strong>Los grupos son una propiedad del parcheado de cada dataset, no de los modelos</strong>
+    — verificado sobre 30 slides por dataset:</p>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Coincidencia de coordenadas</b> · 30 slides por dataset</caption>
+      <thead><tr><th>Dataset</th><th class="num"><code>ctranspath</code> == <code>conch_v1_5</code></th><th class="num">Los tres del trío iguales</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><code>cptac_brca</code></td><td class="num">30/30</td><td class="num d-neg">0/30</td></tr>
+        <tr><td class="name"><code>cptac_gbm</code></td><td class="num">30/30</td><td class="num d-pos">30/30</td></tr>
+        <tr><td class="name"><code>bc_therapy</code></td><td class="num">30/30</td><td class="num d-pos">30/30</td></tr>
+        <tr><td class="name"><code>cervical_subtype</code></td><td class="num">30/30</td><td class="num d-pos">30/30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col"><strong>Consecuencia práctica:</strong> en tres de los cuatro datasets se puede
+    fusionar el trío entero a nivel de parche. La limitación que impidió probar la fusión temprana
+    a tres bandas es específica de <code>cptac_brca</code>, y esa fusión <strong>sigue sin
+    probarse</strong> (vía abierta 2).</p>
+
+  <h3>2.6 De dónde viene la brecha entre entrenamiento y test</h3>
+  <div class="tscroll">
+    <table>
+      <caption><b>¿Sobreajusta el metaclasificador?</b> · la respuesta medida es no</caption>
+      <thead><tr><th></th><th class="num">Meta-entrenamiento</th><th class="num">Test</th><th class="num">Brecha</th></tr></thead>
+      <tbody>
+        <tr><td class="name">LogReg (trío ganador)</td><td class="num">0.9495</td><td class="num">0.7986</td><td class="num">+0.1509</td></tr>
+        <tr><td class="name"><code>conch_v1_5</code> solo (su mejor entrada)</td><td class="num">0.9493</td><td class="num">0.7902</td><td class="num">+0.1591</td></tr>
+        <tr class="base"><td class="name"><b>Aportación del metaclasificador</b></td><td class="num">+0.0003</td><td class="num hl">+0.0084</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col">El metaclasificador <strong>no crea la brecha, la hereda</strong> (aporta +0.0003
+    dentro de la muestra) y <strong>no falla en test</strong> (aporta +0.0084 y gana al mejor
+    modelo base fijo en 27 de 50 folds). El origen real de la brecha es el ABMIL: ~0.5 M de
+    parámetros entrenados con 75 slides.</p>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════════ 3 · QUÉ FUNCIONÓ Y QUÉ NO ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">3 · El núcleo</div>
+    <h2>Qué funcionó y qué no</h2>
+    <p class="lede col">Cada experimento se ficha con <strong>dataset</strong>,
+      <strong>modelos base</strong>, <strong>metaclasificador</strong> y <strong>extras</strong>
+      (FGE, Snapshot, atención, fusión…), resultado numérico, veredicto y una explicación en
+      lenguaje llano de por qué salió así.</p>
+  </div>
+
+  <h3>3.1 Tabla de una ojeada</h3>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>✅ Lo que funcionó</b></caption>
+      <thead><tr>
+        <th>#</th><th>Experimento</th><th>Dataset</th><th>Modelos base</th><th>Meta</th>
+        <th>Extras</th><th class="num">Δ AUC</th><th>Veredicto</th>
+      </tr></thead>
+      <tbody>
+        <tr class="base"><td class="num">P1</td><td>Cambiar un modelo base</td><td class="name"><code>cptac_brca</code></td><td class="name">ctranspath + uni_v2 + <b>conch_v1_5</b></td><td>logreg</td><td>—</td><td class="num hl">+0.0370</td><td><span class="chip tie">el mayor efecto</span></td></tr>
+        <tr><td class="num">P2</td><td>Embeddings en vez de probabilidades</td><td class="name"><code>cptac_gbm</code></td><td class="name">trío ganador</td><td>logreg</td><td>espacio 1536 D</td><td class="num d-pos">+0.0230</td><td><span class="chip tie">solo datasets grandes</span></td></tr>
+        <tr><td class="num">P3</td><td>Snapshot Ensembles en modelos base</td><td class="name"><code>cptac_gbm</code></td><td class="name">trío ganador</td><td>logreg</td><td><b>FGE / SE</b></td><td class="num d-pos">+0.0223</td><td><span class="chip tie">las 5 métricas</span></td></tr>
+        <tr><td class="num">P4</td><td>La atención aporta (control negativo)</td><td class="name"><code>brca</code> + <code>gbm</code></td><td class="name">par / trío</td><td>logreg</td><td><code>attn_mean</code></td><td class="num d-neg">−0.033 / −0.048<br><span class="note">al quitarla</span></td><td><span class="chip tie">aporta, y más con datos</span></td></tr>
+        <tr><td class="num">P5</td><td>El stacking bate al mejor modelo suelto</td><td class="name"><code>cptac_brca</code></td><td class="name">8 modelos</td><td>logreg</td><td>—</td><td class="num">+0.0084</td><td><span class="chip warn">modesto pero real</span></td></tr>
+        <tr><td class="num">P6</td><td>La vecindad espacial lleva señal</td><td class="name"><code>cptac_brca</code></td><td class="name">uni_v2</td><td>—</td><td>GNN vs grafo barajado</td><td class="num">+0.0119</td><td><span class="chip warn">real, no rentable</span></td></tr>
+        <tr><td class="num">P7</td><td>Pooling duro top-10 de atención</td><td class="name"><code>cptac_gbm</code></td><td class="name">trío ganador</td><td>logreg</td><td>top-K vs blando sobre toda la bolsa</td><td class="num d-pos">+0.0388</td><td><span class="chip tie">solo datasets grandes (repite P2)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>❌ Lo que no funcionó</b> · dieciocho experimentos · las cuatro razones que los explican casi todos están en §3.4</caption>
+      <thead><tr>
+        <th>#</th><th>Experimento</th><th>Dataset</th><th>Modelos base</th><th>Meta</th>
+        <th>Extras</th><th class="num">Δ AUC</th><th>Veredicto</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="num">N1</td><td>Metaclasificadores alternativos</td><td class="name">4 datasets</td><td class="name">trío ganador</td><td>mlp · svm · knn · nb · mlp_snap</td><td>—</td><td class="num d-neg">−0.104 … −0.002</td><td><span class="chip bad">ninguno bate a logreg</span></td></tr>
+        <tr><td class="num">N2</td><td>MLP como metaclasificador</td><td class="name">4 datasets</td><td class="name">trío ganador</td><td>mlp</td><td>—</td><td class="num d-neg">−0.080 … −0.106</td><td><span class="chip bad">colapsa en todos</span></td></tr>
+        <tr><td class="num">N3</td><td>Fusión temprana (concatenar parches)</td><td class="name"><code>cptac_brca</code></td><td class="name">ctranspath ⊕ virchow_v1 ⊕ conch_v1_5</td><td>logreg</td><td>ABMIL único 4096 D</td><td class="num d-neg">−0.0056</td><td><span class="chip bad">sin efecto</span></td></tr>
+        <tr><td class="num">N4</td><td>Fusión temprana ponderada</td><td class="name"><code>cptac_brca</code></td><td class="name">ídem, escalados</td><td>—</td><td>pesos sobre embeddings</td><td class="num d-neg">−0.0182</td><td><span class="chip bad">empeora</span></td></tr>
+        <tr><td class="num">N5</td><td>Optimización de pesos Nelder-Mead</td><td class="name"><code>cptac_brca</code></td><td class="name">ctranspath + virchow_v1 + conch_v1_5</td><td>—</td><td>combinación lineal</td><td class="num">+0.0052</td><td><span class="chip flat">bajo el suelo</span></td></tr>
+        <tr><td class="num">N6</td><td>Escalera de características</td><td class="name"><code>cptac_brca</code></td><td class="name">trío histórico</td><td>logreg</td><td>desacuerdo + margen + <b>entropía</b></td><td class="num d-neg">−0.0014</td><td><span class="chip bad">nulo</span></td></tr>
+        <tr><td class="num">N7</td><td>Reponderación por importancia</td><td class="name"><code>cptac_brca</code></td><td class="name">trío histórico</td><td>logreg · svm</td><td>3 métodos</td><td class="num d-neg">−0.006 … −0.012</td><td><span class="chip bad">empeora</span></td></tr>
+        <tr><td class="num">N8</td><td>Atención multi-cabeza</td><td class="name"><code>cptac_brca</code></td><td class="name">ctranspath</td><td>—</td><td>4 cabezas</td><td class="num d-neg">−0.0240</td><td><span class="chip bad">empeora</span></td></tr>
+        <tr><td class="num">N9</td><td>Atención con GNN espacial</td><td class="name"><code>cptac_brca</code></td><td class="name">uni_v2</td><td>—</td><td>GraphSAGE</td><td class="num">+0.0077</td><td><span class="chip bad">no significativo</span></td></tr>
+        <tr><td class="num">N10</td><td>Augmentación de bolsa (<code>bag_size</code>)</td><td class="name"><code>cptac_brca</code></td><td class="name">trío ganador</td><td>logreg</td><td>256 / 512 / 1024</td><td class="num">+0.0077 máx.</td><td><span class="chip bad">12 comp., 0 signif.</span></td></tr>
+        <tr><td class="num">N11</td><td>Corregir la fuga con OOF</td><td class="name"><code>cptac_brca</code></td><td class="name">trío histórico</td><td>logreg</td><td>CV anidada</td><td class="num d-neg">−0.0045</td><td><span class="chip flat">empate</span></td></tr>
+        <tr><td class="num">N12</td><td>Ampliar el comité de 3 a 8</td><td class="name"><code>cptac_brca</code></td><td class="name">255 subconjuntos</td><td>logreg</td><td>—</td><td class="num">+0.0002</td><td><span class="chip bad">nulo</span></td></tr>
+        <tr><td class="num">N13</td><td>Enrutar el comité por órgano</td><td class="name">13 tareas · 3 cohortes</td><td class="name">hoptimus1 + uni_v1 + uni_v2 + virchow2</td><td>logreg</td><td>apagado dinámico</td><td class="num">+0.0015</td><td><span class="chip bad">p = 0.31</span></td></tr>
+        <tr><td class="num">N14</td><td>Cambiar el criterio de selección</td><td class="name"><code>cptac_brca</code></td><td class="name">8 modelos</td><td>logreg</td><td>8 criterios</td><td class="num d-neg">≤ 0</td><td><span class="chip bad">no mueve el argmax</span></td></tr>
+        <tr><td class="num">N15</td><td>Promediar las atenciones</td><td class="name"><code>brca</code> + <code>gbm</code></td><td class="name">par / trío</td><td>logreg</td><td><code>attn_avg</code></td><td class="num d-neg">−0.0009 / −0.0061</td><td><span class="chip bad">nulo estrecho</span></td></tr>
+        <tr><td class="num">N16</td><td>Transferir la atención de conch</td><td class="name"><code>cptac_gbm</code></td><td class="name">trío ganador</td><td>logreg</td><td><code>attn_conch</code></td><td class="num">+0.0079</td><td><span class="chip bad">no replica (25/0/25)</span></td></tr>
+        <tr><td class="num">N17</td><td>FGE / SE en datasets pequeños</td><td class="name"><code>brca</code>, <code>cervical</code></td><td class="name">trío</td><td>logreg</td><td>FGE · SE</td><td class="num">+0.002 / −0.010</td><td><span class="chip bad">nulo / negativo</span></td></tr>
+        <tr><td class="num">N18</td><td>Barrido de hiperparámetros del MLP</td><td class="name"><code>cptac_brca</code></td><td class="name">trío histórico</td><td>mlp · mlp_snapshot</td><td>369 + 73 configuraciones</td><td class="num"><span class="note">sin contraste pareado</span></td><td><span class="chip bad">ninguna gana en las 3 métricas</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>⏸️ Incompletos</b> · se listan para que el inventario de la campaña esté completo</caption>
+      <thead><tr><th>#</th><th>Experimento</th><th>Dataset</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td class="num">I1</td><td>Agregación a nivel de paciente antes del metaclasificador</td><td class="name"><code>cptac_brca</code> <span class="note">(9 pacientes con &gt;1 slide)</span></td><td>3 trabajos fallidos, nunca completado</td></tr>
+        <tr><td class="num">I2</td><td>Atención con GAT / transformers entre parches</td><td class="name"><code>cptac_brca</code></td><td>8 trabajos lanzados, ninguno llegó a entrenar; código eliminado</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════════ 3.2 · FICHAS POSITIVAS ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">3.2 · Fichas</div>
+    <h2>Lo que funcionó</h2>
+  </div>
+
+  <h3>P1 · Cambiar un modelo base: <code>virchow_v1</code> → <code>conch_v1_5</code></h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelos base</th><th>Metaclasificador</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code> / TP53_mutation<br><span class="note">50 folds pareados</span></td>
+        <td class="name">ctranspath + uni_v2 + <b>virchow_v1</b><br>→ ctranspath + uni_v2 + <b>conch_v1_5</b></td>
+        <td>LogReg <span class="note">(por defecto)</span></td>
+        <td>Ninguno</td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption>Las cuatro métricas se mueven en el mismo sentido y todas superan su MDE por 1.7–1.8×</caption>
+      <thead><tr>
+        <th>Métrica</th><th class="num">Trío histórico</th><th class="num">Trío con conch</th>
+        <th class="num">Δ</th><th class="ci">IC 95 %</th><th>W/T/L</th>
+        <th class="num">p Holm</th><th class="num">MDE</th>
+      </tr></thead>
+      <tbody>
+        <tr class="base"><td>AUC</td><td class="num">0.7616</td><td class="num hl">0.7986</td><td class="num d-pos"><b>+0.0370</b></td><td class="ci">[+0.0230, +0.0514]</td><td>34/4/12</td><td class="num sig">1.4·10⁻⁴</td><td class="num">0.0209</td></tr>
+        <tr><td>bacc</td><td class="num">0.6702</td><td class="num">0.7302</td><td class="num d-pos"><b>+0.0600</b></td><td class="ci">[+0.0363, +0.0838]</td><td>36/5/9</td><td class="num sig">1.4·10⁻⁴</td><td class="num">0.0345</td></tr>
+        <tr><td>macro-F1</td><td class="num">0.6687</td><td class="num">0.7294</td><td class="num d-pos"><b>+0.0608</b></td><td class="ci">[+0.0362, +0.0857]</td><td>36/5/9</td><td class="num sig">1.4·10⁻⁴</td><td class="num">0.0365</td></tr>
+        <tr><td>kappa</td><td class="num">0.3502</td><td class="num">0.4629</td><td class="num d-pos"><b>+0.1127</b></td><td class="ci">[+0.0657, +0.1601]</td><td>36/5/9</td><td class="num sig">1.4·10⁻⁴</td><td class="num">0.0680</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout col">
+    <h4>Por qué funciona, en llano</h4>
+    <p><code>virchow_v1</code> no era simplemente el modelo más débil: era un modelo
+      <em>dañino</em>. Produce embeddings de 2 560 dimensiones que el ABMIL debe comprimir a 512, y
+      en esa compresión <strong>solo sobrevive el 5 % de la estructura que distinguía unos parches
+      de otros</strong>. Sin esa estructura, su atención no tiene nada que mirar (entropía 0.9993,
+      prácticamente uniforme) y el modelo acaba promediando parches. El metaclasificador recibe
+      entonces una tercera opinión que es casi ruido, y como LogReg le asigna un peso no nulo, ese
+      ruido contamina la decisión.</p>
+  </div>
+
+  <ul class="plain col">
+    <li><strong>Añadir <code>conch_v1_5</code> sin quitar <code>virchow_v1</code></strong> (cuatro
+      modelos) da exactamente el mismo AUC, 0.7986. <code>virchow_v1</code> no aporta nada que
+      <code>conch_v1_5</code> no cubra ya.</li>
+    <li><strong>Quitar <code>virchow_v1</code> sin sustituirlo</strong>
+      (<code>ctranspath+uni_v2</code> = 0.7650) ya bate al trío histórico.</li>
+    <li><strong>En el barrido exhaustivo de los 255 subconjuntos posibles</strong>, la selección
+      honesta (<em>leave-one-fold-out</em>, sin mirar el test) elige
+      <code>ctranspath+uni_v2+conch_v1_5</code> en <strong>49 de 50 folds</strong>. El sesgo de
+      selección es de solo +0.0046.</li>
+  </ul>
+
+  <p class="col"><strong>Lo que hay que llevarse:</strong> el metaclasificador aporta +0.008 sobre
+    el mejor modelo individual; cambiar qué modelo entra aporta +0.037. Antes de invertir en
+    <em>cómo</em> se combinan los modelos, hay que comprobar <em>cuáles</em> entran.</p>
+
+  <hr class="rule">
+
+  <h3>P2 · Embeddings en vez de probabilidades — depende del dataset</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Datasets</th><th>Modelos base</th><th>Metaclasificador</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name">Los cuatro</td>
+        <td class="name">Trío ganador<br>ctranspath + uni_v2 + conch_v1_5</td>
+        <td>LogReg en ambos brazos</td>
+        <td>Espacio de entrada: 6 probabilidades vs. <b>1 536 D</b> (3 × 512 D post-atención)</td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <thead><tr>
+        <th>Dataset</th><th class="num">Train/fold</th><th class="num">Δ AUC</th>
+        <th class="ci">IC 95 %</th><th>W/T/L</th><th class="num">p Holm</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="name"><code>cptac_brca</code></td><td class="num">75</td><td class="num d-neg"><b>−0.0160</b></td><td class="ci">[−0.0305, −0.0020]</td><td>19/2/29</td><td class="num">0.60</td></tr>
+        <tr><td class="name"><code>bc_therapy</code></td><td class="num">113</td><td class="num d-pos"><b>+0.0296</b></td><td class="ci">[+0.0073, +0.0530]</td><td>30/1/19</td><td class="num">0.35</td></tr>
+        <tr class="base"><td class="name"><code>cptac_gbm</code></td><td class="num">164</td><td class="num hl"><b>+0.0230</b></td><td class="ci">[+0.0079, +0.0384]</td><td>34/0/16</td><td class="num sig">0.031 ✱</td></tr>
+        <tr><td class="name"><code>cervical_subtype</code></td><td class="num">407</td><td class="num">−0.0009</td><td class="ci">[−0.0042, +0.0029]</td><td>2/0/3</td><td class="num">1.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col"><strong>Veredicto:</strong> funciona en <code>cptac_gbm</code> (única con
+    significación clara tras Holm; las cinco métricas se mueven igual: AUC +0.0230, AP +0.0235,
+    bacc +0.0117, macro-F1 +0.0127, kappa +0.0275) y direccionalmente en <code>bc_therapy</code>.
+    <strong>No funciona en <code>cptac_brca</code></strong>, donde el signo se invierte.</p>
+
+  <div class="callout neg col">
+    <h4>Por qué — y por qué NO es lo que parece</h4>
+    <p>La explicación intuitiva sería el tamaño del meta-entrenamiento: «una regresión logística
+      sobre 1 536 columnas con 75 filas sobreajusta; con 164 no». <strong>Esa hipótesis se probó
+      explícitamente y quedó falsada.</strong></p>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Submuestreo del meta-train de <code>cptac_gbm</code></b> · el Δ es positivo en los siete tamaños</caption>
+      <thead><tr>
+        <th class="num">n meta-train</th><th class="num">Δ AUC (emb − prob)</th>
+        <th class="ci">IC 95 %</th><th>W/T/L</th><th class="num">p Holm</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="num">40</td><td class="num d-pos">+0.0053</td><td class="ci">[−0.0037, +0.0138]</td><td>28/0/22</td><td class="num">0.86</td></tr>
+        <tr><td class="num">55</td><td class="num d-pos">+0.0169</td><td class="ci">[+0.0072, +0.0269]</td><td>31/0/19</td><td class="num sig">0.013 ✱</td></tr>
+        <tr class="base"><td class="num"><b>75</b></td><td class="num hl"><b>+0.0137</b></td><td class="ci">[+0.0018, +0.0254]</td><td>34/0/16</td><td class="num">0.090</td></tr>
+        <tr><td class="num">95</td><td class="num d-pos">+0.0201</td><td class="ci">[+0.0088, +0.0317]</td><td>34/0/16</td><td class="num sig">0.008 ✱</td></tr>
+        <tr><td class="num">120</td><td class="num d-pos">+0.0170</td><td class="ci">[+0.0042, +0.0297]</td><td>33/0/17</td><td class="num sig">0.047 ✱</td></tr>
+        <tr><td class="num">145</td><td class="num d-pos">+0.0198</td><td class="ci">[+0.0057, +0.0335]</td><td>32/1/17</td><td class="num sig">0.030 ✱</td></tr>
+        <tr><td class="num">169 <span class="note">(completo)</span></td><td class="num d-pos">+0.0230</td><td class="ci">[+0.0077, +0.0380]</td><td>34/0/16</td><td class="num sig">0.013 ✱</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">En el punto decisivo — <strong>n = 75 exactos, mismo código, mismos modelos</strong>
+    — <code>cptac_gbm</code> da <b>+0.0137</b> (34 de 50 folds) y <code>cptac_brca</code> da
+    <b>−0.0160</b> (19 de 50). El tamaño modula la <em>magnitud</em> del efecto, pero nunca cambia
+    su <em>signo</em>: <strong>la diferencia es una propiedad del dataset, no del tamaño de la
+    muestra.</strong></p>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>La hipótesis candidata:</b> la selectividad de la atención. En <code>cptac_gbm</code> es sistemáticamente mayor</caption>
+      <thead><tr>
+        <th>Modelo</th><th class="num">Entropía brca</th><th class="num">Entropía gbm</th>
+        <th class="num">logit_sd brca</th><th class="num">logit_sd gbm</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="name"><code>ctranspath</code></td><td class="num">0.9282</td><td class="num hl">0.7751</td><td class="num">0.98</td><td class="num hl">1.74</td></tr>
+        <tr><td class="name"><code>uni_v2</code></td><td class="num">0.9942</td><td class="num hl">0.9699</td><td class="num">0.30</td><td class="num hl">0.70</td></tr>
+        <tr><td class="name"><code>conch_v1_5</code></td><td class="num">0.8879</td><td class="num">0.8736</td><td class="num">1.29</td><td class="num">1.23</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">Al aplanar la atención a la fuerza (<code>attn_mean</code>), <strong>el signo del
+    efecto se invierte</strong> en <code>cptac_gbm</code> (de +0.023 a −0.025, un vuelco de 0.048),
+    mientras que en <code>cptac_brca</code> — donde ya era casi plana — solo se profundiza una
+    pérdida preexistente.</p>
+
+  <div class="callout neg col">
+    <h4>⚠️ Hipótesis compatible con los datos, no resultado establecido</h4>
+    <p>La evidencia son <strong>dos datasets y una única manipulación llevada al extremo
+      uniforme</strong>. El contraste decisivo — <em>graduar</em> la selectividad y comprobar si el
+      Δ la sigue de forma monótona — <strong>está pendiente</strong> (vía abierta 4).</p>
+  </div>
+
+  <hr class="rule">
+
+  <h3>P3 · Snapshot Ensembles (FGE / SE) sobre los modelos base</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Datasets</th><th>Modelos base</th><th>Metaclasificador</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_gbm</code> ✅<br><code>bc_therapy</code> ✅<br><code>cervical_subtype</code> ❌</td>
+        <td class="name">Trío ganador, con variantes de snapshot por modelo</td>
+        <td>LogReg <span class="note">(también mlp_snapshot)</span></td>
+        <td><b>FGE</b> (Garipov, ICLR 2018): lr 2·10⁻⁴→2·10⁻⁵, ciclos de 4 épocas<br>
+            <b>SE</b> (Huang, ICLR 2017): lr 10⁻³→10⁻⁶, ciclos de 15 épocas</td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption><b><code>cptac_gbm</code>, <code>fge_trio:logreg</code> vs <code>prob:logreg</code></b> · 50 folds · las cinco métricas significativas tras Holm</caption>
+      <thead><tr>
+        <th>Métrica</th><th class="num">Δ</th><th class="ci">IC 95 %</th><th>W/T/L</th>
+        <th class="num">p Holm</th><th class="num">MDE</th>
+      </tr></thead>
+      <tbody>
+        <tr class="base"><td>AUC</td><td class="num hl"><b>+0.0223</b></td><td class="ci">[+0.0090, +0.0381]</td><td>31/0/19</td><td class="num sig">0.049 ✱</td><td class="num">0.0209</td></tr>
+        <tr><td>AP</td><td class="num d-pos"><b>+0.0264</b></td><td class="ci">[+0.0083, +0.0454]</td><td>33/0/17</td><td class="num sig">0.049 ✱</td><td class="num">0.0268</td></tr>
+        <tr><td>bacc</td><td class="num d-pos"><b>+0.0314</b></td><td class="ci">[+0.0147, +0.0497]</td><td>32/5/13</td><td class="num sig">0.015 ✱</td><td class="num">0.0253</td></tr>
+        <tr><td>macro-F1</td><td class="num d-pos"><b>+0.0327</b></td><td class="ci">[+0.0157, +0.0516]</td><td>32/5/13</td><td class="num sig">0.015 ✱</td><td class="num">0.0259</td></tr>
+        <tr><td>kappa</td><td class="num d-pos"><b>+0.0653</b></td><td class="ci">[+0.0315, +0.1013]</td><td>31/5/14</td><td class="num sig">0.011 ✱</td><td class="num">0.0506</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">En <code>bc_therapy</code>: <code>se_trio:mlp_snapshot</code> Δ AUC =
+    <b>+0.0296</b>, p Holm = <b>0.016</b> ✱. En <code>cervical_subtype</code>: negativo
+    (<code>fge_trio:logreg</code> −0.0098).</p>
+
+  <div class="callout col">
+    <h4>Por qué el resultado anterior era engañoso — la lección más transferible de la campaña</h4>
+    <p>En <code>cptac_brca</code> esta misma comparación daba +0.0020, sin significación, y se cerró
+      como «nulo acotado a ≈+0.017». Pero <strong>el MDE de esa comparación era 0.026</strong> —
+      unas 4 veces el de la suite de metaclasificadores — porque las predicciones de los snapshots
+      son mucho más ruidosas fold a fold.</p>
+    <p>Aquel nulo no decía «no hay efecto»: decía <strong>«no puedo ver un efecto menor de
+      0.026»</strong>. El efecto real ronda +0.022. <strong>Era un problema de potencia
+      estadística, no una ausencia de efecto.</strong></p>
+    <p class="note">Un nulo solo es informativo si se reporta junto a su MDE, y un nulo cuyo MDE es
+      mayor que el efecto plausible no es un nulo: es una medición que no se hizo.</p>
+  </div>
+
+  <hr class="rule">
+
+  <h3>P4 · La atención sí aporta (control negativo <code>attn_mean</code>)</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Datasets</th><th>Metaclasificador</th><th>Extras</th><th class="num">Δ AUC al forzar mean pooling</th><th class="ci">IC 95 %</th><th class="num">p Holm</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><code>cptac_brca</code> <span class="note">(par ctranspath+conch_v1_5)</span></td><td>LogReg</td><td><code>attn_mean</code></td><td class="num d-neg"><b>−0.0333</b></td><td class="ci">[−0.0460, −0.0205]</td><td class="num sig">0.00046 ✱</td></tr>
+        <tr><td class="name"><code>cptac_gbm</code> <span class="note">(trío completo)</span></td><td>LogReg</td><td><code>attn_mean</code></td><td class="num d-neg"><b>−0.0479</b></td><td class="ci">[−0.0699, −0.0260]</td><td class="num sig">0.00090 ✱</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col"><strong>Por qué importa:</strong> es el control que valida la arquitectura
+    completa. Muchos resultados negativos de la campaña son intentos de <em>mejorar</em> la atención
+    que fracasan; este control demuestra que el problema no es que la atención sea inútil — es que
+    <strong>la que hay ya captura lo que se puede capturar con este tamaño de cohorte</strong>.</p>
+
+  <h3>P5 · El stacking bate al mejor modelo individual</h3>
+  <p class="col">Aportación medida del metaclasificador sobre <code>cptac_brca</code>:
+    <strong>+0.0084 de AUC en test</strong> frente al mejor modelo base fijo, ganando en
+    <strong>27 de 50 folds</strong>. Dentro de la muestra aporta solo +0.0003, lo que confirma que
+    no está memorizando: está combinando. <strong>Es la referencia contra la que hay que medir
+    cualquier idea sobre la regla de combinación: el techo de esa palanca es +0.008</strong>, y
+    ninguna de las nueve alternativas probadas lo ha superado.</p>
+
+  <h3>P6 · La vecindad espacial entre parches lleva información</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelo base</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code> / TP53_mutation</td>
+        <td class="name"><code>uni_v2</code><br><span class="note">elegido por tener el mejor vecindario: grado medio 7.78/8, 0 % nodos aislados</span></td>
+        <td>GraphSAGE sobre grafo reticular de parches (hasta 8 vecinos, K = 2 rondas ≈ 560 µm de contexto), <b>antes</b> de la atención</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Variante</th><th class="num">AUC</th><th class="num">Δ vs baseline</th><th class="ci">IC 95 %</th><th>W/T/L</th></tr></thead>
+      <tbody>
+        <tr><td>ABMIL 1 cabeza (baseline)</td><td class="num">0.7634</td><td class="num">—</td><td class="ci">—</td><td>—</td></tr>
+        <tr><td>+ GNN espacial</td><td class="num">0.7663</td><td class="num">+0.0029</td><td class="ci">[−0.0115, +0.0162]</td><td>22/14/14</td></tr>
+        <tr><td>+ GNN espacial (p = 0.3)</td><td class="num">0.7711</td><td class="num">+0.0077</td><td class="ci">[−0.0069, +0.0218]</td><td>24/9/17</td></tr>
+        <tr><td>+ GNN con <b>grafo barajado</b> <span class="note">(control)</span></td><td class="num">0.7592</td><td class="num d-neg">−0.0042</td><td class="ci">[−0.0165, +0.0074]</td><td>17/12/21</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col"><strong>El contraste limpio</strong> es GNN con grafo real (0.7711) frente a GNN
+    con grafo barajado (0.7592) — misma arquitectura, mismos parámetros, misma capacidad, solo
+    destruida la estructura espacial: <strong>Δ = +0.0119, IC [+0.0004, +0.0238], W/T/L 26/8/16 —
+    significativo, por poco.</strong></p>
+  <p class="col"><strong>Veredicto: la señal existe, pero no es rentable.</strong> Frente al
+    baseline sin GNN la ganancia neta cae a +0.0077 (no significativo, y por debajo del suelo de
+    reproducibilidad): <strong>el resto se lo come el coste de añadir 1.05 M de parámetros</strong>
+    en un problema con 103 pacientes. Es el hallazgo que mejor ilustra el diagnóstico general del
+    proyecto: <em>no falta información, falta muestra para pagarla.</em></p>
+
+  <h3>P7 · Pooling duro top-K de atención — refuerza P2, no rescata al MLP+snapshot</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelos base</th><th>Metaclasificador</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code> + <code>cptac_gbm</code> / TP53_mutation</td>
+        <td class="name">trío ganador <code>ctranspath + uni_v2 + conch_v1_5</code></td>
+        <td>LogReg y <code>mlp_snapshot</code> (<code>SnapshotMLPMetaClassifier</code>), mismo espacio de entrada</td>
+        <td><code>abmil_extract_topk_embeddings</code> (nuevo): en vez de agregar con atención blanda sobre TODA la bolsa, selecciona los K=10 parches de mayor peso y renormaliza su atención antes de agregar — línea "regularizar la atención con top-k de parches" que constaba como no probada (vía abierta 8, sección 4)</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <div class="tscroll">
+    <table>
+      <caption>Baseline recomputado en la misma pasada (<code>insample:logreg</code>, 50 folds pareados en cada dataset)</caption>
+      <thead><tr><th>Dataset</th><th class="num"><code>topk10:logreg</code> Δ AUC</th><th class="ci">IC 95 %</th><th>W/T/L</th><th class="num">p Holm</th><th class="num"><code>topk10:mlp_snapshot</code> Δ AUC</th><th class="num">p Holm</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><code>cptac_brca</code></td><td class="num">+0.0140</td><td class="ci">[−0.0034, +0.0315]</td><td>24/7/19</td><td class="num">0.243 (ns)</td><td class="num">+0.0084</td><td class="num">0.351 (ns)</td></tr>
+        <tr class="base"><td class="name"><code>cptac_gbm</code></td><td class="num d-pos"><b>+0.0388</b></td><td class="ci">[+0.0208, +0.0568]</td><td>35/1/14</td><td class="num sig">&lt;0.001 ✱</td><td class="num d-pos"><b>+0.0326</b></td><td class="num sig">&lt;0.001 ✱</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col">En <code>cptac_gbm</code> también sale significativa la balanced accuracy
+    (+0.0250 ✱, sólo con <code>logreg</code>); kappa y macro-F1 quedan en zona "significativo sin
+    corregir, no tras Holm" (p Holm 0.064–0.090). En <code>cptac_brca</code> las cinco métricas
+    quedan nulas y acotadas (MDE 0.025–0.065).</p>
+  <p class="col"><strong>Veredicto: refuerza P2, con una tercera manipulación de la atención.</strong>
+    Mismo patrón exacto que embeddings-vs-probabilidades: gana en el dataset con atención más
+    selectiva y más meta-train (<code>cptac_gbm</code>), nulo acotado en <code>cptac_brca</code>. No
+    es todavía el contraste <em>graduado</em> que pide la vía abierta 4, sección 4 — aquí sólo se
+    probó un punto (K=10), no una curva — pero es la tercera pieza de evidencia independiente (tras
+    <code>attn_mean</code> en P4 y los embeddings en P2) de que la selectividad de la atención, no
+    el tamaño de la muestra por sí solo, es lo que separa los dos datasets.</p>
+  <p class="col"><strong>El metaclasificador no aporta nada sobre el espacio de features.</strong>
+    Dentro del mismo <code>topk10</code>, <code>logreg</code> gana en AUC a <code>mlp_snapshot</code>
+    en <strong>los dos</strong> datasets (0.8127 vs. 0.8070 en <code>cptac_brca</code>; 0.7945 vs.
+    0.7882 en <code>cptac_gbm</code>). Confirma N1/N2 con una entrada distinta: la ganancia, donde
+    la hay, es la representación (top-K duro), no el combinador.</p>
+  <p class="col"><span class="note">⚠️ Igual que P2: es una hipótesis compatible con los datos (dos
+    datasets, un valor de K), no un resultado establecido para "el pooling duro ayuda en datasets
+    grandes" en general.</span></p>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════════ 3.3 · FICHAS NEGATIVAS ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">3.3 · Fichas</div>
+    <h2>Lo que no funcionó</h2>
+  </div>
+
+  <h3>N1–N2 · Cambiar el metaclasificador: nueve alternativas, ninguna gana</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Datasets</th><th>Modelos base</th><th>Metaclasificadores</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code> (50 folds)<br>+ réplica en los otros tres</td>
+        <td class="name">Trío ganador</td>
+        <td>LogReg (referencia), MLP, MLP+Snapshot, Deep MLP, SVM lineal (C=1), KNN (k=5, pesos por distancia), Naive Bayes gaussiano, TabPFN, TabPFN+Snapshot, MLP+FGE</td>
+        <td>Ninguno. Espacio de 6 probabilidades, semilla <code>42+fold</code></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>Δ AUC frente a LogReg en los cuatro datasets</b> · ✱ = significativo tras Holm</caption>
+      <thead><tr>
+        <th>Brazo</th><th class="num">cptac_brca</th><th class="num">bc_therapy</th>
+        <th class="num">cptac_gbm</th><th class="num">cervical_subtype</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="name"><code>prob:svm</code></td><td class="num">−0.0021</td><td class="num">+0.0000</td><td class="num d-neg sig">−0.0103 ✱</td><td class="num">−0.0027</td></tr>
+        <tr><td class="name"><code>prob:nb</code></td><td class="num">−0.0031</td><td class="num">−0.0041</td><td class="num d-neg sig">−0.0119 ✱</td><td class="num">−0.0145</td></tr>
+        <tr><td class="name"><code>prob:knn</code></td><td class="num d-neg sig">−0.0321 ✱</td><td class="num d-neg sig">−0.0225 ✱</td><td class="num d-neg sig">−0.0421 ✱</td><td class="num d-neg">−0.0409</td></tr>
+        <tr><td class="name"><code>prob:mlp</code></td><td class="num d-neg sig">−0.1038 ✱</td><td class="num d-neg sig">−0.1061 ✱</td><td class="num d-neg sig">−0.0803 ✱</td><td class="num d-neg">−0.0409</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col"><strong>Veredicto: ninguno bate a LogReg en ningún dataset.</strong> Y en
+    <code>cptac_gbm</code> — el dataset con más datos — el margen de LogReg <strong>se
+    amplía</strong>: SVM y NB, que empataban en <code>cptac_brca</code>, pasan a perder
+    significativamente.</p>
+
+  <div class="callout neg col">
+    <h4>Por qué, en llano</h4>
+    <p>Con <strong>75 filas y 6 columnas</strong>, la flexibilidad no se paga. Los modelos lineales
+      empatan en cabeza — SVM lineal decide idéntico a LogReg en 40 de 50 folds, es literalmente el
+      mismo modelo —; el generativo simple (NB) empata; los flexibles (MLP, KNN) pierden. KNN falla
+      porque 5 vecinos en un espacio de 6 dimensiones con 75 puntos no bastan para estimar una
+      densidad. <strong>El cuello de botella es el tamaño del conjunto, no la capacidad del
+      modelo.</strong></p>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption><b>El caso del MLP merece un matiz:</b> buena parte del hundimiento es fallo de <em>umbral</em>, no de <em>ordenación</em></caption>
+      <thead><tr><th>Brazo</th><th class="num">κ con umbral 0.5</th><th class="num">κ con umbral reajustado</th><th class="num">Recuperación</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><code>prob:mlp</code></td><td class="num">0.0340</td><td class="num">0.3282</td><td class="num d-pos"><b>+0.294</b></td></tr>
+        <tr><td class="name"><code>prob:mlp_snapshot</code></td><td class="num">0.2536</td><td class="num">0.4278</td><td class="num d-pos"><b>+0.174</b></td></tr>
+        <tr><td class="name"><code>emb:mlp</code></td><td class="num">0.2187</td><td class="num">0.4148</td><td class="num d-pos"><b>+0.196</b></td></tr>
+        <tr class="base"><td class="name">LogReg / SVM / NB</td><td class="num">—</td><td class="num">—</td><td class="num d-neg"><b>−0.029 a −0.045</b><br><span class="note">empeoran</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col"><code>mlp_snapshot</code> llega a tener el AUC más alto de todo el barrido (0.8018)
+    y a la vez la segunda peor κ (0.2536): es <em>un buen ordenador con el corte mal puesto</em>.
+    Aun así, el MLP simple <strong>sí</strong> pierde también en AUC (−0.10), de modo que su colapso
+    es real, no solo de umbral. <strong>No se adopta el reajuste de umbral en el pipeline</strong>
+    (§1.3).</p>
+
+  <hr class="rule">
+
+  <h3>N3–N4 · Fusión temprana a nivel de parche</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelos base</th><th>Metaclasificador</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code> / TP53_mutation<br><span class="note">50 folds pareados</span></td>
+        <td class="name"><code>ctranspath</code> (768 D) ⊕ <code>virchow_v1</code> (2560 D) ⊕ <code>conch_v1_5</code> (768 D)<br>concatenados <b>a nivel de parche</b> → un único ABMIL con <code>in_dim</code> = 4096</td>
+        <td>LogReg en ambos brazos <span class="note">(comparación justa)</span></td>
+        <td><code>ensemble5.py</code>, con verificación dura de alineación de coordenadas</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Variante</th><th class="num">Δ AUC</th><th class="ci">IC 95 %</th><th>W/T/L</th><th class="num">p</th></tr></thead>
+      <tbody>
+        <tr><td>Fusión temprana vs. tardía</td><td class="num d-neg"><b>−0.0056</b></td><td class="ci">[−0.0250, +0.0124]</td><td>21/3/26</td><td class="num">0.55</td></tr>
+        <tr><td>Fusión temprana <b>ponderada</b> <span class="note">(pesos sobre los embeddings crudos)</span></td><td class="num d-neg"><b>−0.0182</b></td><td class="ci">[−0.0421, +0.0061]</td><td>20/1/29</td><td class="num">0.15</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Por qué, en llano</h4>
+    <p>La idea era razonable: la fusión tardía colapsa cada modelo a una probabilidad por separado,
+      así que el desacuerdo <em>parche a parche</em> entre modelos se pierde antes de que nadie lo
+      pueda usar. No ocurre, por dos razones:</p>
+    <p><strong>1.</strong> El vector fusionado de <strong>4 096 D desborda un mecanismo de atención
+      diseñado para entradas de 768–2 560 D</strong> de un solo modelo. La proyección a 512 D pasa
+      de comprimir 1.5× a comprimir 8×.</p>
+    <p><strong>2.</strong> La concatenación <strong>no da al modelo ninguna forma de saber qué
+      dimensiones pertenecen a qué modelo base</strong>. Ve 4 096 números sin estructura.</p>
+    <p>Y la variante ponderada es peor todavía porque escalar embeddings crudos por pesos
+      arbitrarios (rango 0.04–0.99) <strong>rompe la estructura que el modelo fundacional
+      aprendió</strong>, sin sustituirla por nada. La proyección del ABMIL se entrena asumiendo
+      magnitudes sin escalar.</p>
+  </div>
+
+  <div class="callout col">
+    <h4>⚠️ Salvedad honesta</h4>
+    <p>Esta medición se hizo en <code>cptac_brca</code>, el único dataset donde el trío completo
+      <strong>no</strong> comparte coordenadas de parche, así que solo pudieron fusionarse dos de
+      los tres modelos. En los otros tres datasets sí se puede fusionar el trío entero, y eso
+      <strong>nunca se ha probado</strong> (vía abierta 2).</p>
+  </div>
+
+  <hr class="rule">
+
+  <h3>N5 · Optimización de pesos con Nelder-Mead</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelos base</th><th>Metaclasificador</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code> / TP53_mutation, 50 folds</td>
+        <td class="name">ctranspath + virchow_v1 + conch_v1_5</td>
+        <td>Ninguno tradicional: combinación lineal <code>P = w₁P₁ + w₂P₂ + w₃P₃</code>, pesos normalizados por softmax y optimizados con <code>Nelder-Mead</code> maximizando el AUC por fold</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <p class="col"><strong>Resultado:</strong> Δ AUC = <b>+0.0052</b>, IC [+0.0007, +0.0106],
+    W/T/L 26/11/13, <b>p = 0.058</b>. Pesos aprendidos (media ± desviación entre folds):
+    <code>ctranspath</code> 17.6 % ± 11.2 %, <code>virchow_v1</code> 10.4 % ± 7.8 %,
+    <strong><code>conch_v1_5</code> 72.0 % ± 29.2 %</strong> (rango 17.5 %–99.1 %).</p>
+  <p class="col"><strong>Veredicto: no concluyente.</strong> Nominalmente p &gt; 0.05, y aunque su
+    IC excluya el cero, <strong>+0.0052 cae por debajo del suelo de reproducibilidad</strong>: es
+    indistinguible de relanzar el mismo trabajo con otra semilla de GPU. Nelder-Mead detecta algo
+    real — que LogReg infrapondera a <code>conch_v1_5</code> — pero los pesos son <strong>muy
+    inestables fold a fold</strong> (desviación del 29 % sobre una media del 72 %): en un fold
+    asigna 0.95 a <code>ctranspath</code>, en otro 0.99 a <code>conch_v1_5</code>. Eso es señal de
+    que está ajustando ruido. Es, aun así, <em>el mejor resultado que ha dado nunca tocar la regla
+    de combinación</em> — lo cual dice más sobre el techo de esa palanca que sobre Nelder-Mead.</p>
+
+  <hr class="rule">
+
+  <h3>N6 · Escalera de características: desacuerdo, margen y entropía</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelos base</th><th>Metaclasificador</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code>, 50 folds</td>
+        <td class="name">Trío histórico</td>
+        <td>LogReg, con bloque de columnas extra concatenado</td>
+        <td>Escalera aditiva: E0 (6 probabilidades) → E1 (+desacuerdo Jensen-gap) → E2 (+margen) → E3 (+<b>entropía</b> por modelo)</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Escalón</th><th class="num">Δ vs. E0</th><th class="ci">IC 95 %</th><th class="num">p</th><th class="num">p Holm</th></tr></thead>
+      <tbody>
+        <tr><td>E1 (+desacuerdo)</td><td class="num d-neg">−0.00038</td><td class="ci">[−0.00109, +0.00031]</td><td class="num">0.294</td><td class="num">0.294</td></tr>
+        <tr><td>E2 (+margen)</td><td class="num d-neg">−0.00057</td><td class="ci">[−0.00155, +0.00026]</td><td class="num">0.214</td><td class="num">0.642</td></tr>
+        <tr><td>E3 (+entropía)</td><td class="num d-neg">−0.00142</td><td class="ci">[−0.00386, +0.00054]</td><td class="num">0.216</td><td class="num">0.431</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col"><strong>Veredicto: nulo.</strong> Ningún escalón supera el baseline; todos los Δ son
+    negativos y todos caen dentro del MDE (≈±0.016). El argumento teórico era bueno —
+    <code>H(p)</code> es simétrica, ninguna combinación lineal puede reproducirla — pero con
+    <strong>6 probabilidades ya informativas y 75 filas</strong>, LogReg ya extrae toda la señal
+    disponible a través de sus coeficientes. Hacer explícitas esas transformaciones solo consume
+    grados de libertad.</p>
+  <p class="note col">Una característica adicional, la divergencia KL/JS por pares entre modelos, se
+    <strong>descartó sin implementar</strong>: 3 columnas con fuerte colinealidad interna,
+    información ya cubierta por el Jensen-gap, y 25 filas por parámetro — zona de riesgo.</p>
+
+  <hr class="rule">
+
+  <h3>N7 · Reponderación por importancia del modelo</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelos base</th><th>Metaclasificadores</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code>, 50 folds</td><td class="name">Trío histórico</td>
+        <td>LogReg y SVM</td>
+        <td>Reescalar cada bloque de columnas por un escalar de importancia: <code>norm_ratio</code>, <code>softmax</code>, <code>signed</code></td>
+      </tr></tbody>
+    </table>
+  </div>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Meta-modelo</th><th>Método</th><th class="num">Δ AUC</th><th>W/T/L</th><th class="num">p</th></tr></thead>
+      <tbody>
+        <tr><td>logreg</td><td class="name"><code>norm_ratio</code></td><td class="num d-neg">−0.0085</td><td>12/8/30</td><td class="num sig">0.013</td></tr>
+        <tr><td>logreg</td><td class="name"><code>softmax</code></td><td class="num d-neg">−0.0123</td><td>11/5/34</td><td class="num sig">0.002</td></tr>
+        <tr><td>logreg</td><td class="name"><code>signed</code></td><td class="num d-neg">−0.0105</td><td>17/7/26</td><td class="num">0.337</td></tr>
+        <tr><td>svm</td><td class="name"><code>norm_ratio</code></td><td class="num d-neg">−0.0091</td><td>6/17/27</td><td class="num sig">0.001</td></tr>
+        <tr><td>svm</td><td class="name"><code>softmax</code></td><td class="num d-neg">−0.0106</td><td>6/17/27</td><td class="num sig">0.001</td></tr>
+        <tr><td>svm</td><td class="name"><code>signed</code></td><td class="num d-neg">−0.0064</td><td>20/3/27</td><td class="num">0.657</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col"><strong>Veredicto: <code>norm_ratio</code> y <code>softmax</code> empeoran
+    significativamente</strong> (las 4 p sobreviven a Holm); <code>signed</code> es indistinguible
+    de no reponderar. <strong>Por qué:</strong> reescalar las características <em>antes</em> de un
+    modelo que ya va a aprender su propia combinación lineal es redundante — LogReg y SVM lineal ya
+    optimizan exactamente esos pesos. La reponderación no añade información, solo cambia el punto de
+    partida de la regularización, y aquí lo empeora.</p>
+
+  <hr class="rule">
+
+  <h3>N8–N9 · Ampliar la capacidad de la atención</h3>
+  <ul class="plain col">
+    <li><strong>N8 · Atención multi-cabeza.</strong> <code>cptac_brca</code>, modelo base
+      <code>ctranspath</code>, 4 cabezas con softmax independiente y mean-pooling.
+      <strong>Δ AUC = −0.0240</strong>, 5 folds, W/T/L 2/0/3. <em>Nota: 5 folds es exactamente el
+      tamaño en el que un hallazgo de esta campaña no replicó y cambió de signo; léase con esa
+      cautela.</em></li>
+    <li><strong>N9 · Atención con GNN espacial.</strong> Ya detallada en P6: +0.0077 frente al
+      baseline, no significativo, aunque el control negativo con grafo barajado sí demuestra que
+      hay señal espacial.</li>
+  </ul>
+
+  <div class="callout neg col">
+    <h4>Por qué, en llano — y es la explicación central de toda la campaña</h4>
+    <p>Hay que distinguir dos presupuestos que se confunden constantemente:</p>
+    <p><strong>Presupuesto de datos de la rama de atención:</strong> ~7 000 parches por bolsa.
+      Abundante.<br>
+      <strong>Presupuesto estadístico del AUC final:</strong> 50 folds sobre 103 pacientes,
+      MDE ≈ ±0.016. Escaso.</p>
+    <p>Ampliar la atención mejora el primero y <strong>no toca el segundo</strong>. Con 75 slides de
+      entrenamiento, cualquier aumento de capacidad (multi-cabeza, GNN, transformers entre parches)
+      se convierte en memorización, no en señal nueva. Se probaron ocho variantes arquitectónicas a
+      lo largo de la campaña; ninguna mejoró, y la peor perdió 0.23 de AUC.</p>
+  </div>
+
+  <hr class="rule">
+
+  <h3>N10 · Augmentación de bolsa (<code>bag_size</code>)</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelos base</th><th>Metaclasificador</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code>, 50 folds<br><span class="note">baseline reentrenado en la misma pasada</span></td>
+        <td class="name">Trío ganador</td><td>LogReg</td>
+        <td>Muestrear un subconjunto de parches por época durante el entrenamiento (256 / 512 / 1024), en vez de pasar la bolsa completa</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <div class="tscroll">
+    <table>
+      <caption>Un efecto real se mueve en el mismo sentido en las cuatro métricas. Éste no.</caption>
+      <thead><tr><th>Configuración</th><th class="num">AUC</th><th class="num">bacc</th><th class="num">macro-F1</th><th class="num">kappa</th></tr></thead>
+      <tbody>
+        <tr class="base"><td>Bolsa completa (baseline)</td><td class="num">0.8026</td><td class="num hl">0.7448</td><td class="num hl">0.7419</td><td class="num hl">0.4886</td></tr>
+        <tr><td>bag 256</td><td class="num">0.8040</td><td class="num">0.7428</td><td class="num">0.7414</td><td class="num">0.4872</td></tr>
+        <tr><td>bag 512</td><td class="num">0.8053</td><td class="num">0.7442</td><td class="num">0.7412</td><td class="num">0.4870</td></tr>
+        <tr><td>bag 1024</td><td class="num d-pos">0.8103</td><td class="num d-neg">0.7376</td><td class="num d-neg">0.7349</td><td class="num d-neg">0.4737</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col"><strong>Veredicto: nulo.</strong> Δ frente a bolsa completa: bag 256 = +0.0014
+    (MDE 0.019), bag 512 = +0.0027 (MDE 0.017), bag 1024 = +0.0077 (MDE 0.018).
+    <strong>Ninguna de las 12 comparaciones (3 tamaños × 4 métricas) es significativa</strong>, y el
+    +0.0077 de bag 1024 sube el AUC pero <strong>baja las otras tres métricas</strong>
+    (bacc −0.0072, macro-F1 −0.0070, kappa −0.0149).</p>
+  <p class="col"><strong>Por qué:</strong> la augmentación de bolsa <strong>no crea pacientes
+    nuevos</strong> — siguen siendo 103. La varianza que domina el error de generalización está
+    <em>entre pacientes</em>, no entre submuestras de parches del mismo paciente.</p>
+
+  <hr class="rule">
+
+  <h3>N11 · Corregir la fuga de datos con predicciones out-of-fold</h3>
+  <p class="col"><strong>El problema es real y está medido.</strong> El metaclasificador se entrena
+    con predicciones que los modelos base hicieron <strong>sobre las slides que ellos mismos vieron
+    en entrenamiento</strong>. Es la fuga clásica del <em>stacking</em> (Wolpert 1992,
+    Breiman 1996):</p>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Superficie</th><th>Papel</th><th class="num">AUC</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><code>_train_eval/val_outputs</code></td><td>meta-entrenamiento (dentro de muestra)</td><td class="num d-neg"><b>0.849–0.949</b></td></tr>
+        <tr><td class="name"><code>val_outputs</code></td><td>parada temprana</td><td class="num">0.812–0.854</td></tr>
+        <tr><td class="name"><code>test_outputs</code></td><td>reporte</td><td class="num">0.757–0.790</td></tr>
+        <tr class="base"><td class="name"><code>_train_eval_oof/val_outputs_oof</code></td><td>meta-entrenamiento <b>sin fuga</b></td><td class="num">0.722–0.730</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col">El metaclasificador se entrena con señales que valen 0.95 y se aplica donde valen
+    0.77. <strong>Resultado de corregirlo:</strong> in-sample 0.7616 vs. OOF 0.7571 →
+    <strong>Δ = −0.0045, IC [−0.0115, +0.0021], W/T/L 18/11/21, no significativo.</strong></p>
+  <p class="col"><strong>Por qué corregir la fuga no mejora nada.</strong> Con solo 6
+    características y un combinador lineal, la fuga <strong>infla las tres columnas de forma
+    aproximadamente pareja</strong>, así que el peso <em>relativo</em> que aprende LogReg sobrevive
+    intacto. Y el OOF trae su propio coste: sus predicciones vienen de modelos entrenados con menos
+    datos, luego son más ruidosas. Las dos distorsiones se cancelan.</p>
+  <div class="callout col">
+    <h4>Hipótesis que sigue abierta</h4>
+    <p>La fuga <strong>sí</strong> debería morder con meta-modelos <strong>flexibles</strong> (MLP,
+      LightGBM, TabPFN), que pueden explotar un espacio de 6 dimensiones casi separable. Eso
+      explicaría por qué el MLP colapsa y TabPFN infrarrinde. <strong>Nunca se ha medido</strong>
+      (vía abierta 6).</p>
+  </div>
+  <p class="note col"><strong>Sobre el coste muestral del OOF.</strong> Se barrió también el número
+    de pliegues internos de la CV anidada (<code>n_inner</code> ∈ {3, 5, 10}). Más pliegues internos
+    no compensan: el OOF entrena cada modelo base con una fracción menor de los datos, y con 75
+    slides ese recorte es caro. Es la razón por la que las predicciones OOF son más ruidosas y por
+    la que las dos distorsiones acaban cancelándose.</p>
+
+  <hr class="rule">
+
+  <h3>N12–N14 · Apagado dinámico del comité: el mecanismo funciona, el beneficio no existe</h3>
+  <p class="col">Cuatro pruebas independientes, todas negativas. El origen de la idea es PathBench
+    (arXiv 2505.20202): si el mejor modelo fundacional cambia según el órgano, ¿por qué fijar un
+    comité en vez de decidir sobre la marcha a quién escuchar?</p>
+
+  <h4>N12 · Ampliar el comité de 3 a 8 modelos</h4>
+  <p class="note col"><code>cptac_brca</code>, los <strong>255 subconjuntos posibles</strong>
+    (2⁸−1), LogReg.</p>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Configuración</th><th class="num">AUC</th><th class="num">Δ vs. trío ganador</th><th class="ci">IC 95 %</th><th>W/T/L</th><th class="num">p</th></tr></thead>
+      <tbody>
+        <tr class="base"><td>Trío ganador (baseline)</td><td class="num">0.7986</td><td class="num">—</td><td class="ci">—</td><td>—</td><td class="num">—</td></tr>
+        <tr><td>Los 8 completos</td><td class="num">0.7988</td><td class="num">+0.0002</td><td class="ci">[−0.0160, +0.0163]</td><td>23/2/25</td><td class="num">0.99</td></tr>
+        <tr><td>Mejor en test (6 modelos)</td><td class="num">0.8057</td><td class="num">+0.0071</td><td class="ci">[−0.0074, +0.0215]</td><td>29/5/16</td><td class="num">0.30</td></tr>
+        <tr><td><b>Selección honesta (LOFO)</b></td><td class="num">0.8011</td><td class="num">+0.0025</td><td class="ci">[0.0000, +0.0075]</td><td>1/49/0</td><td class="num">0.32</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note col">Rendimiento por tamaño de comité (mejor / media de AUC en test): k=1 →
+    0.7902/0.7571 · k=2 → 0.8009/0.7759 · k=3 → 0.8040/0.7833 · k=4 → 0.8054/0.7883 · k=5 →
+    0.8055/0.7920 · <b>k=6 → 0.8057/0.7949</b> · k=7 → 0.8054/0.7970 · k=8 → 0.7988/0.7988.
+    <strong>El óptimo está en k = 4–6, y con los 8 el rendimiento baja.</strong></p>
+
+  <h4>N13 · Enrutar el comité por órgano (el escenario ciego real)</h4>
+  <p class="note col">13 tareas binarias en 3 cohortes (mama: <code>cptac_brca</code>,
+    <code>bc_therapy</code>; colon: <code>cptac_coad</code>), 4 modelos comunes
+    (<code>hoptimus1</code>, <code>uni_v1</code>, <code>uni_v2</code>, <code>virchow2</code>),
+    diseño <em>leave-one-task-out</em>.</p>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Política</th><th class="num">Δ AUC vs. comité fijo</th><th>Gana / pierde</th><th class="num">p</th></tr></thead>
+      <tbody>
+        <tr><td>B) Comité global único</td><td class="num">−0.0001</td><td>6/13 vs 4/13</td><td class="num">0.85</td></tr>
+        <tr class="base"><td><b>C) Comité por órgano</b> <span class="note">(escenario realizable)</span></td><td class="num">+0.0015</td><td>6/13 vs 2/13</td><td class="num">0.31</td></tr>
+        <tr><td>Techo: selección conociendo la tarea</td><td class="num">+0.0016</td><td>6/13</td><td class="num">0.46</td></tr>
+        <tr><td>Techo absoluto: oráculo <span class="note">(mira el test)</span></td><td class="num d-pos">+0.0141</td><td>—</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>N14 · Cambiar el criterio de selección</h4>
+  <div class="tscroll">
+    <table>
+      <caption>Ocho criterios calculables sin etiquetas de test, sobre los 255 subconjuntos</caption>
+      <thead><tr><th>Criterio</th><th class="num">Spearman con AUC test</th><th class="num">AUC de la selección honesta</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><code>auc_val_penaliz</code> <span class="note">(media − desviación)</span></td><td class="num hl">+0.814</td><td class="num">0.8009</td></tr>
+        <tr class="base"><td class="name"><code>auc_val_medio</code> <span class="note">(el actual)</span></td><td class="num">+0.750</td><td class="num hl">0.8011</td></tr>
+        <tr><td class="name"><code>auc_val_agrupado</code></td><td class="num">+0.712</td><td class="num">0.7992</td></tr>
+        <tr><td class="name"><code>brier_val</code></td><td class="num">+0.685</td><td class="num">0.8006</td></tr>
+        <tr><td class="name"><code>logloss_val</code></td><td class="num">+0.682</td><td class="num">0.8006</td></tr>
+        <tr><td class="name"><code>auc_metatrain</code> <span class="note">(control negativo)</span></td><td class="num">+0.623</td><td class="num">0.7960</td></tr>
+        <tr><td class="name"><code>avg_precision</code></td><td class="num">+0.559</td><td class="num">0.7992</td></tr>
+        <tr><td class="name"><code>n_modelos</code> <span class="note">(control «usa más»)</span></td><td class="num">+0.449</td><td class="num">0.7988</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Por qué, en llano — y es un resultado interesante en sí mismo</h4>
+    <p><strong>El AUC de validación no ordena los comités como lo hace el test.</strong> La
+      correlación de Spearman entre ambos, sobre los 255 subconjuntos, es de solo <strong>+0.750</strong>.
+      El mejor comité en validación (el trío, 0.8681) queda <strong>16.º en test</strong>. El mejor
+      en test (6 modelos, 0.8057) solo marca 0.8535 en validación.</p>
+    <p>Y el mecanismo <strong>sí discrimina de verdad</strong>: en colon el enrutador selecciona
+      <code>hoptimus1+uni_v2+virchow2</code> y descarta <code>uni_v1</code>; en mama conserva los
+      cuatro. Incluso reproduce con datos propios el patrón de PathBench — <code>hoptimus1</code>
+      aparece en 6 de los 8 comités óptimos de colon y en <strong>ninguno</strong> de los 5 de mama.
+      <em>La información existe.</em></p>
+    <p>Lo que no existe es la forma de leerla sin las etiquetas de test que en producción no se
+      tienen. <strong>Apagar modelos dinámicamente es implementable, pero no accionable.</strong></p>
+  </div>
+
+  <p class="note col">Dos resultados contraintuitivos: <b>(a)</b> agrupar los folds antes de calcular
+    el criterio (<code>auc_val_agrupado</code>) era el favorito teórico — más filas, mejor
+    estimación — y salió <strong>peor</strong>, porque mezcla folds con poblaciones distintas y esa
+    heterogeneidad ensucia más de lo que limpia el ruido; <b>(b)</b> penalizar la inestabilidad
+    entre folds sí <strong>ordena mejor</strong> (+0.814 frente a +0.750), pero ordenar mejor el
+    conjunto no mueve el argmax, que es lo único que importa para seleccionar.</p>
+
+  <hr class="rule">
+
+  <h3>N15–N16 · Compartir o transferir la atención entre modelos</h3>
+  <ul class="plain col">
+    <li><strong>N15 · Promediar las atenciones.</strong> <code>cptac_brca</code> (par
+      <code>ctranspath+conch_v1_5</code>) y <code>cptac_gbm</code> (trío): Δ AUC = <b>−0.0009</b>
+      (IC [−0.0083, +0.0061], MDE 0.010) y <b>−0.0061</b> (IC [−0.0157, +0.0029], MDE 0.014), ambos
+      p Holm = 1.00. <strong>Nulo estrecho</strong> — no es ausencia de evidencia, es evidencia de
+      ausencia dentro de ±0.014. Promediar aplana la atención selectiva sin ganar nada a cambio.</li>
+    <li><strong>N16 · Transferir la atención del mejor modelo.</strong> En <code>cptac_brca</code>
+      había una señal prometedora (AP +0.0145, IC [+0.0034, +0.0258], W/T/L 31/4/15) al usar la
+      atención de <code>conch_v1_5</code> para todos los modelos. Réplica en <code>cptac_gbm</code>:
+      Δ AUC +0.0079, Δ AP +0.0075, <strong>W/T/L en AP = 25/0/25 (empate exacto)</strong>,
+      p Holm = 1.00. <strong>No replica. Línea cerrada.</strong></li>
+  </ul>
+
+  <hr class="rule">
+
+  <h3>N17 · FGE / SE en datasets pequeños</h3>
+  <div class="tscroll">
+    <table>
+      <caption><code>cptac_brca</code>, 50 folds, trío ganador, LogReg</caption>
+      <thead><tr>
+        <th>Brazo</th><th class="num">AUC</th><th class="num">Δ AUC</th><th class="ci">IC 95 %</th>
+        <th>W/T/L</th><th class="num">p Holm</th><th class="num">MDE</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="name"><code>fge_trio:logreg</code></td><td class="num">0.8006</td><td class="num">+0.0020</td><td class="ci">[−0.0161, +0.0196]</td><td class="d-neg"><b>22/2/26</b></td><td class="num">1.00</td><td class="num d-neg"><b>0.0261</b></td></tr>
+        <tr><td class="name"><code>se_trio:logreg</code></td><td class="num">0.8000</td><td class="num">+0.0013</td><td class="ci">[−0.0166, +0.0194]</td><td>24/4/22</td><td class="num">1.00</td><td class="num">0.0259</td></tr>
+        <tr><td class="name"><code>fge_trio:mlp_snapshot</code></td><td class="num">0.8007</td><td class="num">+0.0021</td><td class="ci">[−0.0163, +0.0207]</td><td>24/2/24</td><td class="num">0.34</td><td class="num">0.0266</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col">En <code>cervical_subtype</code> (5 folds): <code>fge_trio:logreg</code>
+    Δ AUC = −0.0098, <code>se_trio:mlp_snapshot</code> Δ AUC = −0.0258. Obsérvese que
+    <code>fge_trio:logreg</code> tiene la media positiva pero <strong>pierde en más folds de los que
+    gana (22/26)</strong>: media a favor, mediana en contra.</p>
+  <p class="col"><strong>Por qué:</strong> los snapshots del mismo modelo correlacionan entre sí a
+    <strong>0.92–0.98</strong>, mientras que dos modelos fundacionales distintos correlacionan a
+    <strong>0.35–0.84</strong>. <strong>El presupuesto de diversidad del ensemble ya está agotado por
+    el eje multi-modelo</strong>; la diversidad intra-modelo que añaden los snapshots es
+    esencialmente ruido correlacionado. Además el mecanismo no llega a desplegarse: la parada
+    temprana entre ciclos corta sistemáticamente en <strong>2.3–3.8 snapshots</strong> de los 6
+    configurados.</p>
+  <div class="callout col">
+    <h4>⚠️ Contexto imprescindible</h4>
+    <p>Este nulo tiene un <strong>MDE de 0.026</strong>, y en <code>cptac_gbm</code> el efecto real
+      resultó ser +0.022 (ficha P3). <strong>No es que FGE no funcione: es que en
+      <code>cptac_brca</code> no hay potencia para verlo.</strong> El nulo es correcto como nulo
+      <em>acotado</em>; sería incorrecto citarlo como «los Snapshot Ensembles no funcionan».</p>
+  </div>
+
+  <hr class="rule">
+
+  <h3>N18 · Barrido de hiperparámetros del metaclasificador MLP</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th>Modelos base</th><th>Metaclasificadores</th><th>Extras</th></tr></thead>
+      <tbody><tr class="base">
+        <td class="name"><code>cptac_brca</code> / TP53_mutation</td>
+        <td class="name">Trío histórico</td>
+        <td><code>MLPMetaClassifier</code> (ciclo único) y <code>SnapshotMLPMetaClassifier</code></td>
+        <td>Rejilla de 369 configuraciones (81 de ciclo único + 288 de snapshot) + ablación de 73 configuraciones para separar <b>capacidad</b> (red grande sin ciclos) de <b>mecanismo</b> (red pequeña con ciclos)</td>
+      </tr></tbody>
+    </table>
+  </div>
+  <div class="tscroll">
+    <table>
+      <caption>Mejor resultado por métrica, frente a un baseline LogReg de AUC 0.744 / F1 0.672 / acc 0.701</caption>
+      <thead><tr><th>Criterio</th><th>Configuración</th><th class="num">AUC</th><th class="num">F1</th><th class="num">acc</th></tr></thead>
+      <tbody>
+        <tr><td>Mejor AUC</td><td class="name">ciclo único, <code>hidden=32</code>, <code>dropout=0.5</code>, <code>lr=5e-3</code></td><td class="num hl">0.7672</td><td class="num d-neg">0.4551</td><td class="num d-neg">0.6097</td></tr>
+        <tr><td>Mejor F1</td><td class="name">snapshot, <code>hidden=64</code>, 4 ciclos, <code>restart_lr=0.01</code></td><td class="num">0.7464</td><td class="num hl">0.6897</td><td class="num">0.7099</td></tr>
+        <tr><td>Mejor acc</td><td class="name">snapshot, <code>hidden=128</code>, 8 ciclos</td><td class="num">0.7439</td><td class="num">0.6832</td><td class="num hl">0.7154</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col"><strong>Veredicto: ninguna configuración gana en las tres métricas a la vez.</strong>
+    El AUC solo mejora con una red pequeña y dropout alto, <strong>a costa de hundir F1 y
+    accuracy</strong> (−0.217 de F1) — el colapso hacia la clase mayoritaria típico de un
+    meta-modelo flexible con pocos datos.</p>
+
+  <div class="callout neg col">
+    <h4>Dos caveats importantes para citarlo</h4>
+    <p><strong>1 · Es un barrido pre-metodológico.</strong> No reporta contraste pareado, ni IC, ni
+      MDE, ni W/T/L — solo el error estándar por configuración. Es anterior al protocolo estadístico
+      que se adoptó después, y sus conclusiones quedan subsumidas por el barrido riguroso de N1.</p>
+    <p><strong>2 · Su baseline (0.744) no coincide con ningún baseline posterior</strong> (0.7918,
+      luego 0.7616, luego 0.7986). Corresponde a un estado anterior del pipeline y de los
+      checkpoints. <strong>Las cifras absolutas no son comparables con el resto del informe</strong>;
+      lo que sobrevive es la conclusión relativa: <em>afinar hiperparámetros no rescata al MLP</em>.</p>
+    <p class="note">El estudio de ablación asociado se ejecutó solo en un <strong>30 %</strong> (73
+      de 240 configuraciones planeadas), sin que quede documentado por qué, de modo que su
+      conclusión sobre capacidad frente a mecanismo es indicativa, no concluyente.</p>
+  </div>
+
+  <hr class="rule">
+
+  <h3>I1–I2 · Los dos experimentos que quedaron incompletos</h3>
+  <ul class="plain col">
+    <li><strong>I1 · Agregación a nivel de paciente.</strong> En <code>cptac_brca</code> hay 9
+      pacientes con más de una slide. La idea era agrupar las predicciones por <code>case_id</code>
+      y promediarlas antes del metaclasificador, para reducir la redundancia entre slides del mismo
+      paciente. <strong>Tres trabajos fallidos; nunca se completó.</strong> Sigue en la lista de
+      prioridad baja.</li>
+    <li><strong>I2 · Atención con GAT y transformers entre parches.</strong> Ocho trabajos lanzados;
+      <strong>ninguno llegó a entrenar</strong>, y el código se eliminó. No hay resultado que
+      reportar. Dado el −0.024 de la atención multi-cabeza (N8) y el +0.008 no significativo de la
+      GNN espacial (N9), la expectativa era baja de todas formas.</li>
+  </ul>
+  <p class="note col"><strong>Ninguno de los dos aporta evidencia en ninguna dirección.</strong> Se
+    listan para que el inventario de la campaña esté completo y no parezca que se omitieron
+    resultados desfavorables.</p>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════════ 3.4 · LAS CUATRO RAZONES ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">3.4 · Síntesis</div>
+    <h2>Las cuatro razones que explican casi todos los fracasos</h2>
+    <p class="lede col">Dieciocho resultados negativos, cuatro mecanismos.</p>
+  </div>
+
+  <ol class="findings col">
+    <li><div>
+      <h4>El cuello de botella es muestral, no arquitectónico</h4>
+      <p>103–166 pacientes, 75–164 slides de meta-entrenamiento. El ABMIL ya tiene ~0.5 M de
+        parámetros. <strong>Todo lo que añade capacidad se convierte en memorización, no en
+        señal</strong>: MLP (−0.10), atención multi-cabeza (−0.024), GNN espacial (+0.008 ns),
+        fusión temprana de 4 096 D (−0.006), Deep MLP.</p>
+      <p>El control del grafo barajado (P6) lo demuestra por contraposición: la señal espacial
+        <strong>existe</strong> y es medible (+0.0119), pero el coste en parámetros de capturarla se
+        come toda la ganancia.</p>
+      <p class="note"><strong>Corolario:</strong> con este tamaño de cohorte, la dirección
+        productiva no es <em>añadir</em> capacidad, sino <em>regularizar</em> o <em>elegir mejor la
+        entrada</em>.</p>
+    </div></li>
+
+    <li><div>
+      <h4>El presupuesto de diversidad ya está agotado</h4>
+      <p>Correlación entre snapshots del mismo modelo: <strong>0.92–0.98</strong>. Entre modelos
+        fundacionales distintos: <strong>0.35–0.84</strong>. El eje multi-modelo ya captura casi
+        toda la diversidad disponible; los Snapshot Ensembles añaden variación correlacionada, que
+        en un ensemble no es diversidad, es ruido.</p>
+      <p>Esto explica N17 y también por qué ampliar el comité de 3 a 8 (N12) no aporta:
+        <code>ctranspath</code> y <code>uni_v2</code> ya correlacionan a 0.84 entre sí.</p>
+    </div></li>
+
+    <li><div>
+      <h4>Lo que ya es lineal no gana nada con no linealidad explícita</h4>
+      <p>Con 6 probabilidades y 75 filas, <strong>LogReg ya extrae toda la señal disponible</strong>.
+        Por eso fracasan la escalera de características (N6, −0.0014), la reponderación por
+        importancia (N7, −0.006 a −0.012) y los metaclasificadores flexibles (N1). No es que las
+        transformaciones sean malas: es que <strong>el modelo lineal ya las reconstruye
+        implícitamente a través de sus coeficientes</strong>, y hacerlas explícitas solo consume
+        grados de libertad.</p>
+    </div></li>
+
+    <li><div>
+      <h4>El suelo de reproducibilidad vaporiza las mejoras pequeñas</h4>
+      <p>Reentrenar la configuración idéntica mueve el AUC agregado <strong>±0.004</strong> y cada
+        fold <strong>±0.032</strong>, solo por no determinismo de GPU. Este único criterio descarta,
+        sin necesidad de más análisis: Nelder-Mead (+0.0052), GNN espacial (+0.0077), augmentación
+        de bolsa (+0.0077) y los snapshots en <code>cptac_brca</code> (+0.0020).</p>
+      <p class="note"><strong>Regla operativa:</strong> cualquier Δ por debajo de ≈0.01 de AUC es
+        indistinguible de relanzar el mismo trabajo. No es un resultado.</p>
+    </div></li>
+  </ol>
+
+  <div class="callout neg col">
+    <h4>Y una quinta razón, que es una advertencia sobre las cuatro anteriores</h4>
+    <p><strong>Un nulo sin su MDE no es información.</strong> Dos resultados de esta campaña se
+      cerraron como «no funciona» y luego resultaron ser ciertos al replicarlos con más datos: los
+      Snapshot Ensembles y los embeddings frente a las probabilidades. En ambos casos, el MDE de la
+      medición original era <strong>mayor que el efecto real</strong>. La medición no dijo «no hay
+      efecto»: dijo «no puedo ver un efecto de este tamaño», y se leyó mal.</p>
+    <p>Todo resultado negativo de este informe debe leerse <strong>junto a su MDE</strong>, que por
+      eso figura en todas las tablas.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════════ 4 · VÍAS ABIERTAS ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">4 · Vías abiertas</div>
+    <h2>Qué investigar a continuación</h2>
+    <p class="lede col">Ordenadas por relación entre efecto esperado y coste, según el criterio del
+      informe más reciente.</p>
+  </div>
+
+  <h3>Prioridad alta</h3>
+
+  <div class="callout col">
+    <h4>1 · Entrenar los modelos fundacionales que faltan: UNI2, H-Optimus-0, Prov-GigaPath</h4>
+    <p><strong>Por qué es la primera.</strong> Es la única palanca del proyecto con un efecto grande
+      medido (+0.037 de AUC por cambiar un modelo). PathBench sitúa estos tres modelos en la parte
+      alta del ranking y <strong>ninguno está entrenado en este repositorio</strong>. Cada uno es
+      una oportunidad del tamaño del cambio <code>virchow_v1 → conch_v1_5</code>; ninguna variante
+      de metaclasificador ha valido nunca más de +0.008.</p>
+    <p class="note"><strong>Cómo:</strong>
+      <code>MODELS_OVERRIDE=".." sbatch train_base_models.sbatch</code> entrena un conjunto distinto
+      sin tocar la matriz de experimentos.</p>
+  </div>
+
+  <div class="callout col">
+    <h4>2 · Fusión temprana a tres bandas en <code>cptac_gbm</code>, <code>bc_therapy</code> y <code>cervical_subtype</code></h4>
+    <p><strong>Por qué se reabre una línea cerrada.</strong> El −0.0056 que cerró la fusión temprana
+      se midió en <code>cptac_brca</code>, con solo <strong>2 de los 3</strong> modelos (los únicos
+      que compartían coordenadas allí) y con 75 slides de entrenamiento — <em>el mismo régimen en el
+      que los embeddings también parecían no funcionar y luego resultaron funcionar</em>. En los
+      otros tres datasets el trío completo sí comparte coordenadas de parche, y la fusión a tres
+      bandas nunca se ha probado.</p>
+    <p class="note"><strong>Expectativa:</strong> moderada. Pero es barata, y el precedente de los
+      embeddings aconseja no fiarse de un nulo medido solo en el dataset más pequeño.</p>
+  </div>
+
+  <h3>Prioridad media</h3>
+
+  <ol class="findings col" style="counter-reset:f 2">
+    <li><div>
+      <h4>Repetir <code>cervical_subtype</code> con más de 5 folds</h4>
+      <p>Con 5 folds no arbitra nada, y es el dataset con más slides de entrenamiento (407) —
+        precisamente el que debería resolver la pregunta de los embeddings. Se pueden generar
+        particiones nuevas con <code>src/create_val_splits.py</code>.</p>
+    </div></li>
+    <li><div>
+      <h4>Graduar la selectividad de la atención</h4>
+      <p><strong>Es el contraste decisivo pendiente.</strong> La hipótesis de que el vuelco
+        embeddings-vs-probabilidades lo explica la selectividad de la atención (ficha P2) se apoya
+        hoy en dos datasets y una única manipulación llevada al extremo uniforme
+        (<code>attn_mean</code>). Falta el experimento que la establecería o la refutaría:
+        <strong>graduar</strong> la selectividad — no solo aplanarla del todo — y comprobar si el Δ
+        la sigue de forma monótona.</p>
+      <p>Si se confirma, da un criterio <em>a priori</em> para decidir en qué datasets usar
+        embeddings, calculable sin etiquetas de test. <strong>Sería el primer criterio accionable de
+        toda la campaña.</strong></p>
+    </div></li>
+    <li><div>
+      <h4>Reevaluar <code>virchow_v1</code> con una proyección mayor</h4>
+      <p><code>virchow_v1</code> retiene solo el <strong>5 %</strong> de su geometría entre parches
+        tras la proyección 2560 → 512. Es la única hipótesis mecánica que explica su AUC de 0.6823.
+        Aumentar <code>proj_dim</code> es un cambio de un parámetro, y comprobaría si el modelo es
+        malo o si lo estamos estrangulando.</p>
+    </div></li>
+    <li><div>
+      <h4>Predicciones out-of-fold + metaclasificador flexible</h4>
+      <p>Para LogReg ya está medido: corregir la fuga es un empate (−0.0045, ns). Pero la hipótesis
+        de que <strong>sí</strong> importa para meta-modelos flexibles (MLP, LightGBM, TabPFN) —
+        que pueden explotar un espacio de 6 dimensiones casi separable — nunca se ha probado con los
+        checkpoints vigentes. Explicaría por qué el MLP colapsa y TabPFN infrarrinde.</p>
+      <p class="note"><strong>Requisito previo:</strong> generar OOF para los 8 modelos (hoy solo
+        existen para 3).</p>
+    </div></li>
+  </ol>
+
+  <h3>Prioridad baja</h3>
+
+  <div class="callout col">
+    <h4>7 · Enrutado dinámico con más órganos</h4>
+    <p>Es la única puerta que el estudio de apagado dinámico deja entreabierta. Solo se probaron
+      <strong>dos</strong> órganos (mama y colon); PathBench observa saltos de ranking mayores entre
+      órganos más distantes (pulmón, cerebro, estómago). Con <code>cptac_gbm</code> hay 3 tareas de
+      cerebro, pero el núcleo común de modelos cae a 3 y el experimento pierde potencia.</p>
+    <p><strong>No está descartado que el enrutado pague con más órganos y mayor separación entre
+      ellos</strong> — pero el techo medido (oráculo, +0.0141) sigue siendo la mitad de lo que vale
+      cambiar un modelo base.</p>
+  </div>
+
+  <h4>8 · Otras líneas menores</h4>
+  <ul class="plain col">
+    <li><strong>Gated attention</strong>: nunca probada; es un cambio de una línea en la
+      configuración del ABMIL.</li>
+    <li><s>Regularizar la atención con <em>top-k</em> de parches</s> — <strong>probado el
+      6-sep-2026, ver P7 (§3.2)</strong>: pooling duro top-10 en vez de blando. +0.0388 AUC
+      significativo en <code>cptac_gbm</code>, nulo acotado en <code>cptac_brca</code>. Sigue
+      pendiente la penalización de entropía (no probada) y el contraste <em>graduado</em> en K que
+      pide la vía abierta 4.</li>
+    <li><strong>Calibración</strong>: la log-loss se calcula pero nunca se ha usado para decidir. Si
+      la salida va a informar una decisión clínica, la calibración importa tanto como el AUC.</li>
+    <li><strong>Evaluación a nivel de paciente</strong>: 9 pacientes de <code>cptac_brca</code>
+      tienen más de una slide; la agregación por <code>case_id</code> antes del metaclasificador
+      quedó incompleta (3 trabajos fallidos).</li>
+    <li><strong><code>logreg_l1</code> con <code>--meta_l1_c</code></strong>: implementado como
+      <em>group-lasso</em> sobre modelos (coeficiente 0 = modelo apagado), <strong>escrito pero
+      nunca ejecutado</strong> — perdió sentido al dar negativo el enrutado. Sigue disponible si se
+      reabre la línea.</li>
+  </ul>
+
+  <h3>Líneas cerradas — no reabrir sin motivo nuevo</h3>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Línea</th><th>Resultado final</th></tr></thead>
+      <tbody>
+        <tr><td>Fusión temprana en <code>cptac_brca</code> (concatenada y ponderada)</td><td class="num d-neg">−0.0056 / −0.0182</td></tr>
+        <tr><td>Atención con más capacidad (multi-cabeza, transformers entre parches, GAT)</td><td class="num d-neg">−0.024 la mejor variante</td></tr>
+        <tr><td>Augmentación de bolsa</td><td>12 comparaciones, 0 significativas</td></tr>
+        <tr><td>Transferencia de atención entre modelos</td><td>No replica (25/0/25)</td></tr>
+        <tr><td>Promediar atenciones</td><td>Nulo acotado a ±0.014</td></tr>
+        <tr><td>Reponderación por importancia del modelo</td><td class="num d-neg">−0.006 a −0.012</td></tr>
+        <tr><td>Escalera de características (desacuerdo/margen/entropía)</td><td class="num d-neg">−0.0014</td></tr>
+        <tr><td>Apagado dinámico del comité</td><td>4 pruebas, 4 negativos</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note col"><strong>Salvedad sobre la primera y la segunda:</strong> el control negativo
+    del grafo barajado demuestra que la señal espacial <strong>existe</strong> (+0.0119,
+    significativo). Lo que no funciona es pagarla con parámetros. Reabrir si el cohorte crece
+    sustancialmente por encima de las 112 slides de <code>cptac_brca</code>.</p>
+</section>
+
+<footer>
+  <div class="eyebrow">Procedencia</div>
+  <p class="note col">Todas las cifras de este informe se han verificado contra los ficheros de
+    resultados que las produjeron, todos en la raíz del repositorio.</p>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Bloque</th><th>Fichero de resultados</th></tr></thead>
+      <tbody>
+        <tr><td>Cambio de modelo base (P1)</td><td class="name"><code>results_model_selection_sweep.json</code></td></tr>
+        <tr><td>Barrido de 255 subconjuntos (N12)</td><td class="name"><code>results_base_model_sweep_*.json</code>, <code>results_sweep_8models_*.json</code></td></tr>
+        <tr><td>Campañas de 3 datasets (P2, P3, N1)</td><td class="name"><code>results_campaign_{cptac_gbm,bc_therapy,cervical_subtype}_*.json</code></td></tr>
+        <tr><td>Curva de tamaño de meta-train (P2)</td><td class="name"><code>results_train_size_curve_cptac_gbm_TP53_mutation.json</code></td></tr>
+        <tr><td>Diagnóstico de atención y entropía (§1.5)</td><td class="name"><code>results_attention_diagnostics_*.json</code></td></tr>
+        <tr><td>Atención compartida (P4, N15, N16)</td><td class="name"><code>results_shared_attention_*.json</code></td></tr>
+        <tr><td>Suite de metaclasificadores (N1, N2)</td><td class="name"><code>results_meta_suite_cptac_brca_TP53_mutation.json</code></td></tr>
+        <tr><td>Snapshots a nivel base (N17)</td><td class="name"><code>results_snapshot_base_cptac_brca_TP53_mutation.json</code></td></tr>
+        <tr><td>Escalera de características (N6)</td><td class="name"><code>results_ladder_cptac_brca_TP53_mutation.json</code></td></tr>
+        <tr><td>Nelder-Mead y fusión temprana (N3, N4, N5)</td><td class="name"><code>results_opcion_{a,c,d}_*.json</code></td></tr>
+        <tr><td>Augmentación de bolsa (N10)</td><td class="name"><code>results_bag_size_sweep_cptac_brca_TP53_mutation.json</code></td></tr>
+        <tr><td>Pooling duro top-K de atención (P7)</td><td class="name"><code>logs/topk10_mlp_snapshot_71206.out</code> (job 71206); métricas por fold en <code>{dataset}/TP53_mutation/abmil/ensemble4_topk10/</code> y <code>ensemble4_mlp_snapshot_topk10/</code> bajo <code>PARADIS/datos/patches</code> — sin <code>results_*.json</code> en el repo para este bloque</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Patho-Ensemble · Informe consolidado · cierre 1 de septiembre de 2026 ·
+    sustituye a todos los informes parciales previos</p>
+</footer>
+
+</div>
+</body>
+</html>

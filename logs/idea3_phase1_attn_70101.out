@@ -1,0 +1,1651 @@
+============================================================================
+IDEA 3 — FASE 1: EXTRACCIÓN DE ATENCIÓN STATISTICS
+============================================================================
+Fecha: Wed Aug 19 21:33:45 CEST 2026
+Dataset: cptac_brca, Task: TP53_mutation
+Modelos base: ctranspath uni_v2 virchow_v1
+Patching: 20x_224px_0px_overlap
+============================================================================
+
+📊 Paso 1: Extrayendo attn_stats de test splits (train_abmil.py)
+============================================================================
+
+Modelo: ctranspath
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 1, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 0: train=75, val=15, test=22
+Fold 0: ABMIL entrenado (val_auc=0.9259)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 1: train=76, val=13, test=23
+Fold 1: ABMIL entrenado (val_auc=0.9792)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 2: train=76, val=16, test=20
+Fold 2: ABMIL entrenado (val_auc=0.3929)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 3: train=76, val=16, test=20
+Fold 3: ABMIL entrenado (val_auc=0.7937)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 4: train=77, val=15, test=20
+Fold 4: ABMIL entrenado (val_auc=0.9365)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 5: train=76, val=15, test=21
+Fold 5: ABMIL entrenado (val_auc=0.6190)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 6: train=74, val=16, test=22
+Fold 6: ABMIL entrenado (val_auc=0.6000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 7: train=78, val=13, test=21
+Fold 7: ABMIL entrenado (val_auc=0.7656)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 8: train=77, val=14, test=21
+Fold 8: ABMIL entrenado (val_auc=0.5455)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 9: train=77, val=14, test=21
+Fold 9: ABMIL entrenado (val_auc=0.8095)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 10: train=75, val=16, test=21
+Fold 10: ABMIL entrenado (val_auc=0.7222)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 11: train=74, val=15, test=23
+Fold 11: ABMIL entrenado (val_auc=0.5278)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 12: train=76, val=16, test=20
+Fold 12: ABMIL entrenado (val_auc=0.6190)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 13: train=75, val=17, test=20
+Fold 13: ABMIL entrenado (val_auc=0.8750)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 14: train=77, val=14, test=21
+Fold 14: ABMIL entrenado (val_auc=0.4921)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 15: train=76, val=14, test=22
+Fold 15: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 16: train=77, val=13, test=22
+Fold 16: ABMIL entrenado (val_auc=0.8182)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 17: train=75, val=16, test=21
+Fold 17: ABMIL entrenado (val_auc=0.5200)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 18: train=75, val=16, test=21
+Fold 18: ABMIL entrenado (val_auc=0.7321)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 19: train=73, val=16, test=23
+Fold 19: ABMIL entrenado (val_auc=0.6296)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 20: train=76, val=15, test=21
+Fold 20: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 21: train=75, val=13, test=24
+Fold 21: ABMIL entrenado (val_auc=0.5556)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 22: train=74, val=15, test=23
+Fold 22: ABMIL entrenado (val_auc=0.8400)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 23: train=75, val=15, test=22
+Fold 23: ABMIL entrenado (val_auc=0.4600)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 24: train=76, val=14, test=22
+Fold 24: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 25: train=77, val=14, test=21
+Fold 25: ABMIL entrenado (val_auc=0.5273)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 26: train=77, val=13, test=22
+Fold 26: ABMIL entrenado (val_auc=0.7455)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 27: train=77, val=14, test=21
+Fold 27: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 28: train=79, val=13, test=20
+Fold 28: ABMIL entrenado (val_auc=0.8281)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 29: train=77, val=13, test=22
+Fold 29: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 30: train=75, val=16, test=21
+Fold 30: ABMIL entrenado (val_auc=0.7222)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 31: train=77, val=14, test=21
+Fold 31: ABMIL entrenado (val_auc=0.7091)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 32: train=77, val=14, test=21
+Fold 32: ABMIL entrenado (val_auc=0.8727)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 33: train=74, val=15, test=23
+Fold 33: ABMIL entrenado (val_auc=0.7037)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 34: train=75, val=14, test=23
+Fold 34: ABMIL entrenado (val_auc=0.8393)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 35: train=75, val=15, test=22
+Fold 35: ABMIL entrenado (val_auc=0.8889)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 36: train=78, val=14, test=20
+Fold 36: ABMIL entrenado (val_auc=0.6825)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 37: train=75, val=15, test=22
+Fold 37: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 38: train=76, val=14, test=22
+Fold 38: ABMIL entrenado (val_auc=0.8500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 39: train=75, val=15, test=22
+Fold 39: ABMIL entrenado (val_auc=0.7037)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 40: train=77, val=15, test=20
+Fold 40: ABMIL entrenado (val_auc=0.6875)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 41: train=74, val=16, test=22
+Fold 41: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 42: train=76, val=16, test=20
+Fold 42: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 43: train=77, val=14, test=21
+Fold 43: ABMIL entrenado (val_auc=0.5625)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 44: train=78, val=14, test=20
+Fold 44: ABMIL entrenado (val_auc=0.6042)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 45: train=75, val=15, test=22
+Fold 45: ABMIL entrenado (val_auc=0.7778)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 46: train=77, val=14, test=21
+Fold 46: ABMIL entrenado (val_auc=0.6410)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 47: train=75, val=13, test=24
+Fold 47: ABMIL entrenado (val_auc=0.9107)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 48: train=76, val=14, test=22
+Fold 48: ABMIL entrenado (val_auc=0.4364)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 49: train=77, val=13, test=22
+Fold 49: ABMIL entrenado (val_auc=0.8667)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+✓ ctranspath: test splits completados
+
+Modelo: uni_v2
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Training: uni_v2
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 1536, Num classes: 2
+  Epochs: 1, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 0: train=75, val=15, test=22
+Fold 0: ABMIL entrenado (val_auc=0.8519)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 1: train=76, val=13, test=23
+Fold 1: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 2: train=76, val=16, test=20
+Fold 2: ABMIL entrenado (val_auc=0.5714)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 3: train=76, val=16, test=20
+Fold 3: ABMIL entrenado (val_auc=0.8095)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 4: train=77, val=15, test=20
+Fold 4: ABMIL entrenado (val_auc=0.9365)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 5: train=76, val=15, test=21
+Fold 5: ABMIL entrenado (val_auc=0.5556)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 6: train=74, val=16, test=22
+Fold 6: ABMIL entrenado (val_auc=0.6000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 7: train=78, val=13, test=21
+Fold 7: ABMIL entrenado (val_auc=0.8906)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 8: train=77, val=14, test=21
+Fold 8: ABMIL entrenado (val_auc=0.5818)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 9: train=77, val=14, test=21
+Fold 9: ABMIL entrenado (val_auc=0.7778)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 10: train=75, val=16, test=21
+Fold 10: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 11: train=74, val=15, test=23
+Fold 11: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 12: train=76, val=16, test=20
+Fold 12: ABMIL entrenado (val_auc=0.6508)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 13: train=75, val=17, test=20
+Fold 13: ABMIL entrenado (val_auc=0.8750)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 14: train=77, val=14, test=21
+Fold 14: ABMIL entrenado (val_auc=0.5397)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 15: train=76, val=14, test=22
+Fold 15: ABMIL entrenado (val_auc=0.6429)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 16: train=77, val=13, test=22
+Fold 16: ABMIL entrenado (val_auc=0.8000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 17: train=75, val=16, test=21
+Fold 17: ABMIL entrenado (val_auc=0.7800)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 18: train=75, val=16, test=21
+Fold 18: ABMIL entrenado (val_auc=0.6964)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 19: train=73, val=16, test=23
+Fold 19: ABMIL entrenado (val_auc=0.7222)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 20: train=76, val=15, test=21
+Fold 20: ABMIL entrenado (val_auc=0.8281)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 21: train=75, val=13, test=24
+Fold 21: ABMIL entrenado (val_auc=0.3704)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 22: train=74, val=15, test=23
+Fold 22: ABMIL entrenado (val_auc=0.9200)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 23: train=75, val=15, test=22
+Fold 23: ABMIL entrenado (val_auc=0.5400)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 24: train=76, val=14, test=22
+Fold 24: ABMIL entrenado (val_auc=0.5667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 25: train=77, val=14, test=21
+Fold 25: ABMIL entrenado (val_auc=0.5455)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 26: train=77, val=13, test=22
+Fold 26: ABMIL entrenado (val_auc=0.7636)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 27: train=77, val=14, test=21
+Fold 27: ABMIL entrenado (val_auc=0.7708)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 28: train=79, val=13, test=20
+Fold 28: ABMIL entrenado (val_auc=0.8281)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 29: train=77, val=13, test=22
+Fold 29: ABMIL entrenado (val_auc=0.9667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 30: train=75, val=16, test=21
+Fold 30: ABMIL entrenado (val_auc=0.7593)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 31: train=77, val=14, test=21
+Fold 31: ABMIL entrenado (val_auc=0.5455)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 32: train=77, val=14, test=21
+Fold 32: ABMIL entrenado (val_auc=0.8545)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 33: train=74, val=15, test=23
+Fold 33: ABMIL entrenado (val_auc=0.8519)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 34: train=75, val=14, test=23
+Fold 34: ABMIL entrenado (val_auc=0.8750)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 35: train=75, val=15, test=22
+Fold 35: ABMIL entrenado (val_auc=0.9074)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 36: train=78, val=14, test=20
+Fold 36: ABMIL entrenado (val_auc=0.8571)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 37: train=75, val=15, test=22
+Fold 37: ABMIL entrenado (val_auc=0.9286)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 38: train=76, val=14, test=22
+Fold 38: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 39: train=75, val=15, test=22
+Fold 39: ABMIL entrenado (val_auc=0.7037)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 40: train=77, val=15, test=20
+Fold 40: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 41: train=74, val=16, test=22
+Fold 41: ABMIL entrenado (val_auc=0.9091)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 42: train=76, val=16, test=20
+Fold 42: ABMIL entrenado (val_auc=0.6042)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 43: train=77, val=14, test=21
+Fold 43: ABMIL entrenado (val_auc=0.7292)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 44: train=78, val=14, test=20
+Fold 44: ABMIL entrenado (val_auc=0.5208)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 45: train=75, val=15, test=22
+Fold 45: ABMIL entrenado (val_auc=0.7407)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 46: train=77, val=14, test=21
+Fold 46: ABMIL entrenado (val_auc=0.7949)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 47: train=75, val=13, test=24
+Fold 47: ABMIL entrenado (val_auc=0.8750)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 48: train=76, val=14, test=22
+Fold 48: ABMIL entrenado (val_auc=0.5455)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+Fold 49: train=77, val=13, test=22
+Fold 49: ABMIL entrenado (val_auc=0.7667)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+✓ uni_v2: test splits completados
+
+Modelo: virchow_v1
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+
+============================================================
+ABMIL Training: virchow_v1
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 2560, Num classes: 2
+  Epochs: 1, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 0: train=75, val=15, test=22
+Fold 0: ABMIL entrenado (val_auc=0.7407)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 1: train=76, val=13, test=23
+Fold 1: ABMIL entrenado (val_auc=0.8958)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 2: train=76, val=16, test=20
+Fold 2: ABMIL entrenado (val_auc=0.3214)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 3: train=76, val=16, test=20
+Fold 3: ABMIL entrenado (val_auc=0.6825)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 4: train=77, val=15, test=20
+Fold 4: ABMIL entrenado (val_auc=0.8254)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 5: train=76, val=15, test=21
+Fold 5: ABMIL entrenado (val_auc=0.6032)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 6: train=74, val=16, test=22
+Fold 6: ABMIL entrenado (val_auc=0.4600)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 7: train=78, val=13, test=21
+Fold 7: ABMIL entrenado (val_auc=0.5625)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 8: train=77, val=14, test=21
+Fold 8: ABMIL entrenado (val_auc=0.5818)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 9: train=77, val=14, test=21
+Fold 9: ABMIL entrenado (val_auc=0.7937)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 10: train=75, val=16, test=21
+Fold 10: ABMIL entrenado (val_auc=0.7963)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 11: train=74, val=15, test=23
+Fold 11: ABMIL entrenado (val_auc=0.3333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 12: train=76, val=16, test=20
+Fold 12: ABMIL entrenado (val_auc=0.6984)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 13: train=75, val=17, test=20
+Fold 13: ABMIL entrenado (val_auc=0.7857)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 14: train=77, val=14, test=21
+Fold 14: ABMIL entrenado (val_auc=0.5397)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 15: train=76, val=14, test=22
+Fold 15: ABMIL entrenado (val_auc=0.7857)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 16: train=77, val=13, test=22
+Fold 16: ABMIL entrenado (val_auc=0.7636)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 17: train=75, val=16, test=21
+Fold 17: ABMIL entrenado (val_auc=0.7000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 18: train=75, val=16, test=21
+Fold 18: ABMIL entrenado (val_auc=0.5893)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 19: train=73, val=16, test=23
+Fold 19: ABMIL entrenado (val_auc=0.6296)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 20: train=76, val=15, test=21
+Fold 20: ABMIL entrenado (val_auc=0.7031)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 21: train=75, val=13, test=24
+Fold 21: ABMIL entrenado (val_auc=0.3889)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 22: train=74, val=15, test=23
+Fold 22: ABMIL entrenado (val_auc=0.5600)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 23: train=75, val=15, test=22
+Fold 23: ABMIL entrenado (val_auc=0.3800)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 24: train=76, val=14, test=22
+Fold 24: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 25: train=77, val=14, test=21
+Fold 25: ABMIL entrenado (val_auc=0.5091)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 26: train=77, val=13, test=22
+Fold 26: ABMIL entrenado (val_auc=0.5818)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 27: train=77, val=14, test=21
+Fold 27: ABMIL entrenado (val_auc=0.6042)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 28: train=79, val=13, test=20
+Fold 28: ABMIL entrenado (val_auc=0.7656)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 29: train=77, val=13, test=22
+Fold 29: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 30: train=75, val=16, test=21
+Fold 30: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 31: train=77, val=14, test=21
+Fold 31: ABMIL entrenado (val_auc=0.3455)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 32: train=77, val=14, test=21
+Fold 32: ABMIL entrenado (val_auc=0.9091)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 33: train=74, val=15, test=23
+Fold 33: ABMIL entrenado (val_auc=0.5741)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 34: train=75, val=14, test=23
+Fold 34: ABMIL entrenado (val_auc=0.8750)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 35: train=75, val=15, test=22
+Fold 35: ABMIL entrenado (val_auc=0.7963)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 36: train=78, val=14, test=20
+Fold 36: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 37: train=75, val=15, test=22
+Fold 37: ABMIL entrenado (val_auc=0.7321)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 38: train=76, val=14, test=22
+Fold 38: ABMIL entrenado (val_auc=0.7000)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 39: train=75, val=15, test=22
+Fold 39: ABMIL entrenado (val_auc=0.6481)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 40: train=77, val=15, test=20
+Fold 40: ABMIL entrenado (val_auc=0.5625)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 41: train=74, val=16, test=22
+Fold 41: ABMIL entrenado (val_auc=0.9318)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 42: train=76, val=16, test=20
+Fold 42: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 43: train=77, val=14, test=21
+Fold 43: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 44: train=78, val=14, test=20
+Fold 44: ABMIL entrenado (val_auc=0.5208)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 45: train=75, val=15, test=22
+Fold 45: ABMIL entrenado (val_auc=0.7593)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 46: train=77, val=14, test=21
+Fold 46: ABMIL entrenado (val_auc=0.6154)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 47: train=75, val=13, test=24
+Fold 47: ABMIL entrenado (val_auc=0.7857)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 48: train=76, val=14, test=22
+Fold 48: ABMIL entrenado (val_auc=0.3818)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 49: train=77, val=13, test=22
+Fold 49: ABMIL entrenado (val_auc=0.7500)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+✓ virchow_v1: test splits completados
+
+📊 Paso 2: Extrayendo attn_stats de meta-train splits (test_abmil.py)
+============================================================================
+
+Modelo: ctranspath
+❌ ctranspath: meta-train splits fallaron
+
+Modelo: uni_v2
+❌ uni_v2: meta-train splits fallaron
+
+Modelo: virchow_v1
+❌ virchow_v1: meta-train splits fallaron
+
+📊 Paso 3: Extrayendo attn_stats de OOF splits (build_oof_features.py)
+============================================================================
+
+Modelo: ctranspath
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+Meta-features out-of-fold (predicciones): ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, clases: 2
+  Folds externos: 50/50, folds internos: 5
+  Salida: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap_train_eval_oof/val_outputs_oof/
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+  Fold 0: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9667)
+    interno 2/5: train=61 retenido=14 (val_auc=0.7857)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8929)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7000)
+  Fold 1: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.8571)
+    interno 2/5: train=61 retenido=15 (val_auc=0.7000)
+    interno 3/5: train=62 retenido=14 (val_auc=0.5238)
+    interno 4/5: train=59 retenido=17 (val_auc=1.0000)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7714)
+  Fold 2: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=1.0000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.9630)
+    interno 3/5: train=59 retenido=17 (val_auc=0.6389)
+    interno 4/5: train=60 retenido=16 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8889)
+  Fold 3: train=76
+    interno 1/5: train=58 retenido=18 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=13 (val_auc=0.9762)
+    interno 3/5: train=60 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=15 (val_auc=0.9667)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9375)
+  Fold 4: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8750)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=15 (val_auc=0.9062)
+    interno 4/5: train=62 retenido=15 (val_auc=0.9524)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8125)
+  Fold 5: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9250)
+    interno 2/5: train=61 retenido=15 (val_auc=0.7037)
+    interno 3/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9500)
+  Fold 6: train=74
+    interno 1/5: train=60 retenido=14 (val_auc=0.8286)
+    interno 2/5: train=59 retenido=15 (val_auc=0.8438)
+    interno 3/5: train=60 retenido=14 (val_auc=0.9688)
+    interno 4/5: train=58 retenido=16 (val_auc=0.9667)
+    interno 5/5: train=59 retenido=15 (val_auc=0.8810)
+  Fold 7: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.7959)
+    interno 2/5: train=63 retenido=15 (val_auc=0.9143)
+    interno 3/5: train=62 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=62 retenido=16 (val_auc=0.9500)
+    interno 5/5: train=63 retenido=15 (val_auc=0.6667)
+  Fold 8: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.8750)
+    interno 2/5: train=60 retenido=17 (val_auc=0.6250)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6389)
+    interno 4/5: train=61 retenido=16 (val_auc=0.5000)
+    interno 5/5: train=63 retenido=14 (val_auc=0.8788)
+  Fold 9: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8704)
+    interno 2/5: train=64 retenido=13 (val_auc=0.9722)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8333)
+    interno 4/5: train=62 retenido=15 (val_auc=0.8750)
+    interno 5/5: train=60 retenido=17 (val_auc=0.8095)
+  Fold 10: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.7500)
+    interno 2/5: train=59 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.6000)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9259)
+    interno 5/5: train=60 retenido=15 (val_auc=0.9000)
+  Fold 11: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.7500)
+    interno 2/5: train=60 retenido=14 (val_auc=0.9500)
+    interno 3/5: train=60 retenido=14 (val_auc=0.9000)
+    interno 4/5: train=60 retenido=14 (val_auc=0.8889)
+    interno 5/5: train=57 retenido=17 (val_auc=1.0000)
+  Fold 12: train=76
+    interno 1/5: train=60 retenido=16 (val_auc=0.7812)
+    interno 2/5: train=62 retenido=14 (val_auc=0.8889)
+    interno 3/5: train=62 retenido=14 (val_auc=0.3611)
+    interno 4/5: train=59 retenido=17 (val_auc=0.6875)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9667)
+  Fold 13: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.9000)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7000)
+  Fold 14: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.6429)
+    interno 2/5: train=63 retenido=14 (val_auc=0.8056)
+    interno 3/5: train=62 retenido=15 (val_auc=0.6818)
+    interno 4/5: train=59 retenido=18 (val_auc=0.8611)
+    interno 5/5: train=62 retenido=15 (val_auc=0.7778)
+  Fold 15: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 3/5: train=61 retenido=15 (val_auc=0.6250)
+    interno 4/5: train=59 retenido=17 (val_auc=0.9688)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9000)
+  Fold 16: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9167)
+    interno 2/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7812)
+    interno 4/5: train=64 retenido=13 (val_auc=0.9167)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9524)
+  Fold 17: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.6000)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9500)
+    interno 3/5: train=60 retenido=15 (val_auc=0.6667)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9722)
+    interno 5/5: train=61 retenido=14 (val_auc=0.6607)
+  Fold 18: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 3/5: train=59 retenido=16 (val_auc=0.9375)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9714)
+    interno 5/5: train=61 retenido=14 (val_auc=0.2727)
+  Fold 19: train=73
+    interno 1/5: train=59 retenido=14 (val_auc=0.6875)
+    interno 2/5: train=59 retenido=14 (val_auc=0.8857)
+    interno 3/5: train=58 retenido=15 (val_auc=0.7500)
+    interno 4/5: train=59 retenido=14 (val_auc=0.8519)
+    interno 5/5: train=57 retenido=16 (val_auc=0.9048)
+  Fold 20: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=0.7619)
+    interno 2/5: train=60 retenido=16 (val_auc=0.5000)
+    interno 3/5: train=61 retenido=15 (val_auc=0.9048)
+    interno 4/5: train=60 retenido=16 (val_auc=0.5143)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7500)
+  Fold 21: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9111)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9714)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8929)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8810)
+    interno 5/5: train=59 retenido=16 (val_auc=0.9000)
+  Fold 22: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.9250)
+    interno 2/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.7333)
+    interno 4/5: train=60 retenido=14 (val_auc=0.8333)
+    interno 5/5: train=58 retenido=16 (val_auc=1.0000)
+  Fold 23: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9583)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8222)
+    interno 4/5: train=59 retenido=16 (val_auc=0.9375)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8611)
+  Fold 24: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.8000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.9500)
+    interno 3/5: train=62 retenido=14 (val_auc=0.7500)
+    interno 4/5: train=61 retenido=15 (val_auc=0.8571)
+    interno 5/5: train=60 retenido=16 (val_auc=0.6750)
+  Fold 25: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=14 (val_auc=0.6905)
+    interno 3/5: train=64 retenido=13 (val_auc=0.8095)
+    interno 4/5: train=59 retenido=18 (val_auc=0.9167)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8958)
+  Fold 26: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7000)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7917)
+    interno 4/5: train=63 retenido=14 (val_auc=0.8750)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8611)
+  Fold 27: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8500)
+    interno 2/5: train=62 retenido=15 (val_auc=0.9259)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6389)
+    interno 4/5: train=60 retenido=17 (val_auc=0.5278)
+    interno 5/5: train=64 retenido=13 (val_auc=1.0000)
+  Fold 28: train=79
+    interno 1/5: train=62 retenido=17 (val_auc=1.0000)
+    interno 2/5: train=62 retenido=17 (val_auc=0.8056)
+    interno 3/5: train=63 retenido=16 (val_auc=0.8500)
+    interno 4/5: train=65 retenido=14 (val_auc=0.7000)
+    interno 5/5: train=64 retenido=15 (val_auc=0.6333)
+  Fold 29: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.8148)
+    interno 2/5: train=60 retenido=17 (val_auc=0.5833)
+    interno 3/5: train=63 retenido=14 (val_auc=0.8286)
+    interno 4/5: train=61 retenido=16 (val_auc=0.6857)
+    interno 5/5: train=62 retenido=15 (val_auc=0.8929)
+  Fold 30: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.9643)
+    interno 4/5: train=61 retenido=14 (val_auc=0.9333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8500)
+  Fold 31: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.8750)
+    interno 2/5: train=60 retenido=17 (val_auc=0.9375)
+    interno 3/5: train=63 retenido=14 (val_auc=0.9333)
+    interno 4/5: train=61 retenido=16 (val_auc=0.8125)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9000)
+  Fold 32: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.8889)
+    interno 2/5: train=61 retenido=16 (val_auc=0.9111)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7333)
+    interno 4/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9048)
+  Fold 33: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.6429)
+    interno 2/5: train=59 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.9000)
+    interno 4/5: train=59 retenido=15 (val_auc=0.6750)
+    interno 5/5: train=60 retenido=14 (val_auc=0.8250)
+  Fold 34: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.7143)
+    interno 2/5: train=59 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7750)
+    interno 4/5: train=61 retenido=14 (val_auc=0.7381)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8750)
+  Fold 35: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.6000)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 3/5: train=58 retenido=17 (val_auc=0.7333)
+    interno 4/5: train=60 retenido=15 (val_auc=0.6071)
+    interno 5/5: train=61 retenido=14 (val_auc=0.9000)
+  Fold 36: train=78
+    interno 1/5: train=63 retenido=15 (val_auc=0.8125)
+    interno 2/5: train=63 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=17 (val_auc=0.8125)
+    interno 5/5: train=63 retenido=15 (val_auc=0.8056)
+  Fold 37: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 3/5: train=60 retenido=15 (val_auc=0.9286)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7037)
+  Fold 38: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.7812)
+    interno 2/5: train=61 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=59 retenido=17 (val_auc=0.8571)
+    interno 4/5: train=61 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9000)
+  Fold 39: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.7429)
+    interno 2/5: train=61 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=58 retenido=17 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8571)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8000)
+  Fold 40: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9630)
+    interno 2/5: train=64 retenido=13 (val_auc=0.8889)
+    interno 3/5: train=59 retenido=18 (val_auc=0.9722)
+    interno 4/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 5/5: train=60 retenido=17 (val_auc=0.9643)
+  Fold 41: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.9444)
+    interno 2/5: train=60 retenido=14 (val_auc=0.8571)
+    interno 3/5: train=59 retenido=15 (val_auc=0.7619)
+    interno 4/5: train=60 retenido=14 (val_auc=0.9429)
+    interno 5/5: train=58 retenido=16 (val_auc=0.8667)
+  Fold 42: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9643)
+    interno 2/5: train=62 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=15 (val_auc=0.9167)
+    interno 4/5: train=60 retenido=16 (val_auc=0.7037)
+    interno 5/5: train=59 retenido=17 (val_auc=0.8286)
+  Fold 43: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.9722)
+    interno 2/5: train=61 retenido=16 (val_auc=0.7222)
+    interno 3/5: train=63 retenido=14 (val_auc=0.6750)
+    interno 4/5: train=59 retenido=18 (val_auc=0.6667)
+    interno 5/5: train=63 retenido=14 (val_auc=0.9375)
+  Fold 44: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.7222)
+    interno 2/5: train=62 retenido=16 (val_auc=0.7250)
+    interno 3/5: train=62 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=62 retenido=16 (val_auc=0.8250)
+    interno 5/5: train=64 retenido=14 (val_auc=0.6571)
+  Fold 45: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8611)
+    interno 3/5: train=60 retenido=15 (val_auc=0.6857)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 5/5: train=60 retenido=15 (val_auc=1.0000)
+  Fold 46: train=77
+    interno 1/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 2/5: train=60 retenido=17 (val_auc=0.5667)
+    interno 3/5: train=64 retenido=13 (val_auc=0.7500)
+    interno 4/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8889)
+  Fold 47: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.9333)
+    interno 2/5: train=58 retenido=17 (val_auc=0.8000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7407)
+    interno 4/5: train=60 retenido=15 (val_auc=0.5714)
+    interno 5/5: train=61 retenido=14 (val_auc=1.0000)
+  Fold 48: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.7917)
+    interno 2/5: train=59 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=16 (val_auc=0.8667)
+    interno 4/5: train=62 retenido=14 (val_auc=0.8222)
+    interno 5/5: train=61 retenido=15 (val_auc=0.8000)
+  Fold 49: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.9722)
+    interno 2/5: train=64 retenido=13 (val_auc=0.8857)
+    interno 3/5: train=60 retenido=17 (val_auc=0.8000)
+    interno 4/5: train=62 retenido=15 (val_auc=0.7667)
+    interno 5/5: train=59 retenido=18 (val_auc=0.8571)
+
+✅ Features out-of-fold (predicciones) generadas para 50/50 folds (0 omitidos).
+✓ ctranspath: OOF splits completados
+
+Modelo: uni_v2
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+Meta-features out-of-fold (predicciones): uni_v2
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 1536, clases: 2
+  Folds externos: 50/50, folds internos: 5
+  Salida: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/uni_v2_20x_224px_0px_overlap_train_eval_oof/val_outputs_oof/
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+  Fold 0: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9333)
+    interno 2/5: train=61 retenido=14 (val_auc=0.6667)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8571)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7000)
+  Fold 1: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.7857)
+    interno 2/5: train=61 retenido=15 (val_auc=0.8000)
+    interno 3/5: train=62 retenido=14 (val_auc=0.5238)
+    interno 4/5: train=59 retenido=17 (val_auc=0.9714)
+    interno 5/5: train=60 retenido=16 (val_auc=0.6857)
+  Fold 2: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=0.9375)
+    interno 2/5: train=60 retenido=16 (val_auc=0.9630)
+    interno 3/5: train=59 retenido=17 (val_auc=0.6667)
+    interno 4/5: train=60 retenido=16 (val_auc=0.9000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8222)
+  Fold 3: train=76
+    interno 1/5: train=58 retenido=18 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=13 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=16 (val_auc=0.9667)
+    interno 4/5: train=61 retenido=15 (val_auc=0.9333)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9167)
+  Fold 4: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9062)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=15 (val_auc=0.9375)
+    interno 4/5: train=62 retenido=15 (val_auc=0.8810)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8750)
+  Fold 5: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9750)
+    interno 2/5: train=61 retenido=15 (val_auc=0.6667)
+    interno 3/5: train=60 retenido=16 (val_auc=0.5278)
+    interno 4/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8000)
+  Fold 6: train=74
+    interno 1/5: train=60 retenido=14 (val_auc=0.8286)
+    interno 2/5: train=59 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=60 retenido=14 (val_auc=0.8750)
+    interno 4/5: train=58 retenido=16 (val_auc=0.9667)
+    interno 5/5: train=59 retenido=15 (val_auc=0.7857)
+  Fold 7: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.8980)
+    interno 2/5: train=63 retenido=15 (val_auc=0.8000)
+    interno 3/5: train=62 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=62 retenido=16 (val_auc=0.9500)
+    interno 5/5: train=63 retenido=15 (val_auc=0.5556)
+  Fold 8: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.7812)
+    interno 2/5: train=60 retenido=17 (val_auc=0.5000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=61 retenido=16 (val_auc=0.4762)
+    interno 5/5: train=63 retenido=14 (val_auc=0.8788)
+  Fold 9: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9444)
+    interno 2/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8889)
+    interno 4/5: train=62 retenido=15 (val_auc=0.7917)
+    interno 5/5: train=60 retenido=17 (val_auc=0.8333)
+  Fold 10: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.6389)
+    interno 2/5: train=59 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.5429)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8148)
+    interno 5/5: train=60 retenido=15 (val_auc=0.9333)
+  Fold 11: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8611)
+    interno 2/5: train=60 retenido=14 (val_auc=0.9500)
+    interno 3/5: train=60 retenido=14 (val_auc=0.9333)
+    interno 4/5: train=60 retenido=14 (val_auc=0.8148)
+    interno 5/5: train=57 retenido=17 (val_auc=1.0000)
+  Fold 12: train=76
+    interno 1/5: train=60 retenido=16 (val_auc=0.9375)
+    interno 2/5: train=62 retenido=14 (val_auc=0.6296)
+    interno 3/5: train=62 retenido=14 (val_auc=0.5556)
+    interno 4/5: train=59 retenido=17 (val_auc=0.7500)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9333)
+  Fold 13: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9143)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.9667)
+    interno 5/5: train=59 retenido=16 (val_auc=0.6333)
+  Fold 14: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.6905)
+    interno 2/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=15 (val_auc=0.7955)
+    interno 4/5: train=59 retenido=18 (val_auc=0.8333)
+    interno 5/5: train=62 retenido=15 (val_auc=0.7778)
+  Fold 15: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.6667)
+    interno 3/5: train=61 retenido=15 (val_auc=0.8333)
+    interno 4/5: train=59 retenido=17 (val_auc=0.8438)
+    interno 5/5: train=62 retenido=14 (val_auc=1.0000)
+  Fold 16: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8333)
+    interno 2/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8125)
+    interno 4/5: train=64 retenido=13 (val_auc=0.9722)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9524)
+  Fold 17: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.5667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.7750)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 5/5: train=61 retenido=14 (val_auc=0.5536)
+  Fold 18: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.6667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 3/5: train=59 retenido=16 (val_auc=0.7812)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8286)
+    interno 5/5: train=61 retenido=14 (val_auc=0.1818)
+  Fold 19: train=73
+    interno 1/5: train=59 retenido=14 (val_auc=0.7500)
+    interno 2/5: train=59 retenido=14 (val_auc=0.8000)
+    interno 3/5: train=58 retenido=15 (val_auc=0.7857)
+    interno 4/5: train=59 retenido=14 (val_auc=0.7778)
+    interno 5/5: train=57 retenido=16 (val_auc=0.8571)
+  Fold 20: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=0.7857)
+    interno 2/5: train=60 retenido=16 (val_auc=0.6500)
+    interno 3/5: train=61 retenido=15 (val_auc=0.7619)
+    interno 4/5: train=60 retenido=16 (val_auc=0.4286)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7857)
+  Fold 21: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.7333)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9714)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8571)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8810)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8667)
+  Fold 22: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8250)
+    interno 2/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.8000)
+    interno 4/5: train=60 retenido=14 (val_auc=0.9444)
+    interno 5/5: train=58 retenido=16 (val_auc=1.0000)
+  Fold 23: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.9333)
+    interno 2/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7111)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8125)
+    interno 5/5: train=60 retenido=15 (val_auc=0.5833)
+  Fold 24: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.8000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.8250)
+    interno 3/5: train=62 retenido=14 (val_auc=0.8500)
+    interno 4/5: train=61 retenido=15 (val_auc=0.7143)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7500)
+  Fold 25: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=14 (val_auc=0.7619)
+    interno 3/5: train=64 retenido=13 (val_auc=0.8571)
+    interno 4/5: train=59 retenido=18 (val_auc=0.9722)
+    interno 5/5: train=61 retenido=16 (val_auc=0.9375)
+  Fold 26: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 4/5: train=63 retenido=14 (val_auc=0.7812)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8611)
+  Fold 27: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.6500)
+    interno 2/5: train=62 retenido=15 (val_auc=0.8148)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6389)
+    interno 4/5: train=60 retenido=17 (val_auc=0.4722)
+    interno 5/5: train=64 retenido=13 (val_auc=1.0000)
+  Fold 28: train=79
+    interno 1/5: train=62 retenido=17 (val_auc=0.9333)
+    interno 2/5: train=62 retenido=17 (val_auc=0.6944)
+    interno 3/5: train=63 retenido=16 (val_auc=0.7500)
+    interno 4/5: train=65 retenido=14 (val_auc=0.7333)
+    interno 5/5: train=64 retenido=15 (val_auc=0.6667)
+  Fold 29: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.6296)
+    interno 2/5: train=60 retenido=17 (val_auc=0.7500)
+    interno 3/5: train=63 retenido=14 (val_auc=0.8857)
+    interno 4/5: train=61 retenido=16 (val_auc=0.7714)
+    interno 5/5: train=62 retenido=15 (val_auc=1.0000)
+  Fold 30: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.8667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7500)
+    interno 4/5: train=61 retenido=14 (val_auc=0.9333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8000)
+  Fold 31: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.7750)
+    interno 2/5: train=60 retenido=17 (val_auc=0.7500)
+    interno 3/5: train=63 retenido=14 (val_auc=0.8667)
+    interno 4/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 5/5: train=62 retenido=15 (val_auc=0.7333)
+  Fold 32: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.8148)
+    interno 2/5: train=61 retenido=16 (val_auc=0.9111)
+    interno 3/5: train=61 retenido=16 (val_auc=0.9000)
+    interno 4/5: train=62 retenido=15 (val_auc=0.9500)
+    interno 5/5: train=62 retenido=15 (val_auc=0.8810)
+  Fold 33: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8214)
+    interno 2/5: train=59 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.8500)
+    interno 4/5: train=59 retenido=15 (val_auc=0.5000)
+    interno 5/5: train=60 retenido=14 (val_auc=0.8750)
+  Fold 34: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.7143)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9688)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7750)
+    interno 4/5: train=61 retenido=14 (val_auc=0.7381)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8500)
+  Fold 35: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.5333)
+    interno 2/5: train=61 retenido=14 (val_auc=0.9500)
+    interno 3/5: train=58 retenido=17 (val_auc=0.7333)
+    interno 4/5: train=60 retenido=15 (val_auc=0.5714)
+    interno 5/5: train=61 retenido=14 (val_auc=0.9250)
+  Fold 36: train=78
+    interno 1/5: train=63 retenido=15 (val_auc=0.7812)
+    interno 2/5: train=63 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.9333)
+    interno 4/5: train=61 retenido=17 (val_auc=0.7812)
+    interno 5/5: train=63 retenido=15 (val_auc=0.8611)
+  Fold 37: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8571)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8958)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8929)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9167)
+    interno 5/5: train=59 retenido=16 (val_auc=0.6296)
+  Fold 38: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9062)
+    interno 2/5: train=61 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=59 retenido=17 (val_auc=0.8214)
+    interno 4/5: train=61 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8000)
+  Fold 39: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.5714)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8000)
+    interno 3/5: train=58 retenido=17 (val_auc=0.7812)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7667)
+  Fold 40: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=1.0000)
+    interno 2/5: train=64 retenido=13 (val_auc=0.9444)
+    interno 3/5: train=59 retenido=18 (val_auc=0.9167)
+    interno 4/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 5/5: train=60 retenido=17 (val_auc=1.0000)
+  Fold 41: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.7778)
+    interno 2/5: train=60 retenido=14 (val_auc=0.8286)
+    interno 3/5: train=59 retenido=15 (val_auc=0.7619)
+    interno 4/5: train=60 retenido=14 (val_auc=0.9714)
+    interno 5/5: train=58 retenido=16 (val_auc=0.8667)
+  Fold 42: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.8571)
+    interno 2/5: train=62 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=15 (val_auc=0.9167)
+    interno 4/5: train=60 retenido=16 (val_auc=0.8519)
+    interno 5/5: train=59 retenido=17 (val_auc=0.7429)
+  Fold 43: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 2/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 3/5: train=63 retenido=14 (val_auc=0.7000)
+    interno 4/5: train=59 retenido=18 (val_auc=0.5556)
+    interno 5/5: train=63 retenido=14 (val_auc=0.7812)
+  Fold 44: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.8889)
+    interno 2/5: train=62 retenido=16 (val_auc=0.7000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=62 retenido=16 (val_auc=0.8500)
+    interno 5/5: train=64 retenido=14 (val_auc=0.5143)
+  Fold 45: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 3/5: train=60 retenido=15 (val_auc=0.6286)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9333)
+    interno 5/5: train=60 retenido=15 (val_auc=1.0000)
+  Fold 46: train=77
+    interno 1/5: train=60 retenido=17 (val_auc=0.9643)
+    interno 2/5: train=60 retenido=17 (val_auc=0.6667)
+    interno 3/5: train=64 retenido=13 (val_auc=0.8214)
+    interno 4/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8889)
+  Fold 47: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 2/5: train=58 retenido=17 (val_auc=0.9667)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8148)
+    interno 4/5: train=60 retenido=15 (val_auc=0.7857)
+    interno 5/5: train=61 retenido=14 (val_auc=0.8750)
+  Fold 48: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.8333)
+    interno 2/5: train=59 retenido=17 (val_auc=0.8889)
+    interno 3/5: train=60 retenido=16 (val_auc=0.8000)
+    interno 4/5: train=62 retenido=14 (val_auc=0.8000)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9000)
+  Fold 49: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.9722)
+    interno 2/5: train=64 retenido=13 (val_auc=0.9429)
+    interno 3/5: train=60 retenido=17 (val_auc=0.9333)
+    interno 4/5: train=62 retenido=15 (val_auc=0.9000)
+    interno 5/5: train=59 retenido=18 (val_auc=1.0000)
+
+✅ Features out-of-fold (predicciones) generadas para 50/50 folds (0 omitidos).
+✓ uni_v2: OOF splits completados
+
+Modelo: virchow_v1
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+
+============================================================
+Meta-features out-of-fold (predicciones): virchow_v1
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 2560, clases: 2
+  Folds externos: 50/50, folds internos: 5
+  Salida: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/virchow_v1_20x_224px_0px_overlap_train_eval_oof/val_outputs_oof/
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+  Fold 0: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.9000)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8333)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8750)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8214)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7667)
+  Fold 1: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9524)
+    interno 2/5: train=61 retenido=15 (val_auc=0.7500)
+    interno 3/5: train=62 retenido=14 (val_auc=0.6905)
+    interno 4/5: train=59 retenido=17 (val_auc=0.9143)
+    interno 5/5: train=60 retenido=16 (val_auc=0.6286)
+  Fold 2: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=1.0000)
+    interno 2/5: train=60 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=17 (val_auc=0.7778)
+    interno 4/5: train=60 retenido=16 (val_auc=0.9333)
+    interno 5/5: train=62 retenido=14 (val_auc=0.8667)
+  Fold 3: train=76
+    interno 1/5: train=58 retenido=18 (val_auc=1.0000)
+    interno 2/5: train=63 retenido=13 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=16 (val_auc=0.9000)
+    interno 4/5: train=61 retenido=15 (val_auc=0.9667)
+    interno 5/5: train=62 retenido=14 (val_auc=1.0000)
+  Fold 4: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7812)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=15 (val_auc=0.8750)
+    interno 4/5: train=62 retenido=15 (val_auc=0.8571)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8750)
+  Fold 5: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9750)
+    interno 2/5: train=61 retenido=15 (val_auc=0.7037)
+    interno 3/5: train=60 retenido=16 (val_auc=0.4722)
+    interno 4/5: train=60 retenido=16 (val_auc=0.4762)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9000)
+  Fold 6: train=74
+    interno 1/5: train=60 retenido=14 (val_auc=0.8286)
+    interno 2/5: train=59 retenido=15 (val_auc=0.7812)
+    interno 3/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 4/5: train=58 retenido=16 (val_auc=1.0000)
+    interno 5/5: train=59 retenido=15 (val_auc=0.8810)
+  Fold 7: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.8571)
+    interno 2/5: train=63 retenido=15 (val_auc=0.8000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.9583)
+    interno 4/5: train=62 retenido=16 (val_auc=0.7750)
+    interno 5/5: train=63 retenido=15 (val_auc=0.6296)
+  Fold 8: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.7500)
+    interno 2/5: train=60 retenido=17 (val_auc=0.9167)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8056)
+    interno 4/5: train=61 retenido=16 (val_auc=0.4762)
+    interno 5/5: train=63 retenido=14 (val_auc=0.7273)
+  Fold 9: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7222)
+    interno 2/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.6389)
+    interno 4/5: train=62 retenido=15 (val_auc=0.8542)
+    interno 5/5: train=60 retenido=17 (val_auc=0.8095)
+  Fold 10: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8889)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9500)
+    interno 3/5: train=61 retenido=14 (val_auc=0.6286)
+    interno 4/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8667)
+  Fold 11: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8889)
+    interno 2/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=14 (val_auc=0.8667)
+    interno 4/5: train=60 retenido=14 (val_auc=0.9259)
+    interno 5/5: train=57 retenido=17 (val_auc=0.8889)
+  Fold 12: train=76
+    interno 1/5: train=60 retenido=16 (val_auc=0.9688)
+    interno 2/5: train=62 retenido=14 (val_auc=0.6667)
+    interno 3/5: train=62 retenido=14 (val_auc=0.5000)
+    interno 4/5: train=59 retenido=17 (val_auc=0.6875)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9667)
+  Fold 13: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.8333)
+    interno 2/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.9250)
+    interno 4/5: train=59 retenido=16 (val_auc=0.9000)
+    interno 5/5: train=59 retenido=16 (val_auc=0.6667)
+  Fold 14: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.6667)
+    interno 2/5: train=63 retenido=14 (val_auc=0.8889)
+    interno 3/5: train=62 retenido=15 (val_auc=0.7273)
+    interno 4/5: train=59 retenido=18 (val_auc=0.8333)
+    interno 5/5: train=62 retenido=15 (val_auc=0.6111)
+  Fold 15: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.8000)
+    interno 2/5: train=60 retenido=16 (val_auc=0.5556)
+    interno 3/5: train=61 retenido=15 (val_auc=0.7917)
+    interno 4/5: train=59 retenido=17 (val_auc=0.9688)
+    interno 5/5: train=62 retenido=14 (val_auc=1.0000)
+  Fold 16: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9167)
+    interno 2/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.9375)
+    interno 4/5: train=64 retenido=13 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9762)
+  Fold 17: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.6667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8333)
+    interno 4/5: train=60 retenido=15 (val_auc=0.9722)
+    interno 5/5: train=61 retenido=14 (val_auc=0.7143)
+  Fold 18: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.7667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 3/5: train=59 retenido=16 (val_auc=0.8750)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8286)
+    interno 5/5: train=61 retenido=14 (val_auc=0.4545)
+  Fold 19: train=73
+    interno 1/5: train=59 retenido=14 (val_auc=0.6875)
+    interno 2/5: train=59 retenido=14 (val_auc=0.7714)
+    interno 3/5: train=58 retenido=15 (val_auc=0.9286)
+    interno 4/5: train=59 retenido=14 (val_auc=0.8889)
+    interno 5/5: train=57 retenido=16 (val_auc=0.9524)
+  Fold 20: train=76
+    interno 1/5: train=63 retenido=13 (val_auc=0.8095)
+    interno 2/5: train=60 retenido=16 (val_auc=0.7000)
+    interno 3/5: train=61 retenido=15 (val_auc=0.7381)
+    interno 4/5: train=60 retenido=16 (val_auc=0.6000)
+    interno 5/5: train=60 retenido=16 (val_auc=0.7143)
+  Fold 21: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.8889)
+    interno 2/5: train=59 retenido=16 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=15 (val_auc=0.9286)
+    interno 4/5: train=61 retenido=14 (val_auc=0.9048)
+    interno 5/5: train=59 retenido=16 (val_auc=0.7000)
+  Fold 22: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8500)
+    interno 2/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.8000)
+    interno 4/5: train=60 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=58 retenido=16 (val_auc=1.0000)
+  Fold 23: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.9667)
+    interno 2/5: train=60 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7111)
+    interno 4/5: train=59 retenido=16 (val_auc=0.8750)
+    interno 5/5: train=60 retenido=15 (val_auc=0.7778)
+  Fold 24: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.9250)
+    interno 2/5: train=60 retenido=16 (val_auc=0.7500)
+    interno 3/5: train=62 retenido=14 (val_auc=0.9250)
+    interno 4/5: train=61 retenido=15 (val_auc=0.7619)
+    interno 5/5: train=60 retenido=16 (val_auc=0.6000)
+  Fold 25: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8636)
+    interno 2/5: train=63 retenido=14 (val_auc=0.7619)
+    interno 3/5: train=64 retenido=13 (val_auc=0.8810)
+    interno 4/5: train=59 retenido=18 (val_auc=0.6944)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8333)
+  Fold 26: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 2/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=61 retenido=16 (val_auc=0.8333)
+    interno 4/5: train=63 retenido=14 (val_auc=0.7812)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8056)
+  Fold 27: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.8750)
+    interno 2/5: train=62 retenido=15 (val_auc=0.8519)
+    interno 3/5: train=61 retenido=16 (val_auc=0.7222)
+    interno 4/5: train=60 retenido=17 (val_auc=0.4722)
+    interno 5/5: train=64 retenido=13 (val_auc=0.8333)
+  Fold 28: train=79
+    interno 1/5: train=62 retenido=17 (val_auc=0.9333)
+    interno 2/5: train=62 retenido=17 (val_auc=0.7778)
+    interno 3/5: train=63 retenido=16 (val_auc=0.8000)
+    interno 4/5: train=65 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=64 retenido=15 (val_auc=0.6667)
+  Fold 29: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.7037)
+    interno 2/5: train=60 retenido=17 (val_auc=0.7083)
+    interno 3/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=16 (val_auc=0.8571)
+    interno 5/5: train=62 retenido=15 (val_auc=1.0000)
+  Fold 30: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.8667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9000)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8929)
+    interno 4/5: train=61 retenido=14 (val_auc=0.9667)
+    interno 5/5: train=59 retenido=16 (val_auc=1.0000)
+  Fold 31: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.9000)
+    interno 2/5: train=60 retenido=17 (val_auc=0.8125)
+    interno 3/5: train=63 retenido=14 (val_auc=0.9667)
+    interno 4/5: train=61 retenido=16 (val_auc=0.9062)
+    interno 5/5: train=62 retenido=15 (val_auc=0.9000)
+  Fold 32: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=0.7037)
+    interno 2/5: train=61 retenido=16 (val_auc=0.9556)
+    interno 3/5: train=61 retenido=16 (val_auc=1.0000)
+    interno 4/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=15 (val_auc=0.8571)
+  Fold 33: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.6786)
+    interno 2/5: train=59 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.9000)
+    interno 4/5: train=59 retenido=15 (val_auc=0.7500)
+    interno 5/5: train=60 retenido=14 (val_auc=0.8750)
+  Fold 34: train=75
+    interno 1/5: train=59 retenido=16 (val_auc=0.7714)
+    interno 2/5: train=59 retenido=16 (val_auc=0.9062)
+    interno 3/5: train=61 retenido=14 (val_auc=0.8250)
+    interno 4/5: train=61 retenido=14 (val_auc=0.7619)
+    interno 5/5: train=60 retenido=15 (val_auc=0.8750)
+  Fold 35: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.5667)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 3/5: train=58 retenido=17 (val_auc=0.7333)
+    interno 4/5: train=60 retenido=15 (val_auc=0.7143)
+    interno 5/5: train=61 retenido=14 (val_auc=0.9500)
+  Fold 36: train=78
+    interno 1/5: train=63 retenido=15 (val_auc=0.8125)
+    interno 2/5: train=63 retenido=15 (val_auc=1.0000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.9667)
+    interno 4/5: train=61 retenido=17 (val_auc=0.8750)
+    interno 5/5: train=63 retenido=15 (val_auc=0.8611)
+  Fold 37: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8857)
+    interno 2/5: train=61 retenido=14 (val_auc=0.8750)
+    interno 3/5: train=60 retenido=15 (val_auc=0.7857)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8889)
+    interno 5/5: train=59 retenido=16 (val_auc=0.4074)
+  Fold 38: train=76
+    interno 1/5: train=61 retenido=15 (val_auc=0.8438)
+    interno 2/5: train=61 retenido=15 (val_auc=0.8750)
+    interno 3/5: train=59 retenido=17 (val_auc=0.9643)
+    interno 4/5: train=61 retenido=15 (val_auc=1.0000)
+    interno 5/5: train=62 retenido=14 (val_auc=0.9250)
+  Fold 39: train=75
+    interno 1/5: train=61 retenido=14 (val_auc=0.7714)
+    interno 2/5: train=61 retenido=14 (val_auc=0.7500)
+    interno 3/5: train=58 retenido=17 (val_auc=1.0000)
+    interno 4/5: train=61 retenido=14 (val_auc=0.8333)
+    interno 5/5: train=59 retenido=16 (val_auc=0.8000)
+  Fold 40: train=77
+    interno 1/5: train=61 retenido=16 (val_auc=0.9630)
+    interno 2/5: train=64 retenido=13 (val_auc=0.9444)
+    interno 3/5: train=59 retenido=18 (val_auc=0.8056)
+    interno 4/5: train=64 retenido=13 (val_auc=0.9444)
+    interno 5/5: train=60 retenido=17 (val_auc=1.0000)
+  Fold 41: train=74
+    interno 1/5: train=59 retenido=15 (val_auc=0.8889)
+    interno 2/5: train=60 retenido=14 (val_auc=0.8000)
+    interno 3/5: train=59 retenido=15 (val_auc=0.5952)
+    interno 4/5: train=60 retenido=14 (val_auc=0.8571)
+    interno 5/5: train=58 retenido=16 (val_auc=0.8667)
+  Fold 42: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9643)
+    interno 2/5: train=62 retenido=14 (val_auc=0.9286)
+    interno 3/5: train=61 retenido=15 (val_auc=0.8611)
+    interno 4/5: train=60 retenido=16 (val_auc=0.8889)
+    interno 5/5: train=59 retenido=17 (val_auc=0.7429)
+  Fold 43: train=77
+    interno 1/5: train=62 retenido=15 (val_auc=1.0000)
+    interno 2/5: train=61 retenido=16 (val_auc=0.7500)
+    interno 3/5: train=63 retenido=14 (val_auc=0.4750)
+    interno 4/5: train=59 retenido=18 (val_auc=0.4444)
+    interno 5/5: train=63 retenido=14 (val_auc=0.9688)
+  Fold 44: train=78
+    interno 1/5: train=62 retenido=16 (val_auc=0.7778)
+    interno 2/5: train=62 retenido=16 (val_auc=0.8000)
+    interno 3/5: train=62 retenido=16 (val_auc=0.6667)
+    interno 4/5: train=62 retenido=16 (val_auc=0.7000)
+    interno 5/5: train=64 retenido=14 (val_auc=0.5714)
+  Fold 45: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.8667)
+    interno 2/5: train=60 retenido=15 (val_auc=0.9444)
+    interno 3/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 4/5: train=60 retenido=15 (val_auc=0.8000)
+    interno 5/5: train=60 retenido=15 (val_auc=1.0000)
+  Fold 46: train=77
+    interno 1/5: train=60 retenido=17 (val_auc=1.0000)
+    interno 2/5: train=60 retenido=17 (val_auc=0.5667)
+    interno 3/5: train=64 retenido=13 (val_auc=0.7500)
+    interno 4/5: train=63 retenido=14 (val_auc=1.0000)
+    interno 5/5: train=61 retenido=16 (val_auc=0.8889)
+  Fold 47: train=75
+    interno 1/5: train=60 retenido=15 (val_auc=0.7333)
+    interno 2/5: train=58 retenido=17 (val_auc=0.9333)
+    interno 3/5: train=61 retenido=14 (val_auc=0.7037)
+    interno 4/5: train=60 retenido=15 (val_auc=0.6786)
+    interno 5/5: train=61 retenido=14 (val_auc=0.7500)
+  Fold 48: train=76
+    interno 1/5: train=62 retenido=14 (val_auc=0.9583)
+    interno 2/5: train=59 retenido=17 (val_auc=1.0000)
+    interno 3/5: train=60 retenido=16 (val_auc=0.9000)
+    interno 4/5: train=62 retenido=14 (val_auc=0.8667)
+    interno 5/5: train=61 retenido=15 (val_auc=0.9750)
+  Fold 49: train=77
+    interno 1/5: train=63 retenido=14 (val_auc=0.9722)
+    interno 2/5: train=64 retenido=13 (val_auc=0.8857)
+    interno 3/5: train=60 retenido=17 (val_auc=0.7667)
+    interno 4/5: train=62 retenido=15 (val_auc=0.9000)
+    interno 5/5: train=59 retenido=18 (val_auc=0.9286)
+
+✅ Features out-of-fold (predicciones) generadas para 50/50 folds (0 omitidos).
+✓ virchow_v1: OOF splits completados
+
+============================================================================
+FASE 1 COMPLETADA
+Fin: Wed Aug 19 23:09:45 CEST 2026
+============================================================================
+
+✅ attn_stats.npy generados en:
+   - {model}_{patching}/test_outputs/fold_*/attn_stats.npy
+   - {model}_{patching}_train_eval/val_outputs/fold_*/attn_stats.npy
+   - {model}_{patching}_train_eval_oof/val_outputs_oof/fold_*/attn_stats.npy
+
+📄 Metadatos de columnas guardados en:
+   - .../fold_*/attn_stats_columns.json
+
+Próximo paso: Ejecutar src/analyze_feature_engineering_ladder_v2.py
+con --extra_features incluyendo attn_entropy_norm, attn_ess_norm
+

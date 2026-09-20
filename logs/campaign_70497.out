@@ -1,0 +1,955 @@
+================================================================================
+CAMPAÑA COMPLETA — cervical_subtype / subtype
+Job 70497 — Sun Aug 30 22:18:17 CEST 2026
+================================================================================
+
+### FASE 0 — comprobaciones previas
+  splits    : /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cervical_subtype/subtype/k=all.tsv
+  folds     : 5
+  slides    : 599   pacientes: 599
+  clases    : 4
+  features  :
+    ✓ ctranspath   dim=768  /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath
+    ✓ uni_v2       dim=1536  /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2
+    ✓ conch_v1_5   dim=768  /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5
+✓ Preflight OK
+
+### FASE 1 — entrenamiento ABMIL base
+
+--- [base] ctranspath --- Sun Aug 30 22:19:01 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 0: train=407, val=72, test=120
+Fold 0: ABMIL entrenado (val_auc=0.9376)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 1: train=408, val=72, test=119
+Fold 1: ABMIL entrenado (val_auc=0.9519)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 2: train=407, val=72, test=120
+Fold 2: ABMIL entrenado (val_auc=0.9153)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 3: train=407, val=72, test=120
+Fold 3: ABMIL entrenado (val_auc=0.9152)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 4: train=407, val=72, test=120
+Fold 4: ABMIL entrenado (val_auc=0.9385)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (5 folds con datos)
+
+✅ Training completed
+
+--- [base] uni_v2 --- Sun Aug 30 22:31:49 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Training: uni_v2
+  Dataset: cervical_subtype/subtype
+  Latent dim: 1536, Num classes: 4
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 0: train=407, val=72, test=120
+Fold 0: ABMIL entrenado (val_auc=0.9693)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 1: train=408, val=72, test=119
+Fold 1: ABMIL entrenado (val_auc=0.9617)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 2: train=407, val=72, test=120
+Fold 2: ABMIL entrenado (val_auc=0.9608)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 3: train=407, val=72, test=120
+Fold 3: ABMIL entrenado (val_auc=0.9418)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 4: train=407, val=72, test=120
+Fold 4: ABMIL entrenado (val_auc=0.9450)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (5 folds con datos)
+
+✅ Training completed
+
+--- [base] conch_v1_5 --- Sun Aug 30 22:57:56 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL Training: conch_v1_5
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 0: train=407, val=72, test=120
+Fold 0: ABMIL entrenado (val_auc=0.9487)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 1: train=408, val=72, test=119
+Fold 1: ABMIL entrenado (val_auc=0.8833)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 2: train=407, val=72, test=120
+Fold 2: ABMIL entrenado (val_auc=0.9262)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 3: train=407, val=72, test=120
+Fold 3: ABMIL entrenado (val_auc=0.9180)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 4: train=407, val=72, test=120
+Fold 4: ABMIL entrenado (val_auc=0.9629)
+
+Calculando métricas de validación...
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (5 folds con datos)
+
+✅ Training completed
+
+### FASE 2 — meta-features in-sample
+--- [meta] ctranspath --- Sun Aug 30 23:08:40 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL Test (predicciones sobre train): ctranspath
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4, Folds: 5
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+✅ Predicciones de train generadas para 5/5 folds (0 omitidos por falta de checkpoint/datos).
+--- [meta] uni_v2 --- Sun Aug 30 23:10:36 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Test (predicciones sobre train): uni_v2
+  Dataset: cervical_subtype/subtype
+  Latent dim: 1536, Num classes: 4, Folds: 5
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+✅ Predicciones de train generadas para 5/5 folds (0 omitidos por falta de checkpoint/datos).
+--- [meta] conch_v1_5 --- Sun Aug 30 23:14:31 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL Test (predicciones sobre train): conch_v1_5
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4, Folds: 5
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+✅ Predicciones de train generadas para 5/5 folds (0 omitidos por falta de checkpoint/datos).
+
+### FASE 3 — embeddings de slide
+--- [emb] ctranspath --- Sun Aug 30 23:16:32 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL Test (embeddings sobre train): ctranspath
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4, Folds: 5
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+✅ Embeddings de train generadas para 5/5 folds (0 omitidos por falta de checkpoint/datos).
+--- [emb] uni_v2 --- Sun Aug 30 23:18:01 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Test (embeddings sobre train): uni_v2
+  Dataset: cervical_subtype/subtype
+  Latent dim: 1536, Num classes: 4, Folds: 5
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+✅ Embeddings de train generadas para 5/5 folds (0 omitidos por falta de checkpoint/datos).
+--- [emb] conch_v1_5 --- Sun Aug 30 23:22:39 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL Test (embeddings sobre train): conch_v1_5
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4, Folds: 5
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+✅ Embeddings de train generadas para 5/5 folds (0 omitidos por falta de checkpoint/datos).
+
+### FASE 3b — vigencia de los embeddings
+  ✓ ctranspath
+  ✓ uni_v2
+  ✓ conch_v1_5
+
+### FASE 4 — snapshot ensembles a nivel base
+
+################################################################
+# fge_trio (schedule=fge lr_1=2e-4 lr_2=2e-5 cycle_length=4)
+################################################################
+--- [fge_trio] ciclos: ctranspath --- Sun Aug 30 23:24:40 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL-FGE Training: ctranspath
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4
+  Epochs (convergencia): 100, Fold: all
+  Schedule: fge  (piecewise-linear, Garipov et al.)
+  Ciclos: n_cycles=6, cycle_length=4, lr_1=0.0002, lr_2=2e-05, cycle_patience=2
+  Variante: fge_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 0 (FGE): train=407, val=72, test=120
+Fold 0: base convergido (val_auc=0.9376), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.9223, 0.9197)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 1 (FGE): train=408, val=72, test=119
+Fold 1: base convergido (val_auc=0.9519), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.9521, 0.9477)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 2 (FGE): train=407, val=72, test=120
+Fold 2: base convergido (val_auc=0.9153), iniciando ciclos FGE...
+Fold 2: 2 snapshots FGE (val_auc por snapshot: 0.9159, 0.9073)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 3 (FGE): train=407, val=72, test=120
+Fold 3: base convergido (val_auc=0.9152), iniciando ciclos FGE...
+Fold 3: 2 snapshots FGE (val_auc por snapshot: 0.9126, 0.9087)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 4 (FGE): train=407, val=72, test=120
+Fold 4: base convergido (val_auc=0.9385), iniciando ciclos FGE...
+Fold 4: 3 snapshots FGE (val_auc por snapshot: 0.9129, 0.9141, 0.8895)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (5 folds con datos)
+
+✅ FGE training completed
+--- [fge_trio] meta-features: ctranspath --- Sun Aug 30 23:39:00 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): ctranspath
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4, Folds: 5
+  Variante FGE: fge_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+✅ Predicciones FGE de train generadas para 5/5 folds (0 omitidos por falta de snapshots/datos).
+--- [fge_trio] ciclos: uni_v2 --- Sun Aug 30 23:41:10 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL-FGE Training: uni_v2
+  Dataset: cervical_subtype/subtype
+  Latent dim: 1536, Num classes: 4
+  Epochs (convergencia): 100, Fold: all
+  Schedule: fge  (piecewise-linear, Garipov et al.)
+  Ciclos: n_cycles=6, cycle_length=4, lr_1=0.0002, lr_2=2e-05, cycle_patience=2
+  Variante: fge_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 0 (FGE): train=407, val=72, test=120
+Fold 0: base convergido (val_auc=0.9693), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.9639, 0.9629)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 1 (FGE): train=408, val=72, test=119
+Fold 1: base convergido (val_auc=0.9617), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.9493, 0.9490)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 2 (FGE): train=407, val=72, test=120
+Fold 2: base convergido (val_auc=0.9608), iniciando ciclos FGE...
+Fold 2: 5 snapshots FGE (val_auc por snapshot: 0.9306, 0.9316, 0.9476, 0.9491, 0.9403)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 3 (FGE): train=407, val=72, test=120
+Fold 3: base convergido (val_auc=0.9418), iniciando ciclos FGE...
+Fold 3: 2 snapshots FGE (val_auc por snapshot: 0.9262, 0.9139)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 4 (FGE): train=407, val=72, test=120
+Fold 4: base convergido (val_auc=0.9450), iniciando ciclos FGE...
+Fold 4: 2 snapshots FGE (val_auc por snapshot: 0.9476, 0.9364)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (5 folds con datos)
+
+✅ FGE training completed
+--- [fge_trio] meta-features: uni_v2 --- Mon Aug 31 00:11:38 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): uni_v2
+  Dataset: cervical_subtype/subtype
+  Latent dim: 1536, Num classes: 4, Folds: 5
+  Variante FGE: fge_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+✅ Predicciones FGE de train generadas para 5/5 folds (0 omitidos por falta de snapshots/datos).
+--- [fge_trio] ciclos: conch_v1_5 --- Mon Aug 31 00:16:15 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL-FGE Training: conch_v1_5
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4
+  Epochs (convergencia): 100, Fold: all
+  Schedule: fge  (piecewise-linear, Garipov et al.)
+  Ciclos: n_cycles=6, cycle_length=4, lr_1=0.0002, lr_2=2e-05, cycle_patience=2
+  Variante: fge_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 0 (FGE): train=407, val=72, test=120
+Fold 0: base convergido (val_auc=0.9487), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.9410, 0.9333)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 1 (FGE): train=408, val=72, test=119
+Fold 1: base convergido (val_auc=0.8833), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.8620, 0.8343)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 2 (FGE): train=407, val=72, test=120
+Fold 2: base convergido (val_auc=0.9262), iniciando ciclos FGE...
+Fold 2: 2 snapshots FGE (val_auc por snapshot: 0.9239, 0.9067)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 3 (FGE): train=407, val=72, test=120
+Fold 3: base convergido (val_auc=0.9180), iniciando ciclos FGE...
+Fold 3: 2 snapshots FGE (val_auc por snapshot: 0.9207, 0.9121)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 4 (FGE): train=407, val=72, test=120
+Fold 4: base convergido (val_auc=0.9629), iniciando ciclos FGE...
+Fold 4: 2 snapshots FGE (val_auc por snapshot: 0.9632, 0.9594)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (5 folds con datos)
+
+✅ FGE training completed
+--- [fge_trio] meta-features: conch_v1_5 --- Mon Aug 31 00:30:56 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): conch_v1_5
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4, Folds: 5
+  Variante FGE: fge_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+✅ Predicciones FGE de train generadas para 5/5 folds (0 omitidos por falta de snapshots/datos).
+
+################################################################
+# se_trio (schedule=se lr_1=1e-3 lr_2=1e-6 cycle_length=15)
+################################################################
+--- [se_trio] ciclos: ctranspath --- Mon Aug 31 00:33:00 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL-FGE Training: ctranspath
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4
+  Epochs (convergencia): 100, Fold: all
+  Schedule: se  (coseno con reinicios, Huang et al.)
+  Ciclos: n_cycles=6, cycle_length=15, lr_1=0.001, lr_2=1e-06, cycle_patience=2
+  Variante: se_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 0 (FGE): train=407, val=72, test=120
+Fold 0: base convergido (val_auc=0.9376), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.9201, 0.9070)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 1 (FGE): train=408, val=72, test=119
+Fold 1: base convergido (val_auc=0.9519), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.9427, 0.9302)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 2 (FGE): train=407, val=72, test=120
+Fold 2: base convergido (val_auc=0.9153), iniciando ciclos FGE...
+Fold 2: 2 snapshots FGE (val_auc por snapshot: 0.9216, 0.8753)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 3 (FGE): train=407, val=72, test=120
+Fold 3: base convergido (val_auc=0.9152), iniciando ciclos FGE...
+Fold 3: 2 snapshots FGE (val_auc por snapshot: 0.9181, 0.9131)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+Fold 4 (FGE): train=407, val=72, test=120
+Fold 4: base convergido (val_auc=0.9385), iniciando ciclos FGE...
+Fold 4: 2 snapshots FGE (val_auc por snapshot: 0.9221, 0.8926)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (5 folds con datos)
+
+✅ FGE training completed
+--- [se_trio] meta-features: ctranspath --- Mon Aug 31 00:57:17 CEST 2026
+  latent_dim auto-detectado: 768  (de features_ctranspath)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): ctranspath
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4, Folds: 5
+  Variante FGE: se_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_ctranspath...
+
+✅ Predicciones FGE de train generadas para 5/5 folds (0 omitidos por falta de snapshots/datos).
+--- [se_trio] ciclos: uni_v2 --- Mon Aug 31 00:59:48 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL-FGE Training: uni_v2
+  Dataset: cervical_subtype/subtype
+  Latent dim: 1536, Num classes: 4
+  Epochs (convergencia): 100, Fold: all
+  Schedule: se  (coseno con reinicios, Huang et al.)
+  Ciclos: n_cycles=6, cycle_length=15, lr_1=0.001, lr_2=1e-06, cycle_patience=2
+  Variante: se_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 0 (FGE): train=407, val=72, test=120
+Fold 0: base convergido (val_auc=0.9693), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.9560, 0.9482)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 1 (FGE): train=408, val=72, test=119
+Fold 1: base convergido (val_auc=0.9617), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.9374, 0.8943)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 2 (FGE): train=407, val=72, test=120
+Fold 2: base convergido (val_auc=0.9608), iniciando ciclos FGE...
+Fold 2: 2 snapshots FGE (val_auc por snapshot: 0.9437, 0.9367)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 3 (FGE): train=407, val=72, test=120
+Fold 3: base convergido (val_auc=0.9418), iniciando ciclos FGE...
+Fold 3: 6 snapshots FGE (val_auc por snapshot: 0.8595, 0.8940, 0.9030, 0.8993, 0.9046, 0.9063)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+Fold 4 (FGE): train=407, val=72, test=120
+Fold 4: base convergido (val_auc=0.9450), iniciando ciclos FGE...
+Fold 4: 2 snapshots FGE (val_auc por snapshot: 0.9355, 0.8688)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (5 folds con datos)
+
+✅ FGE training completed
+--- [se_trio] meta-features: uni_v2 --- Mon Aug 31 01:50:40 CEST 2026
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): uni_v2
+  Dataset: cervical_subtype/subtype
+  Latent dim: 1536, Num classes: 4, Folds: 5
+  Variante FGE: se_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_uni_v2...
+
+✅ Predicciones FGE de train generadas para 5/5 folds (0 omitidos por falta de snapshots/datos).
+--- [se_trio] ciclos: conch_v1_5 --- Mon Aug 31 01:55:58 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL-FGE Training: conch_v1_5
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4
+  Epochs (convergencia): 100, Fold: all
+  Schedule: se  (coseno con reinicios, Huang et al.)
+  Ciclos: n_cycles=6, cycle_length=15, lr_1=0.001, lr_2=1e-06, cycle_patience=2
+  Variante: se_trio  (include_base=False)
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 0 (FGE): train=407, val=72, test=120
+Fold 0: base convergido (val_auc=0.9487), iniciando ciclos FGE...
+Fold 0: 2 snapshots FGE (val_auc por snapshot: 0.9377, 0.9254)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 1 (FGE): train=408, val=72, test=119
+Fold 1: base convergido (val_auc=0.8833), iniciando ciclos FGE...
+Fold 1: 2 snapshots FGE (val_auc por snapshot: 0.8077, 0.7739)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 2 (FGE): train=407, val=72, test=120
+Fold 2: base convergido (val_auc=0.9262), iniciando ciclos FGE...
+Fold 2: 2 snapshots FGE (val_auc por snapshot: 0.8767, 0.8538)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 3 (FGE): train=407, val=72, test=120
+Fold 3: base convergido (val_auc=0.9180), iniciando ciclos FGE...
+Fold 3: 4 snapshots FGE (val_auc por snapshot: 0.8143, 0.8149, 0.8552, 0.8244)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+Fold 4 (FGE): train=407, val=72, test=120
+Fold 4: base convergido (val_auc=0.9629), iniciando ciclos FGE...
+Fold 4: 2 snapshots FGE (val_auc por snapshot: 0.9604, 0.9485)
+
+Calculando métricas de validación (FGE, promedio de snapshots)...
+
+Calculando métricas de test (FGE, promedio de snapshots)...
+✅ Métricas FGE de test completadas (5 folds con datos)
+
+✅ FGE training completed
+--- [se_trio] meta-features: conch_v1_5 --- Mon Aug 31 02:23:44 CEST 2026
+  latent_dim auto-detectado: 768  (de features_conch_v1_5)
+
+============================================================
+ABMIL-FGE Test (predicciones sobre train): conch_v1_5
+  Dataset: cervical_subtype/subtype
+  Latent dim: 768, Num classes: 4, Folds: 5
+  Variante FGE: se_trio
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cervical_subtype/features_conch_v1_5...
+
+✅ Predicciones FGE de train generadas para 5/5 folds (0 omitidos por falta de snapshots/datos).
+
+### FASE 5 — suite de metaclasificadores (5 folds)
+========================================================================================================
+SUITE DE METACLASIFICADORES — trío ganador
+========================================================================================================
+Modelos base : ctranspath + uni_v2 + conch_v1_5
+Dataset/tarea: cervical_subtype / subtype
+Folds        : 5
+Espacios     : ['emb', 'fge_trio', 'prob', 'se_trio']
+Dispositivo  : cuda
+
+Cargando espacio 'emb' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 512, 'uni_v2': 512, 'conch_v1_5': 512}
+  ✓ filas fold_0: train=407 val=72 test=120
+
+Cargando espacio 'fge_trio' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 4, 'uni_v2': 4, 'conch_v1_5': 4}
+  ✓ filas fold_0: train=407 val=72 test=120
+
+Cargando espacio 'prob' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 4, 'uni_v2': 4, 'conch_v1_5': 4}
+  ✓ filas fold_0: train=407 val=72 test=120
+
+Cargando espacio 'se_trio' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 4, 'uni_v2': 4, 'conch_v1_5': 4}
+  ✓ filas fold_0: train=407 val=72 test=120
+
+✓ Todos los brazos comparten exactamente los mismos folds y filas de train/val/test.
+
+Clases         : K=4 [0, 1, 2, 3] (multiclase)
+Reparto en test: {0: 204, 1: 249, 2: 80, 3: 66}  →  mayoritaria=1 (41.6%)
+⚠ Multiclase: AUC y AP son macro-OvR, `f1_pos` no aplica y el bloque C (umbral ajustado) no se calcula —
+  la decisión multiclase no es un corte escalar.
+
+acc=accuracy · bacc=balanced accuracy · macro_f1=F1 macro · f1_pos=F1 de la clase positiva · kappa=Cohen.
+REFERENCIA DEGENERADA (predecir siempre la mayoritaria del train): acc=0.416, bacc=0.250, macro_f1=0.147, kappa=0.000.
+Cualquier accuracy que no supere claramente ese valor no dice nada.
+
+>>> prob:logreg
+    AUC=0.9430  bacc=0.8061  macro-F1=0.8175
+
+>>> prob:mlp
+    AUC=0.9021  bacc=0.4461  macro-F1=0.3371
+
+>>> prob:mlp_snapshot
+    AUC=0.9370  bacc=0.6766  macro-F1=0.6856
+
+>>> prob:svm
+    AUC=0.9403  bacc=0.8028  macro-F1=0.8131
+
+>>> prob:knn
+    AUC=0.9021  bacc=0.7963  macro-F1=0.8070
+
+>>> prob:nb
+    AUC=0.9285  bacc=0.8021  macro-F1=0.8088
+
+>>> emb:logreg
+    AUC=0.9421  bacc=0.7893  macro-F1=0.8046
+
+>>> emb:mlp
+    AUC=0.9402  bacc=0.7646  macro-F1=0.7869
+
+>>> emb:mlp_snapshot
+    AUC=0.9432  bacc=0.8034  macro-F1=0.8195
+
+>>> emb:mlp_fge
+    AUC=0.9425  bacc=0.7726  macro-F1=0.7909
+
+>>> fge_trio:logreg
+    AUC=0.9332  bacc=0.8147  macro-F1=0.8231
+
+>>> fge_trio:mlp_snapshot
+    AUC=0.9326  bacc=0.7693  macro-F1=0.7887
+
+>>> se_trio:logreg
+    AUC=0.9203  bacc=0.7874  macro-F1=0.8062
+
+>>> se_trio:mlp_snapshot
+    AUC=0.9172  bacc=0.6854  macro-F1=0.7124
+
+======================================================
+RESUMEN A — capacidad de ORDENACIÓN (independiente del umbral)
+======================================================
+Configuración                          auc          ap
+------------------------------------------------------
+prob:logreg                         0.9430      0.8785
+prob:mlp                            0.9021      0.8020
+prob:mlp_snapshot                   0.9370      0.8676
+prob:svm                            0.9403      0.8767
+prob:knn                            0.9021      0.7927
+prob:nb                             0.9285      0.8337
+emb:logreg                          0.9421      0.8730
+emb:mlp                             0.9402      0.8756
+emb:mlp_snapshot                    0.9432      0.8783
+emb:mlp_fge                         0.9425      0.8784
+fge_trio:logreg                     0.9332      0.8688
+fge_trio:mlp_snapshot               0.9326      0.8658
+se_trio:logreg                      0.9203      0.8473
+se_trio:mlp_snapshot                0.9172      0.8415
+------------------------------------------------------
+auc=macro-OvR AUC · ap=average precision (PR-AUC, la métrica de ordenación
+que más pesa bajo desbalance porque ignora los verdaderos negativos)
+
+==========================================================================================
+RESUMEN B — DECISIÓN con umbral 0.5 (argmax; el criterio de ensemble4.py)
+==========================================================================================
+Configuración                          acc        bacc    macro_f1      f1_pos       kappa
+------------------------------------------------------------------------------------------
+prob:logreg                         0.8281      0.8061      0.8175         nan      0.7456
+prob:mlp                            0.5141      0.4461      0.3371         nan      0.2724
+prob:mlp_snapshot                   0.7729      0.6766      0.6856         nan      0.6477
+prob:svm                            0.8231      0.8028      0.8131         nan      0.7386
+prob:knn                            0.8147      0.7963      0.8070         nan      0.7257
+prob:nb                             0.8114      0.8021      0.8088         nan      0.7222
+emb:logreg                          0.8147      0.7893      0.8046         nan      0.7240
+emb:mlp                             0.8114      0.7646      0.7869         nan      0.7167
+emb:mlp_snapshot                    0.8331      0.8034      0.8195         nan      0.7521
+emb:mlp_fge                         0.8114      0.7726      0.7909         nan      0.7180
+fge_trio:logreg                     0.8331      0.8147      0.8231         nan      0.7531
+fge_trio:mlp_snapshot               0.8181      0.7693      0.7887         nan      0.7269
+se_trio:logreg                      0.8180      0.7874      0.8062         nan      0.7289
+se_trio:mlp_snapshot                0.7680      0.6854      0.7124         nan      0.6455
+------------------------------------------------------------------------------------------
+acc=accuracy · bacc=balanced accuracy · macro_f1=F1 macro · f1_pos=F1 de la clase positiva · kappa=Cohen.
+REFERENCIA DEGENERADA (predecir siempre la mayoritaria del train): acc=0.416, bacc=0.250, macro_f1=0.147, kappa=0.000.
+Cualquier accuracy que no supere claramente ese valor no dice nada.
+
+RESUMEN C omitido: sólo aplica a tareas binarias.
+
+========================================================================================================
+PAREADO: prob:mlp  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0409      [-0.0684, -0.0203]       0/0/5   0.0625   0.7500   0.0402
+ap             -0.0766      [-0.1088, -0.0444]       0/0/5   0.0625   0.7500   0.0522
+acc            -0.3140      [-0.3880, -0.2400]       0/0/5   0.0625   0.7500   0.1272
+bacc           -0.3600      [-0.4900, -0.2077]       0/0/5   0.0625   0.7500   0.2173
+macro_f1       -0.4804      [-0.6023, -0.3456]       0/0/5   0.0625   0.7500   0.2039
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.4732      [-0.6382, -0.3379]       0/0/5   0.0625   0.7500   0.2518
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: prob:mlp_snapshot  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0060      [-0.0127, -0.0015]       1/0/4   0.1250   1.0000   0.0097
+ap             -0.0110      [-0.0178, -0.0039]       1/0/4   0.1250   1.0000   0.0113
+acc            -0.0551      [-0.1301, +0.0033]       1/0/4   0.3125   1.0000   0.1112
+bacc           -0.1295      [-0.2781, -0.0084]       1/0/4   0.1250   1.0000   0.2170
+macro_f1       -0.1319      [-0.3145, +0.0017]       1/0/4   0.3125   1.0000   0.2569
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0978      [-0.2372, +0.0021]       1/0/4   0.3125   1.0000   0.1900
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: prob:svm  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0027      [-0.0059, +0.0003]       2/0/3   0.3125   1.0000   0.0050
+ap             -0.0018      [-0.0107, +0.0059]       3/0/2   1.0000   1.0000   0.0131
+acc            -0.0050      [-0.0150, +0.0034]       1/2/2   0.7500   1.0000   0.0159
+bacc           -0.0032      [-0.0102, +0.0024]       1/2/2   0.5000   1.0000   0.0105
+macro_f1       -0.0044      [-0.0132, +0.0022]       1/2/2   0.5000   1.0000   0.0133
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0069      [-0.0214, +0.0050]       1/2/2   0.5000   1.0000   0.0223
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: prob:knn  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0409      [-0.0530, -0.0289]       0/0/5   0.0625   0.7500   0.0196
+ap             -0.0859      [-0.1141, -0.0618]       0/0/5   0.0625   0.7500   0.0425
+acc            -0.0133      [-0.0233, -0.0050]       0/1/4   0.1250   1.0000   0.0158
+bacc           -0.0098      [-0.0175, -0.0035]       0/1/4   0.1250   1.0000   0.0114
+macro_f1       -0.0105      [-0.0167, -0.0040]       0/1/4   0.1250   1.0000   0.0100
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0198      [-0.0355, -0.0072]       0/1/4   0.1250   1.0000   0.0242
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: prob:nb  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0145      [-0.0297, -0.0007]       1/0/4   0.1875   1.0000   0.0231
+ap             -0.0448      [-0.0664, -0.0233]       0/0/5   0.0625   0.7500   0.0356
+acc            -0.0167      [-0.0334, -0.0050]       0/1/4   0.1250   1.0000   0.0245
+bacc           -0.0039      [-0.0218, +0.0119]       3/0/2   1.0000   1.0000   0.0278
+macro_f1       -0.0087      [-0.0200, +0.0018]       1/0/4   0.3125   1.0000   0.0172
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0233      [-0.0501, -0.0047]       1/0/4   0.1250   1.0000   0.0390
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: emb:logreg  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0009      [-0.0042, +0.0029]       2/0/3   0.8125   1.0000   0.0058
+ap             -0.0056      [-0.0165, +0.0056]       1/0/4   0.4375   1.0000   0.0173
+acc            -0.0134      [-0.0384, +0.0067]       2/1/2   0.6250   1.0000   0.0359
+bacc           -0.0168      [-0.0454, +0.0081]       3/0/2   0.8125   1.0000   0.0424
+macro_f1       -0.0129      [-0.0405, +0.0106]       3/0/2   0.8125   1.0000   0.0402
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0215      [-0.0596, +0.0092]       2/0/3   0.6250   1.0000   0.0549
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: emb:mlp  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0028      [-0.0059, +0.0007]       2/0/3   0.3125   1.0000   0.0053
+ap             -0.0030      [-0.0043, -0.0015]       0/0/5   0.0625   0.7500   0.0023
+acc            -0.0167      [-0.0400, +0.0000]       0/3/2   0.5000   1.0000   0.0322
+bacc           -0.0415      [-0.0917, -0.0060]       0/1/4   0.1250   1.0000   0.0719
+macro_f1       -0.0306      [-0.0713, -0.0022]       1/0/4   0.1875   1.0000   0.0572
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0289      [-0.0686, -0.0013]       0/0/5   0.0625   0.7500   0.0545
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: emb:mlp_snapshot  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0002      [-0.0023, +0.0024]       3/0/2   0.8125   1.0000   0.0038
+ap             -0.0002      [-0.0049, +0.0045]       2/0/3   1.0000   1.0000   0.0077
+acc            +0.0050      [-0.0067, +0.0168]       2/1/2   0.6250   1.0000   0.0191
+bacc           -0.0026      [-0.0115, +0.0052]       2/1/2   0.8750   1.0000   0.0137
+macro_f1       +0.0020      [-0.0094, +0.0144]       2/0/3   1.0000   1.0000   0.0190
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          +0.0066      [-0.0100, +0.0231]       3/0/2   0.6250   1.0000   0.0267
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: emb:mlp_fge  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0005      [-0.0037, +0.0022]       3/0/2   1.0000   1.0000   0.0048
+ap             -0.0002      [-0.0025, +0.0019]       3/0/2   1.0000   1.0000   0.0035
+acc            -0.0167      [-0.0350, -0.0017]       0/2/3   0.2500   1.0000   0.0266
+bacc           -0.0335      [-0.0663, -0.0078]       0/0/5   0.0625   0.7500   0.0479
+macro_f1       -0.0266      [-0.0547, -0.0057]       0/0/5   0.0625   0.7500   0.0400
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0276      [-0.0578, -0.0043]       0/0/5   0.0625   0.7500   0.0433
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: fge_trio:logreg  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0098      [-0.0165, -0.0031]       1/0/4   0.1250   1.0000   0.0107
+ap             -0.0097      [-0.0172, -0.0023]       1/0/4   0.1875   1.0000   0.0122
+acc            +0.0050      [-0.0067, +0.0200]       2/1/2   0.6250   1.0000   0.0217
+bacc           +0.0087      [-0.0032, +0.0217]       3/0/2   0.3125   1.0000   0.0212
+macro_f1       +0.0056      [-0.0080, +0.0213]       3/0/2   0.8125   1.0000   0.0240
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          +0.0076      [-0.0092, +0.0286]       3/0/2   0.8125   1.0000   0.0308
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: fge_trio:mlp_snapshot  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0104      [-0.0183, -0.0026]       1/0/4   0.1250   1.0000   0.0124
+ap             -0.0127      [-0.0223, -0.0029]       1/0/4   0.1250   1.0000   0.0159
+acc            -0.0100      [-0.0400, +0.0167]       2/1/2   0.7500   1.0000   0.0464
+bacc           -0.0367      [-0.1057, +0.0097]       1/1/3   0.3750   1.0000   0.0936
+macro_f1       -0.0288      [-0.0881, +0.0130]       3/0/2   0.8125   1.0000   0.0848
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0186      [-0.0683, +0.0234]       2/0/3   0.6250   1.0000   0.0748
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: se_trio:logreg  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0227      [-0.0383, -0.0080]       0/0/5   0.0625   0.7500   0.0246
+ap             -0.0313      [-0.0548, -0.0110]       0/0/5   0.0625   0.7500   0.0350
+acc            -0.0101      [-0.0319, +0.0100]       1/2/2   0.5000   1.0000   0.0343
+bacc           -0.0187      [-0.0574, +0.0169]       2/0/3   0.4375   1.0000   0.0593
+macro_f1       -0.0113      [-0.0428, +0.0191]       2/0/3   0.6250   1.0000   0.0501
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.0167      [-0.0507, +0.0141]       1/0/4   0.3125   1.0000   0.0528
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: se_trio:mlp_snapshot  vs  prob:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0258      [-0.0407, -0.0124]       0/0/5   0.0625   0.7500   0.0233
+ap             -0.0370      [-0.0636, -0.0136]       1/0/4   0.1250   1.0000   0.0405
+acc            -0.0601      [-0.0967, -0.0185]       1/0/4   0.1250   1.0000   0.0641
+bacc           -0.1207      [-0.1744, -0.0564]       0/0/5   0.0625   0.7500   0.0968
+macro_f1       -0.1051      [-0.1598, -0.0462]       1/0/4   0.1250   1.0000   0.0962
+f1_pos            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa          -0.1001      [-0.1596, -0.0323]       1/0/4   0.1250   1.0000   0.1030
+acc_t             +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+bacc_t            +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+macro_f1_t        +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+f1_pos_t          +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+kappa_t           +nan            [+nan, +nan]       0/0/0   1.0000   1.0000      nan
+--------------------------------------------------------------------------------------------------------
+
+✅ Resultados escritos en /home/JKP6679/Patho-Ensemble/results_campaign_cervical_subtype_subtype.json
+
+================================================================================
+✅ COMPLETADO — cervical_subtype / subtype — Mon Aug 31 02:28:21 CEST 2026
+   Resultados: results_campaign_cervical_subtype_subtype.json
+================================================================================

@@ -1,0 +1,112 @@
+==============================================================================
+ Etapa 1 — puerta del brazo espacial
+==============================================================================
+ job          : 70003 en gpu02
+ work_dir     : /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches
+ dataset/task : cptac_brca / TP53_mutation
+ modelo       : uni_v2
+------------------------------------------------------------------------------
+NVIDIA A30, 24576 MiB, 535.54.03
+------------------------------------------------------------------------------
+ torch 2.7.0+cu126 | cuda disponible: True | dispositivo: NVIDIA A30
+==============================================================================
+
+==============================================================================
+Etapa 1 — puerta del brazo espacial (grafo + SpatialABMIL)
+==============================================================================
+  modelo=uni_v2  device=cuda  torch=2.7.0+cu126
+  112 slides en la tarea; elegidas min/mediana/max: N = 1135, 7186, 29622
+
+[1] Construcción del grafo sobre slides reales
+  OK    06BR006-3799ee: patch_size_level0 = 448
+  OK    06BR006-3799ee: coords y features alineados (1135 filas)
+  OK    06BR006-3799ee: N=  1135 E=   8182 grado medio=7.21
+  OK    06BR006-3799ee: nodos aislados = 0
+  OK    06BR006-3799ee: grafo construido en 29 ms
+  OK    11BR072-59318d: patch_size_level0 = 448
+  OK    11BR072-59318d: coords y features alineados (7186 filas)
+  OK    11BR072-59318d: N=  7186 E=  54932 grado medio=7.64
+  OK    11BR072-59318d: nodos aislados = 0
+  OK    11BR072-59318d: grafo construido en 3 ms
+  OK    11BR017-241c8d: patch_size_level0 = 448
+  OK    11BR017-241c8d: coords y features alineados (29622 filas)
+  OK    11BR017-241c8d: N= 29622 E= 231364 grado medio=7.81
+  OK    11BR017-241c8d: nodos aislados = 0
+  OK    11BR017-241c8d: grafo construido en 12 ms
+
+[2] Coords fuera de retícula fallan alto (no dan un grafo vacío)
+  OK    lattice_edges lanza ValueError: 1/1135 coords fuera de la retícula de paso 448. Usa knn_edge
+  OK    duplicados detectados: coords duplicados: la búsqueda binaria devolvería sólo uno
+
+[3] SpMM equivale a index_select + index_add_, y propaga gradiente
+  OK    06BR006-3799ee: allclose(sparse_mm, index_add_) maxdiff=2.38e-07
+  OK    11BR072-59318d: allclose(sparse_mm, index_add_) maxdiff=2.38e-07
+  OK    11BR017-241c8d: allclose(sparse_mm, index_add_) maxdiff=3.58e-07
+  OK    el gradiente fluye a través de torch.sparse.mm (CSR)
+
+[4] El control shuffle es isomorfo (relabelado, no reconstrucción)
+  OK    mismo E: 54932 vs 54932
+  OK    misma secuencia de grados ordenada -> grafos isomorfos
+  OK    pero el emparejamiento feature<->posición cambia
+  OK    seed_from_slide_id estable dentro del proceso (575462)
+  OK    misma semilla -> mismo relabelado
+  OK    mode='self': la agregación es la identidad (control spatial_self)
+
+[5] SpatialABMIL en cuda
+  OK    smooth  : formas de salida iguales a ABMIL (2,), (7186,)
+  OK    smooth  : salidas finitas
+          parámetros: 1,051,396 vs ABMIL 1,051,394  (+0.0 %)
+  OK    sage_bn : formas de salida iguales a ABMIL (2,), (7186,)
+  OK    sage_bn : salidas finitas
+          parámetros: 1,316,866 vs ABMIL 1,051,394  (+25.2 %)
+  OK    sage    : formas de salida iguales a ABMIL (2,), (7186,)
+  OK    sage    : salidas finitas
+          parámetros: 2,103,042 vs ABMIL 1,051,394  (+100.0 %)
+
+[6] 'smooth' con alpha=0 es exactamente ABMIL en la inicialización
+  OK    alphas iniciales = [0.0, 0.0]
+  OK    la salida es invariante al grafo con alpha=0
+  OK    con alpha>0 el grafo SÍ cambia la salida
+  OK    con self-loops vuelve a ABMIL sea cual sea alpha
+
+      atención ABMIL: ESS=7157.4 de N=7186, masa top-1 %=0.012
+
+[7] Coste del forward en la slide mayor (cuda)
+      N=29622, E=231364, D=1536
+      ABMIL               11.2 ms   (referencia)
+      smooth              13.7 ms   x1.22
+      sage_bn             15.7 ms   x1.40
+      sage                16.8 ms   x1.50
+  OK    'smooth' cuesta x1.22 (puerta x2.5; el modelo de FLOPs predecía x1.004 y es el modelo equivocado)
+  OK    el coste crece de forma monótona con la capacidad
+  OK    'smooth' es estrictamente más barato que 'sage'
+      backend elegido en cuda: SpMM (CSR)
+      edge_index: 3.7 MB frente a 182.0 MB de features
+
+==============================================================================
+PUERTA SUPERADA — Etapa 1 lista para el cableado del motor
+==============================================================================
+
+==============================================================================
+ Contraste en CPU (informativo: fija la comparación de backends)
+==============================================================================
+[7] Coste del forward en la slide mayor (cpu)
+      N=29622, E=231364, D=1536
+      ABMIL              255.2 ms   (referencia)
+      smooth             433.3 ms   x1.70
+      sage_bn            412.5 ms   x1.62
+      sage               667.2 ms   x2.61
+  OK    'smooth' cuesta x1.70 (puerta x2.5; el modelo de FLOPs predecía x1.004 y es el modelo equivocado)
+  FALLO  el coste crece de forma monótona con la capacidad
+  OK    'smooth' es estrictamente más barato que 'sage'
+      backend elegido en cpu: index_add_
+      edge_index: 3.7 MB frente a 182.0 MB de features
+
+==============================================================================
+PUERTA NO SUPERADA — 1 comprobación(es) fallidas:
+  - el coste crece de forma monótona con la capacidad
+==============================================================================
+
+==============================================================================
+ PUERTA SUPERADA en GPU — listo para el cableado del motor (Etapa 2)
+==============================================================================

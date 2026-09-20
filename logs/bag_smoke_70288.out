@@ -1,0 +1,5 @@
+### bag_size=512 (fold 0, ctranspath) ###
+Fold 0: ABMIL entrenado (val_auc=1.0000)
+### bag_size=0 (control, mismo fold) ###
+Fold 0: ABMIL entrenado (val_auc=1.0000)
+### OK ###

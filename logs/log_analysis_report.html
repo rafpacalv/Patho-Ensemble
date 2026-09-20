@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patho-Ensemble Log Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .stat-box.success { border-left-color: #2ecc71; }
+        .stat-box.failed { border-left-color: #e74c3c; }
+        .stat-box.unknown { border-left-color: #f39c12; }
+        .stat-box.total { border-left-color: #3498db; }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status.unknown {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .metric {
+            display: inline-block;
+            background: #e8f4f8;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-right: 5px;
+            font-size: 0.85em;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+
+        .model-tag {
+            display: inline-block;
+            background: #f0e6ff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            font-size: 0.8em;
+            color: #5c3d9c;
+            margin-bottom: 3px;
+        }
+
+        .error-box {
+            background: #fff5f5;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #c0392b;
+            font-family: 'Courier New', monospace;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .summary-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .summary-box h3 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .summary-box p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Patho-Ensemble Log Analysis</h1>
+            <p>Comprehensive execution report from logs/ directory</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box total">
+                <div class="stat-number">56</div>
+                <div class="stat-label">Total Log Files</div>
+            </div>
+            <div class="stat-box success">
+                <div class="stat-number">20</div>
+                <div class="stat-label">Successful (35%)</div>
+            </div>
+            <div class="stat-box failed">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Failed (10%)</div>
+            </div>
+            <div class="stat-box unknown">
+                <div class="stat-number">30</div>
+                <div class="stat-label">Unknown (53%)</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">Execution Summary by Type</h2>
+                <div class="summary-box">
+                    <h3>BASE-TRAINING</h3>
+                    <p>Total: 1 | Successful: 1 | Failed: 0</p>
+                </div>
+                <div class="summary-box">
+                    <h3>EXPERIMENTAL-STAGE</h3>
+                    <p>Total: 8 | Successful: 0 | Failed: 1</p>
+                </div>
+                <div class="summary-box">
+                    <h3>FGE-TRAINING</h3>
+                    <p>Total: 12 | Successful: 6 | Failed: 0</p>
+                </div>
+                <div class="summary-box">
+                    <h3>META-EXPERIMENTS</h3>
+                    <p>Total: 14 | Successful: 4 | Failed: 4</p>
+                </div>
+                <div class="summary-box">
+                    <h3>META-LEARNERS</h3>
+                    <p>Total: 4 | Successful: 4 | Failed: 0</p>
+                </div>
+                <div class="summary-box">
+                    <h3>OOF-FEATURES</h3>
+                    <p>Total: 6 | Successful: 3 | Failed: 0</p>
+                </div>
+                <div class="summary-box">
+                    <h3>UNKNOWN</h3>
+                    <p>Total: 11 | Successful: 2 | Failed: 1</p>
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="section-title">Detailed Execution Log</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Log File</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                            <th>Dataset/Task</th>
+                            <th>Models</th>
+                            <th>Meta-learners</th>
+                            <th>Metrics</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>auc_fixed_70091.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>meta-experiments</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>auc_fixed_70091.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>meta-experiments</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">svm</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>auc_based_reweight_70090.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>meta-experiments</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>auc_based_reweight_70090.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>meta-experiments</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">knn</div><div class="model-tag">svm</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>3 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>svm_knn_nb_reweight_fixed_70089.err</strong></td>
+                            <td><span class="status failed">FAILED</span></td>
+                            <td>meta-experiments</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>svm_knn_nb_reweight_fixed_70089.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>meta-experiments</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">knn</div><div class="model-tag">svm</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>3 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>svm_knn_nb_reweight_70088.err</strong></td>
+                            <td><span class="status failed">FAILED</span></td>
+                            <td>meta-experiments</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>svm_knn_nb_reweight_70088.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>meta-experiments</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">knn</div><div class="model-tag">svm</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>3 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>extended_fixed_v7_70065.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>meta-experiments</td>
+                            <td><code>fold/s</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>extended_fixed_v7_70065.out</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>meta-experiments</td>
+                            <td><code></code></td>
+                            <td><div class="model-tag">deep_mlp_snapshot</div><div class="model-tag">tabpfn</div><div class="model-tag">tabpfn_snapshot</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>extended_fixed_v6_70064.err</strong></td>
+                            <td><span class="status failed">FAILED</span></td>
+                            <td>meta-experiments</td>
+                            <td><code>fold/s</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>extended_fixed_v6_70064.out</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>meta-experiments</td>
+                            <td><code></code></td>
+                            <td><div class="model-tag">deep_mlp_snapshot</div><div class="model-tag">tabpfn</div><div class="model-tag">tabpfn_snapshot</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>extended_models_fixed_70058.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>meta-experiments</td>
+                            <td><code>home/JKP6679</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>extended_models_fixed_70058.out</strong></td>
+                            <td><span class="status failed">FAILED</span></td>
+                            <td>meta-experiments</td>
+                            <td><code>con/sin</code></td>
+                            <td><div class="model-tag">deep_mlp_snapshot</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>embeddings_4models_70054.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>unknown</td>
+                            <td><code>it/s</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>embeddings_4models_70054.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>unknown</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">(todos</div><div class="model-tag">FGE</div><div class="model-tag">LogReg</div><div class="model-tag"></div><div class="model-tag">MLP</div><div class="model-tag"></div><div class="model-tag">Snapshot</div><div class="model-tag"></div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50</td>
+                        </tr>
+                        <tr>
+                            <td><strong>stage3_shuffle_70022.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>experimental-stage</td>
+                            <td><code>it/s</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>stage3_shuffle_70022.out</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>experimental-stage</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50</td>
+                        </tr>
+                        <tr>
+                            <td><strong>stage2_spatial_70020.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>experimental-stage</td>
+                            <td><code>it/s</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>stage2_spatial_70020.out</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>experimental-stage</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50</td>
+                        </tr>
+                        <tr>
+                            <td><strong>stage2_spatial_70017.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>experimental-stage</td>
+                            <td><code>it/s</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>stage2_spatial_70017.out</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>experimental-stage</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50</td>
+                        </tr>
+                        <tr>
+                            <td><strong>stage2_spatial_70005.err</strong></td>
+                            <td><span class="status failed">FAILED</span></td>
+                            <td>experimental-stage</td>
+                            <td><code>it/s</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>stage2_spatial_70005.out</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>experimental-stage</td>
+                            <td><code>ctranspath/smooth</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>test_spatial_gnn_70003.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>unknown</td>
+                            <td><code>shared/home</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>test_spatial_gnn_70003.out</strong></td>
+                            <td><span class="status failed">FAILED</span></td>
+                            <td>unknown</td>
+                            <td><code>home/JKP6679</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>run_meta_experiments_69958.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>unknown</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>run_meta_experiments_69958.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>meta-learners</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">gating</div><div class="model-tag">lightgbm</div><div class="model-tag">logit_avg</div><div class="model-tag">logreg</div></td>
+                            <td>gating, lightgbm, logit_avg, logreg, logreg_fge</td>
+                            <td>—</td>
+                            <td>28 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>build_oof_69957.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>oof-features</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>build_oof_69957.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>oof-features</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 2 h 56 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>build_oof_69956.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>oof-features</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>build_oof_69956.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>oof-features</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 1 h 21 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>run_meta_experiments_69953.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>unknown</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>run_meta_experiments_69953.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>meta-learners</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">gating</div><div class="model-tag">lightgbm</div><div class="model-tag">logit_avg</div><div class="model-tag">logreg</div></td>
+                            <td>gating, lightgbm, logit_avg, logreg, logreg_fge</td>
+                            <td>—</td>
+                            <td>22 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69952.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>fge-training</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69952.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>fge-training</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 1 h 55 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69951.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>fge-training</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69951.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>fge-training</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 1 h 52 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>build_oof_69950.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>oof-features</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>build_oof_69950.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>oof-features</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 0 h 39 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>run_meta_experiments_69943.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>unknown</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>run_meta_experiments_69943.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>meta-learners</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">logreg</div><div class="model-tag">tabpfn</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>logreg, logreg_fge, tabpfn, tabpfn_fge</td>
+                            <td><div class="metric">AUC: 0.7948</div></td>
+                            <td>13 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69942.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>fge-training</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69942.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>fge-training</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 1 h 9 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69941.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>fge-training</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69941.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>fge-training</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 1 h 18 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69940.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>fge-training</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69940.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>fge-training</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 1 h 3 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69939.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>fge-training</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_fge_69939.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>fge-training</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 0 h 57 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_69938.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>unknown</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>train_base_models_69938.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>base-training</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>50/50 - 0 h 2 m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>pipeline_submit_69937.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>unknown</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>pipeline_submit_69937.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>unknown</td>
+                            <td><code>cptac_brca/TP53_mutation</code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>run_meta_experiments_69936.err</strong></td>
+                            <td><span class="status unknown">UNKNOWN</span></td>
+                            <td>unknown</td>
+                            <td><code></code></td>
+                            <td>N/A</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><strong>run_meta_experiments_69936.out</strong></td>
+                            <td><span class="status success">SUCCESS</span></td>
+                            <td>meta-learners</td>
+                            <td><code>cervical_subtype/subtype</code></td>
+                            <td><div class="model-tag">ctranspath</div><div class="model-tag">logreg</div><div class="model-tag">tabpfn</div><div class="model-tag">uni_v2</div><div class="model-tag">virchow_v1</div></td>
+                            <td>logreg, logreg_fge, tabpfn, tabpfn_fge</td>
+                            <td><div class="metric">AUC: 0.9471</div></td>
+                            <td>2 m</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section">
+                <h2 class="section-title">Failed Executions & Errors</h2>
+                <div>
+                    <h3 style="color: #c0392b; margin-bottom: 10px;">svm_knn_nb_reweight_fixed_70089.err</h3>
+                    <div class="error-box">Traceback</div>
+                </div>
+                <div>
+                    <h3 style="color: #c0392b; margin-bottom: 10px;">svm_knn_nb_reweight_70088.err</h3>
+                    <div class="error-box">Traceback</div>
+                </div>
+                <div>
+                    <h3 style="color: #c0392b; margin-bottom: 10px;">extended_fixed_v6_70064.err</h3>
+                    <div class="error-box">Traceback</div>
+                </div>
+                <div>
+                    <h3 style="color: #c0392b; margin-bottom: 10px;">extended_models_fixed_70058.out</h3>
+                    <div class="error-box">Traceback</div>
+                </div>
+                <div>
+                    <h3 style="color: #c0392b; margin-bottom: 10px;">stage2_spatial_70005.err</h3>
+                    <div class="error-box">Traceback</div>
+                </div>
+                <div>
+                    <h3 style="color: #c0392b; margin-bottom: 10px;">test_spatial_gnn_70003.out</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Report generated on 2026-08-19 17:58:15</p>
+            <p>Patho-Ensemble Project - Log Analysis Tool</p>
+        </div>
+    </div>
+</body>
+</html>

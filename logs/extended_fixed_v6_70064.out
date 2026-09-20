@@ -1,0 +1,39 @@
+================================================================================
+🚀 EXPERIMENTO EXTENDIDO (FIXED v6): TabPFN API fix aplicado
+================================================================================
+
+==========================================================================
+  [1/3] Deep MLP Snapshot (CosineAnnealingWarmRestarts)
+==========================================================================
+
+
+
+Evaluating ensemble with meta-model: deep_mlp_snapshot
+Results will be saved to: .../ensemble4_deep_mlp_snapshot_embeddings/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+
+✅ Deep MLP Snapshot completado
+
+==========================================================================
+  [2/3] TabPFN (Tabular Prior Foundation Network)
+==========================================================================
+
+
+
+Evaluating ensemble with meta-model: tabpfn
+Results will be saved to: .../ensemble4_tabpfn_embeddings/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+
+✅ TabPFN completado
+
+==========================================================================
+  [3/3] TabPFN Snapshot
+==========================================================================
+
+
+
+Evaluating ensemble with meta-model: tabpfn_snapshot
+Results will be saved to: .../ensemble4_tabpfn_snapshot_embeddings/
+❌ Error en fold 0: TabPFNClassifier.__init__() got an unexpected keyword argument 'seed'

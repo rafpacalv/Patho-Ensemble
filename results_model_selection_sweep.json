@@ -1,0 +1,152 @@
+{
+  "dataset": "cptac_brca",
+  "task": "TP53_mutation",
+  "n_folds": 50,
+  "meta_model": "logreg",
+  "baseline": "ctranspath+uni_v2+virchow_v1",
+  "nota": "E0=0.7918 del ladder JSON está obsoleto: se calculó el 19-ago contra predicciones base regeneradas después (20-21 ago). El baseline vigente del trío es 0.7616.",
+  "configs": {
+    "trio_actual": {
+      "models": "ctranspath+uni_v2+virchow_v1",
+      "results_dir": "ensemble4_verif_trio",
+      "macro-ovr-auc": 0.7616233719983719,
+      "bacc": 0.6701944444444444,
+      "macro-f1": 0.6686605357166203,
+      "weighted_kappa": 0.35020520456284454
+    },
+    "swap_conch": {
+      "models": "ctranspath+uni_v2+conch_v1_5",
+      "results_dir": "ensemble4_swap_conch",
+      "macro-ovr-auc": 0.7986254578754578,
+      "bacc": 0.7302348901098901,
+      "macro-f1": 0.7294354176375836,
+      "weighted_kappa": 0.4629467671371593
+    },
+    "cuatro": {
+      "models": "ctranspath+uni_v2+virchow_v1+conch_v1_5",
+      "results_dir": "ensemble4_four",
+      "macro-ovr-auc": 0.7986028184778184,
+      "bacc": 0.7291039377289377,
+      "macro-f1": 0.728307998093767,
+      "weighted_kappa": 0.460568714835769
+    }
+  },
+  "comparaciones": {
+    "swap_conch": {
+      "macro-ovr-auc": {
+        "mean_delta": 0.03700208587708587,
+        "ci_95": [
+          0.023037709859584855,
+          0.05141020044770044
+        ],
+        "wins": 34,
+        "ties": 4,
+        "losses": 12,
+        "p_value": 4.0847866905152316e-05,
+        "p_holm": 0.0001371010094452751,
+        "mde_80pct": 0.020891779161640287,
+        "significant": true
+      },
+      "bacc": {
+        "mean_delta": 0.060040445665445655,
+        "ci_95": [
+          0.036348164682539666,
+          0.08382504960317458
+        ],
+        "wins": 36,
+        "ties": 5,
+        "losses": 9,
+        "p_value": 3.427525236131877e-05,
+        "p_holm": 0.0001371010094452751,
+        "mde_80pct": 0.03451129970433344,
+        "significant": true
+      },
+      "macro-f1": {
+        "mean_delta": 0.06077488192096332,
+        "ci_95": [
+          0.0362361158917497,
+          0.08570513349959996
+        ],
+        "wins": 36,
+        "ties": 5,
+        "losses": 9,
+        "p_value": 4.60462699512513e-05,
+        "p_holm": 0.0001371010094452751,
+        "mde_80pct": 0.036480290391493045,
+        "significant": true
+      },
+      "weighted_kappa": {
+        "mean_delta": 0.11274156257431477,
+        "ci_95": [
+          0.06566571302807807,
+          0.16011010913807033
+        ],
+        "wins": 36,
+        "ties": 5,
+        "losses": 9,
+        "p_value": 4.95212958901335e-05,
+        "p_holm": 0.0001371010094452751,
+        "mde_80pct": 0.06804226688158303,
+        "significant": true
+      }
+    },
+    "cuatro": {
+      "macro-ovr-auc": {
+        "mean_delta": 0.03697944647944648,
+        "ci_95": [
+          0.022978768569393557,
+          0.05146104370166869
+        ],
+        "wins": 35,
+        "ties": 2,
+        "losses": 13,
+        "p_value": 2.9861019542220463e-05,
+        "p_holm": 0.00011944407816888185,
+        "mde_80pct": 0.020606941362058085,
+        "significant": true
+      },
+      "bacc": {
+        "mean_delta": 0.05890949328449327,
+        "ci_95": [
+          0.03461091269841269,
+          0.08357392780830279
+        ],
+        "wins": 34,
+        "ties": 6,
+        "losses": 10,
+        "p_value": 4.634900890835047e-05,
+        "p_holm": 0.00013904702672505142,
+        "mde_80pct": 0.03476784631131304,
+        "significant": true
+      },
+      "macro-f1": {
+        "mean_delta": 0.059647462377146715,
+        "ci_95": [
+          0.03417575987262798,
+          0.08503712179008169
+        ],
+        "wins": 34,
+        "ties": 6,
+        "losses": 10,
+        "p_value": 7.075446136156677e-05,
+        "p_holm": 0.00014150892272313354,
+        "mde_80pct": 0.036722219658936704,
+        "significant": true
+      },
+      "weighted_kappa": {
+        "mean_delta": 0.11036351027292454,
+        "ci_95": [
+          0.06370679570356932,
+          0.1589707100158719
+        ],
+        "wins": 34,
+        "ties": 6,
+        "losses": 10,
+        "p_value": 7.61529173149355e-05,
+        "p_holm": 0.00014150892272313354,
+        "mde_80pct": 0.06869157465829506,
+        "significant": true
+      }
+    }
+  }
+}

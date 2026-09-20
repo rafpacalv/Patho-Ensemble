@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternativas al Pipeline de Ensemble</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --border: #e0e0e0;
+            --code-bg: #f5f5f5;
+            --accent: #0066cc;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #1a1a1a;
+                --text: #f5f5f5;
+                --border: #404040;
+                --code-bg: #2a2a2a;
+                --accent: #4da6ff;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #1a1a1a;
+            --text: #f5f5f5;
+            --border: #404040;
+            --code-bg: #2a2a2a;
+            --accent: #4da6ff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        h2 {
+            margin-top: 2rem;
+            color: var(--accent);
+        }
+
+        h3 {
+            margin-top: 1.5rem;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        table thead {
+            background: var(--code-bg);
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        th {
+            font-weight: bold;
+            background: var(--code-bg);
+        }
+
+        tr:hover {
+            background: var(--code-bg);
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: "Monaco", "Menlo", monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .badge.success {
+            background: var(--success);
+            color: white;
+        }
+
+        .badge.warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .badge.error {
+            background: var(--error);
+            color: white;
+        }
+
+        .badge.accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        .section-meta {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 2rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .emoji {
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧬 Estado del Arte: Alternativas al Pipeline de Ensemble</h1>
+
+    <div class="section-meta">
+        <strong>Versión:</strong> 2026-08-20 |
+        <strong>Autor:</strong> Claude Haiku (análisis + piloto) |
+        <strong>Contexto:</strong> Ideas 1-3 validadas esta sesión (nulas/negativas); exploración de alternativas de fusión cuando modelos fundacionales son fijos.
+    </div>
+
+    <hr>
+
+    <h2>📊 Resumen Ejecutivo</h2>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Alternativa</th>
+                    <th>Mecanismo</th>
+                    <th>Factibilidad</th>
+                    <th>Coste</th>
+                    <th>Riesgo</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Fusión temprana (ctranspath⊕virchow_v1)</strong></td>
+                    <td>Concatenación de embeddings a nivel de parche, ABMIL único</td>
+                    <td><span class="badge success">✅ Alta</span></td>
+                    <td><span class="badge success">🟢 Bajo</span></td>
+                    <td><span class="badge success">🟡 Bajo</span></td>
+                    <td><span class="badge accent">⭐⭐⭐ 1</span></td>
+                    <td><span class="badge accent">🔄 En curso</span></td>
+                </tr>
+                <tr>
+                    <td>Registro espacial de uni_v2</td>
+                    <td>Alineación por nearest-neighbor</td>
+                    <td><span class="badge warning">⚠️ Media</span></td>
+                    <td><span class="badge warning">🟡 Medio</span></td>
+                    <td><span class="badge success">🟡 Bajo</span></td>
+                    <td><span class="badge accent">⭐⭐ 2</span></td>
+                    <td><span class="badge warning">⏳ Follow-up</span></td>
+                </tr>
+                <tr>
+                    <td>Data augmentation por bolsa</td>
+                    <td>Subsampleo/bootstrap de parches en train</td>
+                    <td><span class="badge success">✅ Alta</span></td>
+                    <td><span class="badge success">🟢 Muy bajo</span></td>
+                    <td><span class="badge success">🟡 Muy bajo</span></td>
+                    <td><span class="badge accent">⭐⭐ 2</span></td>
+                    <td><span class="badge warning">⏳ Complementaria</span></td>
+                </tr>
+                <tr>
+                    <td>Multi-task learning (PARADIS)</td>
+                    <td>Aprendizaje compartido entre datasets</td>
+                    <td><span class="badge warning">⚠️ Media</span></td>
+                    <td><span class="badge error">🔴 Alto</span></td>
+                    <td><span class="badge warning">🟠 Medio</span></td>
+                    <td><span class="badge accent">⭐ 3</span></td>
+                    <td><span class="badge error">❌ Fuera alcance</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Descartadas:</strong> TransMIL, CLAM, DSMIL, DTFD-MIL</td>
+                    <td>Mono-modelo → requiere stacking después</td>
+                    <td><span class="badge success">✅ Viable</span></td>
+                    <td><span class="badge error">🔴 Alto cómputo</span></td>
+                    <td><span class="badge error">🟠 Regularización incierta</span></td>
+                    <td><span class="badge error">❌ 0</span></td>
+                    <td><span class="badge error">❌ Sobreajuste demostrado</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Descartadas:</strong> Cross-attention aprendida</td>
+                    <td>Atención entre modelos en parches</td>
+                    <td><span class="badge success">✅ Viable</span></td>
+                    <td><span class="badge warning">🟡 Medio</span></td>
+                    <td><span class="badge error">🔴 Regularización incierta</span></td>
+                    <td><span class="badge error">❌ 0</span></td>
+                    <td><span class="badge error">❌ +parámetros, mismo riesgo</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>🔍 1. Diagnóstico: El Pipeline Actual es 100% Fusión Tardía</h2>
+
+    <h3>1.1 Hallazgos de Explore Agents (Meta-learners × Pooling)</h3>
+
+    <p>Dos agentes Explore descubrieron que <strong>ninguna</strong> de las 15 opciones de meta-learners en <code>src/meta_models.py</code> ni las 3 arquitecturas de pooling operan sobre pares de parches.</p>
+
+    <p><strong>Meta-learners (9 opciones en ensemble4.py)</strong>:</p>
+    <ul>
+        <li>LogisticRegression, RandomForest, GradientBoosting, SVM, KNN, Naive Bayes (sklearn)</li>
+        <li>LightGBM, TabPFN, MLP (custom)</li>
+    </ul>
+
+    <p><strong>Arquitecturas de pooling (3 en train_abmil.py)</strong>:</p>
+    <ul>
+        <li><code>ABMIL</code> (gated attention, línea 42–48 de train_abmil.py)</li>
+        <li><code>SpatialABMIL</code> (variantes smooth/sage_bn/sage)</li>
+        <li><code>MultiHeadGatedAttention</code> (experimental)</li>
+    </ul>
+
+    <p><strong>Dato clave</strong>: Todos operan sobre vectores <strong>ya colapsados a nivel de slide</strong> (probabilidad logit/embedding-512 posterior a softmax), generados por el ABMIL de cada modelo de forma independiente. El desacuerdo inter-modelo nunca es resuelto a granularidad de parche.</p>
+
+    <h3>1.2 Hallazgo Nuevo: Alineación de Coordenadas de Parche</h3>
+
+    <p>Inspección directa de archivos <code>.h5</code> bajo <code>/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/</code>:</p>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Aspecto</th>
+                    <th>ctranspath</th>
+                    <th>virchow_v1</th>
+                    <th>uni_v2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Slides comunes en cptac_brca</strong></td>
+                    <td>387</td>
+                    <td>387</td>
+                    <td>650</td>
+                </tr>
+                <tr>
+                    <td><strong>Verificación de coords</strong></td>
+                    <td>✅ Iguales fila-a-fila vs virchow_v1</td>
+                    <td>✅ Iguales fila-a-fila vs ctranspath</td>
+                    <td>❌ Escala/rango distinto</td>
+                </tr>
+                <tr>
+                    <td><strong>Implicación</strong></td>
+                    <td>✅ Concatenación directa sin registro</td>
+                    <td>✅ Concatenación directa sin registro</td>
+                    <td>⚠️ Requiere alineación espacial</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p><strong>Conclusión:</strong> ctranspath y virchow_v1 pueden ser fusionados a nivel de parche con <strong>coste de alineación CERO</strong>.</p>
+
+    <h2>⭐ 2. Alternativa Recomendada: Fusión Temprana</h2>
+
+    <h3>2.1 Mecánica</h3>
+
+    <pre><code>Para cada slide:
+  1. Carga embeddings de ctranspath[768] y virchow_v1[2560] (mismas coords)
+  2. Concatena row-wise: [768] ⊕ [2560] → [3328]
+  3. Entrena un ABMIL único sobre el tensor concatenado
+  4. Atención puede ahora resolver desacuerdo inter-modelo LOCALMENTE
+  5. Combina resultado con uni_v2 vía stacking</code></pre>
+
+    <h3>2.2 Coste de Parámetros</h3>
+
+    <p>La primera capa <code>nn.Linear(in_dim, 512)</code> de ABMIL:</p>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Escenario</th>
+                    <th>in_dim</th>
+                    <th>Parámetros</th>
+                    <th>Aumento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mono-modelo (ej. ctranspath)</td>
+                    <td>768</td>
+                    <td>≈ 394K</td>
+                    <td>Baseline</td>
+                </tr>
+                <tr>
+                    <td>Mono-modelo (virchow_v1)</td>
+                    <td>2560</td>
+                    <td>≈ 1.31M</td>
+                    <td>+3.3× baseline</td>
+                </tr>
+                <tr>
+                    <td><strong>Fusión temprana</strong></td>
+                    <td>3328</td>
+                    <td><strong>≈ 1.71M</strong></td>
+                    <td><strong>+1.3× virchow</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p><strong>Evaluación:</strong> El aumento es modesto. La regularización implícita (dropout 0.25, early stopping) ya sobrevive al salto virchow_v1; el +0.4M es manageable.</p>
+
+    <h3>2.3 Integración con Código Existente</h3>
+
+    <p><strong>Módulos SIN modificar:</strong></p>
+    <ul>
+        <li><code>train_abmil.py</code> — reusado sin tocar</li>
+        <li><code>test_abmil.py</code> — reusado sin tocar</li>
+        <li><code>abmil_engine.py</code> — reusado sin tocar</li>
+        <li><code>ensemble4.py</code> — reusado sin tocar</li>
+    </ul>
+
+    <p><strong>Código nuevo: <code>src/ensemble5.py</code></strong> (~320 líneas):</p>
+    <ol>
+        <li><code>_verify_patch_alignment()</code> — assert duro de coords idénticas</li>
+        <li><code>load_fused_features_cached()</code> — carga y concatena embeddings</li>
+        <li><code>main()</code> — orquestación: entrena ABMIL fusionado, combina con uni_v2</li>
+    </ol>
+
+    <h2>📋 3. Protocolo de Validación</h2>
+
+    <h3>3.1 Fase 1: Piloto de 5 Folds (En Curso)</h3>
+
+    <pre><code>python src/ensemble5.py \
+    --work_dir /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches \
+    --train_source cptac_brca \
+    --tissue_patching 20x_224px_0px_overlap \
+    --task_name TP53_mutation \
+    --fuse_models ctranspath virchow_v1 \
+    --other_model uni_v2 \
+    --fold_start 0 --fold_end 4 \
+    --epochs 100 --meta_model logreg</code></pre>
+
+    <p><strong>Criterio de señal:</strong></p>
+    <ul>
+        <li><span class="badge success">✅ Positivo</span> (Δ AUC_mean &gt; 0) → escalar a 50 folds + Holm-Bonferroni</li>
+        <li><span class="badge warning">✅ Neutro</span> (desv. estándar &gt; |Δ|) → escalar a 50 folds</li>
+        <li><span class="badge error">❌ Negativo</span> (Δ AUC_mean &lt; -0.01) → cierre, documentar como intento #8</li>
+    </ul>
+
+    <h3>3.2 Fase 2: Escala a 50 Folds (Condicional)</h3>
+
+    <p>Si Fase 1 da señal +/=, entrenar folds 0–49 y realizar análisis pareado con Holm-Bonferroni.</p>
+
+    <h2>📚 Referencias Clave</h2>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Archivo</th>
+                    <th>Función</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>src/ensemble5.py</code></td>
+                    <td><code>_verify_patch_alignment()</code></td>
+                    <td>Verificación de coords antes de entrenar</td>
+                </tr>
+                <tr>
+                    <td><code>src/ensemble5.py</code></td>
+                    <td><code>load_fused_features_cached()</code></td>
+                    <td>Carga + concatena embeddings</td>
+                </tr>
+                <tr>
+                    <td><code>src/train_abmil.py</code></td>
+                    <td><code>load_features_cached()</code>, etc.</td>
+                    <td>Reuso en ensemble5</td>
+                </tr>
+                <tr>
+                    <td><code>src/abmil_engine.py</code></td>
+                    <td><code>train_abmil()</code>, <code>abmil_predict()</code></td>
+                    <td>Reuso en ensemble5</td>
+                </tr>
+                <tr>
+                    <td><code>src/ensemble4.py</code></td>
+                    <td><code>Ensemble</code> class</td>
+                    <td>Reuso para stacking</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    <p><strong>✓ Conclusión:</strong> La fusión temprana representa una alternativa fundamentalmente distinta al pipeline actual — no es ajuste arquitectónico, sino cambio de dónde ocurre la fusión inter-modelo. Coste bajo, riesgo moderado, potencial alto.</p>
+</body>
+</html>

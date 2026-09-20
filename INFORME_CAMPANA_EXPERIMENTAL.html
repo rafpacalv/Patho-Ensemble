@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Informe completo de la campaña experimental de Patho-Ensemble: 39 configuraciones sobre 50 folds, y por qué ninguna supera a la regresión logística.">
+<style>
+  /* Reset mínimo — replica el que el visor de Artifacts aplica, para que el
+     fichero standalone se vea idéntico a la versión publicada. */
+  html,body,h1,h2,h3,h4,h5,h6,p,ul,ol,dl,dd,figure,pre,table{margin:0;padding:0}
+  img,svg{max-width:100%;height:auto}
+</style>
+<title>El techo de la logreg</title>
+<style>
+  :root{
+    --ground:#FAF9FB; --surface:#FFFFFF; --surface-2:#F4F2F7;
+    --ink:#1B1725; --ink-2:#625C72; --ink-3:#8B8499;
+    --rule:#E2DEE9; --rule-2:#EFECF3;
+    --hema:#4B3E8C; --hema-soft:#EDE9F7;
+    --eosin:#B0566A; --eosin-soft:#F8EBEE;
+    --verde:#3D7A6B; --verde-soft:#E8F1EE;
+    --serif:Charter,"Bitstream Charter","Sitka Text",Cambria,"Source Serif Pro",Georgia,serif;
+    --sans:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#131120; --surface:#1B1829; --surface-2:#221E33;
+      --ink:#EAE6F2; --ink-2:#9A93AC; --ink-3:#7A7389;
+      --rule:#2E2942; --rule-2:#262137;
+      --hema:#9E8FE4; --hema-soft:#241F3D;
+      --eosin:#D98496; --eosin-soft:#33202A;
+      --verde:#63AD9A; --verde-soft:#1B2E2A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#131120; --surface:#1B1829; --surface-2:#221E33;
+    --ink:#EAE6F2; --ink-2:#9A93AC; --ink-3:#7A7389;
+    --rule:#2E2942; --rule-2:#262137;
+    --hema:#9E8FE4; --hema-soft:#241F3D;
+    --eosin:#D98496; --eosin-soft:#33202A;
+    --verde:#63AD9A; --verde-soft:#1B2E2A;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:var(--serif); font-size:17px; line-height:1.62;
+    margin:0; padding:0 24px 96px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px; margin:0 auto}
+  .col{max-width:660px}
+  .col-wide{max-width:1120px}
+
+  /* ---------- masthead ---------- */
+  header{
+    padding:72px 0 40px; border-bottom:2px solid var(--ink);
+    display:flex; flex-direction:column; gap:20px;
+  }
+  .eyebrow{
+    font-family:var(--sans); font-size:11.5px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--hema);
+  }
+  h1{
+    font-family:var(--serif); font-size:clamp(2.1rem,5.2vw,3.15rem);
+    line-height:1.08; font-weight:600; margin:0; letter-spacing:-.018em;
+    text-wrap:balance; max-width:16ch;
+  }
+  .standfirst{
+    font-size:1.16rem; line-height:1.55; color:var(--ink-2);
+    max-width:56ch; margin:0;
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:0 32px; row-gap:12px;
+    font-family:var(--sans); font-size:12.5px; color:var(--ink-2);
+    padding-top:8px;
+  }
+  .meta div{display:flex; flex-direction:column; gap:2px}
+  .meta dt{
+    font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--ink-3); font-weight:600;
+  }
+  .meta dd{margin:0; font-family:var(--mono); font-size:13px; color:var(--ink)}
+
+  /* ---------- sections ---------- */
+  section{padding-top:60px}
+  h2{
+    font-family:var(--serif); font-size:1.72rem; line-height:1.2;
+    font-weight:600; margin:0 0 6px; letter-spacing:-.012em; text-wrap:balance;
+  }
+  h3{
+    font-family:var(--serif); font-size:1.2rem; font-weight:600;
+    margin:38px 0 4px; letter-spacing:-.006em; text-wrap:balance;
+  }
+  h4{
+    font-family:var(--sans); font-size:12px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2);
+    margin:30px 0 10px;
+  }
+  .h-rail{
+    display:flex; align-items:baseline; gap:14px; margin-bottom:22px;
+    border-bottom:1px solid var(--rule); padding-bottom:12px;
+  }
+  .h-rail .tag{
+    font-family:var(--mono); font-size:12px; font-weight:600;
+    color:var(--surface); background:var(--hema);
+    padding:3px 8px; border-radius:3px; flex:none; letter-spacing:.04em;
+  }
+  .h-rail h2{margin:0}
+  p{margin:0 0 16px; text-wrap:pretty}
+  .lede{font-size:1.06rem; color:var(--ink-2)}
+  strong{font-weight:600}
+  a{color:var(--hema); text-decoration-thickness:1px; text-underline-offset:2px}
+  a:focus-visible,summary:focus-visible{outline:2px solid var(--hema); outline-offset:3px; border-radius:2px}
+  code{
+    font-family:var(--mono); font-size:.855em; background:var(--surface-2);
+    padding:1px 5px; border-radius:3px; color:var(--ink);
+  }
+  ul,ol{margin:0 0 16px; padding-left:1.15em}
+  li{margin-bottom:9px; text-wrap:pretty}
+  li::marker{color:var(--ink-3)}
+
+  /* ---------- verdict callout ---------- */
+  .verdict{
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:4px solid var(--hema); border-radius:4px;
+    padding:26px 30px; margin:26px 0 8px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .verdict p{margin:0}
+  .verdict .big{font-size:1.2rem; line-height:1.45; font-weight:600}
+
+  .note{
+    background:var(--surface-2); border-radius:4px;
+    padding:18px 22px; margin:22px 0;
+    font-size:.955rem; color:var(--ink-2);
+    border-left:3px solid var(--rule);
+  }
+  .note p:last-child{margin-bottom:0}
+  .note strong{color:var(--ink)}
+
+  /* ---------- tables ---------- */
+  .scroll{overflow-x:auto; margin:22px 0; -webkit-overflow-scrolling:touch}
+  table{
+    border-collapse:collapse; width:100%; font-family:var(--sans);
+    font-size:13.5px; line-height:1.45; min-width:min(100%,540px);
+  }
+  caption{
+    caption-side:top; text-align:left; font-family:var(--sans);
+    font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-3); font-weight:600; padding-bottom:10px;
+  }
+  th{
+    text-align:left; font-weight:600; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ink-2);
+    padding:0 14px 9px 0; border-bottom:1.5px solid var(--ink); white-space:nowrap;
+  }
+  td{
+    padding:8px 14px 8px 0; border-bottom:1px solid var(--rule-2);
+    vertical-align:baseline;
+  }
+  tr:last-child td{border-bottom:none}
+  .num{font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap}
+  th.num{text-align:right}
+  .cfg{font-family:var(--mono); font-size:12.5px; white-space:nowrap}
+  .base-row td{background:var(--hema-soft); font-weight:600}
+  .muted{color:var(--ink-2)}
+  .pos{color:var(--verde); font-weight:600}
+  .neg{color:var(--eosin)}
+  .win{font-weight:600}
+
+  /* ---------- chips ---------- */
+  .chip{
+    display:inline-block; font-family:var(--sans); font-size:10.5px;
+    font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    padding:2px 7px; border-radius:3px; white-space:nowrap;
+  }
+  .chip-null{background:var(--hema-soft); color:var(--hema)}
+  .chip-bad{background:var(--eosin-soft); color:var(--eosin)}
+  .chip-ok{background:var(--verde-soft); color:var(--verde)}
+  .chip-tie{background:var(--surface-2); color:var(--ink-2)}
+
+  /* ---------- interval figure ---------- */
+  figure{margin:30px 0}
+  figcaption{
+    font-family:var(--sans); font-size:12.5px; color:var(--ink-2);
+    line-height:1.5; margin-top:14px; max-width:62ch;
+  }
+  .fig-title{
+    font-family:var(--sans); font-size:11.5px; font-weight:700;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3);
+    margin-bottom:16px;
+  }
+  .iv{display:grid; grid-template-columns:190px minmax(220px,1fr) 74px 66px; gap:0 16px; align-items:center}
+  .iv > div{padding:5px 0}
+  .iv-head{
+    font-family:var(--sans); font-size:10.5px; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3);
+    border-bottom:1.5px solid var(--ink); padding-bottom:8px !important; margin-bottom:4px;
+  }
+  .iv-name{font-family:var(--mono); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .track{position:relative; height:18px}
+  .track::before{
+    content:""; position:absolute; top:0; bottom:0; left:var(--zero);
+    width:1.5px; background:var(--ink-2); opacity:.55;
+  }
+  .ci{
+    position:absolute; top:7px; height:4px; border-radius:2px;
+    left:var(--l); width:var(--w); background:var(--hema); opacity:.32;
+  }
+  .pt{
+    position:absolute; top:2px; height:14px; width:2.5px; border-radius:1px;
+    left:var(--p); background:var(--hema);
+  }
+  .pt.is-neg{background:var(--eosin)}
+  .ci.is-neg{background:var(--eosin)}
+  .iv-val{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:12.5px; text-align:right}
+  .iv-mde{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:12px; text-align:right; color:var(--ink-3)}
+
+  /* bars inside the big table */
+  .bartrack{position:relative; height:14px; min-width:150px; width:150px}
+  .bartrack::before{
+    content:""; position:absolute; top:0; bottom:0; left:95.92%;
+    width:1.5px; background:var(--ink-2); opacity:.5;
+  }
+  .bar{
+    position:absolute; top:4px; height:6px; border-radius:1px;
+    left:var(--l); width:var(--w); background:var(--eosin);
+  }
+  .bar.is-pos{background:var(--verde)}
+
+  /* ---------- misc ---------- */
+  hr{border:none; border-top:1px solid var(--rule); margin:44px 0}
+  details{
+    border:1px solid var(--rule); border-radius:4px; padding:0 20px;
+    margin:22px 0; background:var(--surface);
+  }
+  details[open]{padding-bottom:14px}
+  summary{
+    cursor:pointer; padding:15px 0; font-family:var(--sans);
+    font-size:13px; font-weight:600; color:var(--hema); list-style:none;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"▸ "; display:inline-block; transition:transform .15s}
+  details[open] summary::before{transform:rotate(90deg)}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
+  pre{
+    background:var(--surface-2); border-radius:4px; padding:16px 18px;
+    overflow-x:auto; font-family:var(--mono); font-size:12.5px;
+    line-height:1.6; margin:18px 0;
+  }
+  pre code{background:none; padding:0; font-size:inherit}
+  footer{
+    margin-top:72px; padding-top:26px; border-top:1px solid var(--rule);
+    font-family:var(--sans); font-size:12.5px; color:var(--ink-3); line-height:1.65;
+  }
+  @media (max-width:720px){
+    body{font-size:16px; padding:0 18px 72px}
+    header{padding-top:48px}
+    .iv{grid-template-columns:130px minmax(120px,1fr) 66px; gap:0 10px}
+    .iv-mde,.iv-head-mde{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Patho-Ensemble · Campaña experimental · Agosto 2026</div>
+  <h1>El techo de la logreg</h1>
+  <p class="standfirst">Treinta y nueve configuraciones, cincuenta folds y cuatro ejes de mejora.
+  Ninguna supera a una regresión logística de siete parámetros. Este es el informe de por qué,
+  y de por qué eso es un resultado y no una ausencia.</p>
+  <dl class="meta">
+    <div><dt>Dataset</dt><dd>cptac_brca / TP53_mutation</dd></div>
+    <div><dt>Folds</dt><dd>50</dd></div>
+    <div><dt>Configuraciones</dt><dd>39</dd></div>
+    <div><dt>Modelos base</dt><dd>3</dd></div>
+    <div><dt>Corrida de referencia</dt><dd>job 69958</dd></div>
+  </dl>
+</header>
+
+<!-- ============================ CONCLUSIÓN ============================ -->
+<section class="col">
+  <h2>Conclusión</h2>
+  <div class="verdict">
+    <p class="big">Sobre <code>cptac_brca / TP53_mutation</code>, la regresión logística sobre
+    probabilidades in-sample es óptima dentro de lo estadísticamente detectable.</p>
+    <p class="muted">Ninguna de las 39 configuraciones la supera en ninguna de las cinco métricas
+    tras corrección de Holm. El mejor contendiente queda en <strong>+0.0060 de AUC</strong> con
+    p&nbsp;=&nbsp;0.291, frente a un efecto mínimo detectable de <strong>0.016</strong>.</p>
+  </div>
+  <p style="margin-top:22px">El resultado está <strong>acotado</strong>, que no es lo mismo que
+  vacío. Los intervalos de confianza pareados sobre 50 folds sitúan el techo de cualquier mejora
+  en torno a 0.016 de AUC: si alguna de estas técnicas aportara algo apreciable, se habría visto.</p>
+  <p>Se probaron cuatro ejes de mejora. Los cuatro quedan cerrados, y cada uno con una
+  explicación mecánica medida, no conjeturada.</p>
+</section>
+
+<section class="col-wide">
+  <div class="scroll">
+    <table>
+      <caption>Los cuatro ejes y su desenlace</caption>
+      <thead>
+        <tr><th style="width:19%">Eje</th><th style="width:26%">Qué se probó</th>
+        <th style="width:16%">Resultado</th><th>Causa medida</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Diversidad de snapshots</strong></td>
+          <td>4 variantes FGE + 2 Snapshot Ensemble sobre los modelos base</td>
+          <td><span class="chip chip-null">nulo acotado</span></td>
+          <td>Saturación. Los snapshots correlacionan r&nbsp;=&nbsp;0.92–0.98, muy por encima del
+          suelo inter-modelo r&nbsp;=&nbsp;0.797. El presupuesto de diversidad ya lo gasta el eje
+          multi-modelo.</td>
+        </tr>
+        <tr>
+          <td><strong>Capacidad del meta-learner</strong></td>
+          <td>TabPFN, LightGBM, MLP, MLP+SE, MLP+FGE, deep ensemble, gating</td>
+          <td><span class="chip chip-bad">degrada</span></td>
+          <td>75 muestras de meta-train sobre una matriz de rango efectivo 4. No hay estructura
+          que aprender más allá de una combinación lineal.</td>
+        </tr>
+        <tr>
+          <td><strong>Calidad de las meta-features</strong></td>
+          <td>Features out-of-fold por CV anidada, en tres tamaños de train interno</td>
+          <td><span class="chip chip-bad">degrada</span></td>
+          <td>Contraintuitivo pero medido: el coste muestral de retener datos supera al sesgo
+          in-sample que elimina.</td>
+        </tr>
+        <tr>
+          <td><strong>Espacio de combinación</strong></td>
+          <td>Log-odds, eliminación de la columna redundante, media ponderada de 3 parámetros</td>
+          <td><span class="chip chip-tie">empate exacto</span></td>
+          <td><code>logit_avg</code> iguala a la logreg con 3 parámetros en vez de 7, con un MDE
+          de 0.008.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="col">
+  <div class="note">
+    <p><strong>La lectura para la tesis.</strong> El techo no está en el meta-clasificador: está
+    en el presupuesto muestral. Con 75 slides de meta-entrenamiento y 22 de test por fold, la
+    combinación lineal de tres modelos agota lo que los datos soportan. Es una afirmación
+    falsable: predice que con cohortes mayores la jerarquía cambiaría.</p>
+  </div>
+</section>
+
+<!-- ============================ LA FIGURA ============================ -->
+<section class="col-wide">
+  <div class="h-rail"><span class="tag">Fig. 1</span><h2>La zona nula, ampliada</h2></div>
+  <p class="col lede">Catorce configuraciones cuyo intervalo de confianza pareado contiene el cero.
+  Lo informativo no es que lo contengan, sino <em>cuán estrechas</em> son: el ancho del intervalo
+  es la medida de lo que este diseño experimental podía haber detectado.</p>
+
+  <figure>
+    <div class="fig-title">Δ AUC frente al baseline · IC 95 % pareado · 50 folds</div>
+    <div class="scroll">
+      <div class="iv" style="--zero:58.33%; min-width:600px">
+        <div class="iv-head">Configuración</div>
+        <div class="iv-head">−0.035 &nbsp;·&nbsp; 0 &nbsp;·&nbsp; +0.025</div>
+        <div class="iv-head" style="text-align:right">Δ AUC</div>
+        <div class="iv-head iv-head-mde" style="text-align:right">MDE</div>
+
+        <div class="iv-name">m4_logreg_fge_lowlr</div>
+        <div class="track"><span class="ci" style="--l:50.00%;--w:36.83%"></span><span class="pt" style="--p:68.33%"></span></div>
+        <div class="iv-val pos">+0.0060</div><div class="iv-mde">0.016</div>
+
+        <div class="iv-name">m5_logreg_fge_pat3</div>
+        <div class="track"><span class="ci" style="--l:47.00%;--w:39.83%"></span><span class="pt" style="--p:66.85%"></span></div>
+        <div class="iv-val pos">+0.0051</div><div class="iv-mde">0.017</div>
+
+        <div class="iv-name">m2_logreg_fge_orig</div>
+        <div class="track"><span class="ci" style="--l:44.00%;--w:39.17%"></span><span class="pt" style="--p:63.67%"></span></div>
+        <div class="iv-val pos">+0.0032</div><div class="iv-mde">0.017</div>
+
+        <div class="iv-name">s0_logreg_se_orig</div>
+        <div class="track"><span class="ci" style="--l:35.67%;--w:52.66%"></span><span class="pt" style="--p:62.03%"></span></div>
+        <div class="iv-val pos">+0.0022</div><div class="iv-mde">0.023</div>
+
+        <div class="iv-name">f8_mlpsnap_ins</div>
+        <div class="track"><span class="ci" style="--l:52.17%;--w:18.33%"></span><span class="pt" style="--p:61.37%"></span></div>
+        <div class="iv-val pos">+0.0018</div><div class="iv-mde">0.008</div>
+
+        <div class="iv-name">f5_logitavg_oof</div>
+        <div class="track"><span class="ci" style="--l:50.33%;--w:20.84%"></span><span class="pt" style="--p:60.67%"></span></div>
+        <div class="iv-val pos">+0.0014</div><div class="iv-mde">0.009</div>
+
+        <div class="iv-name">m3_logreg_fge_wbase</div>
+        <div class="track"><span class="ci" style="--l:44.67%;--w:30.16%"></span><span class="pt" style="--p:60.17%"></span></div>
+        <div class="iv-val pos">+0.0011</div><div class="iv-mde">0.013</div>
+
+        <div class="iv-name">g7_logitavg_oof10</div>
+        <div class="track"><span class="ci" style="--l:49.33%;--w:20.84%"></span><span class="pt" style="--p:59.83%"></span></div>
+        <div class="iv-val pos">+0.0009</div><div class="iv-mde">0.009</div>
+
+        <div class="iv-name">f4_logitavg_ins</div>
+        <div class="track"><span class="ci" style="--l:49.33%;--w:19.00%"></span><span class="pt" style="--p:58.83%"></span></div>
+        <div class="iv-val pos">+0.0003</div><div class="iv-mde">0.008</div>
+
+        <div class="iv-name">g6_logitavg_oof5</div>
+        <div class="track"><span class="ci is-neg" style="--l:48.67%;--w:18.16%"></span><span class="pt is-neg" style="--p:57.60%"></span></div>
+        <div class="iv-val neg">−0.0004</div><div class="iv-mde">0.008</div>
+
+        <div class="iv-name">f18_gating_oof</div>
+        <div class="track"><span class="ci is-neg" style="--l:45.83%;--w:18.67%"></span><span class="pt is-neg" style="--p:55.17%"></span></div>
+        <div class="iv-val neg">−0.0019</div><div class="iv-mde">0.008</div>
+
+        <div class="iv-name">g1_logreg_oof10</div>
+        <div class="track"><span class="ci is-neg" style="--l:38.50%;--w:24.33%"></span><span class="pt is-neg" style="--p:50.67%"></span></div>
+        <div class="iv-val neg">−0.0046</div><div class="iv-mde">0.011</div>
+
+        <div class="iv-name">f2_logregLogit_ins</div>
+        <div class="track"><span class="ci is-neg" style="--l:34.50%;--w:29.83%"></span><span class="pt is-neg" style="--p:49.33%"></span></div>
+        <div class="iv-val neg">−0.0054</div><div class="iv-mde">0.013</div>
+
+        <div class="iv-name">f1_logreg_oof</div>
+        <div class="track"><span class="ci is-neg" style="--l:25.33%;--w:35.50%"></span><span class="pt is-neg" style="--p:43.00%"></span></div>
+        <div class="iv-val neg">−0.0092</div><div class="iv-mde">0.015</div>
+      </div>
+    </div>
+    <figcaption>Las cuatro familias <code>logit_avg</code> y <code>gating</code> tienen los
+    intervalos más estrechos (MDE 0.008–0.009) porque sus predicciones están muy correlacionadas
+    con las del baseline fold a fold: el contraste pareado cancela el ruido común. Son, por tanto,
+    los empates mejor establecidos de toda la tabla.</figcaption>
+  </figure>
+</section>
+
+<!-- ============================ MAPA ============================ -->
+<section class="col-wide">
+  <div class="h-rail"><span class="tag">Mapa</span><h2>Las siete fases de la campaña</h2></div>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th style="width:34px">#</th><th>Fase</th><th>Jobs SLURM</th>
+        <th class="num">Configs</th><th class="num">Coste GPU</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num muted">1</td><td>Ablación FGE — <code>cervical_subtype</code></td><td class="cfg muted">69936</td><td class="num">8</td><td class="num muted">~1 h</td></tr>
+        <tr><td class="num muted">2</td><td>Réplica FGE — <code>cptac_brca</code>, 50 folds</td><td class="cfg muted">69938–69943</td><td class="num">10</td><td class="num muted">~4 h</td></tr>
+        <tr><td class="num muted">3</td><td>Snapshot Ensemble en modelos base</td><td class="cfg muted">69951, 69952</td><td class="num">2</td><td class="num muted">~2 h</td></tr>
+        <tr><td class="num muted">4</td><td>Fase 0 — meta-features out-of-fold (<code>n_inner=3</code>)</td><td class="cfg muted">69950</td><td class="num muted">—</td><td class="num muted">39 min</td></tr>
+        <tr><td class="num muted">5</td><td>Primer barrido de meta-clasificadores</td><td class="cfg muted">69953</td><td class="num">31</td><td class="num muted">25 min</td></tr>
+        <tr><td class="num muted">6</td><td>Test discriminante de <code>n_inner</code> (5 y 10)</td><td class="cfg muted">69956, 69957</td><td class="num muted">—</td><td class="num muted">4 h 17</td></tr>
+        <tr class="base-row"><td class="num">7</td><td>Barrido final consolidado</td><td class="cfg">69958</td><td class="num">39</td><td class="num">28 min</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col" style="margin-top:6px"><strong>El job 69958 es la corrida de referencia.</strong>
+  Reevalúa las 39 configuraciones sobre los mismos 50 folds, condición necesaria para que el
+  análisis pareado sea válido. Las corridas anteriores se conservan pero quedan superadas.</p>
+</section>
+
+<!-- ============================ PROTOCOLO ============================ -->
+<section class="col">
+  <div class="h-rail"><span class="tag">Método</span><h2>Protocolo de análisis</h2></div>
+  <p>Todas las configuraciones se evalúan sobre los <strong>mismos</strong> folds, así que los
+  contrastes son pareados. Cada tabla reporta cuatro cosas además de la media:</p>
+  <ul>
+    <li><strong>IC 95 % pareado</strong> — no intervalos independientes, que en la primera
+    ablación ocultaron un efecto sistemático real.</li>
+    <li><strong>G/E/P</strong> — folds ganados, empatados y perdidos. Los empates se reportan
+    explícitamente: con 22 slides de test por fold muchas configuraciones producen la misma matriz
+    de confusión, y en kappa los empates llegaron a 22 de 50.</li>
+    <li><strong>p de Holm</strong> — corrección por comparaciones múltiples dentro de cada métrica.</li>
+    <li><strong>MDE</strong> — efecto mínimo detectable al 80 % de potencia, (1.96&nbsp;+&nbsp;0.842)·sd/√n.
+    Es lo que convierte un resultado nulo en un resultado acotado.</li>
+  </ul>
+  <div class="note">
+    <p><strong>Por qué este protocolo.</strong> Se adoptó tras dos fallos concretos, ambos
+    documentados. Comparar intervalos independientes ocultó un efecto sistemático en
+    <code>cervical_subtype</code>. Y un «5 de 5 folds, p&nbsp;=&nbsp;0.024» con n&nbsp;=&nbsp;5
+    resultó ser un falso positivo que no replicó a 50 folds, con el signo invertido.</p>
+  </div>
+</section>
+
+<!-- ============================ NOMENCLATURA ============================ -->
+<section class="col-wide">
+  <div class="h-rail"><span class="tag">Glosario</span><h2>Cómo leer las etiquetas</h2></div>
+  <p class="col lede">Los nombres de las 39 configuraciones son sistemáticos, no arbitrarios.
+  La fuente autoritativa es <code>experiments.yaml</code>; esto es su lectura.</p>
+
+  <h4>Anatomía de un nombre</h4>
+  <pre style="max-width:660px"><code>m4_logreg_fge_lowlr
+│  │      └────────── fuente de los modelos base  (base_source)
+│  └───────────────── meta-clasificador           (meta_model)
+└──────────────────── bloque experimental + índice
+
+f15_tabpfn_oof
+│   │      └───────── régimen de meta-features    (meta_features)
+│   └──────────────── meta-clasificador
+└──────────────────── bloque experimental + índice</code></pre>
+  <p class="col">Cada configuración varía <strong>un solo eje</strong> respecto de su pareja, para
+  que el contraste pareado aísle ese eje. Por eso los nombres van casi siempre en parejas
+  <code>_ins</code>&nbsp;/&nbsp;<code>_oof</code>.</p>
+
+  <h4>Prefijos de bloque</h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:70px">Prefijo</th><th style="width:32%">Bloque</th>
+      <th>Qué eje varía</th><th class="num">Configs</th></tr></thead>
+      <tbody>
+        <tr><td class="cfg">m</td><td>Ablación de snapshots FGE en modelos base</td><td class="cfg muted">base_source</td><td class="num">m0–m9</td></tr>
+        <tr><td class="cfg">s</td><td>Snapshot Ensembles en modelos base</td><td class="cfg muted">base_source</td><td class="num">s0–s1</td></tr>
+        <tr><td class="cfg">f</td><td>Meta-clasificadores × régimen de features</td><td class="cfg muted">meta_model, meta_features</td><td class="num">f0–f18</td></tr>
+        <tr><td class="cfg">g</td><td>Coste muestral de la CV interna</td><td class="cfg muted">n_inner de las features</td><td class="num">g0–g7</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col"><code>m0_logreg_std</code> y <code>f0_logreg_ins</code> son <strong>la misma
+  configuración</strong>, evaluada como baseline en ambos bloques. Igual ocurre con
+  <code>m1_tabpfn_std</code> y <code>f14_tabpfn_ins</code>.</p>
+
+  <h4>Meta-clasificadores <span class="muted" style="text-transform:none;letter-spacing:0">(meta_model)</span></h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:130px">Etiqueta</th><th style="width:26%">Clase</th><th>Qué hace</th></tr></thead>
+      <tbody>
+        <tr class="base-row"><td class="cfg">logreg</td><td class="cfg">LogisticRegression</td><td><strong>Baseline.</strong> 7 parámetros sobre las 6 columnas de features</td></tr>
+        <tr><td class="cfg">logit_avg</td><td class="cfg">LogitAveragingMetaClassifier</td><td>Un peso por modelo base sobre log-odds, con softmax sobre los pesos y temperatura aprendida. <strong>3 parámetros</strong></td></tr>
+        <tr><td class="cfg">mlp</td><td class="cfg">MLPMetaClassifier</td><td>MLP pequeña, un solo ciclo de entrenamiento</td></tr>
+        <tr><td class="cfg">mlp_snapshot</td><td class="cfg">SnapshotMLPMetaClassifier</td><td>MLP + Snapshot Ensemble: coseno con reinicios, promedio de snapshots</td></tr>
+        <tr><td class="cfg">mlp_fge</td><td class="cfg">FGEMLPMetaClassifier</td><td>MLP + FGE: ciclos piecewise-linear. Implementado desde hacía tiempo pero <strong>nunca ejecutado</strong> antes de esta campaña</td></tr>
+        <tr><td class="cfg">mlp_deepens</td><td class="cfg">DeepEnsembleMLPMetaClassifier</td><td>6 MLP con semillas independientes, promediando softmax. Es el <strong>control científico</strong> de <code>mlp_snapshot</code></td></tr>
+        <tr><td class="cfg">gating</td><td class="cfg">GatingMLPMetaClassifier</td><td>Mixture-of-experts: una cabeza emite 3 pesos por muestra y combina las salidas base</td></tr>
+        <tr><td class="cfg">tabpfn</td><td class="cfg muted">TabPFN 8.1.0</td><td>Transformer preentrenado para datos tabulares pequeños</td></tr>
+        <tr><td class="cfg">lightgbm</td><td class="cfg muted">LGBMClassifier 4.7.0</td><td>Gradient boosting. Referencia tabular fuerte</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Fuente de los modelos base <span class="muted" style="text-transform:none;letter-spacing:0">(base_source)</span></h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:140px">Etiqueta</th><th>Significado</th></tr></thead>
+      <tbody>
+        <tr><td class="cfg">std · standard</td><td>Modelo convergido, sin snapshots</td></tr>
+        <tr><td class="cfg">fge_orig</td><td>FGE de referencia: lr₁ 2e-4, ciclos de 4 épocas</td></tr>
+        <tr><td class="cfg">fge_wbase</td><td>Igual, pero el modelo convergido <strong>entra en el promedio</strong> (<code>include_base: true</code>)</td></tr>
+        <tr><td class="cfg">fge_lowlr</td><td>Ciclos más suaves y largos: lr₁ 5e-5, 8 épocas</td></tr>
+        <tr><td class="cfg">fge_pat3</td><td>Igual que <code>fge_orig</code> con paciencia inter-ciclo 3 en vez de 2</td></tr>
+        <tr><td class="cfg">se_orig</td><td>Snapshot Ensemble canónico: reinicio agresivo a lr 1e-3, ciclos de 15 épocas</td></tr>
+        <tr><td class="cfg">se_mild</td><td>Mismo <em>schedule</em> coseno pero reiniciando a 2e-4, el techo de <code>fge_orig</code>. Aísla la <strong>forma</strong> del ciclo de su <strong>amplitud</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Régimen de meta-features <span class="muted" style="text-transform:none;letter-spacing:0">(meta_features)</span></h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:100px">Etiqueta</th><th style="width:70px">Sufijo</th><th>Origen</th>
+      <th class="num">Train interno</th><th class="num">AUC de las features</th></tr></thead>
+      <tbody>
+        <tr><td class="cfg">insample</td><td class="cfg">_ins</td><td><code>test_abmil.py</code> — el modelo predice sobre su <strong>propio</strong> train</td><td class="num">75 de 75</td><td class="num">0.934–0.944</td></tr>
+        <tr><td class="cfg">oof</td><td class="cfg">_oof</td><td><code>build_oof_features.py</code>, <code>n_inner=3</code></td><td class="num">50 de 75</td><td class="num">0.699</td></tr>
+        <tr><td class="cfg">oof5</td><td class="cfg">_oof5</td><td>ídem, <code>n_inner=5</code></td><td class="num">60 de 75</td><td class="num">0.710</td></tr>
+        <tr><td class="cfg">oof10</td><td class="cfg">_oof10</td><td>ídem, <code>n_inner=10</code></td><td class="num">67 de 75</td><td class="num">0.719</td></tr>
+        <tr class="base-row"><td colspan="3">referencia — modelos base en test, entrenados con las 75</td><td class="num">75 de 75</td><td class="num">0.775</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Transformaciones de las features</h4>
+  <p class="col">Sólo aparecen en <code>f2</code> y <code>f3</code>, marcadas con <code>Logit</code>
+  en el nombre. Ambas se aplican juntas.</p>
+  <div class="scroll" style="max-width:760px">
+    <table>
+      <thead><tr><th style="width:220px">Campo</th><th>Efecto</th></tr></thead>
+      <tbody>
+        <tr><td class="cfg">feature_space: logit</td><td>Transforma las probabilidades a log-odds, <code>log(p/(1−p))</code> con recorte a [1e-6, 1−1e-6]</td></tr>
+        <tr><td class="cfg">drop_redundant_class</td><td>Elimina una columna softmax por modelo base, corrigiendo el rango deficiente (6 columnas → 4 dimensiones efectivas)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Seis etiquetas leídas</h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:210px">Etiqueta</th><th>Lectura</th></tr></thead>
+      <tbody>
+        <tr class="base-row"><td class="cfg">m0_logreg_std</td><td>Logreg sobre bases convergidas, features in-sample. <strong>El baseline de todo el informe</strong></td></tr>
+        <tr><td class="cfg">m4_logreg_fge_lowlr</td><td>Logreg sobre bases diversificadas con FGE de ciclos suaves</td></tr>
+        <tr><td class="cfg">s0_logreg_se_orig</td><td>Logreg sobre bases diversificadas con Snapshot Ensemble agresivo</td></tr>
+        <tr><td class="cfg">f3_logregLogit_oof</td><td>Logreg en espacio de log-odds y sin columna redundante, con features out-of-fold</td></tr>
+        <tr><td class="cfg">f12_mlpdeepens_ins</td><td>Seis MLP con semillas distintas, promediadas, sobre features in-sample</td></tr>
+        <tr><td class="cfg">g3_tabpfn_oof10</td><td>TabPFN sobre features out-of-fold generadas con CV interna de 10 folds</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ BLOQUE A ============================ -->
+<section class="col-wide">
+  <div class="h-rail"><span class="tag">Bloque A</span><h2>Diversificación de los modelos base</h2></div>
+  <p class="col lede">Cuatro variantes FGE y dos Snapshot Ensemble, todas partiendo del mismo
+  checkpoint convergido. La pregunta: ¿aporta diversidad extra el eje de snapshots, sobre el
+  que ya aporta el eje multi-modelo?</p>
+
+  <h3 class="col">A.1 &nbsp;El falso positivo de <code>cervical_subtype</code></h3>
+  <p class="col">Con 5 folds, FGE parecía degradar el AUC de forma sistemática (0/5 folds,
+  p&nbsp;=&nbsp;0.009) pero mejorar la kappa ponderada: <code>fge_lowlr</code> ganaba
+  +0.0477 en 5 de 5 folds, p&nbsp;=&nbsp;0.024. Dos hallazgos desarmaron esa lectura antes
+  incluso de replicar.</p>
+  <ul class="col">
+    <li><strong>La ventaja dependía del esquema de ponderación.</strong> Recalculada con los tres:
+    sin ponderar +0.0149 (3/5, p&nbsp;=&nbsp;0.316), lineal +0.0286 (5/5, p&nbsp;=&nbsp;0.005),
+    cuadrática +0.0477 (5/5, p&nbsp;=&nbsp;0.024). Crece con la distancia y desaparece sin ponderar.
+    Como la clase 3 es «otros», el supuesto ordinal sólo se cumple a medias.</li>
+    <li><strong>Con 5 folds, un 5/5 no es evidencia fuerte.</strong> Ese fue el motivo para replicar.</li>
+  </ul>
+
+  <h3 class="col">A.2 &nbsp;La réplica lo tumba</h3>
+  <p class="col">En <code>cptac_brca</code> con 50 folds, <code>fge_lowlr</code> queda en
+  <strong>+0.0066 de kappa</strong> (p&nbsp;=&nbsp;0.703) frente al +0.0477 de cervical. El signo
+  del efecto sobre el AUC además se <strong>invierte</strong> entre ambos datasets, lo que es
+  propio del ruido y no de un efecto real.</p>
+
+  <h3 class="col">A.3 &nbsp;La explicación mecánica: saturación de diversidad</h3>
+  <p class="col">Correlación media entre snapshots del mismo modelo, calculada sobre los
+  <code>preds_per_snapshot.npy</code> de los 50 folds de test.</p>
+
+  <div class="scroll">
+    <table>
+      <caption>Diversidad frente a rendimiento — ordenado por correlación</caption>
+      <thead>
+        <tr><th>Variante</th><th class="num">ctranspath</th><th class="num">uni_v2</th>
+        <th class="num">virchow_v1</th><th class="num">Δ AUC del ensemble</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="cfg">fge_lowlr</td><td class="num">0.983</td><td class="num">0.980</td><td class="num">0.976</td><td class="num pos">+0.0060</td></tr>
+        <tr><td class="cfg">se_mild</td><td class="num">0.967</td><td class="num">0.969</td><td class="num">0.961</td><td class="num neg">−0.0097</td></tr>
+        <tr><td class="cfg">fge_orig</td><td class="num">0.962</td><td class="num">0.961</td><td class="num">0.960</td><td class="num pos">+0.0032</td></tr>
+        <tr><td class="cfg">fge_pat3</td><td class="num">0.959</td><td class="num">0.959</td><td class="num">0.952</td><td class="num pos">+0.0051</td></tr>
+        <tr><td class="cfg">se_orig</td><td class="num">0.935</td><td class="num">0.941</td><td class="num">0.940</td><td class="num pos">+0.0022</td></tr>
+        <tr><td class="cfg">fge_wbase</td><td class="num">0.941</td><td class="num">0.922</td><td class="num">0.921</td><td class="num pos">+0.0011</td></tr>
+        <tr class="base-row"><td>suelo inter-modelo</td><td class="num" colspan="3">0.797</td><td class="num muted">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Dos lecturas, ambas relevantes:</p>
+    <ol>
+      <li><strong>Ninguna variante se acerca al suelo inter-modelo.</strong> El rango completo de
+      snapshots (0.92–0.98) está muy por encima del 0.797 que ya aportan tres modelos fundacionales
+      distintos. SE reinicia la tasa de aprendizaje cinco veces más arriba que FGE y sólo baja la
+      correlación de 0.96 a 0.94.</li>
+      <li><strong>Diversidad y rendimiento no correlacionan.</strong> <code>fge_lowlr</code> es la
+      variante <em>menos</em> diversa y la mejor en AUC; <code>fge_wbase</code> es la más diversa y
+      la penúltima. Con las diferencias dentro del ruido esto no concluye por sí solo, pero descarta
+      la hipótesis de que bastara con forzar más diversidad.</li>
+    </ol>
+    <p>El early stopping inter-ciclo corta además en <strong>2.7–3.0 snapshots de media</strong>
+    sin llegar nunca a los 6 ciclos configurados: los snapshots posteriores son peores que el
+    modelo convergido.</p>
+  </div>
+</section>
+
+<!-- ============================ BLOQUE B ============================ -->
+<section class="col-wide">
+  <div class="h-rail"><span class="tag">Bloque B</span><h2>El meta-clasificador</h2></div>
+
+  <h3 class="col">B.1 &nbsp;El diagnóstico: las meta-features eran in-sample</h3>
+  <p class="col"><code>test_abmil.py</code> genera las features del meta-learner prediciendo con
+  el modelo de cada fold sobre su <strong>propio split de train</strong>. Medido:</p>
+
+  <div class="scroll" style="max-width:660px">
+    <table>
+      <thead><tr><th>Split</th><th>Papel</th><th class="num">AUC</th></tr></thead>
+      <tbody>
+        <tr class="base-row"><td class="cfg">_train_eval/val_outputs</td><td>meta-train</td><td class="num">0.934–0.944</td></tr>
+        <tr><td class="cfg">val_outputs</td><td>meta-val (early stopping)</td><td class="num">0.795–0.859</td></tr>
+        <tr><td class="cfg">test_outputs</td><td>meta-test</td><td class="num">0.764–0.795</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">El meta-learner aprende a combinar señales que valen 0.94 y se aplica donde valen
+  0.77. Es el fallo clásico del stacking que Wolpert (1992) y Breiman (1996) resuelven exigiendo
+  predicciones out-of-fold, y penaliza sobre todo a los meta-modelos flexibles.</p>
+  <p class="col">Un problema estructural adicional: cada vector softmax suma 1, así que la matriz
+  de features tiene <strong>6 columnas pero rango 4</strong>. Con 75 muestras de meta-train, la
+  logreg ajusta 7 parámetros sobre 4 dimensiones efectivas.</p>
+
+  <h3 class="col">B.2 &nbsp;Fase 0: las meta-features out-of-fold</h3>
+  <p class="col"><code>src/build_oof_features.py</code> genera, para cada fold externo, predicciones
+  de los modelos base sobre su propio train mediante CV anidada <strong>agrupada por paciente</strong>
+  (<code>StratifiedGroupKFold</code> sobre <code>case_id</code>), de modo que ninguna muestra recibe
+  la predicción de un modelo que la haya visto. Verificación bloqueante superada: cero fugas de
+  paciente en los 50 folds, y el AUC de meta-train cae de 0.94 al rango esperado.</p>
+
+  <h3 class="col">B.3 &nbsp;Siete meta-clasificadores × dos regímenes</h3>
+
+  <div class="scroll">
+    <table>
+      <caption>AUC por régimen de features · baseline = 0.7918</caption>
+      <thead>
+        <tr><th>Meta-modelo</th><th>Parámetros</th><th class="num">in-sample</th>
+        <th class="num">out-of-fold</th><th class="num">Δ del régimen</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="cfg">logit_avg</td><td class="muted">3 + temperatura</td><td class="num">0.7921</td><td class="num">0.7932</td><td class="num pos">+0.0011</td></tr>
+        <tr class="base-row"><td class="cfg">logreg</td><td>7</td><td class="num">0.7918</td><td class="num">0.7826</td><td class="num neg">−0.0092</td></tr>
+        <tr><td class="cfg">mlp_snapshot</td><td class="muted">MLP + SE</td><td class="num">0.7936</td><td class="num">0.7851</td><td class="num neg">−0.0086</td></tr>
+        <tr><td class="cfg">tabpfn</td><td class="muted">no paramétrico</td><td class="num">0.7842</td><td class="num">0.7350</td><td class="num neg">−0.0492</td></tr>
+        <tr><td class="cfg">lightgbm</td><td class="muted">boosting</td><td class="num">0.7622</td><td class="num">0.6270</td><td class="num neg">−0.1352</td></tr>
+        <tr><td class="cfg">mlp_deepens</td><td class="muted">6 × MLP</td><td class="num">0.6690</td><td class="num">0.6042</td><td class="num neg">−0.0648</td></tr>
+        <tr><td class="cfg">mlp_fge</td><td class="muted">MLP + FGE</td><td class="num">0.6647</td><td class="num">0.5679</td><td class="num neg">−0.0968</td></tr>
+        <tr><td class="cfg">mlp</td><td class="muted">MLP</td><td class="num">0.6563</td><td class="num">0.5635</td><td class="num neg">−0.0928</td></tr>
+        <tr><td class="cfg">gating</td><td class="muted">mixture-of-experts</td><td class="num muted">—</td><td class="num">0.7899</td><td class="num muted">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Cinco hallazgos, todos medidos:</p>
+    <ol>
+      <li><strong>La corrección out-of-fold empeora todo salvo <code>logit_avg</code></strong>, y la
+      degradación escala con la capacidad del modelo. Es lo contrario de lo que predecía el
+      diagnóstico.</li>
+      <li><strong>La MLP colapsa en ambos regímenes</strong> (0.656 in-sample, 0.564 out-of-fold).
+      Las features in-sample <em>no</em> eran la causa de su sobreajuste.</li>
+      <li><strong>SE sobre el meta-learner regulariza, no ensambla.</strong> <code>mlp_snapshot</code>
+      (0.7936) recupera exactamente el baseline, mientras que <code>mlp_deepens</code> —seis MLP con
+      semillas independientes, el control científico correcto— queda 12 puntos por debajo (0.6690).
+      Si SE funcionara como ensemble, el deep ensemble debería igualarlo. Lo que hace es devolver la
+      MLP a una función tan simple como la regresión logística, no llevarla más allá.</li>
+      <li><strong>TabPFN nunca fue significativamente peor que la logreg</strong> con features
+      in-sample (−0.0076, p&nbsp;=&nbsp;0.150). Su mal rendimiento previo era del régimen de
+      features, no del modelo.</li>
+      <li><strong><code>logit_avg</code> iguala a la logreg con 3 parámetros</strong> (Δ&nbsp;+0.0003,
+      MDE 0.008) y es indiferente al régimen de features. Preferible por interpretabilidad, y unifica
+      conceptualmente con la media ponderada de <code>ensemble.py</code>.</li>
+    </ol>
+  </div>
+
+  <h3 class="col">B.4 &nbsp;El test discriminante de <code>n_inner</code></h3>
+  <p class="col">Si el daño out-of-fold fuera coste muestral, debería encogerse al aumentar el
+  tamaño del train interno. Se generaron features con <code>n_inner</code> ∈ {3, 5, 10}, es decir
+  con 50, 60 y 67 de las 75 slides.</p>
+
+  <div class="scroll">
+    <table>
+      <caption>Calidad de las features — AUC de los modelos base sobre ellas</caption>
+      <thead><tr><th>Train interno</th><th class="num">ctranspath</th><th class="num">uni_v2</th>
+      <th class="num">virchow_v1</th><th class="num">media</th></tr></thead>
+      <tbody>
+        <tr><td>50 de 75 &nbsp;<span class="muted">(n_inner=3)</span></td><td class="num">0.7040</td><td class="num">0.7097</td><td class="num">0.6819</td><td class="num">0.699</td></tr>
+        <tr><td>60 de 75 &nbsp;<span class="muted">(n_inner=5)</span></td><td class="num">0.7303</td><td class="num">0.7225</td><td class="num">0.6778</td><td class="num">0.710</td></tr>
+        <tr><td>67 de 75 &nbsp;<span class="muted">(n_inner=10)</span></td><td class="num">0.7325</td><td class="num">0.7254</td><td class="num">0.6980</td><td class="num">0.719</td></tr>
+        <tr class="base-row"><td>75 de 75 &nbsp;(modelo real)</td><td class="num">0.7948</td><td class="num">0.7658</td><td class="num">0.7639</td><td class="num">0.775</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="scroll">
+    <table>
+      <caption>Efecto sobre el meta-learner — AUC</caption>
+      <thead><tr><th>Meta-modelo</th><th class="num">in-sample</th><th class="num">oof (50)</th>
+      <th class="num">oof5 (60)</th><th class="num">oof10 (67)</th><th class="num">recuperado</th></tr></thead>
+      <tbody>
+        <tr><td class="cfg">logit_avg</td><td class="num">0.7921</td><td class="num">0.7932</td><td class="num">0.7914</td><td class="num">0.7926</td><td class="num muted">sin daño</td></tr>
+        <tr class="base-row"><td class="cfg">logreg</td><td class="num">0.7918</td><td class="num">0.7826</td><td class="num">0.7825</td><td class="num">0.7872</td><td class="num">50 %</td></tr>
+        <tr><td class="cfg">tabpfn</td><td class="num">0.7842</td><td class="num">0.7350</td><td class="num">0.7518</td><td class="num">0.7645</td><td class="num">52 %</td></tr>
+        <tr><td class="cfg">lightgbm</td><td class="num">0.7622</td><td class="num">0.6270</td><td class="num">0.6893</td><td class="num">0.6869</td><td class="num">36 %, estancado</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <div class="note">
+      <p><strong>La hipótesis del coste muestral resulta cierta pero insuficiente.</strong> Cierta
+      porque <code>tabpfn</code> recupera la mitad de lo perdido con sólo 17 muestras más.
+      Insuficiente porque no basta para cruzar: ajustando la recta sobre los tres puntos, su
+      pendiente es ≈0.0017 de AUC por muestra, que extrapolada a las 75 da <strong>0.777</strong>,
+      todavía por debajo del baseline. Ni con leave-one-out —75&nbsp;×&nbsp;50&nbsp;×&nbsp;3 =
+      11 250 entrenamientos, del orden de días de GPU— llegaría.</p>
+    </div>
+    <p><code>lightgbm</code> se aplana entre 60 y 67 muestras: su daño no es muestral, sino que
+    boosting sobre una matriz de 75&nbsp;×&nbsp;6 con rango 4 es el sesgo inductivo equivocado.</p>
+  </div>
+
+  <h3 class="col">B.5 &nbsp;El régimen out-of-fold rompe la calibración, no el orden</h3>
+  <p class="col">Un hallazgo que sólo aparece al comparar métricas entre sí. Para <code>logreg</code>
+  con features out-of-fold:</p>
+
+  <div class="scroll" style="max-width:660px">
+    <table>
+      <thead><tr><th>Métrica</th><th class="num">Δ</th><th class="num">p Holm</th><th>Veredicto</th></tr></thead>
+      <tbody>
+        <tr><td>AUC-ROC</td><td class="num neg">−0.0092</td><td class="num">1.000</td><td><span class="chip chip-null">no significativo</span></td></tr>
+        <tr><td>Balanced accuracy</td><td class="num neg">−0.0540</td><td class="num">0.028</td><td><span class="chip chip-bad">significativo</span></td></tr>
+        <tr><td>Macro-F1</td><td class="num neg">−0.0627</td><td class="num">0.042</td><td><span class="chip chip-bad">significativo</span></td></tr>
+        <tr><td>Kappa</td><td class="num neg">−0.1029</td><td class="num">0.046</td><td><span class="chip chip-bad">significativo</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>El AUC es un estadístico de <strong>rango</strong> y apenas se mueve; las cuatro métricas que
+    dependen del umbral de decisión se desploman. La interpretación es directa: las features
+    out-of-fold provienen de modelos entrenados con 50 muestras y son <strong>menos confiadas</strong>
+    que las que el meta-learner encontrará en test, donde los modelos base se entrenaron con 75. El
+    meta-learner aprende un umbral calibrado para una distribución de confianza que no es la que va
+    a ver. El <em>orden</em> de las predicciones sobrevive; el <em>punto de corte</em> no.</p>
+    <p>Esto refuerza el resultado anterior, porque la recuperación es monótona también aquí: kappa
+    pasa de −0.1029 con <code>n_inner=3</code> a −0.0809 con 5 y −0.0599 con 10, a medida que la
+    confianza de las features se acerca a la real.</p>
+  </div>
+</section>
+
+<!-- ============================ PREDICCIONES ============================ -->
+<section class="col-wide">
+  <div class="h-rail"><span class="tag">Registro</span><h2>Predicciones registradas y su desenlace</h2></div>
+  <p class="col lede">Las predicciones se anotaron <strong>antes</strong> de ejecutar, para que el
+  resultado fuera informativo y no una racionalización posterior. Tres de cinco fueron falsadas.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:32px">#</th><th style="width:44%">Predicción</th><th>Desenlace</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="num muted">1</td>
+          <td>Con features out-of-fold, <code>tabpfn</code>, <code>mlp</code> y <code>lightgbm</code>
+          mejoran claramente; <code>logreg</code> se mueve poco. <em>Si TabPFN no mejora, el
+          diagnóstico es falso.</em></td>
+          <td><span class="chip chip-bad">falsada</span> Todos empeoran, y la degradación escala con
+          la capacidad.</td>
+        </tr>
+        <tr>
+          <td class="num muted">2</td>
+          <td>Con features out-of-fold, la ventaja de <code>mlp_snapshot</code> sobre <code>mlp</code>
+          se reduce o desaparece.</td>
+          <td><span class="chip chip-bad">falsada</span> La ventaja <em>aumenta</em>: +0.137
+          in-sample → +0.222 out-of-fold.</td>
+        </tr>
+        <tr>
+          <td class="num muted">3</td>
+          <td><code>mlp_deepens</code> ≥ <code>mlp_snapshot</code>.</td>
+          <td><span class="chip chip-bad">falsada</span> <strong>El hallazgo más informativo.</strong>
+          0.6690 frente a 0.7936: SE actúa como regularizador, no como ensemble.</td>
+        </tr>
+        <tr>
+          <td class="num muted">4</td>
+          <td>SE baja la correlación a ≈0.88–0.93, seguirá por encima de 0.797, y el AUC quedará
+          dentro de ±0.017.</td>
+          <td><span class="chip chip-tie">parcial</span> La correlación quedó en 0.935–0.941,
+          ligeramente por encima del rango previsto; el resto se cumplió exactamente.</td>
+        </tr>
+        <tr>
+          <td class="num muted">5</td>
+          <td><code>logit_avg</code> queda dentro de ±0.01 de la logreg.</td>
+          <td><span class="chip chip-ok">confirmada</span> Δ&nbsp;+0.0003 con MDE 0.008.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <div class="note">
+      <p>El valor metodológico está precisamente en las falsaciones: el diagnóstico in-sample era
+      <strong>correcto como descripción</strong> del problema y <strong>equivocado como predicción
+      de su remedio</strong>. Sin registro previo, esa distinción se habría perdido en la
+      reinterpretación.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TABLA COMPLETA ============================ -->
+<section class="col-wide">
+  <div class="h-rail"><span class="tag">Datos</span><h2>Las 39 configuraciones</h2></div>
+  <p class="col lede">Job 69958, 50 folds, baseline <code>f0_logreg_ins</code> = 0.7918.
+  Las 12 diferencias significativas tras Holm son <strong>todas degradaciones</strong>.</p>
+
+  <div class="scroll">
+    <table>
+      <caption>AUC-ROC — contrastes pareados, ordenado por Δ</caption>
+      <thead>
+        <tr><th>Configuración</th><th style="width:160px">Δ frente al baseline</th><th class="num">Δ</th>
+        <th>IC 95 % pareado</th><th class="num">G/E/P</th><th class="num">p Holm</th><th class="num">MDE</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="cfg">m4_logreg_fge_lowlr</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:2.45%"></span></div></td><td class="num pos">+0.0060</td><td class="num muted">[−0.0050, +0.0171]</td><td class="num">25/4/21</td><td class="num muted">1.000</td><td class="num muted">0.0158</td></tr>
+        <tr><td class="cfg">m5_logreg_fge_pat3</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:2.08%"></span></div></td><td class="num pos">+0.0051</td><td class="num muted">[−0.0068, +0.0171]</td><td class="num">25/5/20</td><td class="num muted">1.000</td><td class="num muted">0.0171</td></tr>
+        <tr><td class="cfg">m2_logreg_fge_orig</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:1.30%"></span></div></td><td class="num pos">+0.0032</td><td class="num muted">[−0.0086, +0.0149]</td><td class="num">25/5/20</td><td class="num muted">1.000</td><td class="num muted">0.0168</td></tr>
+        <tr><td class="cfg">s0_logreg_se_orig</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:0.90%"></span></div></td><td class="num pos">+0.0022</td><td class="num muted">[−0.0136, +0.0180]</td><td class="num">26/2/22</td><td class="num muted">1.000</td><td class="num muted">0.0226</td></tr>
+        <tr><td class="cfg">f8_mlpsnap_ins</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:0.73%"></span></div></td><td class="num pos">+0.0018</td><td class="num muted">[−0.0037, +0.0073]</td><td class="num">19/13/18</td><td class="num muted">1.000</td><td class="num muted">0.0079</td></tr>
+        <tr><td class="cfg">f5_logitavg_oof</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:0.57%"></span></div></td><td class="num pos">+0.0014</td><td class="num muted">[−0.0048, +0.0077]</td><td class="num">20/12/18</td><td class="num muted">1.000</td><td class="num muted">0.0090</td></tr>
+        <tr><td class="cfg">m3_logreg_fge_wbase</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:0.45%"></span></div></td><td class="num pos">+0.0011</td><td class="num muted">[−0.0082, +0.0104]</td><td class="num">24/4/22</td><td class="num muted">1.000</td><td class="num muted">0.0133</td></tr>
+        <tr><td class="cfg">g7_logitavg_oof10</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:0.37%"></span></div></td><td class="num pos">+0.0009</td><td class="num muted">[−0.0054, +0.0071]</td><td class="num">17/13/20</td><td class="num muted">1.000</td><td class="num muted">0.0090</td></tr>
+        <tr><td class="cfg">f4_logitavg_ins</td><td><div class="bartrack"><span class="bar is-pos" style="--l:95.92%;--w:0.12%"></span></div></td><td class="num pos">+0.0003</td><td class="num muted">[−0.0054, +0.0060]</td><td class="num">17/14/19</td><td class="num muted">1.000</td><td class="num muted">0.0081</td></tr>
+        <tr class="base-row"><td class="cfg">f0_logreg_ins &nbsp;· baseline</td><td><div class="bartrack"></div></td><td class="num">0.0000</td><td class="num">—</td><td class="num">0/50/0</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td class="cfg">g6_logitavg_oof5</td><td><div class="bartrack"><span class="bar" style="--l:95.76%;--w:0.16%"></span></div></td><td class="num neg">−0.0004</td><td class="num muted">[−0.0058, +0.0051]</td><td class="num">19/12/19</td><td class="num muted">1.000</td><td class="num muted">0.0078</td></tr>
+        <tr><td class="cfg">f18_gating_oof</td><td><div class="bartrack"><span class="bar" style="--l:95.14%;--w:0.78%"></span></div></td><td class="num neg">−0.0019</td><td class="num muted">[−0.0075, +0.0037]</td><td class="num">17/9/24</td><td class="num muted">1.000</td><td class="num muted">0.0080</td></tr>
+        <tr><td class="cfg">g1_logreg_oof10</td><td><div class="bartrack"><span class="bar" style="--l:94.04%;--w:1.88%"></span></div></td><td class="num neg">−0.0046</td><td class="num muted">[−0.0119, +0.0027]</td><td class="num">16/11/23</td><td class="num muted">1.000</td><td class="num muted">0.0105</td></tr>
+        <tr><td class="cfg">f2_logregLogit_ins</td><td><div class="bartrack"><span class="bar" style="--l:93.71%;--w:2.21%"></span></div></td><td class="num neg">−0.0054</td><td class="num muted">[−0.0143, +0.0036]</td><td class="num">19/7/24</td><td class="num muted">1.000</td><td class="num muted">0.0128</td></tr>
+        <tr><td class="cfg">m7_tabpfn_fge_lowlr</td><td><div class="bartrack"><span class="bar" style="--l:93.35%;--w:2.57%"></span></div></td><td class="num neg">−0.0063</td><td class="num muted">[−0.0243, +0.0116]</td><td class="num">21/1/28</td><td class="num muted">1.000</td><td class="num muted">0.0257</td></tr>
+        <tr><td class="cfg">f9_mlpsnap_oof</td><td><div class="bartrack"><span class="bar" style="--l:93.18%;--w:2.74%"></span></div></td><td class="num neg">−0.0067</td><td class="num muted">[−0.0190, +0.0055]</td><td class="num">19/10/21</td><td class="num muted">1.000</td><td class="num muted">0.0175</td></tr>
+        <tr><td class="cfg">m1_tabpfn_std · f14_tabpfn_ins</td><td><div class="bartrack"><span class="bar" style="--l:92.82%;--w:3.10%"></span></div></td><td class="num neg">−0.0076</td><td class="num muted">[−0.0177, +0.0026]</td><td class="num">20/4/26</td><td class="num muted">1.000</td><td class="num muted">0.0145</td></tr>
+        <tr><td class="cfg">f1_logreg_oof</td><td><div class="bartrack"><span class="bar" style="--l:92.16%;--w:3.76%"></span></div></td><td class="num neg">−0.0092</td><td class="num muted">[−0.0198, +0.0015]</td><td class="num">18/4/28</td><td class="num muted">1.000</td><td class="num muted">0.0152</td></tr>
+        <tr><td class="cfg">g0_logreg_oof5</td><td><div class="bartrack"><span class="bar" style="--l:92.12%;--w:3.80%"></span></div></td><td class="num neg">−0.0093</td><td class="num muted">[−0.0186, +0.0000]</td><td class="num">11/16/23</td><td class="num muted">1.000</td><td class="num muted">0.0133</td></tr>
+        <tr><td class="cfg">s1_logreg_se_mild</td><td><div class="bartrack"><span class="bar" style="--l:91.96%;--w:3.96%"></span></div></td><td class="num neg">−0.0097</td><td class="num muted">[−0.0271, +0.0077]</td><td class="num">26/0/24</td><td class="num muted">1.000</td><td class="num muted">0.0249</td></tr>
+        <tr><td class="cfg">m9_tabpfn_fge_pat3</td><td><div class="bartrack"><span class="bar" style="--l:90.86%;--w:5.06%"></span></div></td><td class="num neg">−0.0124</td><td class="num muted">[−0.0299, +0.0052]</td><td class="num">22/2/26</td><td class="num muted">1.000</td><td class="num muted">0.0251</td></tr>
+        <tr><td class="cfg">m8_tabpfn_fge_orig</td><td><div class="bartrack"><span class="bar" style="--l:90.73%;--w:5.19%"></span></div></td><td class="num neg">−0.0127</td><td class="num muted">[−0.0298, +0.0044]</td><td class="num">21/3/26</td><td class="num muted">1.000</td><td class="num muted">0.0245</td></tr>
+        <tr><td class="cfg">m6_tabpfn_fge_wbase</td><td><div class="bartrack"><span class="bar" style="--l:90.33%;--w:5.59%"></span></div></td><td class="num neg">−0.0137</td><td class="num muted">[−0.0309, +0.0035]</td><td class="num">19/7/24</td><td class="num muted">1.000</td><td class="num muted">0.0246</td></tr>
+        <tr><td class="cfg">f3_logregLogit_oof</td><td><div class="bartrack"><span class="bar" style="--l:88.53%;--w:7.39%"></span></div></td><td class="num neg">−0.0181</td><td class="num muted">[−0.0382, +0.0020]</td><td class="num">18/5/27</td><td class="num muted">1.000</td><td class="num muted">0.0287</td></tr>
+        <tr><td class="cfg">g3_tabpfn_oof10</td><td><div class="bartrack"><span class="bar" style="--l:84.78%;--w:11.14%"></span></div></td><td class="num neg">−0.0273</td><td class="num muted">[−0.0466, −0.0079]</td><td class="num">18/2/30</td><td class="num muted">0.208</td><td class="num muted">0.0276</td></tr>
+        <tr><td class="cfg">f16_lightgbm_ins</td><td><div class="bartrack"><span class="bar" style="--l:83.84%;--w:12.08%"></span></div></td><td class="num neg">−0.0296</td><td class="num muted">[−0.0499, −0.0092]</td><td class="num">16/3/31</td><td class="num muted">0.173</td><td class="num muted">0.0291</td></tr>
+        <tr><td class="cfg">g2_tabpfn_oof5</td><td><div class="bartrack"><span class="bar" style="--l:79.59%;--w:16.33%"></span></div></td><td class="num neg">−0.0400</td><td class="num muted">[−0.0655, −0.0145]</td><td class="num">14/2/34</td><td class="num muted">0.095</td><td class="num muted">0.0364</td></tr>
+        <tr><td class="cfg">f15_tabpfn_oof</td><td><div class="bartrack"><span class="bar" style="--l:72.73%;--w:23.19%"></span></div></td><td class="num neg win">−0.0568</td><td class="num muted">[−0.0856, −0.0280]</td><td class="num">12/2/36</td><td class="num win">0.009</td><td class="num muted">0.0412</td></tr>
+        <tr><td class="cfg">g4_lightgbm_oof5</td><td><div class="bartrack"><span class="bar" style="--l:54.08%;--w:41.84%"></span></div></td><td class="num neg win">−0.1025</td><td class="num muted">[−0.1407, −0.0643]</td><td class="num">9/1/40</td><td class="num win">&lt;0.001</td><td class="num muted">0.0546</td></tr>
+        <tr><td class="cfg">g5_lightgbm_oof10</td><td><div class="bartrack"><span class="bar" style="--l:53.14%;--w:42.78%"></span></div></td><td class="num neg win">−0.1048</td><td class="num muted">[−0.1364, −0.0733]</td><td class="num">9/1/40</td><td class="num win">&lt;0.001</td><td class="num muted">0.0451</td></tr>
+        <tr><td class="cfg">f12_mlpdeepens_ins</td><td><div class="bartrack"><span class="bar" style="--l:45.84%;--w:50.08%"></span></div></td><td class="num neg win">−0.1227</td><td class="num muted">[−0.1806, −0.0649]</td><td class="num">13/1/36</td><td class="num win">0.004</td><td class="num muted">0.0827</td></tr>
+        <tr><td class="cfg">f10_mlpfge_ins</td><td><div class="bartrack"><span class="bar" style="--l:44.04%;--w:51.88%"></span></div></td><td class="num neg win">−0.1271</td><td class="num muted">[−0.1772, −0.0769]</td><td class="num">9/3/38</td><td class="num win">&lt;0.001</td><td class="num muted">0.0717</td></tr>
+        <tr><td class="cfg">f6_mlp_ins</td><td><div class="bartrack"><span class="bar" style="--l:40.65%;--w:55.27%"></span></div></td><td class="num neg win">−0.1354</td><td class="num muted">[−0.1875, −0.0834]</td><td class="num">10/1/39</td><td class="num win">&lt;0.001</td><td class="num muted">0.0744</td></tr>
+        <tr><td class="cfg">f17_lightgbm_oof</td><td><div class="bartrack"><span class="bar" style="--l:28.65%;--w:67.27%"></span></div></td><td class="num neg win">−0.1648</td><td class="num muted">[−0.2132, −0.1164]</td><td class="num">7/1/42</td><td class="num win">&lt;0.001</td><td class="num muted">0.0692</td></tr>
+        <tr><td class="cfg">f13_mlpdeepens_oof</td><td><div class="bartrack"><span class="bar" style="--l:19.35%;--w:76.57%"></span></div></td><td class="num neg win">−0.1876</td><td class="num muted">[−0.2517, −0.1235]</td><td class="num">7/2/41</td><td class="num win">&lt;0.001</td><td class="num muted">0.0917</td></tr>
+        <tr><td class="cfg">f11_mlpfge_oof</td><td><div class="bartrack"><span class="bar" style="--l:4.57%;--w:91.35%"></span></div></td><td class="num neg win">−0.2238</td><td class="num muted">[−0.2909, −0.1567]</td><td class="num">7/0/43</td><td class="num win">&lt;0.001</td><td class="num muted">0.0959</td></tr>
+        <tr><td class="cfg">f7_mlp_oof</td><td><div class="bartrack"><span class="bar" style="--l:2.73%;--w:93.19%"></span></div></td><td class="num neg win">−0.2283</td><td class="num muted">[−0.2954, −0.1611]</td><td class="num">7/0/43</td><td class="num win">&lt;0.001</td><td class="num muted">0.0961</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details>
+    <summary>Medias de las cinco métricas, las 39 configuraciones</summary>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Configuración</th><th class="num">AUC</th><th class="num">Kappa</th>
+        <th class="num">Macro-F1</th><th class="num">Bal. acc</th><th class="num">Accuracy</th></tr></thead>
+        <tbody>
+          <tr class="base-row"><td class="cfg">f0_logreg_ins · baseline</td><td class="num">0.7918</td><td class="num">0.4718</td><td class="num">0.7335</td><td class="num">0.7363</td><td class="num">0.7472</td></tr>
+          <tr><td class="cfg">m4_logreg_fge_lowlr</td><td class="num">0.7978</td><td class="num">0.4784</td><td class="num">0.7369</td><td class="num">0.7383</td><td class="num">0.7510</td></tr>
+          <tr><td class="cfg">m5_logreg_fge_pat3</td><td class="num">0.7969</td><td class="num">0.4616</td><td class="num">0.7288</td><td class="num">0.7312</td><td class="num">0.7414</td></tr>
+          <tr><td class="cfg">m2_logreg_fge_orig</td><td class="num">0.7949</td><td class="num">0.4676</td><td class="num">0.7313</td><td class="num">0.7338</td><td class="num">0.7442</td></tr>
+          <tr><td class="cfg">s0_logreg_se_orig</td><td class="num">0.7940</td><td class="num">0.4507</td><td class="num">0.7239</td><td class="num">0.7251</td><td class="num">0.7381</td></tr>
+          <tr><td class="cfg">f8_mlpsnap_ins</td><td class="num">0.7936</td><td class="num">0.3493</td><td class="num">0.6458</td><td class="num">0.6722</td><td class="num">0.7038</td></tr>
+          <tr><td class="cfg">f5_logitavg_oof</td><td class="num">0.7932</td><td class="num">0.4461</td><td class="num">0.7136</td><td class="num">0.7301</td><td class="num">0.7236</td></tr>
+          <tr><td class="cfg">m3_logreg_fge_wbase</td><td class="num">0.7929</td><td class="num">0.4671</td><td class="num">0.7310</td><td class="num">0.7334</td><td class="num">0.7444</td></tr>
+          <tr><td class="cfg">g7_logitavg_oof10</td><td class="num">0.7926</td><td class="num">0.4357</td><td class="num">0.7088</td><td class="num">0.7243</td><td class="num">0.7195</td></tr>
+          <tr><td class="cfg">f4_logitavg_ins</td><td class="num">0.7921</td><td class="num">0.4619</td><td class="num">0.7224</td><td class="num">0.7368</td><td class="num">0.7336</td></tr>
+          <tr><td class="cfg">g6_logitavg_oof5</td><td class="num">0.7914</td><td class="num">0.4467</td><td class="num">0.7144</td><td class="num">0.7300</td><td class="num">0.7249</td></tr>
+          <tr><td class="cfg">f18_gating_oof</td><td class="num">0.7899</td><td class="num">0.4424</td><td class="num">0.7122</td><td class="num">0.7280</td><td class="num">0.7228</td></tr>
+          <tr><td class="cfg">g1_logreg_oof10</td><td class="num">0.7872</td><td class="num">0.4119</td><td class="num">0.6987</td><td class="num">0.7022</td><td class="num">0.7275</td></tr>
+          <tr><td class="cfg">f2_logregLogit_ins</td><td class="num">0.7864</td><td class="num">0.4677</td><td class="num">0.7313</td><td class="num">0.7335</td><td class="num">0.7454</td></tr>
+          <tr><td class="cfg">m7_tabpfn_fge_lowlr</td><td class="num">0.7855</td><td class="num">0.4446</td><td class="num">0.7184</td><td class="num">0.7224</td><td class="num">0.7328</td></tr>
+          <tr><td class="cfg">f9_mlpsnap_oof</td><td class="num">0.7851</td><td class="num">0.2087</td><td class="num">0.5448</td><td class="num">0.6000</td><td class="num">0.6696</td></tr>
+          <tr><td class="cfg">m1_tabpfn_std · f14_tabpfn_ins</td><td class="num">0.7842</td><td class="num">0.4655</td><td class="num">0.7301</td><td class="num">0.7332</td><td class="num">0.7424</td></tr>
+          <tr><td class="cfg">f1_logreg_oof</td><td class="num">0.7826</td><td class="num">0.3689</td><td class="num">0.6707</td><td class="num">0.6823</td><td class="num">0.7108</td></tr>
+          <tr><td class="cfg">g0_logreg_oof5</td><td class="num">0.7825</td><td class="num">0.3909</td><td class="num">0.6863</td><td class="num">0.6923</td><td class="num">0.7171</td></tr>
+          <tr><td class="cfg">s1_logreg_se_mild</td><td class="num">0.7821</td><td class="num">0.4600</td><td class="num">0.7281</td><td class="num">0.7298</td><td class="num">0.7418</td></tr>
+          <tr><td class="cfg">m9_tabpfn_fge_pat3</td><td class="num">0.7794</td><td class="num">0.4537</td><td class="num">0.7240</td><td class="num">0.7273</td><td class="num">0.7365</td></tr>
+          <tr><td class="cfg">m8_tabpfn_fge_orig</td><td class="num">0.7791</td><td class="num">0.4537</td><td class="num">0.7234</td><td class="num">0.7269</td><td class="num">0.7364</td></tr>
+          <tr><td class="cfg">m6_tabpfn_fge_wbase</td><td class="num">0.7781</td><td class="num">0.4678</td><td class="num">0.7309</td><td class="num">0.7344</td><td class="num">0.7426</td></tr>
+          <tr><td class="cfg">f3_logregLogit_oof</td><td class="num">0.7737</td><td class="num">0.3400</td><td class="num">0.6485</td><td class="num">0.6676</td><td class="num">0.7008</td></tr>
+          <tr><td class="cfg">g3_tabpfn_oof10</td><td class="num">0.7645</td><td class="num">0.3815</td><td class="num">0.6808</td><td class="num">0.6891</td><td class="num">0.7126</td></tr>
+          <tr><td class="cfg">f16_lightgbm_ins</td><td class="num">0.7622</td><td class="num">0.3873</td><td class="num">0.6902</td><td class="num">0.6949</td><td class="num">0.7048</td></tr>
+          <tr><td class="cfg">g2_tabpfn_oof5</td><td class="num">0.7518</td><td class="num">0.3375</td><td class="num">0.6469</td><td class="num">0.6665</td><td class="num">0.6887</td></tr>
+          <tr><td class="cfg">f15_tabpfn_oof</td><td class="num">0.7350</td><td class="num">0.2984</td><td class="num">0.6247</td><td class="num">0.6485</td><td class="num">0.6834</td></tr>
+          <tr><td class="cfg">g4_lightgbm_oof5</td><td class="num">0.6893</td><td class="num">0.2647</td><td class="num">0.6208</td><td class="num">0.6317</td><td class="num">0.6515</td></tr>
+          <tr><td class="cfg">g5_lightgbm_oof10</td><td class="num">0.6869</td><td class="num">0.2542</td><td class="num">0.6152</td><td class="num">0.6282</td><td class="num">0.6439</td></tr>
+          <tr><td class="cfg">f12_mlpdeepens_ins</td><td class="num">0.6690</td><td class="num">0.0993</td><td class="num">0.4436</td><td class="num">0.5510</td><td class="num">0.5922</td></tr>
+          <tr><td class="cfg">f10_mlpfge_ins</td><td class="num">0.6647</td><td class="num">0.0519</td><td class="num">0.4024</td><td class="num">0.5252</td><td class="num">0.5399</td></tr>
+          <tr><td class="cfg">f6_mlp_ins</td><td class="num">0.6563</td><td class="num">0.0484</td><td class="num">0.4005</td><td class="num">0.5235</td><td class="num">0.5379</td></tr>
+          <tr><td class="cfg">f17_lightgbm_oof</td><td class="num">0.6270</td><td class="num">0.1609</td><td class="num">0.5609</td><td class="num">0.5807</td><td class="num">0.5962</td></tr>
+          <tr><td class="cfg">f13_mlpdeepens_oof</td><td class="num">0.6042</td><td class="num">0.0610</td><td class="num">0.4163</td><td class="num">0.5329</td><td class="num">0.5789</td></tr>
+          <tr><td class="cfg">f11_mlpfge_oof</td><td class="num">0.5679</td><td class="num">0.0202</td><td class="num">0.3863</td><td class="num">0.5102</td><td class="num">0.5268</td></tr>
+          <tr><td class="cfg">f7_mlp_oof</td><td class="num">0.5635</td><td class="num">0.0178</td><td class="num">0.3822</td><td class="num">0.5080</td><td class="num">0.5229</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details>
+    <summary>Kappa — por qué su MDE es 5–10 veces mayor</summary>
+    <p style="margin-top:4px">Los efectos mínimos detectables de kappa van de 0.05 a 0.12, frente a
+    los 0.008–0.03 del AUC. Con 22 slides de test por fold, kappa es una métrica mucho más ruidosa:
+    una diferencia por debajo de ≈0.05 sencillamente <strong>no era detectable</strong> con 50 folds.
+    Esa es la razón de fondo por la que el hallazgo de <code>cervical_subtype</code>
+    (+0.0477 con n&nbsp;=&nbsp;5) nunca tuvo el respaldo que aparentaba.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Configuración</th><th class="num">Δ kappa</th><th>IC 95 % pareado</th><th class="num">G/E/P</th><th class="num">p Holm</th><th class="num">MDE</th></tr></thead>
+        <tbody>
+          <tr><td class="cfg">m4_logreg_fge_lowlr</td><td class="num pos">+0.0066</td><td class="num muted">[−0.0273, +0.0405]</td><td class="num">15/15/20</td><td class="num muted">1.000</td><td class="num muted">0.0484</td></tr>
+          <tr><td class="cfg">g7_logitavg_oof10</td><td class="num neg">−0.0361</td><td class="num muted">[−0.0727, +0.0004]</td><td class="num">15/15/20</td><td class="num muted">1.000</td><td class="num muted">0.0523</td></tr>
+          <tr><td class="cfg">g1_logreg_oof10</td><td class="num neg">−0.0599</td><td class="num muted">[−0.1054, −0.0144]</td><td class="num">15/12/23</td><td class="num muted">0.258</td><td class="num muted">0.0650</td></tr>
+          <tr><td class="cfg">g0_logreg_oof5</td><td class="num neg">−0.0809</td><td class="num muted">[−0.1313, −0.0306]</td><td class="num">12/11/27</td><td class="num muted">0.058</td><td class="num muted">0.0720</td></tr>
+          <tr><td class="cfg">f16_lightgbm_ins</td><td class="num neg win">−0.0845</td><td class="num muted">[−0.1263, −0.0426]</td><td class="num">14/4/32</td><td class="num win">0.006</td><td class="num muted">0.0599</td></tr>
+          <tr><td class="cfg">g3_tabpfn_oof10</td><td class="num neg win">−0.0903</td><td class="num muted">[−0.1445, −0.0361]</td><td class="num">15/7/28</td><td class="num win">0.046</td><td class="num muted">0.0775</td></tr>
+          <tr><td class="cfg">f1_logreg_oof</td><td class="num neg win">−0.1029</td><td class="num muted">[−0.1647, −0.0411]</td><td class="num">9/13/28</td><td class="num win">0.046</td><td class="num muted">0.0884</td></tr>
+          <tr><td class="cfg">f8_mlpsnap_ins</td><td class="num neg win">−0.1225</td><td class="num muted">[−0.1823, −0.0627]</td><td class="num">12/9/29</td><td class="num win">0.005</td><td class="num muted">0.0855</td></tr>
+          <tr><td class="cfg">f3_logregLogit_oof</td><td class="num neg win">−0.1318</td><td class="num muted">[−0.2017, −0.0618]</td><td class="num">10/8/32</td><td class="num win">0.013</td><td class="num muted">0.1000</td></tr>
+          <tr><td class="cfg">g2_tabpfn_oof5</td><td class="num neg win">−0.1342</td><td class="num muted">[−0.1941, −0.0744]</td><td class="num">9/9/32</td><td class="num win">0.002</td><td class="num muted">0.0856</td></tr>
+          <tr><td class="cfg">f15_tabpfn_oof</td><td class="num neg win">−0.1734</td><td class="num muted">[−0.2486, −0.0981]</td><td class="num">13/6/31</td><td class="num win">0.001</td><td class="num muted">0.1075</td></tr>
+          <tr><td class="cfg">f9_mlpsnap_oof</td><td class="num neg win">−0.2631</td><td class="num muted">[−0.3432, −0.1829]</td><td class="num">6/2/42</td><td class="num win">&lt;0.001</td><td class="num muted">0.1146</td></tr>
+          <tr><td class="cfg">f17_lightgbm_oof</td><td class="num neg win">−0.3109</td><td class="num muted">[−0.3959, −0.2258]</td><td class="num">5/3/42</td><td class="num win">&lt;0.001</td><td class="num muted">0.1216</td></tr>
+          <tr><td class="cfg muted">f6…f11 (familia MLP)</td><td class="num neg win">−0.37 a −0.45</td><td class="num muted">—</td><td class="num muted">≤2 ganados</td><td class="num win">&lt;0.001</td><td class="num muted">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+</section>
+
+<!-- ============================ LIMITACIONES ============================ -->
+<section class="col">
+  <div class="h-rail"><span class="tag">Alcance</span><h2>Limitaciones</h2></div>
+  <ol>
+    <li><strong>Un solo dataset con potencia real.</strong> Todas las conclusiones cuantitativas
+    son de <code>cptac_brca / TP53_mutation</code>. <code>cervical_subtype</code> sirvió para
+    mostrar que 5 folds producen falsos positivos, no para sostener conclusiones.</li>
+    <li><strong>Tres modelos base.</strong> La saturación de diversidad se mide con
+    r&nbsp;=&nbsp;0.797 entre tres modelos fundacionales. Con más modelos, o con modelos más
+    correlacionados entre sí, el balance snapshot↔multi-modelo podría cambiar.</li>
+    <li><strong>El presupuesto muestral es la restricción dominante y no se ha variado.</strong>
+    Todos los resultados son con 75 slides de meta-train. La conclusión «el techo es muestral»
+    predice que con cohortes mayores la jerarquía cambiaría, y eso <em>no está medido</em>.</li>
+    <li><strong>Leave-one-out no se ejecutó.</strong> La extrapolación de <code>tabpfn</code> a
+    75 muestras es una recta sobre tres puntos, no una medición.</li>
+    <li><strong>TabM no se evaluó</strong> — no está instalado. <code>mlp_deepens</code> cubre la
+    misma idea sin la dependencia.</li>
+    <li><strong>Arquitectura ABMIL fija</strong> en todos los experimentos (1 cabeza, dim 512,
+    dropout 0.25, bag 2048). No se ablacionó.</li>
+  </ol>
+</section>
+
+<!-- ============================ ÍNDICE ============================ -->
+<section class="col-wide">
+  <div class="h-rail"><span class="tag">Índice</span><h2>Dónde está cada cosa</h2></div>
+
+  <h4>Documentos</h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:40%">Fichero</th><th>Contenido</th></tr></thead>
+      <tbody>
+        <tr class="base-row"><td class="cfg">INFORME_CAMPANA_EXPERIMENTAL.md</td><td>Fuente canónica de este informe, versionada en el repositorio</td></tr>
+        <tr><td class="cfg">INFORME_ABLATION_FGE_cervical_subtype.md</td><td>Detalle fold a fold del bloque A, definición de kappa, discusión de AUC y desbalance</td></tr>
+        <tr><td class="cfg">SNAPSHOT_ENSEMBLE_ROADMAP.md</td><td>Plan previo con las predicciones registradas</td></tr>
+        <tr><td class="cfg">PARADIS_DATA_REFERENCE.md</td><td>Árbol de datos, datasets, tareas, número de folds</td></tr>
+        <tr><td class="cfg">experiments.yaml</td><td>Matriz de experimentos; los comentarios registran por qué existe cada variante</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Logs de SLURM</h4>
+  <div class="scroll">
+    <table>
+      <thead><tr><th style="width:16%">Job</th><th style="width:38%">Fichero en <code>logs/</code></th><th>Contenido</th></tr></thead>
+      <tbody>
+        <tr><td class="cfg">69936</td><td class="cfg">run_meta_experiments_69936.out</td><td>Ablación FGE cervical, 8 configs</td></tr>
+        <tr><td class="cfg">69938–69943</td><td class="cfg">train_base_models_*.out</td><td>Réplica en brca</td></tr>
+        <tr><td class="cfg">69950</td><td class="cfg">build_oof_69950.out</td><td>Features out-of-fold <code>n_inner=3</code> + verificación de fugas</td></tr>
+        <tr><td class="cfg">69951, 69952</td><td class="cfg">train_base_models_fge_6995*.out</td><td>Variantes <code>se_orig</code>, <code>se_mild</code></td></tr>
+        <tr><td class="cfg">69953</td><td class="cfg">run_meta_experiments_69953.out</td><td>Primer barrido, 31 configs</td></tr>
+        <tr><td class="cfg">69956, 69957</td><td class="cfg">build_oof_6995*.out</td><td>Features out-of-fold <code>n_inner</code> = 5 y 10</td></tr>
+        <tr class="base-row"><td class="cfg">69958</td><td class="cfg">run_meta_experiments_69958.out</td><td>Barrido final, 39 configs × 5 métricas</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Reproducción</h4>
+  <pre><code># Features out-of-fold, parametrizable por n_inner
+N_INNER=10 OOF_TAG=oof10 DATASET=cptac_brca TASK=TP53_mutation \
+    sbatch build_oof_features.sbatch
+
+# Barrido de meta-clasificadores + análisis pareado
+DATASET=cptac_brca TASK=TP53_mutation sbatch run_3_experiments_v2_improved.sbatch</code></pre>
+  <p class="col muted" style="font-size:.94rem">Resultados numéricos por configuración en
+  <code>PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4*/</code>, un directorio
+  por meta-configuración, con métricas por fold y agregadas.</p>
+</section>
+
+<footer>
+  <p><strong>Referencias.</strong>
+  Wolpert (1992), <em>Stacked generalization</em>, Neural Networks 5(2) ·
+  Breiman (1996), <em>Stacked regressions</em>, Machine Learning 24(1) ·
+  Garipov et al. (2018), <em>Loss surfaces, mode connectivity, and fast ensembling of DNNs</em>, ICLR ·
+  Huang et al. (2017), <em>Snapshot ensembles: train 1, get M for free</em>, ICLR ·
+  Davis &amp; Goadrich (2006), ICML ·
+  Saito &amp; Rehmsmeier (2015), PLoS ONE.</p>
+  <p style="margin-top:14px">Patho-Ensemble · campaña de agosto de 2026 · corrida de referencia job 69958 ·
+  última actualización 17 de agosto de 2026.</p>
+</footer>
+
+</div>
+</body>
+</html>

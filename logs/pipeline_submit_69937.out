@@ -1,0 +1,37 @@
+============================================================================
+ENCOLADO DEL PIPELINE
+============================================================================
+Fecha: Fri Aug 14 22:14:05 CEST 2026
+Experimentos a encolar: 1
+============================================================================
+
+── cptac_brca / TP53_mutation ──────────────────────────────────────────────────
+  1. base ABMIL          job 69938
+  2. FGE fge_orig       job 69939   (tras 69938)
+  2. FGE fge_wbase      job 69940   (tras 69938)
+  2. FGE fge_lowlr      job 69941   (tras 69938)
+  2. FGE fge_pat3       job 69942   (tras 69938)
+  3. meta-learners       job 69943  (tras las 4 variantes)
+  logs: logs/cptac_brca_TP53_mutation/
+
+============================================================================
+✓ Encolado completo
+============================================================================
+
+Estado de la cola:
+     JOBID                     NAME      STATE         TIME NODELIST(REASON)
+     69943 meta_cptac_brca_TP53_mut    PENDING         0:00 (Dependency)
+     69942  fge_fge_pat3_cptac_brca    PENDING         0:00 (Dependency)
+     69941 fge_fge_lowlr_cptac_brca    PENDING         0:00 (Dependency)
+     69940 fge_fge_wbase_cptac_brca    PENDING         0:00 (Dependency)
+     69939  fge_fge_orig_cptac_brca    PENDING         0:00 (Dependency)
+     69938 base_cptac_brca_TP53_mut    PENDING         0:00 (None)
+     69937          pipeline_submit    RUNNING         0:04 gpu07
+
+Notas:
+  • Una etapa que falle cancela las siguientes (dependencia afterok).
+  • Etapas ya completadas se detectan y se saltan al reejecutar.
+  • Medido: ctranspath tarda ~6 min en 50 folds; los 3 modelos base, ~media
+    hora. Los caps de tiempo de cada etapa son holgura, no estimaciones.
+
+============================================================================

@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suite de Metaclasificadores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ── Tokens: tema claro completo en :root ─────────────────────────── */
+:root{
+  --ground:      #fbfafc;
+  --surface:     #ffffff;
+  --surface-alt: #f4f1f7;
+  --ink:         #1a1520;
+  --ink-soft:    #4a4256;
+  --ink-mute:    #756c82;
+  --rule:        #e2dce8;
+  --rule-strong: #cdc3d6;
+
+  /* Hematoxilina / eosina — la paleta viene de la tinción H&E */
+  --accent:      #5b3f7a;
+  --accent-soft: #ede6f4;
+  --accent-ink:  #4a3266;
+
+  --neg:         #a8455e;   /* deltas negativos, regresiones */
+  --neg-soft:    #fbeaee;
+  --pos:         #2c6b62;   /* empates favorables, recuperación */
+  --pos-soft:    #e4f1ee;
+  --warn:        #8a6414;
+  --warn-soft:   #f8f0dc;
+
+  --shadow: 0 1px 2px rgba(26,21,32,.05), 0 8px 24px -12px rgba(26,21,32,.12);
+
+  --measure: 68ch;
+  --fs-step: 1.2;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:      #131019;
+    --surface:     #1b1723;
+    --surface-alt: #221d2c;
+    --ink:         #eee9f2;
+    --ink-soft:    #b8b0c4;
+    --ink-mute:    #8b8299;
+    --rule:        #322b3d;
+    --rule-strong: #453d53;
+
+    --accent:      #b79ad6;
+    --accent-soft: #2a2137;
+    --accent-ink:  #cbb4e4;
+
+    --neg:         #e08599;
+    --neg-soft:    #33202a;
+    --pos:         #77bfb2;
+    --pos-soft:    #1c2e2c;
+    --warn:        #d6ab55;
+    --warn-soft:   #2e2718;
+
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+
+:root[data-theme="dark"]{
+  --ground:      #131019;
+  --surface:     #1b1723;
+  --surface-alt: #221d2c;
+  --ink:         #eee9f2;
+  --ink-soft:    #b8b0c4;
+  --ink-mute:    #8b8299;
+  --rule:        #322b3d;
+  --rule-strong: #453d53;
+
+  --accent:      #b79ad6;
+  --accent-soft: #2a2137;
+  --accent-ink:  #cbb4e4;
+
+  --neg:         #e08599;
+  --neg-soft:    #33202a;
+  --pos:         #77bfb2;
+  --pos-soft:    #1c2e2c;
+  --warn:        #d6ab55;
+  --warn-soft:   #2e2718;
+
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+  background: var(--ground);
+  color: var(--ink);
+  font-family:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 clamp(1rem,4vw,3rem) 6rem;
+}
+
+/* prosa estrecha, tablas anchas */
+.col{ max-width:var(--measure); }
+
+/* ── Tipografía ───────────────────────────────────────────────────── */
+h1,h2,h3,h4{
+  font-family:Newsreader,"Iowan Old Style",Georgia,serif;
+  font-weight:500;
+  text-wrap:balance;
+  line-height:1.14;
+  margin:0;
+}
+h1{ font-size:clamp(2.4rem,5.4vw,3.9rem); letter-spacing:-.018em; }
+h2{ font-size:clamp(1.65rem,3vw,2.25rem); letter-spacing:-.012em; }
+h3{ font-size:1.28rem; letter-spacing:-.006em; }
+h4{ font-size:1.06rem; font-weight:600; }
+
+p{ margin:0; }
+strong{ font-weight:600; color:var(--ink); }
+em{ font-style:italic; }
+
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.lede{
+  font-size:1.2rem;
+  line-height:1.55;
+  color:var(--ink-soft);
+}
+.note{
+  font-size:.9rem;
+  line-height:1.55;
+  color:var(--ink-mute);
+}
+code,.mono{
+  font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  font-variant-numeric:tabular-nums;
+}
+p code, li code, td code, th code{
+  font-size:.86em;
+  background:var(--surface-alt);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:.08em .34em;
+}
+
+/* ── Cabecera ─────────────────────────────────────────────────────── */
+header.masthead{
+  display:flex; flex-direction:column; gap:1.4rem;
+  padding:clamp(3rem,8vw,5.5rem) 0 2.5rem;
+  border-bottom:2px solid var(--ink);
+}
+.meta-row{
+  display:flex; flex-wrap:wrap; gap:.5rem 1.6rem;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.76rem;
+  color:var(--ink-mute);
+  font-variant-numeric:tabular-nums;
+}
+.meta-row span b{ color:var(--ink-soft); font-weight:500; }
+
+/* ── Secciones ────────────────────────────────────────────────────── */
+section{
+  display:flex; flex-direction:column; gap:1.35rem;
+  padding-top:clamp(3rem,6vw,4.5rem);
+}
+.sec-head{ display:flex; flex-direction:column; gap:.45rem; }
+
+/* ── Tiles de cifras clave ────────────────────────────────────────── */
+.tiles{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:1px;
+  background:var(--rule);
+  border:1px solid var(--rule);
+  border-radius:10px;
+  overflow:hidden;
+}
+.tile{
+  background:var(--surface);
+  padding:1.15rem 1.25rem 1.25rem;
+  display:flex; flex-direction:column; gap:.3rem;
+}
+.tile .k{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-mute);
+}
+.tile .v{
+  font-family:Newsreader,Georgia,serif;
+  font-size:2.1rem; font-weight:500;
+  font-variant-numeric:tabular-nums;
+  line-height:1.05;
+  color:var(--ink);
+}
+.tile .v.accent{ color:var(--accent); }
+.tile .v.neg{ color:var(--neg); }
+.tile .s{ font-size:.85rem; color:var(--ink-mute); line-height:1.45; }
+
+/* ── Tablas ───────────────────────────────────────────────────────── */
+.tscroll{
+  overflow-x:auto;
+  border:1px solid var(--rule);
+  border-radius:10px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:.88rem;
+  min-width:640px;
+}
+caption{
+  text-align:left;
+  padding:.95rem 1.1rem .7rem;
+  font-size:.8rem;
+  color:var(--ink-mute);
+  border-bottom:1px solid var(--rule);
+}
+caption b{ color:var(--ink-soft); font-weight:600; }
+th,td{
+  padding:.56rem .85rem;
+  text-align:left;
+  border-bottom:1px solid var(--rule);
+  vertical-align:baseline;
+}
+thead th{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; font-weight:500;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-mute);
+  background:var(--surface-alt);
+  white-space:nowrap;
+  border-bottom:1px solid var(--rule-strong);
+}
+tbody tr:last-child td{ border-bottom:none; }
+td.num,th.num{
+  text-align:right;
+  font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+td.name{ white-space:nowrap; }
+td.name .mono{ font-size:.86rem; }
+tr.base{ background:var(--accent-soft); }
+tr.base td{ font-weight:600; }
+tr.best td.num.hl{ color:var(--pos); font-weight:600; }
+td.d-neg{ color:var(--neg); }
+td.d-pos{ color:var(--pos); }
+td.ci{ font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-mute); white-space:nowrap; }
+
+/* ── Chips de veredicto ───────────────────────────────────────────── */
+.chip{
+  display:inline-block;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.66rem; font-weight:500;
+  letter-spacing:.05em;
+  padding:.16rem .5rem;
+  border-radius:999px;
+  white-space:nowrap;
+  border:1px solid transparent;
+}
+.chip.tie{  background:var(--pos-soft);   color:var(--pos);    border-color:var(--pos); }
+.chip.bad{  background:var(--neg-soft);   color:var(--neg);    border-color:var(--neg); }
+.chip.warn{ background:var(--warn-soft);  color:var(--warn);   border-color:var(--warn); }
+.chip.flat{ background:var(--surface-alt);color:var(--ink-mute);border-color:var(--rule-strong); }
+.sig{ color:var(--neg); font-weight:600; }
+
+/* ── Bloque destacado ─────────────────────────────────────────────── */
+.callout{
+  border-left:3px solid var(--accent);
+  background:var(--surface);
+  border-top:1px solid var(--rule);
+  border-right:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  border-radius:0 10px 10px 0;
+  padding:1.25rem 1.4rem;
+  display:flex; flex-direction:column; gap:.7rem;
+}
+.callout.neg{ border-left-color:var(--neg); }
+.callout h4{ color:var(--accent-ink); }
+.callout.neg h4{ color:var(--neg); }
+
+/* ── Listas ───────────────────────────────────────────────────────── */
+ol.findings{
+  list-style:none;
+  counter-reset:f;
+  margin:0; padding:0;
+  display:flex; flex-direction:column; gap:1.15rem;
+}
+ol.findings > li{
+  counter-increment:f;
+  display:grid;
+  grid-template-columns:2.1rem 1fr;
+  gap:.9rem;
+  align-items:start;
+}
+ol.findings > li::before{
+  content:counter(f);
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem; font-weight:600;
+  color:var(--accent);
+  background:var(--accent-soft);
+  border-radius:6px;
+  height:1.85rem;
+  display:flex; align-items:center; justify-content:center;
+}
+ul.plain{
+  margin:0; padding:0; list-style:none;
+  display:flex; flex-direction:column; gap:.75rem;
+}
+ul.plain > li{
+  padding-left:1.05rem;
+  position:relative;
+}
+ul.plain > li::before{
+  content:"";
+  position:absolute; left:0; top:.66em;
+  width:5px; height:5px; border-radius:50%;
+  background:var(--rule-strong);
+}
+
+/* ── Código ───────────────────────────────────────────────────────── */
+pre{
+  margin:0;
+  background:var(--surface-alt);
+  border:1px solid var(--rule);
+  border-radius:8px;
+  padding:.95rem 1.1rem;
+  overflow-x:auto;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+pre .c{ color:var(--ink-mute); font-style:italic; }
+pre .f{ color:var(--accent); }
+
+/* ── Diagrama de espacios de features ─────────────────────────────── */
+.spaces{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;
+}
+.space{
+  border:1px solid var(--rule);
+  border-radius:10px;
+  background:var(--surface);
+  padding:1.1rem 1.2rem;
+  display:flex; flex-direction:column; gap:.6rem;
+}
+.space .tag{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent);
+}
+.space .dim{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.78rem;
+  color:var(--ink-mute);
+  font-variant-numeric:tabular-nums;
+}
+
+hr.rule{
+  border:none;
+  border-top:1px solid var(--rule);
+  margin:0;
+}
+
+footer{
+  padding-top:3.5rem;
+  border-top:2px solid var(--ink);
+  margin-top:4rem;
+  display:flex; flex-direction:column; gap:1rem;
+}
+
+a{ color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px; }
+a:focus-visible,
+button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Patho-Ensemble · Informe de resultados</div>
+  <h1>Suite de metaclasificadores sobre el trío ganador</h1>
+  <p class="lede col">Catorce configuraciones de <em>stacking</em> sobre
+    <span class="mono">ctranspath + uni_v2 + conch_v1_5</span> — diez metaclasificadores en dos espacios
+    de features, más cuatro sobre bases con snapshot ensemble. Medidas sobre los mismos 50 folds.
+    Ninguna bate a la regresión logística.</p>
+  <div class="meta-row">
+    <span><b>Fecha</b> 22-ago-2026</span>
+    <span><b>Tarea</b> cptac_brca / TP53_mutation</span>
+    <span><b>Folds</b> 50, pareados</span>
+    <span><b>Jobs</b> 70291 · 70292</span>
+    <span><b>Clases</b> 67 wt / 45 mut (40.2 % pos.)</span>
+  </div>
+</header>
+
+<!-- ══════════════ RESUMEN ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">Resumen</div>
+    <h2>Qué ha salido</h2>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="k">Mejor AUC</div>
+      <div class="v accent">0.8018</div>
+      <div class="s">MLP Snapshot sobre probabilidades. <strong>+0.0031</strong> sobre la referencia — dentro del ruido.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Mejor decisión</div>
+      <div class="v accent">0.4911</div>
+      <div class="s">kappa de MLP Snapshot sobre embeddings. La única dirección positiva del barrido.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Referencia · LogReg</div>
+      <div class="v">0.7986</div>
+      <div class="s">AUC. Reproduce a 4 decimales el valor publicado en el estado del arte.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Ganan tras Holm</div>
+      <div class="v neg">0 / 13</div>
+      <div class="s">Ninguna alternativa logra un Δ positivo significativo en ninguna métrica.</div>
+    </div>
+  </div>
+
+  <div class="col" style="display:flex;flex-direction:column;gap:1.3rem;padding-top:.6rem">
+    <h3>Las tres conclusiones que ordenan el resto</h3>
+    <ol class="findings">
+      <li><div><strong>Ninguna de las nueve alternativas bate a la regresión logística.</strong>
+        Todos los Δ positivos caen dentro del suelo de reproducibilidad del pipeline (≈ 0.004 AUC)
+        o no superan la corrección de Holm. LogReg sigue siendo la elección correcta por defecto.</div></li>
+      <li><div><strong>El hundimiento de los MLP es un fallo de corte, no de ordenación.</strong>
+        MLP Snapshot tiene el AUC más alto del barrido y a la vez la segunda peor kappa. Ajustando el
+        umbral en validación, su pérdida de <span class="mono">−0.2093</span> de kappa pasa a
+        <span class="mono">−0.0066</span>: se evapora entera.</div></li>
+      <li><div><strong>La comparación pendiente de §8.1 se cierra en negativo.</strong>
+        Los embeddings de 1536 D no baten a las 6 probabilidades: a igualdad de metaclasificador,
+        <span class="mono">emb:logreg</span> pierde <span class="mono">−0.0160</span> de AUC.</div></li>
+      <li><div><strong>El snapshot ensemble a nivel base también es nulo</strong>, ahora medido por
+        primera vez sobre el trío ganador. <span class="mono">fge_trio:logreg</span> es numéricamente
+        la mejor configuración de toda la campaña y aun así <strong>pierde en 26 de 50 folds</strong>:
+        media positiva, mediana en contra.</div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════════ QUÉ SE HA CONSTRUIDO ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">01 · Construcción</div>
+    <h2>Las siete tareas</h2>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption>Cada fila es un metaclasificador entrenado por fold sobre las predicciones de los tres ABMIL base. <b>Los constructores replican literalmente los de <code>ensemble4.py</code></b>, incluida la semilla <code>42 + fold</code>.</caption>
+      <thead><tr><th>#</th><th>Configuración</th><th>Espacio de features</th><th>Dimensión</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>Stacking <strong>LogReg</strong></td><td>probabilidades</td><td class="num">6</td><td><span class="chip flat">medido</span></td></tr>
+        <tr><td class="num">2</td><td>Stacking <strong>MLP</strong></td><td>probabilidades</td><td class="num">6</td><td><span class="chip flat">medido</span></td></tr>
+        <tr><td class="num">3</td><td>Stacking <strong>MLP + Snapshot Ensemble</strong></td><td>probabilidades</td><td class="num">6</td><td><span class="chip flat">medido</span></td></tr>
+        <tr><td class="num">4</td><td>Stacking <strong>SVM</strong> <span class="note">(lineal, C = 1)</span></td><td>probabilidades</td><td class="num">6</td><td><span class="chip flat">medido</span></td></tr>
+        <tr><td class="num">5</td><td>Stacking <strong>KNN</strong> <span class="note">(k = 5, por distancia)</span></td><td>probabilidades</td><td class="num">6</td><td><span class="chip flat">medido</span></td></tr>
+        <tr><td class="num">6</td><td>Stacking <strong>Naive Bayes</strong> <span class="note">(gaussiano)</span></td><td>probabilidades</td><td class="num">6</td><td><span class="chip flat">medido</span></td></tr>
+        <tr><td class="num">7</td><td><strong>§8.1</strong> — embeddings vs. probabilidades</td><td>embeddings × 4 metamodelos</td><td class="num">1536</td><td><span class="chip flat">medido</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">La tarea 7 se ha instrumentado con los cuatro metaclasificadores
+    (<code>logreg</code>, <code>mlp</code>, <code>mlp_snapshot</code>, <code>mlp_fge</code>) que son
+    exactamente las cuatro filas de la tabla obsoleta del 18-ago que §8.1 pedía re-medir.</p>
+
+  <div class="spaces">
+    <div class="space">
+      <div class="tag">Espacio A · el pipeline vigente</div>
+      <h4>Probabilidades</h4>
+      <p class="note">Cada ABMIL colapsa su slide a un softmax de 2 clases; se concatenan a lo ancho.</p>
+      <div class="dim">[p₁(c0), p₁(c1), p₂(c0), p₂(c1), p₃(c0), p₃(c1)] → [N, 6]</div>
+    </div>
+    <div class="space">
+      <div class="tag">Espacio B · la rama alternativa</div>
+      <h4>Embeddings</h4>
+      <p class="note">El vector de 512 D que el ABMIL produce tras la atención, justo antes de su clasificador.</p>
+      <div class="dim">[emb₁(512), emb₂(512), emb₃(512)] → [N, 1536]</div>
+    </div>
+  </div>
+
+  <div class="callout col">
+    <h4>Los embeddings hubo que regenerarlos</h4>
+    <p>Los que había en disco eran del <strong>18-ago 19:00</strong>, anteriores al checkpoint de
+      <code>ctranspath</code> (20-ago 12:52), y <strong><code>conch_v1_5</code> no tenía ninguno</strong> —
+      nunca formó parte de aquel experimento. Se han regenerado los tres desde los checkpoints vigentes,
+      y el job verifica que el <code>mtime</code> de cada <code>preds.npy</code> es posterior al de su
+      <code>model.pt</code> antes de continuar. Esto es lo que hace que la tarea 7 sea, por primera vez,
+      una medición válida.</p>
+  </div>
+</section>
+
+<!-- ══════════════ COMPARABILIDAD ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">02 · Validez</div>
+    <h2>Por qué la comparación es limpia</h2>
+  </div>
+
+  <div class="col" style="display:flex;flex-direction:column;gap:1.1rem">
+    <h3>Mismo train, val y test — verificado, no asumido</h3>
+    <p>Los 10 brazos comparten proceso, splits y predicciones base.
+      <code>run_meta_suite.py</code> aborta si algo no cuadra, en dos niveles:</p>
+    <ul class="plain">
+      <li><strong>Entre modelos base.</strong> Para cada fold y cada split, compara el vector de
+        etiquetas de cada modelo contra el del primero. Si difieren en longitud o contenido,
+        <code>SystemExit</code>.</li>
+      <li><strong>Entre espacios de features.</strong> La misma comprobación entre probabilidades y
+        embeddings, para que <code>prob:logreg</code> y <code>emb:mlp_snapshot</code> no puedan estar
+        evaluándose sobre poblaciones distintas.</li>
+    </ul>
+    <p class="note">No es una precaución teórica: en este proyecto ya ocurrió que una campaña evaluase a
+      nivel paciente (103 filas) y otra a nivel slide (112), con AUC que parecían comparables sin serlo.</p>
+  </div>
+
+<pre><span class="c">Cargando espacio 'prob' ...</span>
+  <span class="f">✓</span> alineado. Columnas por modelo: {'ctranspath': 2, 'uni_v2': 2, 'conch_v1_5': 2}
+  <span class="f">✓</span> filas fold_0: train=75 val=15 test=22
+<span class="c">Cargando espacio 'emb' ...</span>
+  <span class="f">✓</span> alineado. Columnas por modelo: {'ctranspath': 512, 'uni_v2': 512, 'conch_v1_5': 512}
+  <span class="f">✓</span> filas fold_0: train=75 val=15 test=22
+<span class="f">✓</span> Todos los brazos comparten exactamente los mismos folds y filas.</pre>
+
+  <div class="callout col">
+    <h4>El baseline se recalcula, no se cita</h4>
+    <p>Regla operativa del proyecto: un directorio <code>ensemble4_*</code> antiguo no es comparable con
+      nada nuevo, porque sus predicciones base pueden haber sido regeneradas. Aquí el baseline se
+      recalcula en el mismo proceso que sus contendientes.</p>
+    <p><strong>Control de validez:</strong> <code>prob:logreg</code> da AUC <span class="mono">0.7986</span>,
+      bacc <span class="mono">0.7302</span>, macro-F1 <span class="mono">0.7294</span>, kappa
+      <span class="mono">0.4629</span> — idéntico a los cuatro decimales al valor publicado en §9.1 del
+      estado del arte. El runner reproduce <code>ensemble4.py</code>.</p>
+  </div>
+</section>
+
+<!-- ══════════════ MÉTRICAS ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">03 · Métricas</div>
+    <h2>La referencia degenerada</h2>
+  </div>
+
+  <p class="col">La muestra está desbalanceada: <strong>67 wild-type / 45 mutado</strong>, un 40.2 % de
+    positivos (39.4 % dentro de los splits de test, con 21.5 slides por fold de media). Ningún fold de
+    test tiene una sola clase, así que las 50 observaciones son válidas para las siete métricas.
+    Con ese desbalance, <strong>la accuracy sola es engañosa</strong>.</p>
+
+  <div class="tscroll" style="max-width:560px">
+    <table style="min-width:0">
+      <caption>Un clasificador que <b>prediga siempre la clase mayoritaria</b> obtiene:</caption>
+      <thead><tr><th>Métrica</th><th class="num">Degenerado</th></tr></thead>
+      <tbody>
+        <tr><td>accuracy</td><td class="num" style="color:var(--warn);font-weight:600">0.598</td></tr>
+        <tr><td>balanced accuracy</td><td class="num">0.500</td></tr>
+        <tr><td>macro-F1</td><td class="num">0.374</td></tr>
+        <tr><td>F1 de la clase mutada</td><td class="num">0.000</td></tr>
+        <tr><td>kappa</td><td class="num">0.000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">Ésa es la vara: cualquier accuracy que no supere claramente <span class="mono">0.598</span>
+    no dice nada. Por eso se reportan siete métricas en tres bloques.</p>
+
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Bloque</th><th>Métricas</th><th>Qué mide</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="name"><strong>A</strong> — ordenación</td>
+          <td class="mono">auc · ap</td>
+          <td>Capacidad de ordenar, independiente del umbral. <strong>ap</strong> (PR-AUC) es la que más pesa bajo desbalance porque ignora los verdaderos negativos.</td>
+        </tr>
+        <tr>
+          <td class="name"><strong>B</strong> — decisión @ 0.5</td>
+          <td class="mono">acc · bacc · macro_f1 · f1_pos · kappa</td>
+          <td>Lo que hace <code>ensemble4.py</code>: argmax del softmax.</td>
+        </tr>
+        <tr>
+          <td class="name"><strong>C</strong> — decisión @ umbral ajustado</td>
+          <td class="mono">las mismas, sufijo _t</td>
+          <td>Umbral elegido <strong>en validación</strong> maximizando balanced accuracy.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="note col">El umbral del bloque C se elige en <code>val</code>, nunca en <code>test</code>.
+    <code>val</code> ya se usa para el early stopping del ABMIL y del metaclasificador, así que no
+    introduce ninguna fuga nueva; ajustarlo en <code>test</code> destruiría la única superficie de
+    reporte honesta.</p>
+</section>
+
+<!-- ══════════════ RESULTADOS ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">04 · Resultados</div>
+    <h2>Bloque A · capacidad de ordenación</h2>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption>Media sobre 50 folds. Ordenado por AUC. La fila resaltada es la referencia.</caption>
+      <thead><tr><th>Configuración</th><th class="num">AUC</th><th class="num">AP (PR-AUC)</th></tr></thead>
+      <tbody>
+        <tr class="best"><td class="name mono">prob:mlp_snapshot</td><td class="num hl">0.8018</td><td class="num hl">0.7556</td></tr>
+        <tr class="base"><td class="name mono">prob:logreg</td><td class="num">0.7986</td><td class="num">0.7494</td></tr>
+        <tr><td class="name mono">emb:mlp_snapshot</td><td class="num">0.7988</td><td class="num">0.7448</td></tr>
+        <tr><td class="name mono">prob:svm</td><td class="num">0.7965</td><td class="num">0.7476</td></tr>
+        <tr><td class="name mono">prob:nb</td><td class="num">0.7955</td><td class="num">0.7378</td></tr>
+        <tr><td class="name mono">emb:mlp_fge</td><td class="num">0.7937</td><td class="num">0.7457</td></tr>
+        <tr><td class="name mono">emb:mlp</td><td class="num">0.7848</td><td class="num">0.7370</td></tr>
+        <tr><td class="name mono">emb:logreg</td><td class="num">0.7826</td><td class="num">0.7289</td></tr>
+        <tr><td class="name mono">prob:knn</td><td class="num d-neg">0.7665</td><td class="num d-neg">0.6711</td></tr>
+        <tr><td class="name mono">prob:mlp</td><td class="num d-neg">0.6948</td><td class="num d-neg">0.6591</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 style="padding-top:1.4rem">Bloque B · decisión con umbral 0.5</h2>
+  <p class="col note">El criterio que usa hoy el pipeline.</p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Media sobre 50 folds. Ordenado por kappa. <b>La referencia degenerada da acc 0.598, bacc 0.500, macro-F1 0.374, kappa 0.000.</b></caption>
+      <thead><tr><th>Configuración</th><th class="num">acc</th><th class="num">bacc</th><th class="num">macro-F1</th><th class="num">F1 mut.</th><th class="num">kappa</th></tr></thead>
+      <tbody>
+        <tr class="best"><td class="name mono">emb:mlp_snapshot</td><td class="num hl">0.7605</td><td class="num">0.7429</td><td class="num hl">0.7434</td><td class="num">0.6816</td><td class="num hl">0.4911</td></tr>
+        <tr><td class="name mono">prob:nb</td><td class="num">0.7486</td><td class="num d-pos">0.7421</td><td class="num">0.7381</td><td class="num d-pos">0.6918</td><td class="num">0.4800</td></tr>
+        <tr class="base"><td class="name mono">prob:logreg</td><td class="num">0.7446</td><td class="num">0.7302</td><td class="num">0.7294</td><td class="num">0.6721</td><td class="num">0.4629</td></tr>
+        <tr><td class="name mono">prob:svm</td><td class="num">0.7417</td><td class="num">0.7287</td><td class="num">0.7273</td><td class="num">0.6712</td><td class="num">0.4584</td></tr>
+        <tr><td class="name mono">emb:logreg</td><td class="num">0.7277</td><td class="num">0.7179</td><td class="num">0.7146</td><td class="num">0.6594</td><td class="num">0.4332</td></tr>
+        <tr><td class="name mono">prob:knn</td><td class="num">0.7223</td><td class="num">0.7144</td><td class="num">0.7096</td><td class="num">0.6565</td><td class="num">0.4245</td></tr>
+        <tr><td class="name mono">emb:mlp_fge</td><td class="num d-neg">0.7066</td><td class="num d-neg">0.6577</td><td class="num d-neg">0.6387</td><td class="num d-neg">0.4924</td><td class="num d-neg">0.3284</td></tr>
+        <tr><td class="name mono">prob:mlp_snapshot</td><td class="num d-neg">0.6803</td><td class="num d-neg">0.6223</td><td class="num d-neg">0.5827</td><td class="num d-neg">0.3955</td><td class="num d-neg">0.2536</td></tr>
+        <tr><td class="name mono">emb:mlp</td><td class="num d-neg">0.6720</td><td class="num d-neg">0.6053</td><td class="num d-neg">0.5490</td><td class="num d-neg">0.3349</td><td class="num d-neg">0.2187</td></tr>
+        <tr><td class="name mono">prob:mlp</td><td class="num d-neg">0.5405</td><td class="num d-neg">0.5172</td><td class="num d-neg">0.3836</td><td class="num d-neg">0.2605</td><td class="num d-neg">0.0340</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout neg col">
+    <h4>prob:mlp queda por debajo del clasificador degenerado</h4>
+    <p>Accuracy <span class="mono">0.5405</span> frente a <span class="mono">0.598</span>, y kappa
+      <span class="mono">0.0340</span>: prácticamente sin acuerdo por encima del azar.</p>
+  </div>
+
+  <h2 style="padding-top:1.4rem">Bloque C · decisión con umbral ajustado en validación</h2>
+
+  <div class="tscroll">
+    <table>
+      <caption>Umbral elegido por fold en <code>val</code> maximizando balanced accuracy. Media entre <b>0.411 y 0.518</b> según el brazo — el óptimo está sistemáticamente <b>por debajo de 0.5</b>, como cabe esperar con un 40 % de positivos.</caption>
+      <thead><tr><th>Configuración</th><th class="num">acc_t</th><th class="num">bacc_t</th><th class="num">macro-F1_t</th><th class="num">F1 mut._t</th><th class="num">kappa_t</th></tr></thead>
+      <tbody>
+        <tr class="best"><td class="name mono">emb:mlp_snapshot</td><td class="num hl">0.7494</td><td class="num hl">0.7438</td><td class="num hl">0.7364</td><td class="num hl">0.6941</td><td class="num hl">0.4826</td></tr>
+        <tr><td class="name mono">emb:mlp_fge</td><td class="num">0.7367</td><td class="num">0.7292</td><td class="num">0.7206</td><td class="num">0.6726</td><td class="num">0.4548</td></tr>
+        <tr><td class="name mono">prob:nb</td><td class="num">0.7268</td><td class="num">0.7206</td><td class="num">0.7117</td><td class="num">0.6616</td><td class="num">0.4351</td></tr>
+        <tr class="base"><td class="name mono">prob:logreg</td><td class="num">0.7261</td><td class="num">0.7198</td><td class="num">0.7105</td><td class="num">0.6627</td><td class="num">0.4344</td></tr>
+        <tr><td class="name mono">prob:mlp_snapshot</td><td class="num">0.7241</td><td class="num">0.7148</td><td class="num">0.7067</td><td class="num">0.6531</td><td class="num">0.4278</td></tr>
+        <tr><td class="name mono">prob:svm</td><td class="num">0.7205</td><td class="num">0.7144</td><td class="num">0.7064</td><td class="num">0.6572</td><td class="num">0.4237</td></tr>
+        <tr><td class="name mono">prob:knn</td><td class="num">0.7148</td><td class="num">0.7048</td><td class="num">0.6967</td><td class="num">0.6401</td><td class="num">0.4075</td></tr>
+        <tr><td class="name mono">emb:mlp</td><td class="num">0.7138</td><td class="num">0.7108</td><td class="num">0.6999</td><td class="num">0.6559</td><td class="num">0.4148</td></tr>
+        <tr><td class="name mono">emb:logreg</td><td class="num">0.6914</td><td class="num">0.6873</td><td class="num">0.6697</td><td class="num">0.6206</td><td class="num">0.3688</td></tr>
+        <tr><td class="name mono">prob:mlp</td><td class="num">0.6638</td><td class="num">0.6655</td><td class="num">0.6314</td><td class="num">0.5934</td><td class="num">0.3282</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════ HALLAZGO ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">05 · Hallazgo transversal</div>
+    <h2>Fallo de corte ≠ fallo de ordenación</h2>
+  </div>
+
+  <p class="col">Comparar los bloques B y C separa dos cosas que a 0.5 quedan confundidas.</p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Kappa antes y después de ajustar el umbral. <b>Los cuatro brazos que se hundían son exactamente los cuatro que se recuperan.</b></caption>
+      <thead><tr><th>Configuración</th><th class="num">kappa @ 0.5</th><th class="num">kappa @ ajustado</th><th class="num">recuperación</th><th>Diagnóstico</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">prob:mlp</td><td class="num d-neg">0.0340</td><td class="num">0.3282</td><td class="num d-pos">+0.294</td><td><span class="chip warn">corte + ordenación</span></td></tr>
+        <tr><td class="name mono">emb:mlp</td><td class="num d-neg">0.2187</td><td class="num">0.4148</td><td class="num d-pos">+0.196</td><td><span class="chip warn">corte</span></td></tr>
+        <tr><td class="name mono">prob:mlp_snapshot</td><td class="num d-neg">0.2536</td><td class="num">0.4278</td><td class="num d-pos">+0.174</td><td><span class="chip warn">corte</span></td></tr>
+        <tr><td class="name mono">emb:mlp_fge</td><td class="num d-neg">0.3284</td><td class="num">0.4548</td><td class="num d-pos">+0.126</td><td><span class="chip warn">corte</span></td></tr>
+        <tr><td class="name mono">emb:mlp_snapshot</td><td class="num">0.4911</td><td class="num">0.4826</td><td class="num">−0.009</td><td><span class="chip tie">ya calibrado</span></td></tr>
+        <tr class="base"><td class="name mono">prob:logreg</td><td class="num">0.4629</td><td class="num">0.4344</td><td class="num d-neg">−0.029</td><td><span class="chip tie">ya calibrado</span></td></tr>
+        <tr><td class="name mono">prob:svm</td><td class="num">0.4584</td><td class="num">0.4237</td><td class="num d-neg">−0.035</td><td><span class="chip tie">ya calibrado</span></td></tr>
+        <tr><td class="name mono">prob:nb</td><td class="num">0.4800</td><td class="num">0.4351</td><td class="num d-neg">−0.045</td><td><span class="chip tie">ya calibrado</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col" style="display:flex;flex-direction:column;gap:1.1rem">
+    <p>En términos pareados, el desplome de <code>prob:mlp_snapshot</code> frente a LogReg pasa de
+      <strong class="sig">Δ kappa = −0.2093</strong> <span class="mono note">(IC [−0.2911, −0.1318], p Holm = 0.0002,
+      significativo)</span> a <strong>Δ kappa_t = −0.0066</strong>
+      <span class="mono note">(IC [−0.0451, +0.0335], p Holm = 1.0, nulo)</span>. Lo mismo en las cuatro
+      métricas de decisión.</p>
+
+    <p>La lectura correcta: <strong>un MLP entrenado con 75 filas sobre clases al 40/60 no aprende a poner
+      su frontera en 0.5</strong>, aunque ordene bien. Su AUC — el más alto del barrido — siempre lo dijo;
+      el argmax lo escondía.</p>
+
+    <div class="callout neg">
+      <h4>El efecto simétrico también importa</h4>
+      <p>Para los brazos que ya funcionaban (LogReg, SVM, NB), ajustar el umbral <strong>empeora</strong>
+        el resultado en 0.03–0.045 de kappa. Con ~15 slides de validación por fold el umbral estimado es
+        ruidoso, y 0.5 resulta más robusto que optimizarlo.</p>
+      <p><strong>No se recomienda adoptar el ajuste de umbral en el pipeline.</strong> Sirve como
+        diagnóstico para saber si un brazo falla al ordenar o al cortar, no como mejora.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ ESTADÍSTICA ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">06 · Contraste</div>
+    <h2>Estadística pareada</h2>
+  </div>
+
+  <p class="col">Todas las configuraciones se evalúan sobre los mismos 50 folds, así que las comparaciones
+    son <strong>pareadas</strong>. Por métrica se reporta Δ medio, IC 95 % por bootstrap (10 000
+    remuestreos), ganadas/empatadas/perdidas con los empates explícitos, p de Wilcoxon,
+    <strong>p corregida por Holm</strong> sobre la familia de métricas, y el <strong>efecto mínimo
+    detectable</strong> al 80 % de potencia — para que un resultado no significativo se lea como
+    <em>acotado</em> y no como <em>indeterminado</em>.</p>
+
+  <h3>Tareas 1-6 · stacking sobre probabilidades</h3>
+
+  <div class="tscroll">
+    <table>
+      <caption>Δ frente a <code>prob:logreg</code>. La p de Holm mostrada es la de kappa.</caption>
+      <thead><tr><th>Brazo</th><th class="num">Δ AUC</th><th class="num">IC 95 %</th><th class="num">Δ kappa</th><th class="num">p Holm</th><th>Veredicto</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><strong>SVM</strong></td><td class="num">−0.0021</td><td class="ci">[−0.0067, +0.0024]</td><td class="num">−0.0045</td><td class="num">1.00</td><td><span class="chip tie">Empate exacto</span></td></tr>
+        <tr><td class="name"><strong>Naive Bayes</strong></td><td class="num">−0.0031</td><td class="ci">[−0.0093, +0.0028]</td><td class="num d-pos">+0.0170</td><td class="num">0.88</td><td><span class="chip tie">Empate, sesgo favorable</span></td></tr>
+        <tr><td class="name"><strong>MLP Snapshot</strong></td><td class="num d-pos">+0.0031</td><td class="ci">[−0.0020, +0.0084]</td><td class="num d-neg">−0.2093</td><td class="num sig">0.0002</td><td><span class="chip bad">Se hunde a 0.5</span></td></tr>
+        <tr><td class="name"><strong>KNN</strong></td><td class="num d-neg">−0.0321</td><td class="ci">[−0.0467, −0.0183]</td><td class="num">−0.0384</td><td class="num">0.38</td><td><span class="chip bad">Peor · AUC y AP signif.</span></td></tr>
+        <tr><td class="name"><strong>MLP</strong></td><td class="num d-neg">−0.1038</td><td class="ci">[−0.1485, −0.0635]</td><td class="num d-neg">−0.4280</td><td class="num sig">&lt; 0.0001</td><td><span class="chip bad">Colapsa</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <ul class="plain">
+      <li><strong>SVM es literalmente el mismo modelo.</strong> Las 12 métricas empatan, con
+        <strong>40 de 50 folds decidiendo idénticamente</strong>. Un SVM lineal con C = 1 sobre 6 columnas
+        de probabilidad es una frontera lineal en el mismo espacio que LogReg; que coincidan no es
+        sorprendente, es la confirmación de que <em>no hay estructura no lineal que explotar</em>.</li>
+      <li><strong>NB es un empate con sesgo favorable</strong> en las métricas del desbalance: bacc
+        +0.0119, F1 de la clase mutada <strong>+0.0197</strong> <span class="note">(p = 0.0115 sin corregir,
+        0.14 tras Holm)</span>, kappa +0.0170. Pero su AUC y su AP son <em>peores</em>, y con el umbral
+        ajustado la ventaja desaparece por completo (Δ bacc_t = +0.0007). <strong>La ventaja de NB es
+        enteramente un efecto de umbral</strong>: sus probabilidades caen mejor situadas respecto al 0.5,
+        nada más.</li>
+      <li><strong>KNN es el único claramente peor en ordenación:</strong> Δ AUC −0.0321 y Δ AP −0.0784,
+        ambos significativos tras Holm. Con 75 filas en 6 dimensiones, 5 vecinos son demasiado pocos para
+        estimar la densidad.</li>
+      <li><strong>MLP colapsa de verdad</strong>, no sólo en el corte: su AUC cae −0.1038, con 43 de 50
+        folds perdidos. El ajuste de umbral lo recupera parcialmente pero sigue significativamente por
+        debajo de LogReg.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════ TAREA 7 ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">07 · Tarea 7 · §8.1</div>
+    <h2>Embeddings frente a probabilidades</h2>
+  </div>
+
+  <p class="col lede">La comparación abierta más importante del proyecto se cierra en negativo.
+    El espacio de 1536 D no bate al de 6 columnas.</p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Δ frente a <code>prob:logreg</code>, 50 folds pareados.</caption>
+      <thead><tr><th>Brazo</th><th class="num">Δ AUC</th><th class="num">IC 95 %</th><th class="num">Δ kappa @ 0.5</th><th class="num">Δ kappa_t</th><th class="num">p Holm mín.</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">emb:logreg</td><td class="num d-neg">−0.0160</td><td class="ci">[−0.0305, −0.0020]</td><td class="num d-neg">−0.0297</td><td class="num d-neg">−0.0656</td><td class="num">0.56</td></tr>
+        <tr><td class="name mono">emb:mlp</td><td class="num d-neg">−0.0138</td><td class="ci">[−0.0294, +0.0005]</td><td class="num d-neg">−0.2442</td><td class="num">−0.0196</td><td class="num sig">&lt; 0.0001</td></tr>
+        <tr class="best"><td class="name mono"><strong>emb:mlp_snapshot</strong></td><td class="num hl">+0.0002</td><td class="ci">[−0.0077, +0.0084]</td><td class="num hl">+0.0281</td><td class="num hl">+0.0482</td><td class="num">0.58</td></tr>
+        <tr><td class="name mono">emb:mlp_fge</td><td class="num">−0.0049</td><td class="ci">[−0.0139, +0.0043]</td><td class="num d-neg">−0.1346</td><td class="num d-pos">+0.0204</td><td class="num sig">0.0022</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <ol class="findings">
+      <li><div><strong>A igualdad de metaclasificador, las probabilidades ganan.</strong>
+        <code>emb:logreg</code> pierde −0.0160 de AUC y −0.0205 de AP frente a <code>prob:logreg</code>,
+        con 29 y 30 folds perdidos de 50. Es la comparación limpia — mismo combinador, sólo cambia la
+        entrada — y va en contra de los embeddings.</div></li>
+      <li><div><strong>El orden interno de la tabla obsoleta del 18-ago sí replica.</strong>
+        Entonces: MLP Snapshot 0.7995 &gt; MLP FGE 0.7947 &gt; MLP 0.7901 ≈ LogReg 0.7896.
+        Ahora: <span class="mono">0.7988 &gt; 0.7937 &gt; 0.7848 &gt; 0.7826</span>. La conclusión
+        <em>relativa</em> dentro del espacio de embeddings se sostiene con los checkpoints actuales, con
+        una fidelidad notable en los valores absolutos.</div></li>
+      <li><div><strong>Pero el nivel entero está en o por debajo de <code>prob:logreg</code>.</strong>
+        Lo que en su día pareció una mejora era el mejor punto de un espacio peor.</div></li>
+    </ol>
+  </div>
+
+  <div class="callout col">
+    <h4>El matiz honesto</h4>
+    <p><code>emb:mlp_snapshot</code> es el <strong>único brazo del barrido que apunta hacia arriba en las
+      cinco métricas de decisión</strong>, tanto a 0.5 (kappa +0.0281, acc +0.0160 con IC que excluye el
+      cero) como con umbral ajustado (kappa_t +0.0482, bacc_t +0.0240).</p>
+    <p><strong>Ninguno supera Holm</strong> (p entre 0.58 y 0.88) y el AUC es plano (+0.0002), así que no
+      es un resultado: es una dirección. Si algo de este barrido merece una réplica, es esto — pero el MDE
+      de kappa está en 0.046, muy cerca del efecto medido, así que 50 folds no bastan para resolverlo.</p>
+  </div>
+</section>
+
+<!-- ══════════════ REPRODUCIBILIDAD ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">08 · Ruido</div>
+    <h2>El suelo de reproducibilidad, medido otra vez sin querer</h2>
+  </div>
+
+  <p class="col">La suite se ejecutó dos veces: primero en GPU (job 70291) y después en CPU al añadir el
+    análisis de umbral. Los brazos deterministas —<code>logreg</code>, <code>svm</code>,
+    <code>knn</code>, <code>nb</code>— dieron resultados <strong>idénticos</strong>. Los que usan PyTorch
+    se movieron.</p>
+
+  <div class="tscroll" style="max-width:620px">
+    <table style="min-width:0">
+      <thead><tr><th>Brazo</th><th class="num">GPU</th><th class="num">CPU</th><th class="num">Δ</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">prob:mlp</td><td class="num">0.6884</td><td class="num">0.6948</td><td class="num">+0.0064</td></tr>
+        <tr><td class="name mono">prob:mlp_snapshot</td><td class="num">0.8011</td><td class="num">0.8018</td><td class="num">+0.0007</td></tr>
+        <tr><td class="name mono">emb:mlp_snapshot</td><td class="num">0.7957</td><td class="num">0.7988</td><td class="num">+0.0031</td></tr>
+        <tr><td class="name mono">emb:mlp_fge</td><td class="num">0.7946</td><td class="num">0.7937</td><td class="num">−0.0009</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Consecuencia directa para leer este informe</h4>
+    <p>Es una confirmación independiente del suelo de ≈ 0.004 AUC que ya documenta el estado del arte.
+      <strong>Todos los Δ positivos medidos aquí</strong> —el +0.0031 de <code>prob:mlp_snapshot</code>,
+      el +0.0002 de <code>emb:mlp_snapshot</code>— <strong>están por debajo del ruido de volver a lanzar
+      el mismo job.</strong></p>
+    <p>Los contrastes <em>dentro</em> de una pasada siguen siendo válidos, porque todos los brazos
+      comparten proceso y dispositivo. Lo que no es válido es tratar +0.003 como una mejora.</p>
+  </div>
+</section>
+
+<!-- ══════════════ SNAPSHOT BASE ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">09 · Job 70292</div>
+    <h2>Snapshot ensemble a nivel base</h2>
+  </div>
+
+  <p class="col">Distinto del <code>mlp_snapshot</code> de las secciones anteriores: allí los snapshots
+    son del MLP del stacking; aquí lo son <strong>de los propios ABMIL</strong>. Se generaron desde cero
+    con tags nuevos (<code>fge_trio</code>, <code>se_trio</code>) porque los que había en disco eran del
+    14-15 ago, anteriores a los checkpoints base actuales, y <code>conch_v1_5</code> no tenía ninguno.
+    <span class="note">Duración: 2 h 13 min, 300 corridas de fold.</span></p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Hiperparámetros validados de <code>experiments.yaml</code>. <b>FGE</b> (Garipov et al., ICLR 2018) <code>lr_1 2e-4 · lr_2 2e-5 · cycle_length 4</code> · <b>SE</b> (Huang et al., ICLR 2017) <code>lr_1 1e-3 · lr_2 1e-6 · cycle_length 15</code>.</caption>
+      <thead><tr><th>Configuración</th><th class="num">AUC</th><th class="num">AP</th><th class="num">bacc</th><th class="num">macro-F1</th><th class="num">kappa</th></tr></thead>
+      <tbody>
+        <tr class="base"><td class="name mono">prob:logreg</td><td class="num">0.7986</td><td class="num">0.7494</td><td class="num">0.7302</td><td class="num">0.7294</td><td class="num">0.4629</td></tr>
+        <tr><td class="name mono">prob:mlp_snapshot</td><td class="num">0.8011</td><td class="num">0.7554</td><td class="num d-neg">0.6229</td><td class="num d-neg">0.5809</td><td class="num d-neg">0.2551</td></tr>
+        <tr class="best"><td class="name mono"><strong>fge_trio:logreg</strong></td><td class="num">0.8006</td><td class="num hl">0.7575</td><td class="num hl">0.7422</td><td class="num hl">0.7403</td><td class="num hl">0.4845</td></tr>
+        <tr><td class="name mono">fge_trio:mlp_snapshot</td><td class="num">0.8007</td><td class="num">0.7561</td><td class="num d-neg">0.6970</td><td class="num d-neg">0.6865</td><td class="num d-neg">0.4037</td></tr>
+        <tr><td class="name mono">se_trio:logreg</td><td class="num">0.8000</td><td class="num">0.7511</td><td class="num">0.7262</td><td class="num">0.7250</td><td class="num">0.4528</td></tr>
+        <tr><td class="name mono">se_trio:mlp_snapshot</td><td class="num">0.7986</td><td class="num">0.7550</td><td class="num d-neg">0.7024</td><td class="num d-neg">0.6950</td><td class="num d-neg">0.4120</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col"><code>fge_trio:logreg</code> es <strong>numéricamente la mejor configuración de toda la
+    campaña</strong> en cuatro de las cinco métricas, incluido el mejor AP jamás medido aquí. Los
+    contrastes pareados dicen que no significa nada:</p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Δ frente a <code>prob:logreg</code>. <b>Ninguna p corregida por Holm baja de 0.2 en ninguna métrica.</b></caption>
+      <thead><tr><th>Brazo</th><th class="num">Δ AUC</th><th class="num">IC 95 %</th><th class="num">G/E/P</th><th class="num">Δ kappa</th><th class="num">p Holm</th><th class="num">MDE</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">fge_trio:logreg</td><td class="num d-pos">+0.0020</td><td class="ci">[−0.0161, +0.0196]</td><td class="num d-neg">22/2/26</td><td class="num d-pos">+0.0215</td><td class="num">1.00</td><td class="num">0.0261</td></tr>
+        <tr><td class="name mono">se_trio:logreg</td><td class="num">+0.0013</td><td class="ci">[−0.0166, +0.0194]</td><td class="num">24/4/22</td><td class="num d-neg">−0.0102</td><td class="num">1.00</td><td class="num">0.0259</td></tr>
+        <tr><td class="name mono">fge_trio:mlp_snapshot</td><td class="num">+0.0021</td><td class="ci">[−0.0163, +0.0207]</td><td class="num">24/2/24</td><td class="num d-neg">−0.0592</td><td class="num">0.34</td><td class="num">0.0266</td></tr>
+        <tr><td class="name mono">se_trio:mlp_snapshot</td><td class="num">−0.0001</td><td class="ci">[−0.0200, +0.0192]</td><td class="num">24/4/22</td><td class="num d-neg">−0.0510</td><td class="num">0.41</td><td class="num">0.0283</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Por qué el +0.0020 de FGE no es una mejora</h3>
+  <div class="col">
+    <ol class="findings">
+      <li><div><strong>Pierde en más folds de los que gana.</strong> Media positiva (+0.0020) y
+        <strong>G/E/P de 22/2/26</strong> en AUC: la mediana va en contra del signo de la media. Es la
+        firma de unos pocos folds con desviaciones grandes, no la de un efecto sistemático. El cambio de
+        modelo base, para comparar, dio <span class="mono">34/4/12</span>.</div></li>
+      <li><div><strong>Está muy por debajo del suelo de reproducibilidad</strong> (≈ 0.004, §08).
+        Volver a lanzar el mismo job mueve el AUC más que esto.</div></li>
+      <li><div><strong>El nulo aquí es más débil que el de la ablación previa.</strong> El MDE es de
+        <span class="mono">0.026</span> de AUC, unas <strong>4 ×</strong> el de la suite de
+        metaclasificadores (0.0065 para SVM). Las predicciones de los snapshots son más ruidosas fold a
+        fold, así que esta comparación sólo excluye mejoras por encima de ≈ 0.026, frente al ≈ 0.017 que
+        acotaba el estado del arte.</div></li>
+    </ol>
+  </div>
+
+  <div class="callout col">
+    <h4>Dicho honestamente</h4>
+    <p>Este experimento <strong>no descarta una mejora pequeña de FGE; descarta una grande.</strong>
+      Pero tampoco aporta ninguna evidencia a favor, y su mejor lectura —cuatro métricas arriba— se
+      desmonta al mirar el reparto por folds.</p>
+  </div>
+
+  <h3>Dos observaciones secundarias</h3>
+
+  <div class="tscroll" style="max-width:640px">
+    <table style="min-width:0">
+      <caption><b>La diversidad de snapshots satura, otra vez.</b> Snapshots aceptados por fold, sobre las 300 corridas.</caption>
+      <thead><tr><th class="num">Snapshots/fold</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">5</th><th class="num">6</th></tr></thead>
+      <tbody>
+        <tr><td>Corridas</td><td class="num" style="font-weight:600;color:var(--accent)">174</td><td class="num">66</td><td class="num">38</td><td class="num">11</td><td class="num">11</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col" style="display:flex;flex-direction:column;gap:1.1rem">
+    <p class="note">Con <code>cycle_patience = 2</code>, el 58 % de los folds se corta en dos snapshots.
+      Es el mismo mecanismo que ya documentaba la ablación previa: los snapshots de un mismo modelo
+      correlacionan demasiado como para que añadir ciclos aporte, y el corte por paciencia lo detecta.</p>
+
+    <p><strong>El patrón corte-vs-ordenación se repite sobre bases de snapshot.</strong> Los dos brazos
+      <code>mlp_snapshot</code> sobre bases FGE/SE pierden en decisión a 0.5 (Δ kappa −0.059 y −0.051) y
+      <strong>recuperan por completo con umbral ajustado</strong> (+0.0019 y −0.0029). Es exactamente
+      §05 otra vez, ahora con las bases cambiadas: confirma que el fenómeno es del metaclasificador MLP,
+      no de las features que recibe.</p>
+
+    <p class="note">Nota lateral: <code>se_trio:logreg</code> elige un umbral de validación notablemente
+      más bajo (<strong>0.364</strong> de media, frente a 0.442 del baseline). Los reinicios agresivos de
+      SE desplazan la calibración de las probabilidades base, aunque su ordenación quede igual.</p>
+  </div>
+</section>
+
+<!-- ══════════════ CONCLUSIONES ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">10 · Conclusiones</div>
+    <h2>Qué hacer con esto</h2>
+  </div>
+
+  <div class="col">
+    <ol class="findings">
+      <li><div><strong>LogReg sigue sin ser batido.</strong> De nueve alternativas, ninguna consigue un Δ
+        positivo significativo tras Holm en ninguna métrica. Dos empatan (SVM, NB), una empata con
+        dirección favorable en decisión (<code>emb:mlp_snapshot</code>), y seis son peores — cuatro de
+        forma significativa.</div></li>
+      <li><div><strong>Con 75 filas de entrenamiento y 6 columnas, la flexibilidad no se paga.</strong>
+        El orden del barrido lo dice sin ambigüedad: los dos modelos lineales empatan en cabeza, el
+        generativo simple empata, y los flexibles pierden. Es el mismo patrón que el estado del arte ya
+        documentaba para la atención: <strong>el cuello de botella es el tamaño del conjunto, no la
+        capacidad del modelo.</strong></div></li>
+      <li><div><strong>El desbalance se manifiesta como un problema de umbral</strong>, y hay que
+        diagnosticarlo con métricas de los dos bloques. Un brazo con AUC 0.8018 y kappa 0.2536 no es un
+        mal clasificador: es un buen ordenador con el corte mal puesto. Reportar sólo AUC lo habría
+        declarado ganador; reportar sólo kappa, inútil. Ambas lecturas serían falsas.</div></li>
+      <li><div><strong>§8.1 queda cerrada en negativo.</strong> Queda una dirección abierta y acotada —
+        <code>emb:mlp_snapshot</code> en métricas de decisión — que no alcanza significación y cuyo MDE
+        (0.046 en kappa) dice que 50 folds no la resolverán.</div></li>
+      <li><div><strong>El snapshot ensemble a nivel base tampoco aporta.</strong> Ni FGE ni SE producen
+        un cambio significativo sobre el trío ganador — la primera vez que se mide sobre este trío, y
+        replica el nulo que la ablación previa encontró sobre el histórico.</div></li>
+    </ol>
+  </div>
+
+  <h3 style="padding-top:1rem">Recomendación operativa: no cambiar nada</h3>
+
+<pre><span class="c"># La configuración recomendada sigue siendo la misma</span>
+python src/ensemble4.py \
+    --foundational_models <span class="f">ctranspath uni_v2 conch_v1_5</span> \
+    --work_dir /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches \
+    --train_source cptac_brca \
+    --tissue_patching 20x_224px_0px_overlap \
+    --task_name TP53_mutation \
+    --meta_model <span class="f">logreg</span></pre>
+
+  <p class="col">En particular, <strong>no adoptar el ajuste de umbral</strong>: con ~15 slides de
+    validación por fold empeora los brazos que ya funcionaban. Es una herramienta de diagnóstico, no una
+    mejora del pipeline.</p>
+
+  <div class="callout col">
+    <h4>Lo que este barrido refuerza</h4>
+    <p>Cambiar <strong>qué modelos base entran</strong> valió +0.037 de AUC. Cambiar <strong>cómo se
+      combinan</strong> no ha valido nada medible en nueve intentos más.</p>
+  </div>
+</section>
+
+<!-- ══════════════ ANEXOS ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">Anexo</div>
+    <h2>Reproducción y trabajo en curso</h2>
+  </div>
+
+<pre><span class="c"># Pasada completa: regenera embeddings + los 10 brazos + estadística</span>
+sbatch run_meta_suite_winning_trio.sbatch
+
+<span class="c"># Sólo el análisis, con los outputs ya en disco</span>
+python src/run_meta_suite.py \
+    --foundational_models ctranspath uni_v2 conch_v1_5 \
+    --n_folds 50 --baseline prob:logreg \
+    --configs prob:logreg prob:mlp prob:mlp_snapshot prob:svm prob:knn prob:nb \
+              emb:logreg emb:mlp emb:mlp_snapshot emb:mlp_fge \
+    --out results_meta_suite_cptac_brca_TP53_mutation.json</pre>
+
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Fichero</th><th>Contenido</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">src/run_meta_suite.py</td><td>El runner: carga, verificación de alineamiento, 10 brazos, 3 bloques de métricas, estadística pareada</td></tr>
+        <tr><td class="name mono">run_meta_suite_winning_trio.sbatch</td><td>Job completo, incluida la regeneración de embeddings y su verificación de vigencia</td></tr>
+        <tr><td class="name mono">results_meta_suite_…json</td><td>Métricas por fold, agregados, umbrales elegidos y contrastes pareados</td></tr>
+        <tr><td class="name mono">logs/meta_suite_trio_70291.out</td><td>Salida del job (pasada GPU)</td></tr>
+        <tr><td class="name mono">logs/meta_suite_rerun.log</td><td>Salida de la pasada con análisis de umbral (CPU, la reportada)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout col">
+    <h4>El barrido completo · 14 configuraciones, 2 pasadas</h4>
+    <p>Cada pasada recalcula su propio baseline dentro de sí misma, así que los contrastes son válidos
+      dentro de cada una — nunca entre ellas contra números citados.</p>
+    <p><span class="mono">run_snapshot_base_trio.sbatch</span> ·
+       <span class="mono">results_snapshot_base_…json</span> ·
+       <span class="mono">logs/snapshot_base_trio_70292.out</span> (2 h 13 min)</p>
+  </div>
+</section>
+
+<footer>
+  <div class="eyebrow">Patho-Ensemble</div>
+  <p class="note col">Todo lo de este informe es <code>cptac_brca / TP53_mutation</code>. La lección de
+    <code>cervical_subtype</code> es que un hallazgo de un dataset puede no replicar: hasta que estos
+    resultados se reproduzcan en otra tarea, son de un solo conjunto.</p>
+</footer>
+
+</div>
+</body>
+</html>

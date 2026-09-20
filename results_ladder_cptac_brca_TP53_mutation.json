@@ -1,0 +1,62 @@
+{
+  "dataset": "cptac_brca",
+  "task": "TP53_mutation",
+  "baseline": "E0 (Baseline)",
+  "escalones": {
+    "E0 (Baseline)": {
+      "mean_auc": 0.7917843152218151,
+      "std_auc": 0.10798530080537992,
+      "n_folds": 50
+    },
+    "E1 (+disagreement)": {
+      "mean_auc": 0.7914036172161173,
+      "std_auc": 0.10789397560889073,
+      "n_folds": 50
+    },
+    "E2 (+disagreement+margin)": {
+      "mean_auc": 0.7912162062474561,
+      "std_auc": 0.10787703211239233,
+      "n_folds": 50
+    },
+    "E3 (+disagreement+margin+entropy)": {
+      "mean_auc": 0.7903601317663816,
+      "std_auc": 0.10831098086867907,
+      "n_folds": 50
+    }
+  },
+  "comparisons": [
+    {
+      "comparison": "E1 (+disagreement)",
+      "mean_delta": -0.0003806980056980058,
+      "ci_95": [
+        -0.0010947293447293438,
+        0.0003148148148148122
+      ],
+      "p_value": 0.2940316159441239,
+      "adjusted_p_value": 0.2940316159441239,
+      "significant": false
+    },
+    {
+      "comparison": "E2 (+disagreement+margin)",
+      "mean_delta": -0.000568108974358974,
+      "ci_95": [
+        -0.0015480769230769198,
+        0.0002604166666666652
+      ],
+      "p_value": 0.21387729421911275,
+      "adjusted_p_value": 0.6416318826573383,
+      "significant": false
+    },
+    {
+      "comparison": "E3 (+disagreement+margin+entropy)",
+      "mean_delta": -0.0014241834554334564,
+      "ci_95": [
+        -0.003864271723646726,
+        0.0005383492953805263
+      ],
+      "p_value": 0.21552170139355376,
+      "adjusted_p_value": 0.4310434027871075,
+      "significant": false
+    }
+  ]
+}

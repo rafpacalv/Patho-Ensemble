@@ -1,0 +1,791 @@
+<title>Protocolo del brazo espacial</title>
+<style>
+  :root {
+    --ground:      #FBFAFB;
+    --surface:     #F4F0F5;
+    --surface-2:   #ECE6EE;
+    --ink:         #1B1520;
+    --ink-soft:    #564D5C;
+    --ink-faint:   #8B8191;
+    --rule:        #E3DCE7;
+    --rule-strong: #CFC4D5;
+    --accent:      #7A2E52;
+    --accent-soft: #A84A6E;
+    --accent-wash: #F6EAEF;
+    --good:        #2C6448;
+    --warn:        #8C5910;
+    --crit:        #962E27;
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, serif;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #131017;  --surface:     #1C1822;  --surface-2:   #262029;
+      --ink:         #EDE7F0;  --ink-soft:    #ABA1B2;  --ink-faint:   #7B7183;
+      --rule:        #2D2735;  --rule-strong: #413A4A;
+      --accent:      #E08BA6;  --accent-soft: #C46A88;  --accent-wash: #241A20;
+      --good:        #6FBF95;  --warn:        #D4A24E;  --crit:        #E2726A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:      #131017;  --surface:     #1C1822;  --surface-2:   #262029;
+    --ink:         #EDE7F0;  --ink-soft:    #ABA1B2;  --ink-faint:   #7B7183;
+    --rule:        #2D2735;  --rule-strong: #413A4A;
+    --accent:      #E08BA6;  --accent-soft: #C46A88;  --accent-wash: #241A20;
+    --good:        #6FBF95;  --warn:        #D4A24E;  --crit:        #E2726A;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: var(--serif); font-size: 17px; line-height: 1.64;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 50rem; margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1.1rem, 4vw, 2rem) 6rem;
+    display: flex; flex-direction: column; gap: 3.25rem;
+  }
+
+  .masthead { display: flex; flex-direction: column; gap: 1rem; }
+  .eyebrow {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--accent);
+    display: flex; flex-wrap: wrap; gap: .5rem .9rem;
+  }
+  .eyebrow span:not(:last-child)::after {
+    content: ""; margin-left: .9rem; border-left: 1px solid var(--rule-strong);
+  }
+
+  h1 {
+    font-family: var(--sans); font-size: clamp(1.9rem, 5.2vw, 2.9rem);
+    font-weight: 660; letter-spacing: -.025em; line-height: 1.1;
+    text-wrap: balance; margin: 0;
+  }
+  .standfirst { font-size: 1.12rem; color: var(--ink-soft); margin: 0; max-width: 40rem; }
+
+  section { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  h2 {
+    font-family: var(--sans); font-size: 1.28rem; font-weight: 640;
+    letter-spacing: -.015em; line-height: 1.25; margin: 0;
+    padding-left: .85rem; border-left: 3px solid var(--accent);
+    text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--sans); font-size: .93rem; font-weight: 640;
+    margin: .6rem 0 0; color: var(--ink);
+  }
+
+  p { margin: 0; max-width: 40rem; }
+  p + p { margin-top: .6rem; }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible, .term:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px;
+  }
+
+  code {
+    font-family: var(--mono); font-size: .84em;
+    background: var(--surface-2); padding: .12em .38em; border-radius: 3px;
+  }
+  strong { font-weight: 640; color: var(--ink); }
+
+  .figure {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 1.5rem 1.25rem 1.1rem; display: flex; flex-direction: column; gap: .9rem;
+  }
+  .figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-family: var(--sans); font-size: .82rem; line-height: 1.5;
+    color: var(--ink-soft); border-top: 1px solid var(--rule);
+    padding-top: .8rem; margin: 0;
+  }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; }
+  table {
+    border-collapse: collapse; width: 100%;
+    font-family: var(--sans); font-size: .85rem; line-height: 1.45;
+  }
+  th, td {
+    text-align: left; padding: .62rem .8rem;
+    border-bottom: 1px solid var(--rule); vertical-align: top;
+  }
+  thead th {
+    background: var(--surface-2); font-weight: 640; font-size: .73rem;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  td code, th code { background: none; padding: 0; color: var(--accent); }
+
+  .glossary { display: flex; flex-direction: column; gap: 0; }
+  .term {
+    display: grid; grid-template-columns: 12rem 1fr; gap: 0 1.5rem;
+    padding: .78rem 0; border-bottom: 1px solid var(--rule);
+  }
+  .term:first-child { border-top: 1px solid var(--rule); }
+  .term dt {
+    font-family: var(--mono); font-size: .82rem; font-weight: 500;
+    color: var(--accent); line-height: 1.5; padding-top: .1rem;
+  }
+  .term dd { margin: 0; font-size: .95rem; line-height: 1.55; color: var(--ink-soft); }
+  .term dd b { color: var(--ink); font-weight: 620; }
+  @media (max-width: 40rem) { .term { grid-template-columns: 1fr; gap: .2rem; } }
+
+  .note {
+    background: var(--accent-wash); border-left: 3px solid var(--accent);
+    border-radius: 0 5px 5px 0; padding: .95rem 1.15rem; font-size: .95rem;
+    display: flex; flex-direction: column; gap: .45rem;
+  }
+  .note .label {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .11em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .note p { max-width: 38rem; }
+
+  .pill {
+    display: inline-block; font-family: var(--mono); font-size: .68rem;
+    letter-spacing: .05em; text-transform: uppercase; padding: .16em .5em;
+    border-radius: 3px; white-space: nowrap; border: 1px solid currentColor;
+  }
+  .pill.ok { color: var(--good); }
+  .pill.wait { color: var(--warn); }
+  .pill.idle { color: var(--ink-faint); }
+
+  pre {
+    margin: 0; background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 6px; padding: .95rem 1.1rem; overflow-x: auto;
+    font-family: var(--mono); font-size: .8rem; line-height: 1.65; color: var(--ink);
+  }
+  pre .c { color: var(--ink-faint); }
+  pre .f { color: var(--accent); }
+
+  .stages { display: flex; flex-direction: column; gap: .75rem; list-style: none; margin: 0; padding: 0; }
+  .stage {
+    display: grid; grid-template-columns: 2.1rem 1fr; gap: 0 1rem;
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 6px; padding: .9rem 1.1rem;
+  }
+  .stage .n {
+    font-family: var(--mono); font-size: 1.15rem; font-weight: 500;
+    color: var(--accent); line-height: 1.3;
+  }
+  .stage .body { display: flex; flex-direction: column; gap: .3rem; }
+  .stage h3 { margin: 0; }
+  .stage p { font-size: .92rem; color: var(--ink-soft); }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">
+      <span>Patho-Ensemble</span>
+      <span>cptac_brca / TP53_mutation</span>
+      <span>50 folds</span>
+    </div>
+    <h1>Protocolo del brazo espacial</h1>
+    <p class="standfirst">
+      Qué estamos probando al meter un grafo en el pipeline, explicado sin dar por
+      supuesto nada sobre grafos; con qué parámetros se controla y qué significa
+      cada término que sale en los logs.
+    </p>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>El problema, antes de hablar de grafos</h2>
+    <p>
+      Una biopsia digitalizada es una imagen enorme, así que se trocea en miles de cuadraditos
+      —los <strong>tiles</strong>— y cada uno se convierte en un vector de números con un modelo
+      fundacional. Una slide típica de este dataset da unos <strong>7 000 tiles</strong>.
+    </p>
+    <p>
+      El modelo que tenemos, ABMIL, aprende a puntuar cada tile por lo informativo que es y
+      luego promedia toda la slide con esos pesos. Funciona bien, pero tiene una limitación que
+      se ve al enunciarla: trata los 7 000 tiles como una <strong>bolsa desordenada</strong>. Si
+      barajaras los tiles de una slide como quien baraja una baraja, el modelo daría exactamente
+      la misma respuesta. No sabe cuáles estaban pegados a cuáles.
+    </p>
+    <p>
+      Y en patología eso es tirar información. Un tumor no es un puñado de células sueltas
+      repartidas al azar: forma nidos. La inflamación forma frentes. Un tile «sospechoso»
+      rodeado de tejido sano no significa lo mismo que ese mismo tile rodeado de otros veinte
+      igual de sospechosos. Esa diferencia, hoy, el modelo no puede verla.
+    </p>
+    <p>
+      La buena noticia es que la información para verla <strong>ya estaba guardada</strong>: cada
+      tile tiene sus coordenadas en el fichero, alineadas con su vector. Nadie las leía.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Qué es un grafo aquí</h2>
+    <p>
+      Un grafo es simplemente <em>un conjunto de cosas y qué cosas están conectadas con
+      cuáles</em>. Nada más. En nuestro caso:
+    </p>
+    <p>
+      Los <strong>nodos</strong> son los tiles. Las <strong>aristas</strong> unen cada tile con
+      los que tiene pegados en la slide. Como los tiles se recortaron en cuadrícula regular,
+      «pegado» es literal: cada tile tiene hasta 8 vecinos, los de arriba, abajo, los lados y
+      las cuatro diagonales.
+    </p>
+  </section>
+
+  <figure class="figure">
+    <svg viewBox="0 0 640 230" role="img" aria-labelledby="t2">
+      <title id="t2">Vecindad de un tile en la cuadrícula del tejido</title>
+      <g font-family="ui-sans-serif, system-ui, sans-serif">
+        <!-- rejilla izquierda -->
+        <text x="14" y="20" font-size="11" font-weight="600" fill="var(--ink)">La slide, troceada</text>
+        <g>
+          <!-- tejido presente -->
+          <g fill="var(--surface-2)" stroke="var(--rule-strong)" stroke-width="1">
+            <rect x="14"  y="34" width="30" height="30"/><rect x="46"  y="34" width="30" height="30"/>
+            <rect x="78"  y="34" width="30" height="30"/><rect x="110" y="34" width="30" height="30"/>
+            <rect x="14"  y="66" width="30" height="30"/><rect x="110" y="66" width="30" height="30"/>
+            <rect x="142" y="66" width="30" height="30"/>
+            <rect x="14"  y="98" width="30" height="30"/><rect x="46"  y="98" width="30" height="30"/>
+            <rect x="78"  y="98" width="30" height="30"/><rect x="110" y="98" width="30" height="30"/>
+            <rect x="46" y="130" width="30" height="30"/><rect x="78" y="130" width="30" height="30"/>
+            <rect x="110" y="130" width="30" height="30"/><rect x="142" y="130" width="30" height="30"/>
+          </g>
+          <!-- vecinos resaltados -->
+          <g fill="var(--accent-wash)" stroke="var(--accent-soft)" stroke-width="1.3">
+            <rect x="46" y="34" width="30" height="30"/><rect x="78" y="34" width="30" height="30"/>
+            <rect x="110" y="34" width="30" height="30"/>
+            <rect x="46" y="98" width="30" height="30"/><rect x="78" y="98" width="30" height="30"/>
+            <rect x="110" y="98" width="30" height="30"/>
+            <rect x="110" y="66" width="30" height="30"/>
+          </g>
+          <!-- tile central -->
+          <rect x="78" y="66" width="30" height="30" fill="var(--accent)" stroke="var(--accent)"/>
+          <!-- hueco marcado -->
+          <rect x="46" y="66" width="30" height="30" fill="none" stroke="var(--ink-faint)"
+                stroke-width="1" stroke-dasharray="2.5 2.5"/>
+        </g>
+        <text x="14" y="184" font-size="10" fill="var(--ink-soft)">
+          <tspan fill="var(--accent)">■</tspan> tile   ·
+          <tspan fill="var(--accent-soft)">■</tspan> sus vecinos   ·
+          <tspan fill="var(--ink-faint)">⌐</tspan> sin tejido
+        </text>
+        <text x="14" y="200" font-size="10" fill="var(--ink-soft)">Aquí el grado es 7, no 8:</text>
+        <text x="14" y="214" font-size="10" fill="var(--ink-soft)">falta un vecino por el hueco.</text>
+
+        <!-- flecha -->
+        <path d="M200,110 L246,110" fill="none" stroke="var(--ink-faint)" stroke-width="1.4"/>
+        <path d="M240,105 L248,110 L240,115" fill="none" stroke="var(--ink-faint)" stroke-width="1.4"/>
+        <text x="196" y="98" font-size="10" fill="var(--ink-faint)" font-family="ui-monospace, monospace">se convierte en</text>
+
+        <!-- grafo derecha -->
+        <text x="268" y="20" font-size="11" font-weight="600" fill="var(--ink)">El mismo trozo, como grafo</text>
+        <g stroke="var(--rule-strong)" stroke-width="1.2">
+          <line x1="360" y1="82" x2="322" y2="50"/><line x1="360" y1="82" x2="360" y2="50"/>
+          <line x1="360" y1="82" x2="398" y2="50"/><line x1="360" y1="82" x2="398" y2="82"/>
+          <line x1="360" y1="82" x2="322" y2="118"/><line x1="360" y1="82" x2="360" y2="118"/>
+          <line x1="360" y1="82" x2="398" y2="118"/>
+        </g>
+        <g fill="var(--surface-2)" stroke="var(--rule-strong)" stroke-width="1.2">
+          <circle cx="322" cy="50" r="9"/><circle cx="360" cy="50" r="9"/><circle cx="398" cy="50" r="9"/>
+          <circle cx="398" cy="82" r="9"/>
+          <circle cx="322" cy="118" r="9"/><circle cx="360" cy="118" r="9"/><circle cx="398" cy="118" r="9"/>
+        </g>
+        <circle cx="360" cy="82" r="11" fill="var(--accent)" stroke="var(--accent)"/>
+        <text x="268" y="160" font-size="10.5" fill="var(--ink-soft)">Nodos = tiles.</text>
+        <text x="268" y="176" font-size="10.5" fill="var(--ink-soft)">Aristas = «estáis pegados».</text>
+        <text x="268" y="192" font-size="10.5" fill="var(--ink-soft)">Grado = cuántos vecinos tiene un nodo.</text>
+
+        <!-- panel derecho: cifras -->
+        <rect x="470" y="34" width="156" height="126" rx="4"
+              fill="var(--ground)" stroke="var(--rule)"/>
+        <text x="484" y="53" font-size="10" font-family="ui-monospace, monospace"
+              letter-spacing="1" fill="var(--accent)">MEDIDO EN uni_v2</text>
+        <g font-size="10.5" fill="var(--ink-soft)">
+          <text x="484" y="76">grado medio</text>
+          <text x="612" y="76" text-anchor="end" fill="var(--ink)" font-weight="600">7.78</text>
+          <text x="484" y="98">tiles / slide</text>
+          <text x="612" y="98" text-anchor="end" fill="var(--ink)" font-weight="600">7 174</text>
+          <text x="484" y="120">nodos aislados</text>
+          <text x="612" y="120" text-anchor="end" fill="var(--good)" font-weight="600">0 %</text>
+          <text x="484" y="142">tiles totales</text>
+          <text x="612" y="142" text-anchor="end" fill="var(--ink)" font-weight="600">923 403</text>
+        </g>
+      </g>
+    </svg>
+    <figcaption>
+      El grado medio real es 7.78 de un máximo de 8: el tejido es muy compacto, así que casi
+      todos los tiles tienen sus ocho vecinos. Los que pierden alguno están en el borde del
+      tejido o junto a un hueco.
+    </figcaption>
+  </figure>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Qué hace una GNN con ese grafo</h2>
+    <p>
+      Una red neuronal de grafos (GNN) hace una sola cosa, repetida: <strong>cada nodo mira a sus
+      vecinos y mezcla la información de ellos con la suya</strong>. A eso se le llama
+      <em>message passing</em>, paso de mensajes.
+    </p>
+    <p>
+      Una ronda de mensajes hace que cada tile sepa algo de los tiles pegados a él. Dos rondas y
+      ya sabe algo de los vecinos de sus vecinos, o sea de una ventana de 5×5 tiles a su
+      alrededor. Es exactamente lo que le faltaba al modelo: en vez de juzgar cada tile aislado,
+      lo juzga <em>en su contexto</em>.
+    </p>
+    <p>
+      El número de rondas se llama <strong>K</strong> y aquí es 2. No es arbitrario: cada tile
+      cubre unas 112 micras de tejido, así que K=2 da un contexto de unas 560 micras — la escala
+      de un nido tumoral o de una banda de estroma. Poner K mucho más alto tiene un efecto
+      conocido y malo: de tanto promediar, todos los tiles acaban pareciéndose entre sí y se
+      pierde justo la señal que se buscaba.
+    </p>
+    <p>
+      Un detalle importante: el grafo va <strong>antes</strong> de la atención, no en su lugar.
+      Primero cada tile se entera de su vecindario, y después la atención decide cuáles pesan.
+      Los dos mecanismos se suman.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Por qué no puede ir en el metaclasificador</h2>
+    <p>
+      La pregunta de partida era si la GNN podía usarse como <strong>metaclasificador</strong> —
+      la pieza final que combina las predicciones de los tres modelos base. La respuesta es que
+      no, y conviene entender por qué, porque no es «rendiría mal» sino <strong>no hay nada que
+      conectar</strong>.
+    </p>
+    <p>
+      El metaclasificador no ve imágenes. Recibe una tabla de 112 filas (una por slide) y 6
+      columnas (tres modelos × dos clases). En ese punto los tiles ya no existen: la atención los
+      ha fundido en un único número por slide mucho antes, y lo que se guarda en disco son sólo
+      esas probabilidades. No hay tiles que hacer nodos ni coordenadas que hacer aristas.
+    </p>
+  </section>
+
+  <figure class="figure">
+    <svg viewBox="0 0 640 350" role="img" aria-labelledby="t1">
+      <title id="t1">Dónde vive la información espacial en el pipeline</title>
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--ink-faint)" stroke-width="1.6"/>
+        </marker>
+      </defs>
+
+      <rect x="8" y="8" width="624" height="215" rx="5"
+            fill="var(--accent-wash)" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="20" y="27" font-family="ui-monospace, monospace" font-size="10"
+            letter-spacing="1.1" fill="var(--accent)">AQUI CADA TILE EXISTE POR SEPARADO — SE PUEDE HACER GRAFO</text>
+
+      <rect x="8" y="239" width="624" height="103" rx="5"
+            fill="var(--surface-2)" stroke="var(--rule-strong)" stroke-width="1"/>
+      <text x="20" y="258" font-family="ui-monospace, monospace" font-size="10"
+            letter-spacing="1.1" fill="var(--ink-faint)">AQUI YA SOLO HAY UN NUMERO POR SLIDE — NO HAY GRAFO POSIBLE</text>
+
+      <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="11.5" fill="var(--ink)">
+        <rect x="26" y="44" width="176" height="48" rx="4" fill="var(--ground)" stroke="var(--rule-strong)"/>
+        <text x="38" y="63" font-weight="600">los tiles de la slide</text>
+        <text x="38" y="80" font-size="10" fill="var(--ink-soft)" font-family="ui-monospace, monospace">vector + coordenadas</text>
+
+        <line x1="210" y1="68" x2="248" y2="68" stroke="var(--ink-faint)" stroke-width="1.4" marker-end="url(#ar)"/>
+
+        <rect x="256" y="44" width="150" height="48" rx="4" fill="var(--ground)" stroke="var(--rule-strong)"/>
+        <text x="268" y="63" font-weight="600">proyección</text>
+        <text x="268" y="80" font-size="10" fill="var(--ink-soft)" font-family="ui-monospace, monospace">a 512 dimensiones</text>
+
+        <line x1="414" y1="68" x2="452" y2="68" stroke="var(--ink-faint)" stroke-width="1.4" marker-end="url(#ar)"/>
+
+        <rect x="460" y="44" width="152" height="48" rx="4" fill="var(--accent)" stroke="var(--accent)"/>
+        <text x="472" y="63" font-weight="700" fill="var(--ground)">paso de mensajes</text>
+        <text x="472" y="80" font-size="10" fill="var(--ground)" opacity=".85" font-family="ui-monospace, monospace">K=2 · lo que añadimos</text>
+
+        <path d="M536,96 L536,120 L320,120 L320,142" fill="none"
+              stroke="var(--ink-faint)" stroke-width="1.4" marker-end="url(#ar)"/>
+
+        <rect x="212" y="150" width="216" height="48" rx="4" fill="var(--ground)" stroke="var(--rule-strong)"/>
+        <text x="224" y="169" font-weight="600">atención</text>
+        <text x="224" y="186" font-size="10" fill="var(--ink-soft)" font-family="ui-monospace, monospace">pesa los tiles y los promedia</text>
+
+        <line x1="320" y1="202" x2="320" y2="232" stroke="var(--crit)" stroke-width="1.8" marker-end="url(#ar)"/>
+        <text x="332" y="222" font-size="10" fill="var(--crit)" font-family="ui-monospace, monospace">aquí desaparecen los tiles</text>
+
+        <rect x="120" y="272" width="180" height="46" rx="4" fill="var(--ground)" stroke="var(--rule-strong)"/>
+        <text x="132" y="291" font-weight="600">una probabilidad</text>
+        <text x="132" y="307" font-size="10" fill="var(--ink-soft)" font-family="ui-monospace, monospace">por slide</text>
+
+        <line x1="308" y1="295" x2="344" y2="295" stroke="var(--ink-faint)" stroke-width="1.4" marker-end="url(#ar)"/>
+
+        <rect x="352" y="272" width="196" height="46" rx="4" fill="var(--ground)" stroke="var(--rule-strong)"/>
+        <text x="364" y="291" font-weight="600">metaclasificador</text>
+        <text x="364" y="307" font-size="10" fill="var(--ink-soft)" font-family="ui-monospace, monospace">tabla de 112 × 6</text>
+      </g>
+    </svg>
+    <figcaption>
+      El grafo sólo cabe en la banda superior. Como efecto secundario útil, el brazo espacial
+      se comporta como «un modelo base más», así que entra en el ensemble existente sin
+      modificar nada del metaclasificador.
+    </figcaption>
+  </figure>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Terminología</h2>
+    <p>
+      Ordenada de lo más general a lo más específico del código. Lo que va en formato de código
+      es literal y se puede buscar en el repo.
+    </p>
+
+    <dl class="glossary">
+      <div class="term" tabindex="0">
+        <dt>WSI</dt>
+        <dd><b>Whole Slide Image</b>: la biopsia digitalizada entera, de varios gigapíxeles. Demasiado grande para meterla en una red de una vez; de ahí el troceado.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>tile / parche</dt>
+        <dd>Cada cuadradito de la WSI, aquí de 224 píxeles a 20 aumentos. Unas 112 micras de tejido real.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>embedding</dt>
+        <dd>El vector de números en que un modelo fundacional convierte un tile. Entre 768 y 2560 números según el modelo.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>bolsa / bag</dt>
+        <dd>Todos los tiles de una slide. La etiqueta (mutante o no) es de la <b>bolsa entera</b>: se sabe que la slide lo es, no qué tile lo delata. Eso es lo que hace el problema «multiple instance».</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>ABMIL</dt>
+        <dd>El modelo base actual. Aprende un peso por tile y promedia la bolsa con esos pesos. La «A» es de atención: es el mecanismo que decide qué tiles importan.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>GNN</dt>
+        <dd>Red neuronal que opera sobre un grafo, haciendo que cada nodo mezcle información con sus vecinos.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>message passing</dt>
+        <dd>La operación que hace eso. Una ronda = cada tile mira a sus vecinos inmediatos.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>K</dt>
+        <dd>Cuántas rondas de mensajes. K=2 → cada tile ve una ventana de 5×5 a su alrededor.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>grado</dt>
+        <dd>Cuántos vecinos tiene un tile. Máximo 8. El <b>grado medio</b> dice lo compacto que es el tejido: 7.78 en uni_v2.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>nodo aislado</dt>
+        <dd>Un tile sin ningún vecino, suelto en medio de nada. Se trata aparte para que la capa lo deje intacto en vez de deformarlo.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>α (alpha)</dt>
+        <dd>El único parámetro del brazo más simple: <b>cuánto</b> promediado espacial aplica. Empieza en 0 (o sea, sin nada de grafo) y el modelo decide si subirlo. Es el diagnóstico clave.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>coords</dt>
+        <dd>Las coordenadas de cada tile, ya guardadas en el mismo fichero que los embeddings y en el mismo orden. Nadie las leía hasta ahora.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>fold</dt>
+        <dd>Una partición train/test. Hay 50, y todas las slides de un mismo paciente caen siempre del mismo lado, para que no se filtre información.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>metaclasificador</dt>
+        <dd>El modelo final que combina las predicciones de los modelos base. Sólo ve probabilidades.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>AUC</dt>
+        <dd>La métrica principal. 0.5 es azar, 1.0 es perfecto. Los modelos aquí rondan 0.77–0.80 en test.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>MDE</dt>
+        <dd><b>Mínimo efecto detectable</b>. Con 50 folds ronda 0.008–0.036 de AUC. Una diferencia menor que eso <b>no se puede distinguir del ruido</b>, y hay que reportarla como acotada, no como inexistente.</dd>
+      </div>
+      <div class="term" tabindex="0">
+        <dt>correlación (r)</dt>
+        <dd>Cuánto se parecen las predicciones de dos modelos. Importa porque un modelo que predice casi lo mismo que otro no aporta nada al ensemble, por bueno que sea.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Los cuatro brazos</h2>
+    <p>
+      Un «brazo» es una variante que se entrena y se compara contra las demás. Van de menos a
+      más complejidad, y ese orden es la decisión de diseño más importante del protocolo.
+    </p>
+    <p>
+      El motivo: en este repo, <strong>añadir capacidad ha empeorado los resultados de forma
+      sistemática</strong> — siete modelos probados, y cuanto más complejo, peor, hasta perder
+      0.23 de AUC. Así que en vez de empezar por la GNN grande, se empieza por la versión con
+      <strong>dos parámetros</strong>. Si dos parámetros no mueven nada, ninguna GNN lo hará, y
+      lo habremos sabido en una hora de GPU en vez de en una semana.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Brazo</th><th>Qué hace</th><th class="num">Parámetros</th><th class="num">Coste</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>abmil</code></td>
+            <td>El modelo actual, sin grafo. Es la referencia.</td>
+            <td class="num">—</td><td class="num">×1.00</td>
+          </tr>
+          <tr>
+            <td><code>smooth</code></td>
+            <td>Mezcla cada tile con la media de sus vecinos, en la proporción α. Un solo número por capa.</td>
+            <td class="num">+2</td><td class="num">×1.22</td>
+          </tr>
+          <tr>
+            <td><code>sage_bn</code></td>
+            <td>Deja que la red aprenda <em>cómo</em> mezclar, pero con pocos parámetros.</td>
+            <td class="num">+265 k</td><td class="num">×1.40</td>
+          </tr>
+          <tr>
+            <td><code>sage</code></td>
+            <td>GNN completa y estándar (GraphSAGE). El extremo caro de la escalera.</td>
+            <td class="num">+1.05 M</td><td class="num">×1.50</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="label">El truco del α</span>
+      <p>
+        <code>smooth</code> arranca con α = 0, que significa «no uses el grafo para nada»: en ese
+        punto es <em>exactamente</em> el modelo de siempre. Sólo se aleja de ahí si el
+        entrenamiento encuentra motivo. Eso convierte el α final en una respuesta legible sin
+        estadística: si acaba en ~0, el modelo ha decidido por su cuenta que el contexto espacial
+        no le sirve. En los primeros folds de la ejecución en curso está saliendo del orden de
+        <b>±0.001</b>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Los controles</h2>
+    <p>
+      Si el brazo con grafo mejora, hay dos explicaciones posibles y hay que poder distinguirlas:
+      que <em>la información espacial</em> ayude, o que simplemente hayamos añadido parámetros y
+      cualquier cosa habría mejorado. Los controles existen para separarlas.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Control</th><th>En qué consiste</th><th>Qué descarta</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--shuffle_coords</code></td>
+            <td>Se construye el grafo real y luego se <b>reasignan</b> los tiles a sus nodos al azar. Queda un grafo con la misma forma exacta, mismo número de conexiones y mismo coste — pero donde «vecino» ya no significa «pegado en la slide».</td>
+            <td>Que baste con promediar tiles cualesquiera. Si el brazo real gana a éste, es que importan los vecinos <em>concretos</em>.</td>
+          </tr>
+          <tr>
+            <td><code>--graph_mode self</code></td>
+            <td>Cada tile se conecta sólo consigo mismo. Mismos parámetros, ningún vecino.</td>
+            <td>Que la mejora venga de los pesos extra y no del vecindario.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="label">Por qué se reasignan los tiles y no se barajan las coordenadas</span>
+      <p>
+        Barajar las coordenadas y reconstruir el grafo daría <em>otro</em> grafo distinto, con
+        otro número de conexiones: al comparar estaríamos cambiando dos cosas a la vez.
+        Reasignando los tiles sobre el grafo real, la forma se conserva exacta por construcción y
+        lo único que se rompe es la correspondencia entre cada tile y su sitio. La reasignación se
+        deriva del identificador de la slide, así que es siempre la misma en train y en test —
+        si cambiara en cada época dejaría de ser un control.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Parámetros</h2>
+    <p>
+      Van en <code>train_abmil.py</code>, y hay que repetir los mismos en
+      <code>test_abmil.py</code> para que encuentre el modelo entrenado y reconstruya el grafo
+      idéntico.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Flag</th><th>Por defecto</th><th>Qué controla</th></tr></thead>
+        <tbody>
+          <tr><td><code>--arch</code></td><td><code>abmil</code></td><td>Cuál de los cuatro brazos. Con el valor por defecto ni se leen las coordenadas.</td></tr>
+          <tr><td><code>--n_layers</code></td><td><code>2</code></td><td>Las rondas de mensajes (K).</td></tr>
+          <tr><td><code>--arch_tag</code></td><td>vacío</td><td>Sufijo del directorio de salida. <b>Obligatorio</b> con grafo, para no escribir encima del modelo de referencia.</td></tr>
+          <tr><td><code>--graph_mode</code></td><td><code>lattice</code></td><td>Cómo se construyen las conexiones. <code>self</code> es un control.</td></tr>
+          <tr><td><code>--shuffle_coords</code></td><td>desactivado</td><td>Activa el control de reasignación.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre><span class="c"># entrenar el brazo espacial. Los datos salen de uni_v2,</span>
+<span class="c"># los resultados van a uni_v2_gnn_... para no tocar la referencia</span>
+python src/train_abmil.py \
+    --foundational_model uni_v2 \
+    <span class="f">--arch smooth --n_layers 2 --arch_tag gnn</span> \
+    --work_dir "$WORK_DIR" --train_source cptac_brca \
+    --tissue_patching 20x_224px_0px_overlap \
+    --task_name TP53_mutation --epochs 100 --fold all
+
+<span class="c"># meterlo en el ensemble: entra como un modelo más,</span>
+<span class="c"># sin tocar una línea del metaclasificador</span>
+python src/ensemble4.py \
+    --foundational_models ctranspath uni_v2 virchow_v1 <span class="f">uni_v2_gnn</span> \
+    --work_dir "$WORK_DIR" --train_source cptac_brca \
+    --tissue_patching 20x_224px_0px_overlap --task_name TP53_mutation</pre>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Las etapas y sus puertas</h2>
+    <p>
+      Cada etapa acaba en una comprobación que puede cancelar el proyecto. Es deliberado: el
+      desenlace más probable es que el grafo no ayude, y en ese caso interesa saberlo pronto,
+      barato, y con una explicación de <em>por qué</em>.
+    </p>
+
+    <ol class="stages">
+      <li class="stage">
+        <span class="n">1</span>
+        <div class="body">
+          <h3>¿Los grafos son correctos? <span class="pill ok">superada</span></h3>
+          <p>
+            Construirlos sobre slides reales y verificar que miden lo que dicen: que los tiles
+            caen en cuadrícula, que el grado es plausible, que no hay tiles sueltos mal tratados,
+            y que con α=0 el modelo es indistinguible del original. No entrena nada.
+          </p>
+        </div>
+      </li>
+      <li class="stage">
+        <span class="n">2</span>
+        <div class="body">
+          <h3>¿Hemos roto algo al tocar el motor? <span class="pill ok">superada</span></h3>
+          <p>
+            Para meter el grafo hubo que modificar el motor de entrenamiento que produce
+            <em>todos</em> los resultados del repo. Hay que demostrar que sin grafo se comporta
+            exactamente igual que antes. Resultado: 50 de 50 folds idénticos, ninguna predicción
+            desplazada.
+          </p>
+        </div>
+      </li>
+      <li class="stage">
+        <span class="n">3</span>
+        <div class="body">
+          <h3>¿Aporta algo distinto? <span class="pill wait">en curso</span></h3>
+          <p>
+            La puerta que decide. Se mide cuánto se parecen las predicciones del brazo espacial a
+            las del modelo de siempre. Si se parecen demasiado (r ≥ 0.92), es un callejón ya
+            conocido y se para. Si son claramente distintas (r ≤ 0.85), aporta diversidad nueva
+            y se sigue.
+          </p>
+        </div>
+      </li>
+      <li class="stage">
+        <span class="n">4</span>
+        <div class="body">
+          <h3>¿Es el espacio, o son los parámetros? <span class="pill idle">pendiente</span></h3>
+          <p>
+            Sólo si la anterior abre. Se corren los dos controles sobre los mismos 50 folds y la
+            ventaja del brazo real sobre ellos tiene que superar el MDE para significar algo.
+          </p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Cómo se lee el resultado</h2>
+    <p>
+      El repo tiene un protocolo de análisis que existe por haberse equivocado antes, dos veces.
+      Merece la pena saber qué previene cada pieza.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Se reporta</th><th>Qué error previene</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Diferencia <b>fold a fold</b>, no medias sueltas</td>
+            <td>Comparar los dos modelos por separado, cada uno con su intervalo, ya ocultó un efecto real que sí existía.</td>
+          </tr>
+          <tr>
+            <td>Victorias, empates y derrotas, junto al MDE</td>
+            <td>Un «gana en 5 de 5 folds, p = 0.024» sonaba convincente y <b>no se repitió</b> al pasar a 50 folds: cambió de signo. Y los empates son muchos, porque cada fold tiene sólo 22 slides de test.</td>
+          </tr>
+          <tr>
+            <td>p corregida por comparaciones múltiples</td>
+            <td>Si pruebas cuatro brazos, alguno «gana» por azar. La corrección lo descuenta.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="label">Qué se espera</span>
+      <p>
+        Lo más probable es un <strong>nulo</strong>: que el grafo no cambie nada medible. El repo
+        lleva 39 configuraciones probadas sin ninguna significativa, y hay un motivo medido — los
+        tres modelos base ya aportan casi toda la diversidad que el ensemble puede aprovechar. Un
+        nulo bien acotado, con su MDE y con el α aprendido como explicación, es un resultado
+        publicable y no un fracaso. Lo que no sería aceptable es un nulo <em>indeterminado</em>,
+        del que no se pueda decir cuánto efecto se habría detectado.
+      </p>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Por qué uni_v2 y no ctranspath</h2>
+    <p>
+      Los dos modelos trocean las mismas 112 slides, pero no conservan los mismos tiles.
+      ctranspath se queda con 1.7 veces menos, así que su cuadrícula tiene muchos más huecos: el
+      grado medio baja a 5.34 y aparece casi un 1 % de tiles completamente sueltos, hasta un 13 %
+      en la slide más pequeña.
+    </p>
+    <p>
+      Probar la hipótesis espacial sobre el sustrato con <em>peor</em> vecindario sesgaría el
+      experimento hacia el nulo. Y siendo el nulo ya el desenlace más probable, el resultado no
+      distinguiría «el espacio no ayuda» de «no le dimos espacio suficiente». Por eso se corre
+      sobre uni_v2 aunque ctranspath sea el doble de rápido.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Magnitud</th><th class="num">uni_v2</th><th class="num">ctranspath</th></tr></thead>
+        <tbody>
+          <tr><td>Tiles en las 112 slides</td><td class="num">923 403</td><td class="num">536 784</td></tr>
+          <tr><td>Tiles por slide (mediana)</td><td class="num">7 174</td><td class="num">4 094</td></tr>
+          <tr><td>Grado medio</td><td class="num">7.78</td><td class="num">5.34</td></tr>
+          <tr><td>Tiles sin ningún vecino</td><td class="num">0 %</td><td class="num">0.96 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>

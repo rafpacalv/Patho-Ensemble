@@ -1,0 +1,54 @@
+============================================================================
+Generando attn_stats correctos para train_eval (meta-train split)
+============================================================================
+Fecha: Thu Aug 20 12:36:46 CEST 2026
+
+Procesando modelo: ctranspath
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+
+============================================================
+ABMIL Test (predicciones sobre train): ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+
+Procesando modelo: uni_v2
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+
+============================================================
+ABMIL Test (predicciones sobre train): uni_v2
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 1536, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+
+Procesando modelo: virchow_v1
+  latent_dim auto-detectado: 2560  (de features_virchow_v1_monai)
+
+============================================================
+ABMIL Test (predicciones sobre train): virchow_v1
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 2560, Num classes: 2, Folds: 50
+============================================================
+
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+✅ Predicciones de train generadas para 50/50 folds (0 omitidos por falta de checkpoint/datos).
+
+============================================================================
+Verificación de archivos generados:
+============================================================================
+total 7.0K
+-rw-rw-r-- 1 JKP6679 JKP6679  108 Aug 20 12:37 attn_stats_columns.json
+-rw-rw-r-- 1 JKP6679 JKP6679 4.3K Aug 20 12:37 attn_stats.npy
+-rw-rw-r-- 1 JKP6679 JKP6679  728 Aug 20 12:37 labels.npy
+-rw-rw-r-- 1 JKP6679 JKP6679  728 Aug 20 12:37 preds.npy
+
+✓ Completado: Thu Aug 20 12:40:08 CEST 2026

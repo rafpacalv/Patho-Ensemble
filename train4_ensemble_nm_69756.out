@@ -1,0 +1,1066 @@
+==========================================
+ABMIL 4-model ensemble + Nelder-Mead AVANZADO
+Dataset: cptac_brca/TP53_mutation
+Tissue patching: 20x_224px_0px_overlap
+Epochs: 100
+Fold: all
+NM Method: nelder-mead-multistart (n_starts=10, lambda_reg=0.01)
+Work dir: /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos
+==========================================
+
+[PASO 0] Creando splits con validación (train/val/test)...
+  Input:  /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/k=all.tsv
+  Output: /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/k=all_with_val.tsv
+  Val frac: 0.15 (15% de train para validación)
+
+Wrote new file with per-case stratified validation splits to: /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/k=all_with_val.tsv
+✅ Splits con validación reemplazados en /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/k=all.tsv
+
+  Verificación - Train: 102, Val: 101, Test: 112
+
+[PASO 1] Entrenando 4 modelos ABMIL...
+
+  Entrenando ctranspath (dim=768)...
+
+============================================================
+ABMIL Training: ctranspath
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 0: train=90, val=0, test=22
+Fold 0: ABMIL entrenado (val_auc=0.8961)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 1: train=38, val=51, test=23
+Fold 1: ABMIL entrenado (val_auc=0.7333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 2: train=36, val=56, test=20
+Fold 2: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 3: train=36, val=56, test=20
+Fold 3: ABMIL entrenado (val_auc=0.9333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 4: train=36, val=56, test=20
+Fold 4: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 5: train=38, val=53, test=21
+Fold 5: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 6: train=36, val=54, test=22
+Fold 6: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 7: train=37, val=54, test=21
+Fold 7: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 8: train=36, val=55, test=21
+Fold 8: ABMIL entrenado (val_auc=0.8571)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 9: train=37, val=54, test=21
+Fold 9: ABMIL entrenado (val_auc=0.6250)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 10: train=37, val=54, test=21
+Fold 10: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 11: train=35, val=54, test=23
+Fold 11: ABMIL entrenado (val_auc=-1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 12: train=36, val=56, test=20
+Fold 12: ABMIL entrenado (val_auc=0.6875)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 13: train=36, val=56, test=20
+Fold 13: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 14: train=35, val=56, test=21
+Fold 14: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 15: train=37, val=53, test=22
+Fold 15: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 16: train=37, val=53, test=22
+Fold 16: ABMIL entrenado (val_auc=0.6250)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 17: train=37, val=54, test=21
+Fold 17: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 18: train=36, val=55, test=21
+Fold 18: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 19: train=36, val=53, test=23
+Fold 19: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 20: train=37, val=54, test=21
+Fold 20: ABMIL entrenado (val_auc=0.9375)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 21: train=36, val=52, test=24
+Fold 21: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 22: train=35, val=54, test=23
+Fold 22: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 23: train=36, val=54, test=22
+Fold 23: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 24: train=36, val=54, test=22
+Fold 24: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 25: train=36, val=55, test=21
+Fold 25: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 26: train=36, val=54, test=22
+Fold 26: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 27: train=37, val=54, test=21
+Fold 27: ABMIL entrenado (val_auc=0.6875)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 28: train=39, val=53, test=20
+Fold 28: ABMIL entrenado (val_auc=0.1429)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 29: train=38, val=52, test=22
+Fold 29: ABMIL entrenado (val_auc=0.9375)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 30: train=35, val=56, test=21
+Fold 30: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 31: train=37, val=54, test=21
+Fold 31: ABMIL entrenado (val_auc=0.2500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 32: train=36, val=55, test=21
+Fold 32: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 33: train=35, val=54, test=23
+Fold 33: ABMIL entrenado (val_auc=0.6000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 34: train=36, val=53, test=23
+Fold 34: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 35: train=36, val=54, test=22
+Fold 35: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 36: train=40, val=52, test=20
+Fold 36: ABMIL entrenado (val_auc=0.9333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 37: train=38, val=52, test=22
+Fold 37: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 38: train=36, val=54, test=22
+Fold 38: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 39: train=37, val=53, test=22
+Fold 39: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 40: train=37, val=55, test=20
+Fold 40: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 41: train=36, val=54, test=22
+Fold 41: ABMIL entrenado (val_auc=0.7333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 42: train=37, val=55, test=20
+Fold 42: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 43: train=37, val=54, test=21
+Fold 43: ABMIL entrenado (val_auc=0.3333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 44: train=37, val=55, test=20
+Fold 44: ABMIL entrenado (val_auc=0.4667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 45: train=36, val=54, test=22
+Fold 45: ABMIL entrenado (val_auc=0.8571)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 46: train=35, val=56, test=21
+Fold 46: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 47: train=36, val=52, test=24
+Fold 47: ABMIL entrenado (val_auc=0.7333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 48: train=37, val=53, test=22
+Fold 48: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai...
+
+Fold 49: train=36, val=54, test=22
+Fold 49: ABMIL entrenado (val_auc=1.0000)
+
+Calculando métricas de validación...
+  Skipping fold 0 (empty: 0 labels, 0 preds)
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+  ✅ ctranspath completado
+
+  Entrenando conch512 (dim=768)...
+
+============================================================
+ABMIL Training: conch512
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 0: train=90, val=0, test=22
+Fold 0: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 1: train=38, val=51, test=23
+Fold 1: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 2: train=36, val=56, test=20
+Fold 2: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 3: train=36, val=56, test=20
+Fold 3: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 4: train=36, val=56, test=20
+Fold 4: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 5: train=38, val=53, test=21
+Fold 5: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 6: train=36, val=54, test=22
+Fold 6: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 7: train=37, val=54, test=21
+Fold 7: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 8: train=36, val=55, test=21
+Fold 8: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 9: train=37, val=54, test=21
+Fold 9: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 10: train=37, val=54, test=21
+Fold 10: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 11: train=35, val=54, test=23
+Fold 11: ABMIL entrenado (val_auc=-1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 12: train=36, val=56, test=20
+Fold 12: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 13: train=36, val=56, test=20
+Fold 13: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 14: train=35, val=56, test=21
+Fold 14: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 15: train=37, val=53, test=22
+Fold 15: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 16: train=37, val=53, test=22
+Fold 16: ABMIL entrenado (val_auc=0.6875)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 17: train=37, val=54, test=21
+Fold 17: ABMIL entrenado (val_auc=0.7333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 18: train=36, val=55, test=21
+Fold 18: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 19: train=36, val=53, test=23
+Fold 19: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 20: train=37, val=54, test=21
+Fold 20: ABMIL entrenado (val_auc=0.8750)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 21: train=36, val=52, test=24
+Fold 21: ABMIL entrenado (val_auc=0.5333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 22: train=35, val=54, test=23
+Fold 22: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 23: train=36, val=54, test=22
+Fold 23: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 24: train=36, val=54, test=22
+Fold 24: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 25: train=36, val=55, test=21
+Fold 25: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 26: train=36, val=54, test=22
+Fold 26: ABMIL entrenado (val_auc=0.5625)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 27: train=37, val=54, test=21
+Fold 27: ABMIL entrenado (val_auc=0.6875)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 28: train=39, val=53, test=20
+Fold 28: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 29: train=38, val=52, test=22
+Fold 29: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 30: train=35, val=56, test=21
+Fold 30: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 31: train=37, val=54, test=21
+Fold 31: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 32: train=36, val=55, test=21
+Fold 32: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 33: train=35, val=54, test=23
+Fold 33: ABMIL entrenado (val_auc=0.6000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 34: train=36, val=53, test=23
+Fold 34: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 35: train=36, val=54, test=22
+Fold 35: ABMIL entrenado (val_auc=0.8571)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 36: train=40, val=52, test=20
+Fold 36: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 37: train=38, val=52, test=22
+Fold 37: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 38: train=36, val=54, test=22
+Fold 38: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 39: train=37, val=53, test=22
+Fold 39: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 40: train=37, val=55, test=20
+Fold 40: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 41: train=36, val=54, test=22
+Fold 41: ABMIL entrenado (val_auc=0.9333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 42: train=37, val=55, test=20
+Fold 42: ABMIL entrenado (val_auc=0.8571)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 43: train=37, val=54, test=21
+Fold 43: ABMIL entrenado (val_auc=0.3333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 44: train=37, val=55, test=20
+Fold 44: ABMIL entrenado (val_auc=0.4000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 45: train=36, val=54, test=22
+Fold 45: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 46: train=35, val=56, test=21
+Fold 46: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 47: train=36, val=52, test=24
+Fold 47: ABMIL entrenado (val_auc=0.8000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 48: train=37, val=53, test=22
+Fold 48: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch512_monai...
+
+Fold 49: train=36, val=54, test=22
+Fold 49: ABMIL entrenado (val_auc=1.0000)
+
+Calculando métricas de validación...
+  Skipping fold 0 (empty: 0 labels, 0 preds)
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+  ✅ conch512 completado
+
+  Entrenando conch_v1_5 (dim=768)...
+
+============================================================
+ABMIL Training: conch_v1_5
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 768, Num classes: 2
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 0: train=90, val=0, test=22
+Fold 0: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 1: train=38, val=51, test=23
+Fold 1: ABMIL entrenado (val_auc=0.7333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 2: train=36, val=56, test=20
+Fold 2: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 3: train=36, val=56, test=20
+Fold 3: ABMIL entrenado (val_auc=0.9333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 4: train=36, val=56, test=20
+Fold 4: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 5: train=38, val=53, test=21
+Fold 5: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 6: train=36, val=54, test=22
+Fold 6: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 7: train=37, val=54, test=21
+Fold 7: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 8: train=36, val=55, test=21
+Fold 8: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 9: train=37, val=54, test=21
+Fold 9: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 10: train=37, val=54, test=21
+Fold 10: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 11: train=35, val=54, test=23
+Fold 11: ABMIL entrenado (val_auc=-1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 12: train=36, val=56, test=20
+Fold 12: ABMIL entrenado (val_auc=0.6875)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 13: train=36, val=56, test=20
+Fold 13: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 14: train=35, val=56, test=21
+Fold 14: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 15: train=37, val=53, test=22
+Fold 15: ABMIL entrenado (val_auc=0.5625)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 16: train=37, val=53, test=22
+Fold 16: ABMIL entrenado (val_auc=0.6250)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 17: train=37, val=54, test=21
+Fold 17: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 18: train=36, val=55, test=21
+Fold 18: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 19: train=36, val=53, test=23
+Fold 19: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 20: train=37, val=54, test=21
+Fold 20: ABMIL entrenado (val_auc=0.9375)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 21: train=36, val=52, test=24
+Fold 21: ABMIL entrenado (val_auc=0.6000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 22: train=35, val=54, test=23
+Fold 22: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 23: train=36, val=54, test=22
+Fold 23: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 24: train=36, val=54, test=22
+Fold 24: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 25: train=36, val=55, test=21
+Fold 25: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 26: train=36, val=54, test=22
+Fold 26: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 27: train=37, val=54, test=21
+Fold 27: ABMIL entrenado (val_auc=0.8750)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 28: train=39, val=53, test=20
+Fold 28: ABMIL entrenado (val_auc=0.8571)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 29: train=38, val=52, test=22
+Fold 29: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 30: train=35, val=56, test=21
+Fold 30: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 31: train=37, val=54, test=21
+Fold 31: ABMIL entrenado (val_auc=0.3333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 32: train=36, val=55, test=21
+Fold 32: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 33: train=35, val=54, test=23
+Fold 33: ABMIL entrenado (val_auc=0.7000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 34: train=36, val=53, test=23
+Fold 34: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 35: train=36, val=54, test=22
+Fold 35: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 36: train=40, val=52, test=20
+Fold 36: ABMIL entrenado (val_auc=0.8000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 37: train=38, val=52, test=22
+Fold 37: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 38: train=36, val=54, test=22
+Fold 38: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 39: train=37, val=53, test=22
+Fold 39: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 40: train=37, val=55, test=20
+Fold 40: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 41: train=36, val=54, test=22
+Fold 41: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 42: train=37, val=55, test=20
+Fold 42: ABMIL entrenado (val_auc=0.8571)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 43: train=37, val=54, test=21
+Fold 43: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 44: train=37, val=55, test=20
+Fold 44: ABMIL entrenado (val_auc=0.4000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 45: train=36, val=54, test=22
+Fold 45: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 46: train=35, val=56, test=21
+Fold 46: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 47: train=36, val=52, test=24
+Fold 47: ABMIL entrenado (val_auc=0.9333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 48: train=37, val=53, test=22
+Fold 48: ABMIL entrenado (val_auc=0.5833)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai...
+
+Fold 49: train=36, val=54, test=22
+Fold 49: ABMIL entrenado (val_auc=1.0000)
+
+Calculando métricas de validación...
+  Skipping fold 0 (empty: 0 labels, 0 preds)
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+  ✅ conch_v1_5 completado
+
+  Entrenando virchow_v1 (dim=2560)...
+
+============================================================
+ABMIL Training: virchow_v1
+  Dataset: cptac_brca/TP53_mutation
+  Latent dim: 2560, Num classes: 2
+  Epochs: 100, Fold: all
+============================================================
+
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 0: train=90, val=0, test=22
+Fold 0: ABMIL entrenado (val_auc=0.9221)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 1: train=38, val=51, test=23
+Fold 1: ABMIL entrenado (val_auc=0.5333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 2: train=36, val=56, test=20
+Fold 2: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 3: train=36, val=56, test=20
+Fold 3: ABMIL entrenado (val_auc=0.7333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 4: train=36, val=56, test=20
+Fold 4: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 5: train=38, val=53, test=21
+Fold 5: ABMIL entrenado (val_auc=0.3333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 6: train=36, val=54, test=22
+Fold 6: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 7: train=37, val=54, test=21
+Fold 7: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 8: train=36, val=55, test=21
+Fold 8: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 9: train=37, val=54, test=21
+Fold 9: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 10: train=37, val=54, test=21
+Fold 10: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 11: train=35, val=54, test=23
+Fold 11: ABMIL entrenado (val_auc=-1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 12: train=36, val=56, test=20
+Fold 12: ABMIL entrenado (val_auc=0.6250)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 13: train=36, val=56, test=20
+Fold 13: ABMIL entrenado (val_auc=0.7333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 14: train=35, val=56, test=21
+Fold 14: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 15: train=37, val=53, test=22
+Fold 15: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 16: train=37, val=53, test=22
+Fold 16: ABMIL entrenado (val_auc=0.8125)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 17: train=37, val=54, test=21
+Fold 17: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 18: train=36, val=55, test=21
+Fold 18: ABMIL entrenado (val_auc=0.9333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 19: train=36, val=53, test=23
+Fold 19: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 20: train=37, val=54, test=21
+Fold 20: ABMIL entrenado (val_auc=0.8750)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 21: train=36, val=52, test=24
+Fold 21: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 22: train=35, val=54, test=23
+Fold 22: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 23: train=36, val=54, test=22
+Fold 23: ABMIL entrenado (val_auc=0.6667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 24: train=36, val=54, test=22
+Fold 24: ABMIL entrenado (val_auc=0.9333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 25: train=36, val=55, test=21
+Fold 25: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 26: train=36, val=54, test=22
+Fold 26: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 27: train=37, val=54, test=21
+Fold 27: ABMIL entrenado (val_auc=0.7500)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 28: train=39, val=53, test=20
+Fold 28: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 29: train=38, val=52, test=22
+Fold 29: ABMIL entrenado (val_auc=0.5000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 30: train=35, val=56, test=21
+Fold 30: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 31: train=37, val=54, test=21
+Fold 31: ABMIL entrenado (val_auc=0.1667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 32: train=36, val=55, test=21
+Fold 32: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 33: train=35, val=54, test=23
+Fold 33: ABMIL entrenado (val_auc=0.6000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 34: train=36, val=53, test=23
+Fold 34: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 35: train=36, val=54, test=22
+Fold 35: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 36: train=40, val=52, test=20
+Fold 36: ABMIL entrenado (val_auc=0.8667)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 37: train=38, val=52, test=22
+Fold 37: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 38: train=36, val=54, test=22
+Fold 38: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 39: train=37, val=53, test=22
+Fold 39: ABMIL entrenado (val_auc=0.9167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 40: train=37, val=55, test=20
+Fold 40: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 41: train=36, val=54, test=22
+Fold 41: ABMIL entrenado (val_auc=1.0000)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 42: train=37, val=55, test=20
+Fold 42: ABMIL entrenado (val_auc=0.7143)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 43: train=37, val=54, test=21
+Fold 43: ABMIL entrenado (val_auc=0.3333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 44: train=37, val=55, test=20
+Fold 44: ABMIL entrenado (val_auc=0.3333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 45: train=36, val=54, test=22
+Fold 45: ABMIL entrenado (val_auc=0.8571)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 46: train=35, val=56, test=21
+Fold 46: ABMIL entrenado (val_auc=0.4167)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 47: train=36, val=52, test=24
+Fold 47: ABMIL entrenado (val_auc=0.9333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 48: train=37, val=53, test=22
+Fold 48: ABMIL entrenado (val_auc=0.8333)
+Cargando features de /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_virchow_v1_monai...
+
+Fold 49: train=36, val=54, test=22
+Fold 49: ABMIL entrenado (val_auc=0.7500)
+
+Calculando métricas de validación...
+  Skipping fold 0 (empty: 0 labels, 0 preds)
+✅ Métricas de validación completadas
+
+Calculando métricas de test...
+✅ Métricas de test completadas (50 folds con datos)
+
+✅ Training completed
+  ✅ virchow_v1 completado
+
+[PASO 2] Ensemble promediado (pesos por AUC-ROC en VALIDACIÓN)...
+
+
+Evaluating ensemble...
+🔎 Running metrics across all folds...
+
+============================================================
+MÉTRICAS DETALLADAS
+============================================================
+  auc_roc                  : 0.7295
+  accuracy                 : 0.6788
+  balanced_accuracy        : 0.6721
+  precision_macro          : 0.6674
+  precision_weighted       : 0.6851
+  recall_macro             : 0.6721
+  recall_weighted          : 0.6788
+  f1_macro                 : 0.6687
+  f1_weighted              : 0.6810
+  mcc                      : 0.3395
+============================================================
+
+✅ Metrics computation finished.
+✅ Ensemble promediado completado (pesos optimizados en validación, aplicados en test)
+
+[PASO 3] Ensemble Nelder-Mead AVANZADO (optimización en VALIDACIÓN)...
+  Método: nelder-mead-multistart
+  Multi-start inicializaciones: 10
+  Regularización: 0.01
+
+
+
+================================================================================
+Optimizando pesos con: NELDER-MEAD-MULTISTART (50 folds)
+Regularización (lambda): 0.01
+Número de inicializaciones: 10
+================================================================================
+
+  ⚠️  Fold 0: validation data missing, using equal weights
+
+✅ Pesos guardados en /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/abmil/weights_nm_adv.npy
+✅ Estadísticas de optimización guardadas en /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/abmil/optimization_stats.json
+
+📊 Sensibilidad promedio: 0.001692
+   ✓ Espacio sensible: Nelder-Mead puede mejorar
+
+🔎 Calculando métricas de test...
+
+============================================================
+MÉTRICAS DETALLADAS
+============================================================
+  auc_roc                  : 0.7225
+  accuracy                 : 0.6797
+  balanced_accuracy        : 0.6700
+  precision_macro          : 0.6668
+  precision_weighted       : 0.6835
+  recall_macro             : 0.6700
+  recall_weighted          : 0.6797
+  f1_macro                 : 0.6680
+  f1_weighted              : 0.6812
+  mcc                      : 0.3367
+============================================================
+
+
+================================================================================
+GENERANDO REPORTE COMPARATIVO...
+================================================================================
+✅ Reporte guardado en /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/abmil/ensemble_nm_adv/comparison_report.txt
+✅ Optimización completada
+✅ Ensemble Nelder-Mead AVANZADO completado (multi-start optimization)
+
+[PASO 4] Comparación de resultados (ambos evaluados en TEST)...
+
+=== ENSEMBLE PROMEDIADO (AUC-ROC en validación) ===
+    "macro-ovr-auc": {
+        "mean": 0.7666813822751323,
+        "se": 0.013055421112580292,
+    "macro-ovo-auc": {
+        "mean": 0.7666813822751323,
+        "se": 0.013055421112580292,
+        "mean": 0.6695002602316843,
+        "se": 0.020752754844327263,
+        "mean": 0.6681633089133089,
+        "se": 0.014009214618996074,
+        "mean": 0.6413372395046999,
+        "se": 0.018572428613680515,
+        "mean": 0.6885807977042216,
+        "se": 0.019778219180451827,
+        "mean": 0.6774186900056465,
+        "se": 0.014753508276985189,
+        "mean": 0.6556083844894748,
+        "se": 0.018346603753409855,
+        "mean": 0.6774186900056465,
+        "se": 0.014753508276985189,
+        "mean": 0.6681633089133089,
+        "se": 0.014009214618996074,
+        "mean": 0.3323849449013213,
+        "se": 0.02812927839225719,
+        "mean": 21.48,
+        "se": 0.1503063538244475,
+        "auc_roc": 0.7295123341794584,
+
+=== ENSEMBLE NELDER-MEAD AVANZADO (nelder-mead-multistart) ===
+    "macro-ovr-auc": {
+        "mean": 0.7723380265567765,
+        "se": 0.01294045685807855,
+    "macro-ovo-auc": {
+        "mean": 0.7723380265567765,
+        "se": 0.01294045685807855,
+        "mean": 0.6919330538742304,
+        "se": 0.018943713269925434,
+        "mean": 0.6656791819291819,
+        "se": 0.014057150158630797,
+        "mean": 0.6356838414052615,
+        "se": 0.018635700455675343,
+        "mean": 0.7104934415514148,
+        "se": 0.01667857781885237,
+        "mean": 0.6780588179936005,
+        "se": 0.014794830576463306,
+        "mean": 0.6513336297365809,
+        "se": 0.01846188427479283,
+        "mean": 0.6780588179936005,
+        "se": 0.014794830576463306,
+        "mean": 0.6656791819291819,
+        "se": 0.014057150158630797,
+        "mean": 0.3292172977850978,
+        "se": 0.027962866374115786,
+        "mean": 21.48,
+        "se": 0.1503063538244475,
+        "auc_roc": 0.7225145529881288,
+
+=== REPORTE COMPARATIVO ===
+================================================================================
+COMPARATIVA: ENSEMBLE PROMEDIADO vs NELDER-MEAD
+================================================================================
+
+Métrica                             Promediado     Nelder-Mead          Δ
+--------------------------------------------------------------------------------
+auc_roc                                 0.7295          0.7225    -0.0070
+accuracy                                0.6788          0.6797    +0.0009
+balanced_accuracy                       0.6721          0.6700    -0.0021
+precision_macro                         0.6674          0.6668    -0.0006
+precision_weighted                      0.6851          0.6835    -0.0016
+recall_macro                            0.6721          0.6700    -0.0021
+recall_weighted                         0.6788          0.6797    +0.0009
+f1_macro                                0.6687          0.6680    -0.0008
+f1_weighted                             0.6810          0.6812    +0.0002
+mcc                                     0.3395          0.3367    -0.0028
+================================================================================
+
+==========================================
+✅ Pipeline completado exitosamente
+
+  Resultados ensemble promediado:
+    /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/abmil/ensemble/test_metrics_summary.json
+
+  Resultados ensemble Nelder-Mead avanzado:
+    /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/abmil/ensemble_nm_adv/test_metrics_summary.json
+
+  Reporte comparativo:
+    /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/abmil/ensemble_nm_adv/comparison_report.txt
+
+  Estadísticas de optimización:
+    /shared/home/JKP6679/Patho-Ensemble/PARADIS/datos/cptac_brca/TP53_mutation/abmil/optimization_stats.json
+==========================================

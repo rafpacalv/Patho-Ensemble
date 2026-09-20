@@ -1,0 +1,49 @@
+{
+  "ctranspath": {
+    "n_patches": 5872.44,
+    "entropy_norm": 0.7751136100785526,
+    "ess_norm": 0.13707807031460106,
+    "logit_std": 1.7414545869827271,
+    "cos_var_raw": 0.02057488910853863,
+    "cos_var_proj": 0.016098194401711226,
+    "entropy_sd": 0.11871940698224853,
+    "in_dim": 768,
+    "compression": 1.5
+  },
+  "uni_v2": {
+    "n_patches": 5872.44,
+    "entropy_norm": 0.9699195577793596,
+    "ess_norm": 0.6604551613330841,
+    "logit_std": 0.6999325501918793,
+    "cos_var_raw": 0.027174300365149975,
+    "cos_var_proj": 0.021438383683562278,
+    "entropy_sd": 0.01745582144460088,
+    "in_dim": 1536,
+    "compression": 3.0
+  },
+  "conch_v1_5": {
+    "n_patches": 5872.44,
+    "entropy_norm": 0.8735841197099657,
+    "ess_norm": 0.18471866175532342,
+    "logit_std": 1.227494865655899,
+    "cos_var_raw": 0.011603722516447305,
+    "cos_var_proj": 0.006684633428230882,
+    "entropy_sd": 0.05358611983654624,
+    "in_dim": 768,
+    "compression": 1.5
+  },
+  "_correlations": {
+    "pearson_in_dim": [
+      0.8628442525441569,
+      0.33736165296560483
+    ],
+    "spearman_in_dim": [
+      0.8660254037844387,
+      0.3333333333333332
+    ],
+    "pearson_n_patches": [
+      NaN,
+      NaN
+    ]
+  }
+}

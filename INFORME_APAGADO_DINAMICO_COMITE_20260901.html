@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apagado dinámico de modelos fundación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ── Tokens: tema claro completo en :root ─────────────────────────── */
+:root{
+  --ground:      #fbfafc;
+  --surface:     #ffffff;
+  --surface-alt: #f4f1f7;
+  --ink:         #1a1520;
+  --ink-soft:    #4a4256;
+  --ink-mute:    #756c82;
+  --rule:        #e2dce8;
+  --rule-strong: #cdc3d6;
+
+  /* Hematoxilina / eosina — la paleta viene de la tinción H&E */
+  --accent:      #5b3f7a;
+  --accent-soft: #ede6f4;
+  --accent-ink:  #4a3266;
+
+  --neg:         #a8455e;   /* deltas negativos, regresiones */
+  --neg-soft:    #fbeaee;
+  --pos:         #2c6b62;   /* empates favorables, recuperación */
+  --pos-soft:    #e4f1ee;
+  --warn:        #8a6414;
+  --warn-soft:   #f8f0dc;
+
+  --shadow: 0 1px 2px rgba(26,21,32,.05), 0 8px 24px -12px rgba(26,21,32,.12);
+
+  --measure: 68ch;
+  --fs-step: 1.2;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:      #131019;
+    --surface:     #1b1723;
+    --surface-alt: #221d2c;
+    --ink:         #eee9f2;
+    --ink-soft:    #b8b0c4;
+    --ink-mute:    #8b8299;
+    --rule:        #322b3d;
+    --rule-strong: #453d53;
+
+    --accent:      #b79ad6;
+    --accent-soft: #2a2137;
+    --accent-ink:  #cbb4e4;
+
+    --neg:         #e08599;
+    --neg-soft:    #33202a;
+    --pos:         #77bfb2;
+    --pos-soft:    #1c2e2c;
+    --warn:        #d6ab55;
+    --warn-soft:   #2e2718;
+
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+
+:root[data-theme="dark"]{
+  --ground:      #131019;
+  --surface:     #1b1723;
+  --surface-alt: #221d2c;
+  --ink:         #eee9f2;
+  --ink-soft:    #b8b0c4;
+  --ink-mute:    #8b8299;
+  --rule:        #322b3d;
+  --rule-strong: #453d53;
+
+  --accent:      #b79ad6;
+  --accent-soft: #2a2137;
+  --accent-ink:  #cbb4e4;
+
+  --neg:         #e08599;
+  --neg-soft:    #33202a;
+  --pos:         #77bfb2;
+  --pos-soft:    #1c2e2c;
+  --warn:        #d6ab55;
+  --warn-soft:   #2e2718;
+
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+  background: var(--ground);
+  color: var(--ink);
+  font-family:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 clamp(1rem,4vw,3rem) 6rem;
+}
+
+/* prosa estrecha, tablas anchas */
+.col{ max-width:var(--measure); }
+
+/* ── Tipografía ───────────────────────────────────────────────────── */
+h1,h2,h3,h4{
+  font-family:Newsreader,"Iowan Old Style",Georgia,serif;
+  font-weight:500;
+  text-wrap:balance;
+  line-height:1.14;
+  margin:0;
+}
+h1{ font-size:clamp(2.4rem,5.4vw,3.9rem); letter-spacing:-.018em; }
+h2{ font-size:clamp(1.65rem,3vw,2.25rem); letter-spacing:-.012em; }
+h3{ font-size:1.28rem; letter-spacing:-.006em; }
+h4{ font-size:1.06rem; font-weight:600; }
+
+p{ margin:0; }
+strong{ font-weight:600; color:var(--ink); }
+em{ font-style:italic; }
+
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.lede{
+  font-size:1.2rem;
+  line-height:1.55;
+  color:var(--ink-soft);
+}
+.note{
+  font-size:.9rem;
+  line-height:1.55;
+  color:var(--ink-mute);
+}
+code,.mono{
+  font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  font-variant-numeric:tabular-nums;
+}
+p code, li code, td code, th code{
+  font-size:.86em;
+  background:var(--surface-alt);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:.08em .34em;
+}
+
+/* ── Cabecera ─────────────────────────────────────────────────────── */
+header.masthead{
+  display:flex; flex-direction:column; gap:1.4rem;
+  padding:clamp(3rem,8vw,5.5rem) 0 2.5rem;
+  border-bottom:2px solid var(--ink);
+}
+.meta-row{
+  display:flex; flex-wrap:wrap; gap:.5rem 1.6rem;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.76rem;
+  color:var(--ink-mute);
+  font-variant-numeric:tabular-nums;
+}
+.meta-row span b{ color:var(--ink-soft); font-weight:500; }
+
+/* ── Secciones ────────────────────────────────────────────────────── */
+section{
+  display:flex; flex-direction:column; gap:1.35rem;
+  padding-top:clamp(3rem,6vw,4.5rem);
+}
+.sec-head{ display:flex; flex-direction:column; gap:.45rem; }
+
+/* ── Tiles de cifras clave ────────────────────────────────────────── */
+.tiles{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:1px;
+  background:var(--rule);
+  border:1px solid var(--rule);
+  border-radius:10px;
+  overflow:hidden;
+}
+.tile{
+  background:var(--surface);
+  padding:1.15rem 1.25rem 1.25rem;
+  display:flex; flex-direction:column; gap:.3rem;
+}
+.tile .k{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-mute);
+}
+.tile .v{
+  font-family:Newsreader,Georgia,serif;
+  font-size:2.1rem; font-weight:500;
+  font-variant-numeric:tabular-nums;
+  line-height:1.05;
+  color:var(--ink);
+}
+.tile .v.accent{ color:var(--accent); }
+.tile .v.neg{ color:var(--neg); }
+.tile .s{ font-size:.85rem; color:var(--ink-mute); line-height:1.45; }
+
+/* ── Tablas ───────────────────────────────────────────────────────── */
+.tscroll{
+  overflow-x:auto;
+  border:1px solid var(--rule);
+  border-radius:10px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:.88rem;
+  min-width:640px;
+}
+caption{
+  text-align:left;
+  padding:.95rem 1.1rem .7rem;
+  font-size:.8rem;
+  color:var(--ink-mute);
+  border-bottom:1px solid var(--rule);
+}
+caption b{ color:var(--ink-soft); font-weight:600; }
+th,td{
+  padding:.56rem .85rem;
+  text-align:left;
+  border-bottom:1px solid var(--rule);
+  vertical-align:baseline;
+}
+thead th{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; font-weight:500;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-mute);
+  background:var(--surface-alt);
+  white-space:nowrap;
+  border-bottom:1px solid var(--rule-strong);
+}
+tbody tr:last-child td{ border-bottom:none; }
+td.num,th.num{
+  text-align:right;
+  font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+td.name{ white-space:nowrap; }
+td.name .mono{ font-size:.86rem; }
+tr.base{ background:var(--accent-soft); }
+tr.base td{ font-weight:600; }
+tr.best td.num.hl{ color:var(--pos); font-weight:600; }
+td.d-neg{ color:var(--neg); }
+td.d-pos{ color:var(--pos); }
+td.ci{ font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-mute); white-space:nowrap; }
+
+/* ── Chips de veredicto ───────────────────────────────────────────── */
+.chip{
+  display:inline-block;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.66rem; font-weight:500;
+  letter-spacing:.05em;
+  padding:.16rem .5rem;
+  border-radius:999px;
+  white-space:nowrap;
+  border:1px solid transparent;
+}
+.chip.tie{  background:var(--pos-soft);   color:var(--pos);    border-color:var(--pos); }
+.chip.bad{  background:var(--neg-soft);   color:var(--neg);    border-color:var(--neg); }
+.chip.warn{ background:var(--warn-soft);  color:var(--warn);   border-color:var(--warn); }
+.chip.flat{ background:var(--surface-alt);color:var(--ink-mute);border-color:var(--rule-strong); }
+.sig{ color:var(--neg); font-weight:600; }
+
+/* ── Bloque destacado ─────────────────────────────────────────────── */
+.callout{
+  border-left:3px solid var(--accent);
+  background:var(--surface);
+  border-top:1px solid var(--rule);
+  border-right:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  border-radius:0 10px 10px 0;
+  padding:1.25rem 1.4rem;
+  display:flex; flex-direction:column; gap:.7rem;
+}
+.callout.neg{ border-left-color:var(--neg); }
+.callout h4{ color:var(--accent-ink); }
+.callout.neg h4{ color:var(--neg); }
+
+/* ── Listas ───────────────────────────────────────────────────────── */
+ol.findings{
+  list-style:none;
+  counter-reset:f;
+  margin:0; padding:0;
+  display:flex; flex-direction:column; gap:1.15rem;
+}
+ol.findings > li{
+  counter-increment:f;
+  display:grid;
+  grid-template-columns:2.1rem 1fr;
+  gap:.9rem;
+  align-items:start;
+}
+ol.findings > li::before{
+  content:counter(f);
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem; font-weight:600;
+  color:var(--accent);
+  background:var(--accent-soft);
+  border-radius:6px;
+  height:1.85rem;
+  display:flex; align-items:center; justify-content:center;
+}
+ul.plain{
+  margin:0; padding:0; list-style:none;
+  display:flex; flex-direction:column; gap:.75rem;
+}
+ul.plain > li{
+  padding-left:1.05rem;
+  position:relative;
+}
+ul.plain > li::before{
+  content:"";
+  position:absolute; left:0; top:.66em;
+  width:5px; height:5px; border-radius:50%;
+  background:var(--rule-strong);
+}
+
+/* ── Código ───────────────────────────────────────────────────────── */
+pre{
+  margin:0;
+  background:var(--surface-alt);
+  border:1px solid var(--rule);
+  border-radius:8px;
+  padding:.95rem 1.1rem;
+  overflow-x:auto;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+pre .c{ color:var(--ink-mute); font-style:italic; }
+pre .f{ color:var(--accent); }
+
+/* ── Diagrama de espacios de features ─────────────────────────────── */
+.spaces{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;
+}
+.space{
+  border:1px solid var(--rule);
+  border-radius:10px;
+  background:var(--surface);
+  padding:1.1rem 1.2rem;
+  display:flex; flex-direction:column; gap:.6rem;
+}
+.space .tag{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent);
+}
+.space .dim{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.78rem;
+  color:var(--ink-mute);
+  font-variant-numeric:tabular-nums;
+}
+
+hr.rule{
+  border:none;
+  border-top:1px solid var(--rule);
+  margin:0;
+}
+
+footer{
+  padding-top:3.5rem;
+  border-top:2px solid var(--ink);
+  margin-top:4rem;
+  display:flex; flex-direction:column; gap:1rem;
+}
+
+a{ color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px; }
+a:focus-visible,
+button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+</style>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Patho-Ensemble · Informe de resultados</div>
+  <h1>Apagado dinámico de modelos fundación</h1>
+  <p class="lede col">Si el mejor modelo fundación cambia según el órgano —como muestra
+    PathBench—, ¿por qué fijar uno en vez de poner el comité entero y decidir sobre la marcha
+    a quién escuchar? Cuatro pruebas independientes responden que <strong>el mecanismo
+    funciona y el beneficio no existe</strong>: se puede construir el enrutador, pero ningún
+    criterio disponible en producción sabe a quién apagar.</p>
+  <div class="meta-row">
+    <span><b>Fecha</b> 1-sep-2026</span>
+    <span><b>Tareas</b> 13 binarias · 3 cohortes</span>
+    <span><b>Folds</b> 50, pareados</span>
+    <span><b>Subconjuntos</b> 255 evaluados</span>
+    <span><b>MDE</b> ≈ ±0.016 AUC</span>
+  </div>
+</header>
+
+<!-- ══════════════ RESUMEN ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">Resumen</div>
+    <h2>Qué ha salido</h2>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="k">Comité de 8 vs trío</div>
+      <div class="v neg">+0.0002</div>
+      <div class="s">Poner <strong>todos</strong> los modelos en paralelo es indistinguible de no hacer nada: 23 victorias, 25 derrotas.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Enrutado por órgano</div>
+      <div class="v neg">+0.0015</div>
+      <div class="s">El escenario ciego realizable. Discrimina de verdad —descarta <span class="mono">uni_v1</span> en colon— pero p = 0.31.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Oráculo (techo)</div>
+      <div class="v accent">+0.0071</div>
+      <div class="s">Lo que se dejaría sobre la mesa eligiendo con las etiquetas de test. La información existe.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Criterios que arreglan la selección</div>
+      <div class="v neg">0 / 8</div>
+      <div class="s">Uno correlaciona mejor (+0.814), y aun así selecciona lo mismo.</div>
+    </div>
+  </div>
+
+  <div class="col" style="display:flex;flex-direction:column;gap:1.3rem;padding-top:.6rem">
+    <h3>Las cuatro conclusiones</h3>
+    <ol class="findings">
+      <li><div><strong>Ampliar el comité no aporta.</strong> Los 8 modelos completos dan
+        <span class="mono">+0.0002</span> sobre el trío actual. El óptimo está en
+        <strong>4–6 modelos</strong>, no en 8, y ni siquiera ése supera el MDE del diseño.</div></li>
+      <li><div><strong>Seleccionar el comité por tarea tampoco</strong>, ni conociendo la tarea:
+        <span class="mono">+0.0016</span>, gana en 6 de 13, p = 0.46. Como esa prueba dispone de más
+        información que un enrutado ciego, es el <strong>techo</strong> de la hipótesis — y el techo
+        cae dentro del ruido.</div></li>
+      <li><div><strong>La señal de órgano es real pero no explotable.</strong> En el oráculo,
+        <span class="mono">hoptimus1</span> aparece en <strong>6 de los 8</strong> comités óptimos de
+        colon y en <strong>0 de los 5</strong> de mama — el patrón de PathBench reproducido con datos
+        propios. El enrutador honesto no lo recupera: la validación prefiere
+        <span class="mono">hoptimus1</span> en ambos órganos.</div></li>
+      <li><div><strong>El cuello de botella es el selector, no el mecanismo.</strong> El AUC de
+        validación no ordena los comités como lo hace el test: Spearman <span class="mono">+0.750</span>,
+        y el mejor en validación queda <strong>16.º</strong> en test. Ninguno de los ocho criterios
+        alternativos mejora la selección.</div></li>
+    </ol>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Recomendación</h4>
+    <p>Cerrar la línea. La palanca con efecto grande medido en este repositorio sigue siendo la
+    <strong>calidad del modelo base</strong> —cambiar uno valió <span class="mono">+0.037</span>—
+    frente a <span class="mono">+0.008</span> de la regla de combinación y menos de
+    <span class="mono">+0.003</span> de todo lo medido aquí.</p>
+  </div>
+</section>
+
+<!-- ══════════════ DATOS ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§1</div>
+    <h2>Datos y protocolo</h2>
+  </div>
+
+  <div class="callout col">
+    <h4>Verificación previa: una restricción documentada que resultó falsa</h4>
+    <p>La restricción #10 de <code>CLAUDE.md</code> afirmaba que <span class="mono">hoptimus1</span>,
+    <span class="mono">phikon_v2</span>, <span class="mono">uni_v1</span> y
+    <span class="mono">virchow2</span> no eran comparables con el resto, por provenir de una campaña
+    evaluada a nivel paciente (103 filas). <strong>Está obsoleta</strong>: se reentrenaron el
+    21-ago-2026 y hoy comparten split y etiquetas exactas — verificado fila a fila, 75 de meta-train /
+    15 de validación / 22 de test por fold. Sin esa comprobación el estudio no habría sido posible.
+    Sigue viva la advertencia sobre los <span class="mono">_train_eval/test_outputs</span> de
+    dic-2025, que conservan 20 filas.</p>
+  </div>
+
+  <p class="col">Todas las configuraciones se evalúan sobre los <b>mismos folds</b>, con Δ pareado,
+  IC95 % bootstrap (10 000 remuestreos) y Wilcoxon. Ningún directorio <code>ensemble4_*</code> previo
+  se reutiliza. Meta-learner: regresión logística sobre probabilidades concatenadas, el defecto de
+  <code>ensemble4.py</code>, con meta-features in-sample.</p>
+
+  <table style="min-width:0">
+    <caption>Los 8 modelos base — AUC de test individual, media sobre 50 folds.</caption>
+    <thead><tr><th>Modelo</th><th class="num">AUC</th></tr></thead>
+    <tbody>
+      <tr class="best"><td class="name mono">conch_v1_5</td><td class="num hl">0.7902</td></tr>
+      <tr><td class="name mono">virchow2</td><td class="num">0.7771</td></tr>
+      <tr><td class="name mono">uni_v1</td><td class="num">0.7732</td></tr>
+      <tr><td class="name mono">phikon_v2</td><td class="num">0.7685</td></tr>
+      <tr><td class="name mono">uni_v2</td><td class="num">0.7634</td></tr>
+      <tr><td class="name mono">ctranspath</td><td class="num">0.7571</td></tr>
+      <tr><td class="name mono">hoptimus1</td><td class="num">0.7450</td></tr>
+      <tr><td class="name mono">virchow_v1</td><td class="num" style="color:var(--neg)">0.6823</td></tr>
+    </tbody>
+  </table>
+
+  <h3>El peor no es el prescindible</h3>
+  <p class="col">Correlación de Pearson entre las probabilidades de clase 1, agrupando los 50 folds:</p>
+  <ul class="findings">
+    <li><div><span class="mono">ctranspath</span> ↔ <span class="mono">uni_v2</span> =
+      <strong>0.84</strong> — casi redundantes, y <b>ambos están en el trío histórico</b>.</div></li>
+    <li><div><span class="mono">virchow_v1</span>, el peor en solitario, es el
+      <strong>más decorrelacionado</strong> de <span class="mono">conch_v1_5</span> (0.35) y de
+      <span class="mono">hoptimus1</span> (0.35).</div></li>
+    <li><div><span class="mono">hoptimus1</span> es el más independiente del comité (0.35–0.66).</div></li>
+  </ul>
+  <p class="note col">El criterio de AUC individual que justificó el cambio de modelo base de
+  +0.037 no es el que maximiza un comité: la redundancia pesa tanto como la calidad.</p>
+</section>
+
+<!-- ══════════════ PRUEBA 1 ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§2 · Prueba 1</div>
+    <h2>Ampliar el comité no aporta</h2>
+  </div>
+
+  <p class="col"><code>cptac_brca/TP53_mutation</code>, los <b>255 subconjuntos</b> de 8 modelos,
+  50 folds. Baseline: el trío ganador actual
+  <span class="mono">conch_v1_5+ctranspath+uni_v2</span>.</p>
+
+  <table>
+    <caption>Δ pareados frente al trío. El MDE del diseño ronda <b>±0.016</b>.</caption>
+    <thead><tr><th>Comité</th><th class="num">AUC test</th><th class="num">Δ</th><th class="num">IC95 %</th><th class="num">W/T/L</th><th class="num">p</th></tr></thead>
+    <tbody>
+      <tr class="base"><td class="name mono">trío actual (baseline)</td><td class="num">0.7986</td><td class="num">—</td><td class="num ci">—</td><td class="num">—</td><td class="num">—</td></tr>
+      <tr><td class="name">los <b>8 completos</b></td><td class="num">0.7988</td><td class="num">+0.0002</td><td class="num ci">[−0.0160, +0.0163]</td><td class="num">23/2/25</td><td class="num">0.99</td></tr>
+      <tr><td class="name">mejor en test (6 modelos)</td><td class="num">0.8057</td><td class="num">+0.0071</td><td class="num ci">[−0.0074, +0.0215]</td><td class="num">29/5/16</td><td class="num">0.30</td></tr>
+      <tr><td class="name">selección honesta LOFO</td><td class="num">0.8011</td><td class="num">+0.0025</td><td class="num ci">[+0.0000, +0.0075]</td><td class="num">1/49/0</td><td class="num">0.32</td></tr>
+    </tbody>
+  </table>
+
+  <h3>El óptimo está en 4–6 modelos, no en 8</h3>
+  <table>
+    <caption>La media sube monótonamente con el tamaño —añadir modelos protege del mal azar— pero el
+    <b>mejor</b> subconjunto satura en k=4, y el comité completo es peor que el mejor de 6.</caption>
+    <thead><tr><th class="num">Tamaño</th><th class="num">Nº subconj.</th><th class="num">AUC medio</th><th class="num">AUC mejor</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td class="num">8</td><td class="num">0.7571</td><td class="num">0.7902</td></tr>
+      <tr><td class="num">2</td><td class="num">28</td><td class="num">0.7759</td><td class="num">0.8009</td></tr>
+      <tr><td class="num">3</td><td class="num">56</td><td class="num">0.7833</td><td class="num">0.8040</td></tr>
+      <tr><td class="num">4</td><td class="num">70</td><td class="num">0.7883</td><td class="num">0.8054</td></tr>
+      <tr><td class="num">5</td><td class="num">56</td><td class="num">0.7920</td><td class="num">0.8055</td></tr>
+      <tr class="best"><td class="num">6</td><td class="num">28</td><td class="num">0.7949</td><td class="num hl">0.8057</td></tr>
+      <tr><td class="num">7</td><td class="num">8</td><td class="num">0.7970</td><td class="num">0.8054</td></tr>
+      <tr><td class="num">8</td><td class="num">1</td><td class="num">0.7988</td><td class="num">0.7988</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Ningún trío alternativo bate al actual</h3>
+  <table>
+    <thead><tr><th>Trío</th><th class="num">AUC test</th><th class="num">Δ</th><th class="num">IC95 %</th><th class="num">W/T/L</th><th class="num">p</th></tr></thead>
+    <tbody>
+      <tr><td class="name mono">conch_v1_5+uni_v1+virchow2</td><td class="num">0.8040</td><td class="num">+0.0054</td><td class="num ci">[−0.0076, +0.0191]</td><td class="num">23/2/25</td><td class="num">0.73</td></tr>
+      <tr><td class="name mono">conch_v1_5+phikon_v2+virchow2</td><td class="num">0.8030</td><td class="num">+0.0044</td><td class="num ci">[−0.0121, +0.0201]</td><td class="num">29/4/17</td><td class="num">0.45</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout col">
+    <h4>La selección honesta elige el trío 49 de 50 veces</h4>
+    <p>La estimación <i>leave-one-fold-out</i> —para cada fold, el subconjunto con mejor AUC de
+    validación en los otros 49— <b>converge al trío baseline en 49 de 50 folds</b>, porque el trío
+    gana en validación (0.8681) por amplio margen sobre los comités de 6 (0.8535). Y pierde en test.
+    El sesgo de selección (naive − honesta) es <span class="mono">+0.0046</span>. Éste es el primer
+    aviso de que validación y test no ordenan igual.</p>
+  </div>
+</section>
+
+<!-- ══════════════ PRUEBA 2 ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§3 · Prueba 2</div>
+    <h2>Elegir el comité por tarea tampoco</h2>
+  </div>
+
+  <p class="col">13 tareas binarias en 3 cohortes, con los 4 modelos comunes a todas
+  (<span class="mono">hoptimus1</span>, <span class="mono">uni_v1</span>,
+  <span class="mono">uni_v2</span>, <span class="mono">virchow2</span>), 15 subconjuntos,
+  50 folds por tarea.</p>
+
+  <table>
+    <caption>Δ honesta = selección <i>leave-one-fold-out</i> menos comité fijo de 4.</caption>
+    <thead><tr><th>Tarea</th><th>Órgano</th><th class="num">fijo(4)</th><th class="num">honesta</th><th class="num">oráculo</th><th class="num">Δ honesta</th></tr></thead>
+    <tbody>
+      <tr><td class="name mono">cptac_brca/PIK3CA_mutation</td><td>mama</td><td class="num">0.6064</td><td class="num">0.6044</td><td class="num">0.6125</td><td class="num d-neg">−0.0020</td></tr>
+      <tr><td class="name mono">cptac_brca/TP53_mutation</td><td>mama</td><td class="num">0.7752</td><td class="num">0.7618</td><td class="num">0.7864</td><td class="num d-neg">−0.0134</td></tr>
+      <tr><td class="name mono">bc_therapy/er_status</td><td>mama</td><td class="num">0.6756</td><td class="num">0.6756</td><td class="num">0.6801</td><td class="num">+0.0000</td></tr>
+      <tr><td class="name mono">bc_therapy/grade</td><td>mama</td><td class="num">0.7471</td><td class="num">0.7522</td><td class="num">0.7655</td><td class="num">+0.0051</td></tr>
+      <tr><td class="name mono">bc_therapy/her2_status</td><td>mama</td><td class="num">0.6942</td><td class="num">0.6942</td><td class="num">0.7012</td><td class="num">+0.0000</td></tr>
+      <tr><td class="name mono">cptac_coad/APC_mutation</td><td>colon</td><td class="num">0.7332</td><td class="num">0.7318</td><td class="num">0.7382</td><td class="num d-neg">−0.0014</td></tr>
+      <tr><td class="name mono">cptac_coad/KRAS_mutation</td><td>colon</td><td class="num">0.6231</td><td class="num">0.6210</td><td class="num">0.6468</td><td class="num d-neg">−0.0021</td></tr>
+      <tr><td class="name mono">cptac_coad/MSI_H</td><td>colon</td><td class="num">0.8800</td><td class="num">0.8943</td><td class="num">0.8943</td><td class="num">+0.0143</td></tr>
+      <tr><td class="name mono">cptac_coad/TP53_mutation</td><td>colon</td><td class="num">0.7142</td><td class="num">0.7219</td><td class="num">0.7356</td><td class="num">+0.0078</td></tr>
+      <tr><td class="name mono">cptac_coad/ARID1A_mutation</td><td>colon</td><td class="num">0.7649</td><td class="num">0.7191</td><td class="num">0.7827</td><td class="num d-neg">−0.0458</td></tr>
+      <tr><td class="name mono">cptac_coad/PIK3CA_mutation</td><td>colon</td><td class="num">0.6655</td><td class="num">0.6698</td><td class="num">0.6662</td><td class="num">+0.0043</td></tr>
+      <tr><td class="name mono">cptac_coad/ACVR2A_mutation</td><td>colon</td><td class="num">0.8204</td><td class="num">0.8596</td><td class="num">0.8596</td><td class="num">+0.0393</td></tr>
+      <tr><td class="name mono">cptac_coad/SETD1B_mutation</td><td>colon</td><td class="num">0.8129</td><td class="num">0.8276</td><td class="num">0.8276</td><td class="num">+0.0147</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout neg col">
+    <h4>Este resultado es el techo, no una medición más</h4>
+    <p>Selección honesta por tarea vs comité fijo: <b>Δ = +0.0016, gana en 6/13, Wilcoxon p = 0.46</b>.
+    Oráculo: <span class="mono">+0.0141</span> — la selección recupera el 11 % del margen.</p>
+    <p>Esta prueba <b>conocía la tarea</b> y usaba su propia validación, información que un enrutado
+    sobre una WSI ciega no tiene. Es por tanto una <b>cota superior</b> del enrutado dinámico: si
+    conocer la tarea no ayuda, enrutar a ciegas no puede ayudar. La hipótesis queda falsada por la
+    vía barata.</p>
+  </div>
+
+  <h3>La señal de órgano existe — en el oráculo</h3>
+  <table>
+    <caption><span class="mono">hoptimus1</span> aparece en <b>6 de los 8</b> comités óptimos de colon
+    y en <b>0 de los 5</b> de mama. Es el patrón de PathBench —H-Optimus-1 primero en colorrectal,
+    7.º en mama— reproducido con datos propios.</caption>
+    <thead><tr><th>Órgano</th><th>Comité óptimo por tarea</th></tr></thead>
+    <tbody>
+      <tr><td>mama</td><td class="mono">uni_v1+uni_v2+virchow2 · uni_v1+virchow2 · uni_v1 · uni_v2 · uni_v1+uni_v2+virchow2</td></tr>
+      <tr><td>colon</td><td class="mono">uni_v1+uni_v2 · uni_v2 · <b>hoptimus1</b>+uni_v2 · <b>hoptimus1</b>+uni_v2 · <b>hoptimus1</b>+uni_v1 · <b>hoptimus1</b>+uni_v2+virchow2 · <b>hoptimus1</b> · <b>hoptimus1</b>+uni_v2</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════════ PRUEBA 3 ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§4 · Prueba 3</div>
+    <h2>Enrutar por órgano tampoco</h2>
+  </div>
+
+  <p class="col"><i>Leave-one-task-out</i>: para cada tarea se elige el comité con el AUC de
+  validación de las <b>otras</b> tareas, y se evalúa en la retenida. Tres políticas:</p>
+
+  <table>
+    <thead><tr><th>Política</th><th>Cómo elige</th></tr></thead>
+    <tbody>
+      <tr><td class="name"><b>A</b> · fijo</td><td>Los 4 modelos, siempre. Sin selección.</td></tr>
+      <tr><td class="name"><b>B</b> · global</td><td>Un único comité para todo, elegido por las otras tareas.</td></tr>
+      <tr><td class="name"><b>C</b> · órgano</td><td>Comité elegido por las otras tareas <b>del mismo órgano</b>. Es el escenario ciego realizable: el órgano se lee del embedding de la WSI, no de la etiqueta del dataset.</td></tr>
+    </tbody>
+  </table>
+
+  <table>
+    <caption>13 tareas, Δ pareados sobre tareas.</caption>
+    <thead><tr><th>Contraste</th><th class="num">Δ</th><th class="num">gana</th><th class="num">pierde</th><th class="num">p</th></tr></thead>
+    <tbody>
+      <tr><td class="name">B global vs A fijo</td><td class="num d-neg">−0.0001</td><td class="num">6/13</td><td class="num">4/13</td><td class="num">0.85</td></tr>
+      <tr class="best"><td class="name"><b>C órgano vs A fijo</b></td><td class="num hl">+0.0015</td><td class="num">6/13</td><td class="num">2/13</td><td class="num">0.31</td></tr>
+      <tr><td class="name">C órgano vs B global</td><td class="num">+0.0016</td><td class="num">5/13</td><td class="num">3/13</td><td class="num">0.46</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout col">
+    <h4>El mecanismo funciona; el beneficio no existe</h4>
+    <p>El enrutador <b>sí discrimina</b>: en colon selecciona
+    <span class="mono">hoptimus1+uni_v2+virchow2</span> —descarta <span class="mono">uni_v1</span>—
+    y en mama conserva los cuatro. Pero <b>no reproduce el patrón del oráculo</b>: éste indica que
+    <span class="mono">hoptimus1</span> sobra en mama, y la validación lo prefiere, así que el
+    enrutador lo mantuvo en ambos órganos. Esa discrepancia es el objeto de la prueba 4.</p>
+  </div>
+</section>
+
+<!-- ══════════════ PRUEBA 4 ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§5 · Prueba 4</div>
+    <h2>El selector no se arregla cambiando de métrica</h2>
+  </div>
+
+  <p class="col">Sobre los 255 subconjuntos ya evaluados, ocho criterios calculables <b>sin
+  etiquetas de test</b>. Se mide la correlación de rangos con el AUC de test y —lo que
+  decide— el AUC que obtiene la selección honesta guiada por cada criterio.</p>
+
+  <table>
+    <caption>«Recupera» = fracción del margen del oráculo (+0.0071 sobre el trío) que captura la selección.</caption>
+    <thead><tr><th>Criterio</th><th class="num">Spearman</th><th class="num">Sel. honesta</th><th class="num">Recupera</th></tr></thead>
+    <tbody>
+      <tr><td class="name mono">auc_val_penaliz <span class="dim">(media − desv.)</span></td><td class="num hl">+0.814</td><td class="num">0.8009</td><td class="num">32 %</td></tr>
+      <tr class="base"><td class="name mono">auc_val_medio <span class="dim">(el actual)</span></td><td class="num">+0.750</td><td class="num hl">0.8011</td><td class="num">35 %</td></tr>
+      <tr><td class="name mono">auc_val_agrupado</td><td class="num">+0.712</td><td class="num">0.7992</td><td class="num">8 %</td></tr>
+      <tr><td class="name mono">brier_val</td><td class="num">+0.685</td><td class="num">0.8006</td><td class="num">28 %</td></tr>
+      <tr><td class="name mono">logloss_val</td><td class="num">+0.682</td><td class="num">0.8006</td><td class="num">28 %</td></tr>
+      <tr><td class="name mono">auc_metatrain <span class="dim">(control negativo)</span></td><td class="num">+0.623</td><td class="num d-neg">0.7960</td><td class="num">—</td></tr>
+      <tr><td class="name mono">avg_precision</td><td class="num">+0.559</td><td class="num">0.7992</td><td class="num">8 %</td></tr>
+      <tr><td class="name mono">n_modelos <span class="dim">(control)</span></td><td class="num">+0.449</td><td class="num">0.7988</td><td class="num">3 %</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="findings">
+    <li><div><strong>Sí existe un criterio que ordena mejor.</strong> Penalizar la inestabilidad entre
+      folds sube la correlación de +0.750 a <span class="mono">+0.814</span>: la varianza del comité
+      entre folds informa sobre su rendimiento en test. Es el <b>único hallazgo positivo</b> del
+      estudio.</div></li>
+    <li><div><strong>Y no sirve para seleccionar.</strong> Elige 0.8009 frente a 0.8011 del criterio
+      actual. Ordenar mejor los 255 en conjunto no mueve el argmax, y para elegir sólo importa quién
+      queda arriba. Los ocho criterios caben en un rango de 0.005.</div></li>
+    <li><div><span class="mono">auc_val_agrupado</span> <strong>era el favorito teórico y salió
+      peor</strong> (+0.712 vs +0.750). El razonamiento —15 slides por fold es poco, agrupar 750 filas
+      estima mejor— ignora que agrupar mezcla folds con modelos y poblaciones distintas, y esa
+      heterogeneidad ensucia más de lo que limpia el ruido. <span class="dim">Explicación
+      <i>a posteriori</i>, no prevista.</span></div></li>
+    <li><div><span class="mono">n_modelos</span> <strong>no es competitivo</strong> (0.7988): la
+      heurística «usa más modelos» equivale al comité fijo, lo que confirma que la prueba 1 no se
+      explica por un simple efecto de tamaño.</div></li>
+  </ul>
+</section>
+
+<!-- ══════════════ DIAGNÓSTICO ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§6</div>
+    <h2>Diagnóstico</h2>
+  </div>
+
+  <div class="callout neg col">
+    <h4>En las cuatro pruebas el obstáculo es el mismo</h4>
+    <p style="font-size:1.05rem"><b>El AUC de validación no ordena los comités como lo hace el test.</b></p>
+  </div>
+
+  <ul class="findings">
+    <li><div>Spearman(validación, test) = <span class="mono">+0.750</span> sobre 255 subconjuntos.</div></li>
+    <li><div>El mejor comité en validación (el trío, 0.8681) queda <b>16.º</b> en test.</div></li>
+    <li><div>El mejor en test (6 modelos, 0.8057) marca sólo 0.8535 en validación.</div></li>
+    <li><div>El enrutador por órgano hereda el problema y no reproduce el patrón del oráculo.</div></li>
+    <li><div>Ningún criterio alternativo mejora la selección, ni siquiera el que correlaciona mejor.</div></li>
+  </ul>
+
+  <p class="col">La consecuencia práctica: <b>apagar modelos dinámicamente es implementable pero no
+  accionable</b>. Se puede construir el enrutador —está construido— pero no hay señal disponible en
+  producción que le diga a quién apagar. El oráculo demuestra que la información existe; lo que no
+  existe es la forma de leerla sin las etiquetas que en producción no se tienen.</p>
+</section>
+
+<!-- ══════════════ QUÉ SÍ FUNCIONA ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§7</div>
+    <h2>Qué sí funciona</h2>
+  </div>
+
+  <table>
+    <caption>Palancas medidas en este repositorio sobre <code>cptac_brca/TP53_mutation</code>, ordenadas por efecto.</caption>
+    <thead><tr><th>Palanca</th><th class="num">Δ AUC</th><th>¿Significativo?</th></tr></thead>
+    <tbody>
+      <tr class="best"><td class="name">cambiar un modelo base (<span class="mono">virchow_v1</span> → <span class="mono">conch_v1_5</span>)</td><td class="num hl">+0.037</td><td><span class="chip tie">sí · p ≈ 1.4e-4</span></td></tr>
+      <tr><td class="name">stacking frente al mejor modelo suelto</td><td class="num">+0.008</td><td><span class="chip warn">marginal</span></td></tr>
+      <tr><td class="name">optimización de pesos Nelder-Mead</td><td class="num">+0.005</td><td><span class="chip warn">marginal</span></td></tr>
+      <tr><td class="name"><b>ampliar / enrutar / seleccionar el comité</b> (este informe)</td><td class="num">&lt; +0.003</td><td><span class="chip bad">no</span></td></tr>
+      <tr><td class="name">early fusion a nivel de patch</td><td class="num d-neg">−0.006</td><td><span class="chip bad">no</span></td></tr>
+    </tbody>
+  </table>
+
+  <p class="col"><span class="mono">conch_v1_5</span> en solitario da 0.7902 frente a 0.7986 del
+  stacking del trío completo. La recomendación operativa es <b>entrenar los modelos que PathBench
+  sitúa arriba y que aquí no están entrenados</b> —UNI2, H-Optimus-0, Prov-GigaPath— antes que
+  seguir refinando cómo se combinan los existentes.</p>
+</section>
+
+<!-- ══════════════ CÓDIGO ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§8</div>
+    <h2>Correcciones de código aplicadas</h2>
+  </div>
+
+  <p class="col">Cuatro defectos encontrados durante el estudio, tres de ellos preexistentes:</p>
+
+  <table>
+    <thead><tr><th>Fichero</th><th>Defecto</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="name mono">src/ensemble4.py</td>
+        <td><b><span class="mono">--extra_features</span> roto por dos motivos.</b>
+          <span class="mono">_compute_extra_features</span> devuelve <span class="mono">(array, names)</span>
+          y los tres <i>call-sites</i> trataban la tupla como array; además
+          <span class="mono">num_classes</span> se derivaba de la <span class="mono">X</span> <b>ya
+          transformada</b>, con lo que <span class="mono">--drop_redundant_class</span> hacía imposible
+          el reshape en tarea binaria.</td>
+        <td><span class="chip tie">corregido</span></td>
+      </tr>
+      <tr>
+        <td class="name mono">src/utils.py</td>
+        <td><b><span class="mono">MetricDistance</span> apagaba modelos sin criterio.</b> Normalizaba
+          min-max y reescalaba a suma 1 —no un softmax, pese al comentario—, asignando <b>peso
+          exactamente 0 al peor modelo de cada fold, siempre</b>.</td>
+        <td><span class="chip tie">documentado + <span class="mono">weight_floor</span></span></td>
+      </tr>
+      <tr>
+        <td class="name mono">src/sweep_base_models.py</td>
+        <td><b><span class="mono">--baseline</span> sensible al orden.</b> Un baseline correcto escrito
+          en otro orden que <span class="mono">--models</span> abortaba el barrido.</td>
+        <td><span class="chip tie">corregido</span></td>
+      </tr>
+      <tr>
+        <td class="name mono">src/ensemble4.py</td>
+        <td><b>Añadido <span class="mono">logreg_l1</span></b> con <span class="mono">--meta_l1_c</span>.
+          Con <span class="mono">--feature_space logit --drop_redundant_class</span> en binaria hay una
+          columna por modelo, así que L1 sobre ellas es <i>group-lasso</i> sobre modelos:
+          coeficiente 0 = modelo apagado.</td>
+        <td><span class="chip warn">escrito, no ejecutado</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note col"><span class="mono">weight_floor</span> tiene default 0.0: no altera ningún
+  resultado previo. <span class="mono">logreg_l1</span> perdió sentido al dar negativo el enrutado.</p>
+</section>
+
+<!-- ══════════════ LIMITACIONES ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§9</div>
+    <h2>Limitaciones</h2>
+  </div>
+
+  <ul class="findings">
+    <li><div><strong>Dos órganos.</strong> Los resultados acotan mama
+      (<span class="mono">cptac_brca</span>, <span class="mono">bc_therapy</span>) y colon
+      (<span class="mono">cptac_coad</span>). PathBench observa los saltos de ranking mayores entre
+      órganos más distantes —pulmón, cerebro, estómago—. Con <span class="mono">cptac_gbm</span> hay
+      3 tareas de cerebro, pero el núcleo común de modelos cae a 3 y el experimento pierde potencia.
+      <b>No está descartado que el enrutado pague con más órganos y mayor separación entre
+      ellos.</b></div></li>
+    <li><div><strong>Cuatro modelos comunes</strong> en las pruebas 2 y 3, frente a los 8 de la
+      prueba 1.</div></li>
+    <li><div><strong>Meta-features in-sample.</strong> Los modelos base valen AUC 0.934–0.944 en
+      meta-train frente a 0.764–0.795 en test. Las comparaciones son relativas y aguantan, pero
+      cualquier selección <i>aprendida</i> debería repetirse sobre features out-of-fold, que existen
+      sólo para 3 de los 8 modelos.</div></li>
+    <li><div><strong>MDE ≈ ±0.016</strong> con 50 folds y 22 slides de test por fold. Efectos menores
+      que eso son indetectables por diseño; los negativos de este informe se reportan
+      <b>acotados</b>, no como ausencia de efecto.</div></li>
+  </ul>
+</section>
+
+<!-- ══════════════ REPRODUCCIÓN ══════════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">§10</div>
+    <h2>Reproducción</h2>
+  </div>
+
+  <pre><code>python src/sweep_base_models.py \
+    --work_dir /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches \
+    --train_source cptac_brca --task_name TP53_mutation \
+    --tissue_patching 20x_224px_0px_overlap \
+    --models conch_v1_5 ctranspath hoptimus1 phikon_v2 uni_v1 uni_v2 virchow2 virchow_v1 \
+    --baseline ctranspath uni_v2 conch_v1_5 \
+    --out results_sweep_8models_cptac_brca_TP53_mutation.json</code></pre>
+
+  <p class="col">Pruebas 2 y 3: <span class="mono">scripts/routing_ceiling.py</span>.
+  Prueba 4: <span class="mono">scripts/selector_search.py</span> (cachea los 255×50 ajustes en
+  <span class="mono">selector_cache.npz</span>; el primer pase tarda ~3 min).</p>
+
+  <p class="note col"><b>Salidas</b>:
+  <span class="mono">results_sweep_8models_cptac_brca_TP53_mutation.json</span> (121 KB, incluye el
+  ranking completo de los 255 subconjuntos con Δ pareados e IC95 %).</p>
+</section>
+
+<footer>
+  <div class="eyebrow">Patho-Ensemble</div>
+  <p class="note col">Cuatro pruebas convergentes acotan la pregunta, no la resuelven en positivo.
+  El apagado dinámico de modelos fundación queda descartado <b>para mama y colon con estos cuatro
+  modelos</b>; con órganos más distantes —los que PathBench separa de verdad— la pregunta sigue
+  abierta.</p>
+</footer>
+
+</div>
+</body>
+</html>

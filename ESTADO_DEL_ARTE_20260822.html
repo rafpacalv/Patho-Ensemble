@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estado del Arte Patho-Ensemble</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* ── tokens: paleta completa en claro ─────────────────────────────── */
+:root{
+  color-scheme: light;
+  --paper:#faf9f7; --surface:#ffffff; --surface-2:#f4f2f6; --surface-3:#eeebf2;
+  --ink:#1b1830; --ink-2:#57536b; --ink-3:#8b8798;
+  --rule:#e5e2ea; --rule-strong:#cfcbd9;
+  --accent:#4a3f8f; --accent-soft:#ece9f7; --eosin:#c4607f;
+  --ok:#0ca30c; --warn:#fab219; --bad:#d03b3b;
+  --ok-bg:#e8f5e8; --warn-bg:#fdf4e0; --bad-bg:#fbeaea;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --grid:#e6e3ea; --axis:#c3bfd0; --chart-bg:#ffffff;
+  --shadow:0 1px 2px rgba(27,24,48,.05), 0 4px 16px rgba(27,24,48,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --paper:#121121; --surface:#1a1930; --surface-2:#232141; --surface-3:#2b2850;
+    --ink:#f2f0f8; --ink-2:#b5b0c8; --ink-3:#857fa0;
+    --rule:#2d2b4a; --rule-strong:#3d3a5e;
+    --accent:#9c8ee8; --accent-soft:#26224a; --eosin:#e491ab;
+    --ok:#0ca30c; --warn:#fab219; --bad:#d03b3b;
+    --ok-bg:#132a13; --warn-bg:#33280c; --bad-bg:#331616;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --grid:#2a2846; --axis:#3d3a5e; --chart-bg:#1a1930;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.2);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --paper:#121121; --surface:#1a1930; --surface-2:#232141; --surface-3:#2b2850;
+  --ink:#f2f0f8; --ink-2:#b5b0c8; --ink-3:#857fa0;
+  --rule:#2d2b4a; --rule-strong:#3d3a5e;
+  --accent:#9c8ee8; --accent-soft:#26224a; --eosin:#e491ab;
+  --ok:#0ca30c; --warn:#fab219; --bad:#d03b3b;
+  --ok-bg:#132a13; --warn-bg:#33280c; --bad-bg:#331616;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --grid:#2a2846; --axis:#3d3a5e; --chart-bg:#1a1930;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.2);
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16.5px; line-height:1.62;
+  font-feature-settings:"kern" 1;
+}
+
+/* ── layout ───────────────────────────────────────────────────────── */
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px 96px;}
+.layout{display:grid; grid-template-columns:1fr; gap:0;}
+@media (min-width:1080px){
+  .layout{grid-template-columns:190px minmax(0,1fr); gap:56px; align-items:start;}
+}
+main{min-width:0; display:flex; flex-direction:column; gap:0;}
+
+/* prosa a ~68ch; tablas y gráficos se ensanchan */
+main > section > p,
+main > section > ul,
+main > section > ol,
+main > section > blockquote,
+main > section > h3,
+main > section > h4{max-width:68ch;}
+
+/* ── raíl de navegación ───────────────────────────────────────────── */
+nav.rail{display:none;}
+@media (min-width:1080px){
+  nav.rail{
+    display:block; position:sticky; top:32px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.5px;
+    border-left:1px solid var(--rule); padding-left:0;
+  }
+  nav.rail a{
+    display:flex; gap:9px; padding:5px 0 5px 14px; margin-left:-1px;
+    color:var(--ink-3); text-decoration:none;
+    border-left:2px solid transparent; line-height:1.35;
+  }
+  nav.rail a:hover{color:var(--accent); border-left-color:var(--rule-strong);}
+  nav.rail a.on{color:var(--ink); border-left-color:var(--accent);}
+  nav.rail a b{color:var(--ink-3); font-weight:500; min-width:12px;}
+  nav.rail a.on b{color:var(--accent);}
+}
+
+/* ── cabecera ─────────────────────────────────────────────────────── */
+header.top{padding:64px 0 40px; border-bottom:1px solid var(--rule); margin-bottom:8px;}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11.5px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--eosin); font-weight:500; margin:0 0 18px;
+  display:flex; align-items:center; gap:12px;
+}
+.eyebrow::after{content:""; flex:1; height:1px; background:var(--rule); max-width:180px;}
+h1{
+  font-family:Spectral,Georgia,serif; font-weight:700;
+  font-size:clamp(2.3rem,5.2vw,3.5rem); line-height:1.06;
+  letter-spacing:-.022em; margin:0 0 20px; text-wrap:balance; max-width:16ch;
+}
+.standfirst{font-size:1.14rem; color:var(--ink-2); max-width:62ch; margin:0 0 28px;}
+.meta-row{
+  display:flex; flex-wrap:wrap; gap:10px 28px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.5px; color:var(--ink-3);
+}
+.meta-row b{color:var(--ink-2); font-weight:500;}
+
+/* ── secciones ────────────────────────────────────────────────────── */
+section{padding:52px 0 4px; scroll-margin-top:24px;}
+section + section{border-top:1px solid var(--rule);}
+h2{
+  font-family:Spectral,Georgia,serif; font-weight:600;
+  font-size:clamp(1.55rem,3vw,2.05rem); line-height:1.16; letter-spacing:-.015em;
+  margin:0 0 22px; text-wrap:balance;
+  display:flex; gap:16px; align-items:baseline;
+}
+h2 .num{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.62em; font-weight:500; color:var(--eosin);
+  flex:none; padding-top:.1em;
+}
+h3{
+  font-family:"IBM Plex Sans",sans-serif; font-weight:600;
+  font-size:1.09rem; letter-spacing:-.005em; margin:36px 0 12px; color:var(--ink);
+}
+h4{font-size:.98rem; font-weight:600; margin:26px 0 8px; color:var(--ink-2);}
+p{margin:0 0 16px;}
+ul,ol{margin:0 0 16px; padding-left:22px;}
+li{margin-bottom:7px;}
+li::marker{color:var(--ink-3);}
+strong{font-weight:600;}
+a{color:var(--accent); text-underline-offset:2px;}
+code{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.855em;
+  background:var(--surface-2); padding:.13em .38em; border-radius:3px;
+  color:var(--ink); border:1px solid var(--rule);
+}
+
+/* ── bloque destacado ─────────────────────────────────────────────── */
+.headline{
+  background:var(--surface); border:1px solid var(--rule);
+  border-radius:10px; padding:30px 32px; margin:0 0 30px; box-shadow:var(--shadow);
+}
+.headline .hero-figure{
+  font-family:Spectral,Georgia,serif; font-size:clamp(3rem,8vw,4.6rem);
+  font-weight:700; line-height:.94; letter-spacing:-.03em; color:var(--accent);
+  margin:0 0 4px;
+}
+.headline .hero-cap{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12px;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); margin:0 0 22px;
+}
+.kv{display:grid; gap:0; border-top:1px solid var(--rule);}
+.kv div{
+  display:grid; grid-template-columns:minmax(140px,.42fr) 1fr; gap:18px;
+  padding:11px 0; border-bottom:1px solid var(--rule); align-items:baseline;
+}
+.kv dt{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); margin:0;
+}
+.kv dd{margin:0; font-size:.95rem;}
+.kv dd b{font-variant-numeric:tabular-nums;}
+
+/* ── tablas ───────────────────────────────────────────────────────── */
+.tw{overflow-x:auto; margin:0 0 24px; border:1px solid var(--rule); border-radius:9px; background:var(--surface);}
+table{border-collapse:collapse; width:100%; font-size:.885rem;}
+caption{
+  caption-side:top; text-align:left; padding:14px 18px 12px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3);
+  border-bottom:1px solid var(--rule);
+}
+th,td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--rule); vertical-align:top;}
+thead th{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+  letter-spacing:.05em; text-transform:uppercase; color:var(--ink-3);
+  font-weight:500; white-space:nowrap; background:var(--surface-2);
+}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--surface-2);}
+td.n,th.n{text-align:right; font-variant-numeric:tabular-nums; font-family:"IBM Plex Mono",ui-monospace,monospace; white-space:nowrap;}
+tr.hi td{background:var(--accent-soft);}
+tr.hi td:first-child{box-shadow:inset 3px 0 0 var(--accent);}
+td small{color:var(--ink-3); font-size:.86em;}
+
+/* ── chips de veredicto ───────────────────────────────────────────── */
+.chip{
+  display:inline-flex; align-items:center; gap:5px; white-space:nowrap;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10.5px;
+  font-weight:500; letter-spacing:.04em; text-transform:uppercase;
+  padding:2.5px 8px; border-radius:20px; border:1px solid;
+}
+.chip.ok{color:var(--ok); background:var(--ok-bg); border-color:var(--ok);}
+.chip.warn{color:#8a6100; background:var(--warn-bg); border-color:var(--warn);}
+.chip.bad{color:var(--bad); background:var(--bad-bg); border-color:var(--bad);}
+.chip.dead{color:var(--ink-3); background:var(--surface-2); border-color:var(--rule-strong);}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])) .chip.warn{color:var(--warn);}
+}
+:root[data-theme="dark"] .chip.warn{color:var(--warn);}
+
+/* ── avisos ───────────────────────────────────────────────────────── */
+.note{
+  border-left:3px solid var(--rule-strong); padding:14px 0 14px 18px;
+  margin:0 0 24px; color:var(--ink-2); font-size:.94rem; max-width:66ch;
+}
+.note.stale{border-left-color:var(--bad);}
+.note.warn{border-left-color:var(--warn);}
+.note strong{color:var(--ink);}
+.note .lab{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+  letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:5px;
+}
+.note.stale .lab{color:var(--bad);}
+.note.warn .lab{color:#8a6100;}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])) .note.warn .lab{color:var(--warn);}
+}
+:root[data-theme="dark"] .note.warn .lab{color:var(--warn);}
+
+/* ── código ───────────────────────────────────────────────────────── */
+pre{
+  background:var(--surface-2); border:1px solid var(--rule); border-radius:8px;
+  padding:16px 18px; overflow-x:auto; margin:0 0 24px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.6px; line-height:1.62;
+  color:var(--ink);
+}
+pre code{background:none; border:none; padding:0; font-size:inherit;}
+
+/* ── figuras / gráficos ───────────────────────────────────────────── */
+figure{
+  margin:0 0 30px; background:var(--surface); border:1px solid var(--rule);
+  border-radius:10px; padding:22px 24px 18px; box-shadow:var(--shadow);
+}
+figure .fig-title{
+  font-family:"IBM Plex Sans",sans-serif; font-weight:600; font-size:.98rem;
+  margin:0 0 3px; color:var(--ink);
+}
+figure .fig-sub{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  color:var(--ink-3); margin:0 0 20px; letter-spacing:.02em;
+}
+figure figcaption{
+  font-size:.855rem; color:var(--ink-2); margin-top:16px;
+  padding-top:14px; border-top:1px solid var(--rule); max-width:70ch;
+}
+.chart-scroll{overflow-x:auto;}
+svg{display:block; max-width:100%; height:auto;}
+svg text{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums;}
+.legend{
+  display:flex; flex-wrap:wrap; gap:8px 20px; margin:0 0 16px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; color:var(--ink-2);
+}
+.legend span{display:inline-flex; align-items:center; gap:7px;}
+.legend i{width:11px; height:11px; border-radius:2.5px; flex:none;}
+
+/* tooltip */
+.tip{
+  position:fixed; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:var(--ink); color:var(--paper); padding:7px 10px; border-radius:6px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; line-height:1.5;
+  z-index:50; max-width:260px; box-shadow:0 4px 14px rgba(0,0,0,.22);
+}
+.tip b{color:var(--paper); font-weight:600;}
+
+/* ── detalles plegables (vista de tabla) ──────────────────────────── */
+details{margin:14px 0 0; border-top:1px solid var(--rule); padding-top:12px;}
+details summary{
+  cursor:pointer; font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-3);
+  list-style:none; display:flex; align-items:center; gap:7px;
+}
+details summary::-webkit-details-marker{display:none;}
+details summary::before{content:"▸"; font-size:9px; transition:transform .15s;}
+details[open] summary::before{transform:rotate(90deg);}
+details summary:hover{color:var(--accent);}
+details .tw{margin-top:14px; box-shadow:none;}
+
+/* ── pie ──────────────────────────────────────────────────────────── */
+footer{
+  margin-top:64px; padding-top:28px; border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  color:var(--ink-3); line-height:1.75;
+}
+
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:3px;}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Informe técnico · 22 agosto 2026</p>
+  <h1>Estado del arte Patho&#8209;Ensemble</h1>
+  <p class="standfirst">Qué se ha probado, qué funciona, qué está medido contra predicciones que ya no existen, y qué queda por hacer. Todo sobre <code>cptac_brca / TP53_mutation</code>, 50 folds, comparación pareada.</p>
+  <div class="meta-row">
+    <span><b>Tarea:</b> cptac_brca / TP53_mutation</span>
+    <span><b>Slides:</b> 112 (103 pacientes)</span>
+    <span><b>Folds:</b> 50</span>
+    <span><b>Cierre:</b> jobs 70271 y 70285</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="rail" aria-label="Secciones">
+  <a href="#resumen"><b>—</b>Resumen</a>
+  <a href="#s1"><b>1</b>Datos y protocolo</a>
+  <a href="#s2"><b>2</b>Modelos base</a>
+  <a href="#s3"><b>3</b>Fusión</a>
+  <a href="#s4"><b>4</b>Metaclasificador</a>
+  <a href="#s5"><b>5</b>Métricas</a>
+  <a href="#s6"><b>6</b>Evaluación</a>
+  <a href="#s7"><b>7</b>Alternativas</a>
+  <a href="#s8"><b>8</b>Pendiente</a>
+  <a href="#s9"><b>9</b>Mejor modelo</a>
+</nav>
+
+<main>
+
+<!-- ═══ RESUMEN ═══ -->
+<section id="resumen" style="padding-top:44px;">
+  <div class="headline">
+    <p class="hero-figure">0.7986</p>
+    <p class="hero-cap">AUC macro-OvR · 50 folds · mejor configuración medida</p>
+    <dl class="kv">
+      <div><dt>Modelos base</dt><dd><b>ctranspath + uni_v2 + conch_v1_5</b></dd></div>
+      <div><dt>Arquitectura</dt><dd>Un ABMIL independiente por modelo → stacking tardío</dd></div>
+      <div><dt>Metaclasificador</dt><dd>Regresión logística sobre las probabilidades softmax</dd></div>
+      <div><dt>bacc / F1 / kappa</dt><dd><b>0.7302</b> / <b>0.7294</b> / <b>0.4629</b></dd></div>
+      <div><dt>Estimación honesta</dt><dd><b>0.8011</b> — selección LOFO entre 255 subconjuntos</dd></div>
+      <div><dt>Baseline que sustituye</dt><dd>ctranspath + uni_v2 + virchow_v1 = <b>0.7616</b></dd></div>
+    </dl>
+  </div>
+
+  <h3>La conclusión que ordena todo lo demás</h3>
+  <p>El rendimiento lo determina <strong>qué modelos base entran</strong>, no <strong>cómo se combinan</strong>.</p>
+  <ul>
+    <li>Cambiar un modelo base vale <strong>+0.0395 AUC</strong> (p = 2·10⁻⁵).</li>
+    <li>El mejor resultado jamás medido de tocar la regla de combinación vale <strong>+0.0052</strong> (p = 0.058, no significativo).</li>
+  </ul>
+  <p>Son casi <strong>8×</strong> de diferencia. Cualquier trabajo futuro sobre metaclasificadores debería justificar por qué no se gasta ese esfuerzo en selección de modelos base.</p>
+
+  <figure>
+    <p class="fig-title">Todo lo que se ha probado, en una imagen</p>
+    <p class="fig-sub">Δ AUC pareado vs. su baseline · IC 95 % por bootstrap · 50 folds</p>
+    <div class="chart-scroll"><div id="c-forest"></div></div>
+    <figcaption>Las dos únicas barras que cruzan el umbral de significación son cambios en <em>qué modelos entran</em>. Todo lo que toca la regla de combinación —Nelder-Mead, escalera de features, fusión temprana, snapshots— cae dentro del ruido o por debajo de cero. Las barras marcan el IC 95 %; el punto, el Δ medio.</figcaption>
+  </figure>
+</section>
+
+<!-- ═══ 1 ═══ -->
+<section id="s1">
+  <h2><span class="num">01</span> Datos y protocolo experimental</h2>
+
+  <h3>Conjunto</h3>
+  <div class="tw"><table>
+    <caption>cptac_brca · TP53_mutation</caption>
+    <tbody>
+      <tr><td>Dataset</td><td><code>cptac_brca</code> (CPTAC breast carcinoma)</td></tr>
+      <tr><td>Tarea</td><td><code>TP53_mutation</code>, binaria a nivel de slide</td></tr>
+      <tr><td>Slides</td><td class="n">112</td></tr>
+      <tr><td>Pacientes (<code>case_id</code>)</td><td class="n">103</td></tr>
+      <tr><td>Distribución de clases</td><td>67 wild-type / 45 mutado <small>(40.2 % positivos)</small></td></tr>
+      <tr><td>Folds</td><td class="n">50</td></tr>
+      <tr><td>Patching</td><td><code>20x_224px_0px_overlap</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Particiones</h3>
+  <p>Cada columna <code>fold_*</code> asigna cada slide a <code>train</code>, <code>val</code> o <code>test</code>. En <code>fold_0</code>:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Split</th><th class="n">n</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td><code>train</code></td><td class="n">75</td><td>Entrena el ABMIL base; <strong>y</strong> genera las meta-features</td></tr>
+      <tr><td><code>val</code></td><td class="n">15</td><td>Early stopping del ABMIL y del metaclasificador</td></tr>
+      <tr><td><code>test</code></td><td class="n">22</td><td>Única superficie de reporte</td></tr>
+    </tbody>
+  </table></div>
+  <p>El tamaño de <code>test</code> varía entre 15 y 24 según el fold. <strong>La estratificación es a nivel de paciente</strong>: todas las slides de un <code>case_id</code> caen en el mismo split, vía <code>StratifiedGroupKFold</code>.</p>
+
+  <h3>Arquitectura base (ABMIL)</h3>
+  <p>Fija en <code>abmil_engine.py</code>, idéntica para los 8 modelos:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Parámetro</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td><code>in_dim</code></td><td>Autodetectado del <code>.h5</code> (768 / 1024 / 1280 / 2560)</td></tr>
+      <tr><td>Cabezas de atención</td><td class="n">1</td></tr>
+      <tr><td><code>head_dim</code></td><td class="n">512</td></tr>
+      <tr><td>Dropout</td><td class="n">0.25</td></tr>
+      <tr><td>Gated attention</td><td>No</td></tr>
+      <tr><td>Bag size</td><td class="n">2048 parches</td></tr>
+      <tr><td>Épocas</td><td>100, con early stopping sobre <code>val</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>Que la arquitectura sea idéntica es lo que hace comparable el barrido de modelos base: <strong>la única variable es el extractor de características</strong>.</p>
+</section>
+
+<!-- ═══ 2 ═══ -->
+<section id="s2">
+  <h2><span class="num">02</span> Modelos base evaluados</h2>
+  <p>Se han entrenado y evaluado <strong>8 modelos fundacionales</strong>, los 8 sobre las mismas 112 slides y los mismos 50 folds.</p>
+
+  <figure>
+    <p class="fig-title">Rendimiento de cada modelo en solitario</p>
+    <p class="fig-sub">AUC de test · ABMIL individual, sin ensemble · 50 folds</p>
+    <div class="chart-scroll"><div id="c-models"></div></div>
+    <figcaption><code>conch_v1_5</code> en solitario (0.7902) <strong>supera al ensemble del trío histórico</strong> (0.7616): un único modelo bien elegido bate a tres mal elegidos combinados con un metaclasificador. En el otro extremo, <code>virchow_v1</code> está a 11 puntos del mejor — es prescindible, no simplemente peor.</figcaption>
+    <details>
+      <summary>Ver tabla</summary>
+      <div class="tw"><table>
+        <thead><tr><th class="n">#</th><th>Modelo</th><th class="n">AUC test</th><th class="n">AUC val</th><th class="n">Δ vs. mejor</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td class="n">1</td><td><b>conch_v1_5</b></td><td class="n"><b>0.7902</b></td><td class="n">0.8536</td><td class="n">—</td></tr>
+          <tr><td class="n">2</td><td>virchow2</td><td class="n">0.7771</td><td class="n">0.8245</td><td class="n">−0.0131</td></tr>
+          <tr><td class="n">3</td><td>uni_v1</td><td class="n">0.7732</td><td class="n">0.8011</td><td class="n">−0.0170</td></tr>
+          <tr><td class="n">4</td><td>phikon_v2</td><td class="n">0.7685</td><td class="n">0.8093</td><td class="n">−0.0217</td></tr>
+          <tr><td class="n">5</td><td>uni_v2</td><td class="n">0.7634</td><td class="n">0.8369</td><td class="n">−0.0268</td></tr>
+          <tr><td class="n">6</td><td>ctranspath</td><td class="n">0.7571</td><td class="n">0.8117</td><td class="n">−0.0331</td></tr>
+          <tr><td class="n">7</td><td>hoptimus1</td><td class="n">0.7450</td><td class="n">0.7998</td><td class="n">−0.0452</td></tr>
+          <tr><td class="n">8</td><td>virchow_v1</td><td class="n">0.6823</td><td class="n">0.7319</td><td class="n">−0.1079</td></tr>
+        </tbody>
+      </table></div>
+    </details>
+  </figure>
+
+  <h3>2.1 Grupos de coordenadas de parche</h3>
+  <p>Verificado sobre las 112 slides. Los modelos de un mismo grupo tienen <code>coords</code> byte-idénticos y <strong>pueden fusionarse a nivel de parche</strong>; los de grupos distintos no, sin registro espacial previo.</p>
+  <div class="tw"><table>
+    <thead><tr><th class="n">Grupo</th><th class="n">Parches/slide</th><th>Modelos</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td class="n">4068</td><td>hoptimus1, phikon_v2, uni_v1, <b>uni_v2</b>, virchow2</td></tr>
+      <tr><td class="n">2</td><td class="n">2100</td><td><b>conch_v1_5</b>, <b>ctranspath</b>, virchow_v1</td></tr>
+      <tr><td class="n">3</td><td class="n">3148</td><td>uni_v1_256px, uni_v2_256px</td></tr>
+      <tr><td class="n">—</td><td class="n">857 / 734</td><td>conch512, conch512_monai <small>(cada uno solo)</small></td></tr>
+    </tbody>
+  </table></div>
+  <p>Consecuencia directa: el trío ganador <strong>cruza los grupos 1 y 2</strong>, así que la fusión temprana solo puede aplicarse a dos de sus tres miembros. Es la misma limitación que tenía el trío histórico.</p>
+</section>
+
+<!-- ═══ 3 ═══ -->
+<section id="s3">
+  <h2><span class="num">03</span> Fusión: temprana vs. tardía</h2>
+
+  <h3>Qué es cada una</h3>
+  <p><strong>Fusión tardía (la arquitectura actual).</strong> Cada modelo fundacional entrena su propio ABMIL, que colapsa sus parches a una predicción de slide. El metaclasificador ve solo esas predicciones finales.</p>
+<pre><code>ctranspath  → ABMIL → p₁ ┐
+uni_v2      → ABMIL → p₂ ├→ LogReg → predicción
+conch_v1_5  → ABMIL → p₃ ┘</code></pre>
+  <p><strong>Fusión temprana (<code>ensemble5.py</code>).</strong> Los embeddings de parche se concatenan <em>antes</em> del ABMIL, de modo que la atención pueda ponderar el acuerdo o desacuerdo entre modelos parche a parche.</p>
+<pre><code>[ctranspath ⊕ virchow_v1]  (concat por parche, in_dim = 768+2560 = 3328)
+    → un solo ABMIL → predicción</code></pre>
+  <p>La hipótesis era que la fusión tardía pierde información al colapsar cada modelo por separado, y que la temprana la recuperaría.</p>
+
+  <h3>Resultado: la hipótesis es falsa</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Configuración</th><th class="n">Δ AUC</th><th>IC 95 %</th><th class="n">G/E/P</th><th class="n">p</th><th>Veredicto</th></tr></thead>
+    <tbody>
+      <tr><td>Fusión temprana (3 modelos) vs. tardía</td><td class="n"><b>−0.0056</b></td><td class="n">[−0.0250, +0.0124]</td><td class="n">21/3/26</td><td class="n">0.55</td><td><span class="chip bad">Sin efecto</span></td></tr>
+      <tr><td>Fusión temprana ponderada vs. Nelder-Mead</td><td class="n"><b>−0.0182</b></td><td class="n">[−0.0421, +0.0061]</td><td class="n">20/1/29</td><td class="n">0.15</td><td><span class="chip bad">Empeora</span></td></tr>
+    </tbody>
+  </table></div>
+  <p>Concatenar a nivel de parche <strong>no recupera</strong> la información que se pierde al colapsar cada modelo. Además, el vector fusionado (3328–4096 D) desborda un mecanismo de atención diseñado para entradas de 768–2560 D. Escalar los embeddings antes de concatenar lo empeora todavía más.</p>
+  <p><strong>La estructura de fusión tardía del pipeline es aproximadamente óptima</strong> para los modelos y la arquitectura actuales.</p>
+
+  <div class="note stale">
+    <span class="lab">No usar este número</span>
+    Existe un <code>results_early_fusion_*.json</code> con Δ = <strong>+0.0319</strong> favorable a la fusión temprana. Es de una comparación <strong>no pareada y con distinto conjunto de modelos</strong>, y está superada por la comparación justa de arriba (<code>results_opcion_c_fair_comparison.json</code>: misma pasada, mismos folds, mismos modelos).
+  </div>
+</section>
+
+<!-- ═══ 4 ═══ -->
+<section id="s4">
+  <h2><span class="num">04</span> El metaclasificador</h2>
+
+  <h3>4.1 Qué recibe como entrada — la pregunta clave</h3>
+  <p><strong>En el pipeline vigente, el metaclasificador recibe la salida del ABMIL, no los embeddings.</strong></p>
+  <p>Para cada slide y cada modelo base se carga <code>preds.npy</code>, que contiene el vector <strong>softmax de 2 clases</strong>. Se concatenan a lo ancho:</p>
+<pre><code>X_meta = [p₁(c0), p₁(c1), p₂(c0), p₂(c1), p₃(c0), p₃(c1)]
+       → [N, 2 × n_modelos]        # con 3 modelos: [N, 6]</code></pre>
+  <p>Confirmado en <code>src/ensemble4.py</code> (construcción de <code>X_train</code>, líneas 500–525) y en los logs, donde las meta-features salen como <code>(75, 2)</code> para un modelo fusionado y <code>(N, 6)</code> para el trío.</p>
+  <p>No es una salida binaria dura: son <strong>probabilidades continuas</strong>, y esa distinción importa — el metaclasificador puede leer la confianza, no solo el voto. Opciones disponibles sobre ese espacio:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Opción</th><th>Efecto</th></tr></thead>
+    <tbody>
+      <tr><td><code>--feature_space prob</code> <small>(por defecto)</small></td><td>Combina en espacio de probabilidad</td></tr>
+      <tr><td><code>--feature_space logit</code></td><td>Combina en log-odds</td></tr>
+      <tr><td><code>--drop_redundant_class</code></td><td>Elimina una columna softmax por modelo (cada par suma 1; en binario, 6 columnas tienen rango 3)</td></tr>
+      <tr><td><code>--extra_features</code></td><td>Columnas derivadas: desacuerdo (Jensen-gap), entropía, margen, estadísticos de atención</td></tr>
+      <tr><td><code>--reweight_by_model_importance</code></td><td>Reescala cada bloque por la importancia del modelo (4 métodos)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>4.2 La variante con embeddings — sí se probó</h3>
+  <p>Existe una rama alternativa que alimenta al metaclasificador con el <strong>embedding de slide de 512 D posterior a la atención</strong> (la representación que el ABMIL produce justo antes de su clasificador), en lugar de las 2 probabilidades:</p>
+<pre><code>X_meta = [emb₁(512), emb₂(512), emb₃(512)] → [N, 1536]</code></pre>
+  <div class="tw"><table>
+    <caption>Medido el 18-ago sobre 50 folds — 🔴 obsoleto</caption>
+    <thead><tr><th>Meta-modelo</th><th class="n">AUC</th><th class="n">Accuracy</th><th class="n">F1</th><th class="n">Kappa</th></tr></thead>
+    <tbody>
+      <tr><td>LogReg</td><td class="n">0.7896 ± 0.091</td><td class="n">0.7377</td><td class="n">0.7366</td><td class="n">0.4531</td></tr>
+      <tr><td>MLP</td><td class="n">0.7901 ± 0.102</td><td class="n">0.7052</td><td class="n">0.6589</td><td class="n">0.3223</td></tr>
+      <tr class="hi"><td><b>MLP Snapshot</b></td><td class="n"><b>0.7995 ± 0.103</b></td><td class="n">0.7512</td><td class="n">0.7498</td><td class="n">0.4812</td></tr>
+      <tr><td>MLP FGE</td><td class="n">0.7947 ± 0.101</td><td class="n">0.7319</td><td class="n">0.7142</td><td class="n">0.4095</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note stale">
+    <span class="lab">Números obsoletos</span>
+    Se calcularon el 18-ago 19:03, y los checkpoints de los tres modelos implicados cambiaron después (ctranspath 20-ago 12:52, uni_v2 19-ago 21:37, virchow_v1 19-ago 21:48). Los embeddings de los que salen <strong>ya no existen en disco</strong>.
+  </div>
+  <p>Aun así, la comparación <em>interna</em> entre esas cuatro filas sigue siendo válida (mismo momento, mismos embeddings), y dice algo útil: en el espacio de 1536 D el MLP simple se degrada (kappa 0.32) y solo se recupera con regularización por snapshots. Es el mismo patrón que la fuga in-sample produce en el espacio de probabilidades (§6.2).</p>
+  <p><strong>Esta es la comparación abierta más importante del proyecto</strong> (§8.1): embeddings 1536 D vs. probabilidades 6 D, con los checkpoints actuales y el trío ganador. Nunca se han medido juntos.</p>
+
+  <h3>4.3 Metaclasificadores implementados</h3>
+  <p>15 registrados en <code>src/meta_models.py</code>, seleccionables con <code>--meta_model</code>:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Familia</th><th>Variantes</th></tr></thead>
+    <tbody>
+      <tr><td>Lineales</td><td><code>logreg</code>, <code>logit_avg</code></td></tr>
+      <tr><td>MLP</td><td><code>mlp</code>, <code>deep_mlp</code>, <code>mlp_snapshot</code>, <code>deep_mlp_snapshot</code>, <code>mlp_fge</code>, <code>mlp_deepens</code>, <code>gating</code></td></tr>
+      <tr><td>Bayesianos / instancias</td><td><code>nb</code>, <code>knn</code></td></tr>
+      <tr><td>Márgenes</td><td><code>svm</code> <small>(lineal y RBF)</small></td></tr>
+      <tr><td>Árboles</td><td><code>lightgbm</code></td></tr>
+      <tr><td>Transformer tabular</td><td><code>tabpfn</code>, <code>tabpfn_snapshot</code></td></tr>
+    </tbody>
+  </table></div>
+  <p><strong><code>logreg</code> sigue siendo el que se usa por defecto y el que no ha sido batido de forma significativa.</strong> Con 75 filas de entrenamiento y 6 columnas hay poco margen para cualquier cosa más flexible, y encima el espacio es casi separable por la fuga in-sample (§6.2), lo que da a un meta-modelo flexible aún más ocasiones de ajustar ruido.</p>
+</section>
+
+<!-- ═══ 5 ═══ -->
+<section id="s5">
+  <h2><span class="num">05</span> Métricas</h2>
+  <p><code>utils.Metrics</code> calcula, por fold y agregadas:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Métrica</th><th>Papel</th></tr></thead>
+    <tbody>
+      <tr class="hi"><td><code>macro-ovr-auc</code></td><td>Métrica primaria de reporte</td></tr>
+      <tr><td><code>macro-ovo-auc</code></td><td>Variante one-vs-one</td></tr>
+      <tr><td><code>bacc</code></td><td>Balanced accuracy — corrige el desbalance 67/45</td></tr>
+      <tr><td><code>macro-f1</code></td><td>Media no ponderada por clase</td></tr>
+      <tr><td><code>weighted_kappa</code></td><td>Acuerdo corregido por azar; la más sensible del conjunto</td></tr>
+      <tr><td>Log-loss</td><td>Calibración — se calcula, pero nunca se ha usado para decidir</td></tr>
+    </tbody>
+  </table></div>
+  <p>Salidas: métricas por fold en <code>{split}_metrics/fold_X/</code>, agregadas con <strong>IC 95 % por bootstrap (1000 iteraciones)</strong>, curvas ROC, matrices de confusión y curvas precisión-recall.</p>
+  <p>En la comparación principal (§9) las cuatro métricas principales se mueven en el mismo sentido y todas superan su efecto mínimo detectable — la señal de que el efecto es real y no un artefacto de una métrica concreta.</p>
+</section>
+
+<!-- ═══ 6 ═══ -->
+<section id="s6">
+  <h2><span class="num">06</span> Cómo se evalúa el rendimiento</h2>
+  <p>Esta sección decide si los números de arriba significan algo.</p>
+
+  <h3>6.1 Contra qué conjunto se reporta</h3>
+  <p><strong>Siempre contra <code>test</code>.</strong> <code>val</code> se usa exclusivamente para early stopping y para la selección de subconjuntos; nunca se reporta como resultado.</p>
+
+  <h3>6.2 La brecha entre entrenamiento y test — de quién es</h3>
+  <p>El metaclasificador se entrena con las predicciones de los modelos base <strong>sobre el propio split de entrenamiento de ese fold</strong>, es decir, sobre slides que los ABMIL ya han visto. Eso produce una brecha grande entre el AUC de entrenamiento y el de test. Medido sobre el trío ganador, 50 folds (rango sobre los tres modelos):</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Superficie</th><th>Papel</th><th class="n">AUC base</th></tr></thead>
+    <tbody>
+      <tr><td><code>_train_eval/val_outputs</code></td><td>meta-entrenamiento (<strong>in-sample</strong>)</td><td class="n"><b>0.849 – 0.949</b></td></tr>
+      <tr><td><code>val_outputs</code></td><td>early stopping</td><td class="n">0.812 – 0.854</td></tr>
+      <tr><td><code>test_outputs</code></td><td>reporte</td><td class="n">0.757 – 0.790</td></tr>
+      <tr><td><code>_train_eval_oof/val_outputs_oof</code></td><td>meta-entrenamiento (<strong>out-of-fold</strong>)</td><td class="n">0.722 – 0.730</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Por qué existe la brecha</h4>
+  <p>El AUC de entrenamiento <strong>no es una estimación de rendimiento</strong>: mide cuánto se ajustó el modelo a unos datos que ya tenía delante mientras movía sus parámetros. Cuatro causas, en orden de peso:</p>
+  <ol>
+    <li><strong>Capacidad contra datos.</strong> <code>head_dim</code> 512 con <code>in_dim</code> de 768–2560 da 0.4–1.4 M parámetros ajustados sobre <strong>75 slides</strong> — unos 10 000 parámetros por ejemplo. Con esa proporción el optimizador siempre encuentra una configuración que separa 75 puntos, use o no características que signifiquen algo.</li>
+    <li><strong>El MIL lo amplifica.</strong> Cada slide es una bolsa de 2 000–4 000 parches y la atención elige a cuáles hacer caso. Hay libertad enorme para encontrar, en cada slide de entrenamiento, una combinación que la empuje al lado correcto: un tono de tinción, un artefacto del escáner, una región distintiva. Correlaciona con la etiqueta <em>en esta muestra de 75</em> por azar, y no transfiere.</li>
+    <li><strong>La señal real es débil.</strong> Predecir TP53 desde morfología H&amp;E es difícil; el techo aquí ronda 0.79–0.80. Cuando la señal verdadera es pequeña queda mucha varianza sin explicar que el modelo rellena con ruido. La brecha es grande <em>porque la señal es débil</em>, no porque el modelo sea malo.</li>
+    <li><strong>El early stopping la acota, no la elimina.</strong> Para cuando <code>val</code> deja de mejorar, el ajuste a <code>train</code> ya va muy por delante. Protege val, no train.</li>
+  </ol>
+
+  <p>La firma en las predicciones descarta la memorización saturada:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Superficie</th><th class="n">acierto @0.5</th><th class="n">|p−0.5| medio</th><th class="n">predicciones extremas</th></tr></thead>
+    <tbody>
+      <tr><td><code>conch_v1_5</code> train</td><td class="n">0.843</td><td class="n">0.305</td><td class="n">20.3 %</td></tr>
+      <tr><td><code>conch_v1_5</code> test</td><td class="n">0.707</td><td class="n">0.276</td><td class="n">15.5 %</td></tr>
+    </tbody>
+  </table></div>
+  <p>Si hubiera memorizado a lo bruto, las predicciones de train estarían pegadas a 0 y 1 — y solo están algo más seguras que las de test. La brecha aparece en el <strong>acierto</strong>, no en la confianza: el modelo ha encontrado una superficie de decisión que ordena bien esas 75 slides con confianza normal, construida en parte sobre rasgos que solo existen en esas 75.</p>
+  <p>El azar es 0.5, así que un train de 0.95 con test de 0.79 significa que el modelo <strong>conserva la mayor parte de su habilidad aparente</strong>. El 0.95 se descompone aproximadamente en <strong>~0.79 de señal real</strong> que transfiere y <strong>~0.16 fabricado</strong> sobre idiosincrasias del conjunto de entrenamiento.</p>
+
+  <h4>La brecha es del ABMIL, no del metaclasificador</h4>
+  <figure>
+    <p class="fig-title">Todos caen; el metaclasificador es el que menos</p>
+    <p class="fig-sub">AUC in-sample → AUC test · 50 folds · la longitud de cada línea es la brecha</p>
+    <div class="legend">
+      <span><i style="background:var(--bad)"></i>in-sample (datos ya vistos)</span>
+      <span><i style="background:var(--s1)"></i>test (superficie honesta)</span>
+    </div>
+    <div class="chart-scroll"><div id="c-leak"></div></div>
+    <figcaption><strong>Memorizar más no predice mejor.</strong> <code>phikon_v2</code> fabrica más que nadie (0.9580) y queda cuarto en test; <code>ctranspath</code> es el que menos fabrica y queda sexto. El orden de las líneas por su extremo izquierdo no tiene nada que ver con el orden por su extremo derecho, que es el único que importa.</figcaption>
+  </figure>
+
+  <div class="tw"><table>
+    <caption>Descomposición sobre el trío ganador</caption>
+    <thead><tr><th>&nbsp;</th><th class="n">meta-train</th><th class="n">test</th><th class="n">brecha</th></tr></thead>
+    <tbody>
+      <tr><td>Metaclasificador (LogReg)</td><td class="n">0.9495</td><td class="n">0.7986</td><td class="n"><b>+0.1509</b></td></tr>
+      <tr><td><code>conch_v1_5</code> solo, su mejor entrada</td><td class="n">0.9493</td><td class="n">0.7902</td><td class="n"><b>+0.1591</b></td></tr>
+      <tr class="hi"><td><strong>aporte del metaclasificador</strong></td><td class="n"><b>+0.0003</b></td><td class="n"><b>+0.0084</b></td><td class="n">—</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Dos lecturas, ambas en contra de culpar al metaclasificador:</p>
+  <ol>
+    <li><strong>No crea la brecha: la hereda.</strong> Su 0.9495 sobre sus propias filas es prácticamente idéntico al 0.9493 que <code>conch_v1_5</code> ya traía — aporta <strong>+0.0003</strong>. Una regresión logística con 6 columnas y 75 filas apenas puede sobreajustar; lo que hace es reproducir su mejor entrada.</li>
+    <li><strong>No falla en test: mejora ahí.</strong> Sobre test aporta <strong>+0.0084</strong> y gana al mejor modelo base fijo en <strong>27 de 50 folds</strong>. Un combinador incapaz de evaluar test rendiría <em>por debajo</em> de su mejor entrada, no por encima.</li>
+  </ol>
+  <p>De hecho la brecha del metaclasificador (+0.1509) es <strong>menor</strong> que la de su entrada (+0.1591): combinar la reduce ligeramente.</p>
+  <p>Un detalle sobre <code>val</code>: tampoco está limpio. Queda entre in-sample y test porque <strong>el early stopping selecciona el modelo que maximiza val</strong>, así que también está sesgado al alza. Solo <code>test</code> es una superficie honesta.</p>
+
+  <h4>Arreglar la fuga no mejora el resultado</h4>
+  <p><code>build_oof_features.py</code> genera meta-features sin fuga mediante CV anidada agrupada por paciente (<code>--meta_features oof</code>). Medido sobre el trío histórico, el único con OOF completo, mismo test, 50 folds:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Metaclasificador entrenado con</th><th class="n">AUC test</th></tr></thead>
+    <tbody>
+      <tr><td>features in-sample (con fuga)</td><td class="n">0.7616</td></tr>
+      <tr><td>features out-of-fold (sin fuga)</td><td class="n">0.7571</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note warn">
+    <span class="lab">Resultado nulo, medido</span>
+    <strong>Δ = −0.0045, IC 95 % [−0.0115, +0.0021], G/E/P 18/11/21.</strong> No significativo, y si acaso ligeramente peor.
+  </div>
+  <p>Con 6 features y un combinador lineal el desplazamiento apenas importa: la fuga infla las tres columnas de forma <strong>aproximadamente pareja</strong>, así que el peso <em>relativo</em> que aprende LogReg sobrevive. Y el OOF trae su propio coste — sus predicciones vienen de modelos entrenados con menos datos, así que las features son más ruidosas. Las dos distorsiones se cancelan.</p>
+  <p>Donde la fuga <em>sí</em> debería morder es con meta-modelos flexibles, que pueden explotar un espacio 6-D casi separable de formas que no transfieren. Eso explicaría por qué el MLP simple colapsa, TabPFN rinde por debajo de lo esperado, y los Snapshot Ensembles «arreglan» el MLP <strong>regularizándolo de vuelta hacia una regresión logística</strong>. Sigue siendo una hipótesis: para <code>logreg</code> está medido y es un empate.</p>
+
+  <h3>6.3 Selección LOFO (leave-one-fold-out)</h3>
+  <p>Se evaluaron <strong>255 subconjuntos</strong> (2⁸ − 1) de los 8 modelos base. Elegir el mejor mirando el mismo test que luego se reporta produce un número optimista: con 255 candidatos, algo gana por ruido.</p>
+  <p>La estimación honesta usa selección leave-one-fold-out. Para cada fold <em>k</em>:</p>
+  <ol>
+    <li>Se calcula el AUC de <strong>validación</strong> en los otros 49 folds.</li>
+    <li>Se elige el subconjunto que lo maximiza — sin haber tocado el fold <em>k</em>.</li>
+    <li>Se reporta el AUC de <strong>test</strong> de ese subconjunto en el fold <em>k</em>.</li>
+  </ol>
+  <p>Estima el rendimiento del <strong>procedimiento completo</strong> (elegir + aplicar), que es lo que se desplegaría.</p>
+
+  <figure>
+    <p class="fig-title">Los 255 subconjuntos: validación frente a test</p>
+    <p class="fig-sub">Cada punto es un subconjunto de modelos · color = nº de modelos</p>
+    <div class="legend" id="l-scatter"></div>
+    <div class="chart-scroll"><div id="c-scatter"></div></div>
+    <figcaption>La selección LOFO elige por el eje horizontal (validación) y cobra en el vertical (test), sin mirar nunca el test del fold que evalúa. La nube se separa en dos brazos: los subconjuntos que incluyen <code>conch_v1_5</code> y los que no.</figcaption>
+  </figure>
+
+  <div class="tw"><table>
+    <thead><tr><th>Estimación</th><th class="n">AUC</th></tr></thead>
+    <tbody>
+      <tr><td>Naive (mejor en test — <strong>optimista</strong>)</td><td class="n">0.8057</td></tr>
+      <tr class="hi"><td><b>Honesta (LOFO por val)</b></td><td class="n"><b>0.8011</b></td></tr>
+      <tr><td>Baseline (trío histórico)</td><td class="n">0.7616</td></tr>
+      <tr><td><strong>Sesgo de selección</strong> <small>(naive − honesta)</small></td><td class="n"><b>+0.0046</b></td></tr>
+    </tbody>
+  </table></div>
+  <p>El sesgo es pequeño, y la selección es <strong>estable</strong>: 49 de 50 folds eligieron <code>ctranspath+uni_v2+conch_v1_5</code>. Si cada fold hubiera elegido algo distinto, el procedimiento estaría siguiendo ruido.</p>
+
+  <h3>6.4 Protocolo de comparación pareada</h3>
+  <p>Todas las configuraciones se evalúan sobre <strong>los mismos folds</strong>, así que las comparaciones son pareadas. Se reporta, por métrica:</p>
+  <ul>
+    <li>Δ medio pareado e <strong>IC 95 % por bootstrap</strong>.</li>
+    <li><strong>Ganadas / Empatadas / Perdidas</strong> — los empates se cuentan explícitamente: con 22 slides de test por fold, kappa empató en hasta 22 de 50 folds.</li>
+    <li><strong>Efecto mínimo detectable (MDE) al 80 % de potencia</strong> — un resultado no significativo se reporta <em>con su cota</em>, para que se lea como <strong>acotado</strong>, no como indeterminado.</li>
+    <li><strong>p corregida por Holm</strong> sobre las 4 métricas.</li>
+  </ul>
+  <p>Dos modos de fallo que este protocolo existe para evitar, ambos ya sufridos:</p>
+  <ol>
+    <li>Comparar IC <strong>independientes</strong> ocultó un efecto sistemático en <code>cervical_subtype</code>.</li>
+    <li>Con 5 folds, un «5 de 5 folds, p = 0.024» sin corregir <strong>no replicó</strong> a 50 folds, y el signo se invirtió.</li>
+  </ol>
+
+  <h4>El suelo de reproducibilidad: ≈ 0.004 AUC</h4>
+  <p>Medido el 22-ago reentrenando <strong>la misma configuración exacta</strong> — trío ganador, bolsa completa, mismo código, mismas semillas — y comparándola con los checkpoints originales:</p>
+  <div class="tw"><table>
+    <thead><tr><th>&nbsp;</th><th class="n">AUC</th></tr></thead>
+    <tbody>
+      <tr><td>Checkpoints originales (19-21 ago)</td><td class="n">0.7986</td></tr>
+      <tr><td>Reentrenado, configuración idéntica</td><td class="n">0.8026</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note warn">
+    <span class="lab">Ruido de reentrenamiento</span>
+    <strong>Δ = +0.0040, IC 95 % [−0.0107, +0.0180], G/E/P 22/11/17.</strong> Desviación por fold <strong>0.0518</strong>; el fold típico se mueve <strong>±0.032</strong> solo por volver a entrenar. Es no determinismo de GPU, no un cambio de código: el camino con <code>bag_size=0</code> es byte a byte el de siempre.
+  </div>
+  <p><strong>Consecuencia para leer cualquier resultado de este informe:</strong> un efecto por debajo de ≈ 0.01 de AUC es indistinguible de volver a lanzar el mismo job. Eso sitúa en zona de ruido dos resultados que aparecen como positivos en §7:</p>
+  <ul>
+    <li>Nelder-Mead, <strong>+0.0052</strong> (§7, fila 4)</li>
+    <li>Atención GNN espacial, <strong>+0.0077</strong> (§7.2)</li>
+  </ul>
+  <p><strong>No basta con recalcular el baseline en la misma pasada</strong> (§6.5): el efecto tiene que superar además el ruido de reentrenar, no solo el MDE del test. Los resultados grandes — el cambio de modelo base, +0.037 — están un orden de magnitud por encima de este suelo y no se ven afectados.</p>
+
+  <h3>6.5 Auditoría de vigencia — qué resultados siguen siendo válidos</h3>
+  <p>Un directorio de resultados solo significa algo frente a los checkpoints con los que se calculó. <strong>El disparador de obsolescencia es la fecha del checkpoint</strong>, no la del <code>preds.npy</code>: la re-predicción es determinista, verificado porque el baseline del trío reproduce a 16 dígitos (<code>0.7616233719983719</code>) entre dos pasadas separadas por casi dos horas.</p>
+
+  <div class="tw"><table>
+    <caption>Fecha de los checkpoints — <code>fold_0/model.pt</code></caption>
+    <thead><tr><th>Modelo</th><th>Checkpoint</th></tr></thead>
+    <tbody>
+      <tr><td>uni_v2</td><td class="n">19-ago 21:37</td></tr>
+      <tr><td>virchow_v1</td><td class="n">19-ago 21:48</td></tr>
+      <tr><td>ctranspath</td><td class="n">20-ago 12:52</td></tr>
+      <tr class="hi"><td><b>conch_v1_5</b></td><td class="n"><b>21-ago 12:31</b> ← última modificación relevante</td></tr>
+      <tr><td>phikon_v2 / uni_v1 / hoptimus1 / virchow2</td><td class="n">21-ago 22:19 – 23:11</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Todo lo calculado <strong>después del 21-ago 12:31</strong> es mutuamente comparable:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Resultado</th><th>Fecha</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>Barrido de 255 subconjuntos</td><td class="n">21-ago 23:47</td><td><span class="chip ok">Vigente</span></td></tr>
+      <tr><td>Trío vs. swap conch vs. cuatro</td><td class="n">21-ago 22:00–22:03</td><td><span class="chip ok">Vigente</span></td></tr>
+      <tr><td>Early vs. late fusion (opción C)</td><td class="n">21-ago 23:50</td><td><span class="chip ok">Vigente</span></td></tr>
+      <tr><td>Nelder-Mead (opción A)</td><td class="n">21-ago 14:39</td><td><span class="chip ok">Vigente</span></td></tr>
+      <tr><td>Fusión temprana ponderada (opción D)</td><td class="n">21-ago 18:45</td><td><span class="chip ok">Vigente</span></td></tr>
+      <tr><td>Escalera de features (<code>ensemble4_fea_*</code>)</td><td class="n">19-ago 21:16</td><td><span class="chip bad">Obsoleto</span></td></tr>
+      <tr><td>Idea 3 y atención (<code>ensemble4_idea3_*</code>)</td><td class="n">20-ago 12:10–12:43</td><td><span class="chip bad">Obsoleto</span></td></tr>
+      <tr><td>SVM / KNN / NB y reponderación</td><td class="n">19-ago 13:03–14:23</td><td><span class="chip bad">Obsoleto</span></td></tr>
+      <tr><td>Metaclasificador con embeddings</td><td class="n">18-ago 19:03</td><td><span class="chip bad">Obsoleto</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note stale">
+    <span class="lab">No reproduce</span>
+    <strong><code>E0 = 0.7918</code> en <code>results_ladder_*.json</code></strong> no reproduce. El valor vigente para ese mismo trío y el mismo código es <strong>0.7616</strong>.
+  </div>
+
+  <p>Las comparaciones <em>dentro</em> de un mismo grupo obsoleto siguen siendo válidas (mismos checkpoints, mismo momento), así que sus conclusiones <strong>relativas</strong> se mantienen. Lo que no vale es citar sus números absolutos ni comparar entre grupos.</p>
+  <p><strong>Regla operativa: para cualquier contraste nuevo, recalcular el baseline en la misma pasada.</strong> Nunca reutilizar un <code>ensemble4_*</code> antiguo.</p>
+</section>
+
+<!-- ═══ 7 ═══ -->
+<section id="s7">
+  <h2><span class="num">07</span> Alternativas probadas</h2>
+  <p>Todas sobre <code>cptac_brca / TP53_mutation</code>, 50 folds, comparación pareada. El gráfico del resumen muestra estos mismos datos.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th class="n">#</th><th>Alternativa</th><th class="n">Δ AUC</th><th>IC 95 %</th><th class="n">G/E/P</th><th class="n">p</th><th>Veredicto</th></tr></thead>
+    <tbody>
+      <tr class="hi"><td class="n">1</td><td><b>Selección LOFO sobre 255 subconjuntos</b></td><td class="n"><b>+0.0395</b></td><td class="n">[+0.0253, +0.0540]</td><td class="n">35/4/11</td><td class="n">2·10⁻⁵</td><td><span class="chip ok">Funciona</span></td></tr>
+      <tr class="hi"><td class="n">2</td><td><b>Cambiar virchow_v1 → conch_v1_5</b></td><td class="n"><b>+0.0370</b></td><td class="n">[+0.0230, +0.0514]</td><td class="n">34/4/12</td><td class="n">4·10⁻⁵</td><td><span class="chip ok">Funciona</span></td></tr>
+      <tr><td class="n">3</td><td>Añadir conch_v1_5 sin quitar virchow_v1</td><td class="n">+0.0370</td><td class="n">[+0.0230, +0.0515]</td><td class="n">35/2/13</td><td class="n">3·10⁻⁵</td><td><span class="chip ok">Empata con #2</span></td></tr>
+      <tr><td class="n">4</td><td>Pesos por Nelder-Mead vs. LogReg</td><td class="n">+0.0052</td><td class="n">[+0.0007, +0.0106]</td><td class="n">26/11/13</td><td class="n">0.058</td><td><span class="chip warn">Marginal</span></td></tr>
+      <tr><td class="n">5</td><td>Escalera de features <small>(desacuerdo, margen, entropía)</small></td><td class="n">−0.0004</td><td class="n">[−0.0011, +0.0003]</td><td class="n">—</td><td class="n">0.29</td><td><span class="chip dead">Nulo · obsoleto</span></td></tr>
+      <tr><td class="n">6</td><td>Fusión temprana a nivel de parche</td><td class="n">−0.0056</td><td class="n">[−0.0250, +0.0124]</td><td class="n">21/3/26</td><td class="n">0.55</td><td><span class="chip bad">Nulo</span></td></tr>
+      <tr><td class="n">7</td><td>Fusión temprana ponderada</td><td class="n">−0.0182</td><td class="n">[−0.0421, +0.0061]</td><td class="n">20/1/29</td><td class="n">0.15</td><td><span class="chip bad">Empeora</span></td></tr>
+      <tr><td class="n">8</td><td>Snapshot Ensembles (FGE / SE)</td><td class="n">+0.001 … +0.006</td><td class="n">MDE 0.013–0.017</td><td class="n">—</td><td class="n">ns</td><td><span class="chip dead">Nulo acotado</span></td></tr>
+      <tr><td class="n">9</td><td>Atención GNN espacial <small>(§7.2)</small></td><td class="n">+0.0077</td><td class="n">[−0.0069, +0.0218]</td><td class="n">24/9/17</td><td class="n">ns</td><td><span class="chip bad">Nulo</span></td></tr>
+      <tr><td class="n">10</td><td>Atención multihead, 4 cabezas <small>(§7.2)</small></td><td class="n">−0.0240</td><td class="n"><small>solo 5 folds</small></td><td class="n">2/0/3</td><td class="n">—</td><td><span class="chip bad">Empeora</span></td></tr>
+      <tr><td class="n">11</td><td>Augmentación de bolsa, mejor variante <small>(§7.3)</small></td><td class="n">+0.0077</td><td class="n">[−0.0043, +0.0201]</td><td class="n">22/5/23</td><td class="n">ns</td><td><span class="chip bad">Nulo</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Notas por fila</h4>
+  <ul>
+    <li><strong>#2 y #3 empatan.</strong> Añadir <code>conch_v1_5</code> sin quitar <code>virchow_v1</code> da lo mismo que sustituirlo (0.7986 en ambos casos), así que se prefiere el trío por coste. Las <strong>cuatro</strong> métricas de #2 superan Holm (p ≈ 1.4·10⁻⁴) y son 1.7–1.8× su MDE.</li>
+    <li><strong>#4 es el techo de la optimización de la regla de combinación</strong>, y no llega a significativo. Es el mejor resultado que ha dado nunca tocar el combinador — pero cae <strong>por debajo del suelo de reproducibilidad</strong> de §6.4, así que no se distingue de reentrenar el mismo job.</li>
+    <li><strong>#4, #9 y #11 están todos en zona de ruido de reentrenamiento</strong> (≈ 0.004, §6.4). Solo #1, #2 y #3 —los tres sobre <em>qué modelos entran</em>— superan ese suelo con margen.</li>
+    <li><strong>#8 es un nulo con cota, no una ausencia de evidencia.</strong> Los IC excluyen cualquier mejora de AUC superior a ≈ +0.017. En kappa el MDE ronda 0.048–0.051, así que ahí el nulo es más débil. El hallazgo original en <code>cervical_subtype</code> (5/5 folds, p = 0.024) <strong>no replicó</strong> a 50 folds y el signo se invirtió.</li>
+  </ul>
+
+  <h3>7.1 Rendimiento por tamaño del subconjunto</h3>
+  <figure>
+    <p class="fig-title">Añadir modelos satura en tres o cuatro</p>
+    <p class="fig-sub">AUC de test según el nº de modelos base · 255 subconjuntos</p>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Mejor subconjunto de ese tamaño</span>
+      <span><i style="background:var(--s2)"></i>Media de todos los de ese tamaño</span>
+    </div>
+    <div class="chart-scroll"><div id="c-size"></div></div>
+    <figcaption>Pasar de 3 a 6 modelos compra <strong>+0.0017</strong> de AUC al doble de coste de inferencia, y con los 8 el rendimiento <strong>baja</strong>. La media sube monótonamente mientras el máximo se aplana: añadir modelos protege contra una mala elección, pero no supera a una buena.</figcaption>
+    <details>
+      <summary>Ver tabla</summary>
+      <div class="tw"><table>
+        <thead><tr><th class="n">k</th><th class="n">Subconj.</th><th class="n">Mejor</th><th class="n">Media</th><th>Mejor combinación</th></tr></thead>
+        <tbody>
+          <tr><td class="n">1</td><td class="n">8</td><td class="n">0.7902</td><td class="n">0.7571</td><td>conch_v1_5</td></tr>
+          <tr><td class="n">2</td><td class="n">28</td><td class="n">0.8009</td><td class="n">0.7759</td><td>conch_v1_5+uni_v1</td></tr>
+          <tr><td class="n">3</td><td class="n">56</td><td class="n">0.8040</td><td class="n">0.7833</td><td>conch_v1_5+uni_v1+virchow2</td></tr>
+          <tr><td class="n">4</td><td class="n">70</td><td class="n">0.8054</td><td class="n">0.7883</td><td>ctranspath+conch_v1_5+phikon_v2+virchow2</td></tr>
+          <tr><td class="n">5</td><td class="n">56</td><td class="n">0.8055</td><td class="n">0.7920</td><td>+ uni_v1</td></tr>
+          <tr class="hi"><td class="n">6</td><td class="n">28</td><td class="n"><b>0.8057</b></td><td class="n">0.7949</td><td>ctranspath+uni_v2+virchow_v1+conch_v1_5+phikon_v2+virchow2</td></tr>
+          <tr><td class="n">7</td><td class="n">8</td><td class="n">0.8054</td><td class="n">0.7970</td><td>todos menos hoptimus1</td></tr>
+          <tr><td class="n">8</td><td class="n">1</td><td class="n">0.7988</td><td class="n">0.7988</td><td>todos</td></tr>
+        </tbody>
+      </table></div>
+    </details>
+  </figure>
+
+  <h3>7.2 El brazo de atención — probado, con control negativo</h3>
+  <p>Un tercer escalón, distinto de «qué modelos entran» y de «cómo se combinan»: <strong>cómo se agregan los parches dentro de cada slide</strong>. Se han entrenado variantes del mecanismo de atención del ABMIL.</p>
+
+  <div class="tw"><table>
+    <caption>Variantes de atención sobre <code>uni_v2</code> · 50 folds salvo indicación</caption>
+    <thead><tr><th>Variante</th><th class="n">AUC</th><th class="n">Δ vs. baseline</th><th>IC 95 %</th><th class="n">G/E/P</th></tr></thead>
+    <tbody>
+      <tr><td>ABMIL, 1 cabeza <small>(baseline)</small></td><td class="n">0.7634</td><td class="n">—</td><td></td><td class="n"></td></tr>
+      <tr><td>+ GNN espacial</td><td class="n">0.7663</td><td class="n">+0.0029</td><td class="n">[−0.0115, +0.0162]</td><td class="n">22/14/14</td></tr>
+      <tr><td>+ GNN espacial (p = 0.3)</td><td class="n">0.7711</td><td class="n">+0.0077</td><td class="n">[−0.0069, +0.0218]</td><td class="n">24/9/17</td></tr>
+      <tr><td>+ GNN con <strong>grafo barajado</strong></td><td class="n">0.7592</td><td class="n">−0.0042</td><td class="n">[−0.0165, +0.0074]</td><td class="n">17/12/21</td></tr>
+      <tr><td><code>ctranspath</code> con 4 cabezas <small>⚠ 5 folds</small></td><td class="n">0.7362</td><td class="n"><b>−0.0240</b></td><td class="n"><small>n insuficiente</small></td><td class="n">2/0/3</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Ninguna variante bate al baseline de forma significativa</strong>, y la multihead — la forma más obvia de «mejorar la atención» — empeora.</p>
+
+  <h4>El control negativo: la señal espacial es real, pero diminuta</h4>
+  <p>El barrido incluye una rama con <strong>el mismo grafo barajado</strong>: misma arquitectura, mismos parámetros, misma capacidad, con la estructura espacial destruida. Es la comparación limpia, porque ambas ramas se entrenaron en el mismo momento.</p>
+
+  <figure>
+    <p class="fig-title">Grafo real contra grafo barajado</p>
+    <p class="fig-sub">Δ AUC pareado · 50 folds · misma arquitectura, solo cambia si la vecindad es verdadera</p>
+    <div class="chart-scroll"><div id="c-shuffle"></div></div>
+    <figcaption>El intervalo excluye el cero por poco: <strong>la vecindad espacial entre parches sí lleva información sobre TP53</strong>. Es la única evidencia positiva de que la atención tiene margen real. Pero el mecanismo aporta <strong>+0.0119</strong> sobre su propio control y solo <strong>+0.0077</strong> sobre el baseline — la diferencia es lo que <em>cuesta la arquitectura</em>.</figcaption>
+  </figure>
+
+  <h4>Por qué una atención «mejor» tiende a empeorar aquí</h4>
+  <p>Es la consecuencia directa de §6.2. La restricción que manda son <strong>75 slides contra 0.4–1.4 M de parámetros</strong>. Casi todo lo que se entiende por mejorar la atención — más cabezas, transformers entre parches, GAT — significa <strong>más capacidad</strong>, y con esa n la capacidad extra se convierte en memorización. El −0.0240 de la multihead es exactamente eso.</p>
+  <p><strong>El cuello de botella no es el diseño de la atención: es el tamaño del conjunto.</strong> Esta conclusión caduca si algún día se entrena sobre un cohorte mayor.</p>
+
+  <h4>El techo, para calibrar</h4>
+  <p>Oráculos que <strong>miran las etiquetas de test</strong> — cotas superiores inalcanzables, no objetivos:</p>
+  <div class="tw"><table>
+    <thead><tr><th>&nbsp;</th><th class="n">AUC</th></tr></thead>
+    <tbody>
+      <tr><td>Oráculo: mejor modelo individual por fold</td><td class="n">0.8423</td></tr>
+      <tr><td>Oráculo: mejor promedio de subconjunto por fold</td><td class="n">0.8608</td></tr>
+      <tr class="hi"><td><strong>Alcanzable hoy</strong> (LOFO honesto)</td><td class="n"><b>0.8011</b></td></tr>
+    </tbody>
+  </table></div>
+  <p>Con 21 slides de test por fold, tomar el máximo de 8 estimaciones ruidosas infla mucho el oráculo: el margen real es bastante menor que esos 0.04–0.06.</p>
+
+  <div class="note warn">
+    <span class="lab">Tres avisos</span>
+    Los GNN se entrenaron el 17-18 ago y el checkpoint de <code>uni_v2</code> es del 19-ago 21:37, así que la comparación <em>contra baseline</em> no cumple la regla de §6.5 — el <strong>control barajado sí es limpio</strong>, porque ambas ramas son del mismo momento. La multihead son <strong>5 folds</strong>, justo el tamaño que en <code>cervical_subtype</code> no replicó. Y el +0.0077 del GNN está <strong>por debajo del suelo de reproducibilidad</strong> de §6.4 (≈ 0.004, con folds moviéndose ±0.03); el control barajado sobrevive a esa objeción, el Δ contra baseline no.
+  </div>
+
+  <h3>7.3 Augmentación de bolsa — probado, nulo</h3>
+  <p>Si el cuello de botella son 75 slides (§6.2, §7.2), atacar <em>n</em> directamente tiene más sentido que cualquier cambio de arquitectura. La vía más barata es muestrear parches: <strong>con <code>bag_size</code> parches por forward, cada slide es una bolsa distinta en cada época</strong>, sin recomputar embeddings.</p>
+  <p>Hubo que implementarlo — no existía. <code>_apply</code> pasaba <em>todos</em> los parches en cada forward, sin muestreo. (CLAUDE.md afirma «Bag size: 2048»; <strong>es falso</strong>.) El muestreo actúa <strong>solo en el bucle de entrenamiento</strong>: evaluación, predicción y meta-features usan la bolsa completa, porque muestrear ahí metería varianza en la métrica y contaminaría §6.2.</p>
+  <p>Barrido de 50 folds sobre el trío ganador, con el baseline <strong>reentrenado en la misma pasada</strong> (job 70289, 1 h 53 min, 12 corridas de 50/50 folds):</p>
+
+  <figure>
+    <p class="fig-title">Muestrear parches no mueve la aguja</p>
+    <p class="fig-sub">Δ AUC pareado vs. bolsa completa · IC 95 % · 50 folds</p>
+    <div class="chart-scroll"><div id="c-bag"></div></div>
+    <figcaption>Las tres barras cruzan el cero, y ninguna llega al doble del <strong>suelo de reproducibilidad</strong> (banda gris, §6.4): la diferencia que produce reentrenar el mismo job. La augmentación de bolsa no crea pacientes nuevos, y la varianza que domina el error de generalización es la de <em>entre</em> pacientes.</figcaption>
+    <details>
+      <summary>Ver tabla completa</summary>
+      <div class="tw"><table>
+        <thead><tr><th>Configuración</th><th class="n">AUC</th><th class="n">bacc</th><th class="n">macro-F1</th><th class="n">kappa</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td><strong>Bolsa completa</strong> <small>(baseline reentrenado)</small></td><td class="n">0.8026</td><td class="n">0.7448</td><td class="n">0.7419</td><td class="n">0.4886</td></tr>
+          <tr><td>bag 256</td><td class="n">0.8040</td><td class="n">0.7428</td><td class="n">0.7414</td><td class="n">0.4872</td></tr>
+          <tr><td>bag 512</td><td class="n">0.8053</td><td class="n">0.7442</td><td class="n">0.7412</td><td class="n">0.4870</td></tr>
+          <tr><td>bag 1024</td><td class="n"><b>0.8103</b></td><td class="n">0.7376</td><td class="n">0.7349</td><td class="n">0.4737</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tw"><table>
+        <thead><tr><th>Δ vs. bolsa completa</th><th class="n">Δ AUC</th><th>IC 95 %</th><th class="n">G/E/P</th><th class="n">MDE</th></tr></thead>
+        <tbody>
+          <tr><td>bag 256</td><td class="n">+0.0014</td><td class="n">[−0.0115, +0.0139]</td><td class="n">25/5/20</td><td class="n">0.0185</td></tr>
+          <tr><td>bag 512</td><td class="n">+0.0027</td><td class="n">[−0.0091, +0.0144]</td><td class="n">25/6/19</td><td class="n">0.0169</td></tr>
+          <tr><td>bag 1024</td><td class="n">+0.0077</td><td class="n">[−0.0043, +0.0201]</td><td class="n">22/5/23</td><td class="n">0.0177</td></tr>
+        </tbody>
+      </table></div>
+    </details>
+  </figure>
+
+  <p><strong>Ninguna de las 12 comparaciones es significativa</strong>, en ninguna de las cuatro métricas. Dos razones para no rescatar el +0.0077 de bag 1024:</p>
+  <ol>
+    <li>Está <strong>por debajo del doble del suelo de reproducibilidad</strong> de §6.4 (+0.0040).</li>
+    <li><strong>Sube el AUC pero baja las otras tres métricas</strong> (bacc −0.0072, F1 −0.0070, kappa −0.0149). Un efecto real se mueve en el mismo sentido en las cuatro, como hizo el cambio de modelo base. Este no.</li>
+  </ol>
+  <p><strong>Por qué falla:</strong> la augmentación de bolsa <strong>no crea pacientes nuevos</strong>. Siguen siendo 103 personas, y la varianza que domina el error de generalización es la de <em>entre</em> pacientes, no la de entre submuestras del mismo paciente. Dos bolsas de la misma slide comparten etiqueta, tinción, escáner y morfología: aportan casi la misma información.</p>
+  <p>Implementación en <code>abmil_engine.py</code> (<code>_apply</code>) y <code>train_abmil.py</code> (<code>--bag_size N</code>, defecto 0 = desactivado). Se conserva: el coste es nulo y deja la puerta abierta si algún día cambia el tamaño del cohorte.</p>
+</section>
+
+<!-- ═══ 8 ═══ -->
+<section id="s8">
+  <h2><span class="num">08</span> Qué falta por probar</h2>
+  <p>Ordenado por relación entre valor esperado y coste.</p>
+
+  <h3>8.1 <span class="chip bad">Prioridad alta</span> Embeddings vs. probabilidades con checkpoints actuales</h3>
+  <p>La única comparación con evidencia previa de mejora que <strong>sigue sin medirse en condiciones válidas</strong>. Los datos obsoletos sugieren que MLP Snapshot sobre embeddings de 1536 D llegaba a 0.7995, frente a 0.7896 de LogReg sobre el mismo espacio. Con el trío ganador y los checkpoints actuales podría sostenerse o no.</p>
+<pre><code># extraer embeddings del trío ganador y re-comparar en una sola pasada
+for m in ctranspath uni_v2 conch_v1_5; do
+  python src/test_abmil.py --foundational_model $m --output_embeddings ...
+done
+python src/ensemble4.py --foundational_models ctranspath uni_v2 conch_v1_5 \
+    --meta_model logreg --results_subdir_suffix _emb_vs_prob ...</code></pre>
+
+  <h3>8.2 <span class="chip warn">Prioridad media</span> Meta-features out-of-fold <em>con un meta-modelo flexible</em></h3>
+  <p><strong>Ya no es prioridad alta: con <code>logreg</code> está medido y no aporta</strong> (Δ = −0.0045, IC [−0.0115, +0.0021], ver §6.2). Corregir la fuga no mejora el test porque un combinador lineal sobre 6 columnas apenas la sufre.</p>
+  <p>Lo que queda por probar es la única versión con fundamento: <strong>OOF + un meta-modelo flexible</strong> (<code>mlp</code>, <code>lightgbm</code>, <code>tabpfn</code>). La hipótesis es que esos modelos fracasan precisamente porque explotan la fuga, y que sin ella podrían superar a <code>logreg</code>. Requiere generar OOF para <code>conch_v1_5</code>, que no lo tiene.</p>
+
+  <h3>8.3 <span class="chip warn">Prioridad media</span> Validación en un segundo dataset</h3>
+  <p><strong>Todo lo de este informe es <code>cptac_brca / TP53_mutation</code>.</strong> La lección de <code>cervical_subtype</code> es precisamente que un hallazgo de un dataset puede no replicar. Hasta que <code>conch_v1_5 &gt; virchow_v1</code> se reproduzca en otra tarea, es un resultado de un solo conjunto. Disponibles: <code>cervical_subtype</code> (5 folds), <code>hancook</code> (5), <code>imp</code> (1).</p>
+
+  <h3>8.4 <span class="chip warn">Prioridad media</span> Fusión temprana dentro del grupo 1</h3>
+  <p>La fusión temprana solo se ha probado sobre el grupo 2 (2100 parches). El <strong>grupo 1 tiene cinco modelos con coordenadas idénticas</strong> (hoptimus1, phikon_v2, uni_v1, uni_v2, virchow2) y nunca se ha fusionado. Dado el −0.0056 del grupo 2 la expectativa es baja, pero es la única versión de la hipótesis que puede probarse a cinco bandas.</p>
+
+  <h3>8.5 <span class="chip warn">Prioridad media</span> Recomputar la escalera de features y la idea 3</h3>
+  <p>Sus conclusiones relativas (las features derivadas no aportan) probablemente se mantengan, pero sus números absolutos no son citables. Es barato: minutos de CPU.</p>
+
+  <h3>8.6 <span class="chip dead">Prioridad baja</span></h3>
+  <ul>
+    <li><strong>Gated attention.</strong> Está en <code>gated=False</code> y <strong>nunca se ha probado</strong>. Es un cambio de una línea en <code>abmil_engine.py</code> y añade muy pocos parámetros, así que es la única variante de atención que no cae en la trampa de capacidad de §7.2. No por lo que se espere de ella, sino porque cierra la casilla en una tarde.</li>
+    <li><strong>Regularizar la atención en vez de ampliarla</strong> — penalización de entropía o top-k de parches. Reduce capacidad efectiva, que es lo que sobra con n = 75.</li>
+    <li><strong>Calibración.</strong> El log-loss se calcula pero nunca se ha usado para decidir. Si la salida va a informar decisión clínica, la calibración importa tanto como el AUC.</li>
+    <li><strong>Evaluación a nivel de paciente.</strong> 112 slides ↔ 103 pacientes: 9 pacientes aportan más de una slide. La opción B quedó incompleta (3 jobs fallidos, 70267–70269).</li>
+    <li><strong>Reponderación por importancia del modelo.</strong> Cuatro métodos implementados, todos medidos solo sobre resultados obsoletos.</li>
+  </ul>
+
+  <h3>8.7 Cerrado — no reabrir sin motivo nuevo</h3>
+  <ul>
+    <li><strong>Fusión temprana</strong> por concatenación (−0.0056) y <strong>ponderada</strong> (−0.0182).</li>
+    <li><strong>Snapshot Ensembles / FGE</strong> como fuente de ganancia: nulo acotado a ≈ +0.017 de AUC.</li>
+    <li><strong>Atención con más capacidad</strong>: multihead (−0.0240), transformers entre parches, y <strong>GAT</strong> (8 jobs, 70272–70283, ninguno llegó a entrenar; código eliminado el 22-ago). Ver §7.2: con 75 slides de entrenamiento la capacidad extra se convierte en memorización.</li>
+    <li><strong>Augmentación de bolsa</strong> (§7.3): 12 comparaciones, ninguna significativa. La augmentación que no crea pacientes nuevos no ataca la varianza que domina el error. El código (<code>--bag_size</code>) se conserva desactivado por si cambia el cohorte.</li>
+  </ul>
+  <div class="note warn">
+    <span class="lab">Salvedad sobre lo cerrado</span>
+    El control negativo de §7.2 demuestra que la señal espacial <strong>existe</strong> (+0.0119, significativo). Lo que no funciona es pagarla con parámetros. Si alguna vez se entrena sobre un cohorte sustancialmente mayor que 112 slides, esta casilla debe reabrirse.
+  </div>
+</section>
+
+<!-- ═══ 9 ═══ -->
+<section id="s9">
+  <h2><span class="num">09</span> Mejor modelo</h2>
+
+  <h3>9.1 La configuración recomendada</h3>
+<pre><code>python src/ensemble4.py \
+    --foundational_models ctranspath uni_v2 conch_v1_5 \
+    --work_dir /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches \
+    --train_source cptac_brca \
+    --tissue_patching 20x_224px_0px_overlap \
+    --task_name TP53_mutation \
+    --meta_model logreg</code></pre>
+
+  <figure>
+    <p class="fig-title">Trío ganador frente al trío histórico</p>
+    <p class="fig-sub">Δ pareado con IC 95 % · las cuatro métricas · 50 folds</p>
+    <div class="chart-scroll"><div id="c-metrics"></div></div>
+    <figcaption>Las cuatro métricas son significativas tras Holm (p ≈ 1.4·10⁻⁴) y todas superan su MDE por un factor de 1.7–1.8. Que se muevan juntas es lo que descarta un artefacto de métrica.</figcaption>
+    <details>
+      <summary>Ver tabla</summary>
+      <div class="tw"><table>
+        <thead><tr><th>Métrica</th><th class="n">Trío histórico</th><th class="n">Trío ganador</th><th class="n">Δ pareado</th><th>IC 95 %</th><th class="n">p (Holm)</th></tr></thead>
+        <tbody>
+          <tr><td>macro-OvR AUC</td><td class="n">0.7616</td><td class="n"><b>0.7986</b></td><td class="n">+0.0370</td><td class="n">[+0.0230, +0.0514]</td><td class="n">1.4·10⁻⁴</td></tr>
+          <tr><td>bacc</td><td class="n">0.6702</td><td class="n"><b>0.7302</b></td><td class="n">+0.0600</td><td class="n">[+0.0363, +0.0838]</td><td class="n">1.4·10⁻⁴</td></tr>
+          <tr><td>macro-F1</td><td class="n">0.6687</td><td class="n"><b>0.7294</b></td><td class="n">+0.0608</td><td class="n">[+0.0362, +0.0857]</td><td class="n">1.4·10⁻⁴</td></tr>
+          <tr><td>kappa ponderada</td><td class="n">0.3502</td><td class="n"><b>0.4629</b></td><td class="n">+0.1127</td><td class="n">[+0.0657, +0.1601]</td><td class="n">1.4·10⁻⁴</td></tr>
+        </tbody>
+      </table></div>
+    </details>
+  </figure>
+
+  <h3>9.2 Cuánto aporta realmente el metaclasificador</h3>
+  <p>Conviene ser honesto sobre de dónde viene la ganancia:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Configuración</th><th class="n">AUC</th></tr></thead>
+    <tbody>
+      <tr><td><code>conch_v1_5</code> en solitario, sin ensemble</td><td class="n">0.7902</td></tr>
+      <tr><td>Trío ganador + stacking LogReg</td><td class="n">0.7986</td></tr>
+      <tr><td><strong>Aportación del metaclasificador</strong></td><td class="n"><b>+0.0084</b></td></tr>
+      <tr class="hi"><td><strong>Aportación de cambiar el modelo base</strong></td><td class="n"><b>+0.0370</b></td></tr>
+    </tbody>
+  </table></div>
+  <p>El metaclasificador vale <strong>+0.008</strong> sobre el mejor modelo individual. Cambiar qué modelo entra vale <strong>+0.037</strong>. Esa proporción es el resultado central del proyecto.</p>
+
+  <h3>9.3 Acción pendiente en el repositorio</h3>
+  <p><code>defaults.models</code> en <code>experiments.yaml</code> sigue apuntando al trío histórico. La selección LOFO elige <code>ctranspath+uni_v2+conch_v1_5</code> en 49 de 50 folds; la configuración por defecto debería reflejarlo.</p>
+</section>
+
+<footer>
+  <p><strong>Procedencia.</strong> <code>results_base_model_sweep_cptac_brca_TP53_mutation.json</code> (job 70271) ·
+  <code>results_model_selection_sweep.json</code> ·
+  <code>results_opcion_c_fair_comparison.json</code> (job 70285) ·
+  <code>results_opcion_a_nelder_mead.json</code> ·
+  <code>results_opcion_d_weighted_early_fusion.json</code> ·
+  <code>results_bag_size_sweep_cptac_brca_TP53_mutation.json</code> (job 70289) ·
+  <code>results_ladder_cptac_brca_TP53_mutation.json</code> (obsoleto) ·
+  <code>INFORME_ENSEMBLE_EMBEDDINGS.md</code> (obsoleto) ·
+  <code>INFORME_ABLATION_FGE_cervical_subtype.md</code></p>
+  <p>Fechas de checkpoint y de resultados verificadas con <code>stat</code> sobre
+  <code>PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/</code> el 22-ago-2026.</p>
+</footer>
+
+</main>
+</div>
+</div>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const tip=document.getElementById("tip");
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a){if(a[k]!==null&&a[k]!==undefined)e.setAttribute(k,a[k]);}return e;}
+function svg(w,h){const s=el("svg",{viewBox:`0 0 ${w} ${h}`,width:w,height:h,role:"img"});s.style.maxWidth="100%";return s;}
+function txt(p,x,y,s,o){const t=el("text",Object.assign({x:x,y:y},o||{}));t.textContent=s;p.appendChild(t);return t;}
+
+function hover(node,html){
+  const show=e=>{tip.innerHTML=html;tip.style.opacity="1";move(e);};
+  const move=e=>{
+    const pad=14;let x=e.clientX+pad,y=e.clientY+pad;
+    const r=tip.getBoundingClientRect();
+    if(x+r.width>innerWidth-8)x=e.clientX-r.width-pad;
+    if(y+r.height>innerHeight-8)y=e.clientY-r.height-pad;
+    tip.style.left=x+"px";tip.style.top=y+"px";
+  };
+  node.addEventListener("mouseenter",show);
+  node.addEventListener("mousemove",move);
+  node.addEventListener("mouseleave",()=>{tip.style.opacity="0";});
+}
+
+/* ── 1. barras horizontales: modelos individuales ─────────────────── */
+function chartModels(host){
+  const data=[
+    ["conch_v1_5",0.7902,0.8536,1],["virchow2",0.7771,0.8245,0],["uni_v1",0.7732,0.8011,0],
+    ["phikon_v2",0.7685,0.8093,0],["uni_v2",0.7634,0.8369,0],["ctranspath",0.7571,0.8117,0],
+    ["hoptimus1",0.7450,0.7998,0],["virchow_v1",0.6823,0.7319,0]
+  ];
+  const W=700,rowH=34,padT=34,padB=34,padL=112,padR=64;
+  const H=padT+data.length*rowH+padB;
+  const x0=0.65,x1=0.82;
+  const sx=v=>padL+(v-x0)/(x1-x0)*(W-padL-padR);
+  const s=svg(W,H);
+
+  for(let t=0.65;t<=0.8201;t+=0.05){
+    s.appendChild(el("line",{x1:sx(t),y1:padT-10,x2:sx(t),y2:padT+data.length*rowH,stroke:css("--grid"),"stroke-width":1}));
+    txt(s,sx(t),H-padB+18,t.toFixed(2),{fill:css("--ink-3"),"font-size":11,"text-anchor":"middle"});
+  }
+  txt(s,padL,padT-18,"AUC de test",{fill:css("--ink-3"),"font-size":10.5,"letter-spacing":"0.07em"});
+
+  data.forEach((d,i)=>{
+    const y=padT+i*rowH, bh=17, cy=y+rowH/2-bh/2;
+    const c=d[3]?css("--s1"):css("--ink-3");
+    const w=Math.max(2,sx(d[1])-padL);
+    const r=el("rect",{x:padL,y:cy,width:w,height:bh,rx:4,fill:c,opacity:d[3]?1:0.62});
+    hover(r,`<b>${d[0]}</b><br>AUC test &nbsp;${d[1].toFixed(4)}<br>AUC val &nbsp;&nbsp;${d[2].toFixed(4)}`);
+    s.appendChild(r);
+    txt(s,padL-12,cy+bh-4,d[0],{fill:d[3]?css("--ink"):css("--ink-2"),"font-size":11.5,"text-anchor":"end","font-weight":d[3]?600:400});
+    txt(s,sx(d[1])+9,cy+bh-4,d[1].toFixed(4),{fill:d[3]?css("--s1"):css("--ink-2"),"font-size":11.5,"font-weight":d[3]?600:400});
+  });
+
+  // referencia: trío histórico
+  const rx=sx(0.7616);
+  s.appendChild(el("line",{x1:rx,y1:padT-6,x2:rx,y2:padT+data.length*rowH,stroke:css("--eosin"),"stroke-width":1.5,"stroke-dasharray":"4 3"}));
+  txt(s,rx+6,padT-12,"trío histórico 0.7616",{fill:css("--eosin"),"font-size":10.5});
+  s.appendChild(el("line",{x1:padL,y1:padT+data.length*rowH,x2:W-padR,y2:padT+data.length*rowH,stroke:css("--axis"),"stroke-width":1}));
+  host.appendChild(s);
+}
+
+/* ── 2. forest plot ───────────────────────────────────────────────── */
+function chartForest(host){
+  const data=[
+    ["Selección LOFO (255 subconj.)",0.0395,0.0253,0.0540,"base"],
+    ["Cambiar virchow_v1 → conch_v1_5",0.0370,0.0230,0.0514,"base"],
+    ["Añadir conch_v1_5 (4 modelos)",0.0370,0.0230,0.0515,"base"],
+    ["Nelder-Mead vs. LogReg",0.0052,0.0007,0.0106,"comb"],
+    ["Escalera de features",-0.0004,-0.0011,0.0003,"comb"],
+    ["Fusión temprana (parche)",-0.0056,-0.0250,0.0124,"comb"],
+    ["Fusión temprana ponderada",-0.0182,-0.0421,0.0061,"comb"],
+    ["Atención GNN espacial",0.0077,-0.0069,0.0218,"attn"]
+  ];
+  const W=720,rowH=38,padT=40,padB=40,padL=228,padR=54;
+  const H=padT+data.length*rowH+padB;
+  const x0=-0.05,x1=0.06;
+  const sx=v=>padL+(v-x0)/(x1-x0)*(W-padL-padR);
+  const s=svg(W,H);
+
+  for(let t=-0.04;t<=0.0601;t+=0.02){
+    const v=Math.round(t*1000)/1000;
+    s.appendChild(el("line",{x1:sx(v),y1:padT-12,x2:sx(v),y2:padT+data.length*rowH,stroke:css("--grid"),"stroke-width":1}));
+    txt(s,sx(v),H-padB+18,(v>0?"+":"")+v.toFixed(2),{fill:css("--ink-3"),"font-size":11,"text-anchor":"middle"});
+  }
+  // línea cero
+  s.appendChild(el("line",{x1:sx(0),y1:padT-16,x2:sx(0),y2:padT+data.length*rowH+4,stroke:css("--ink-2"),"stroke-width":1.5}));
+  txt(s,sx(0),padT-22,"sin efecto",{fill:css("--ink-2"),"font-size":10,"text-anchor":"middle"});
+  txt(s,W-padR,H-padB+18,"Δ AUC",{fill:css("--ink-3"),"font-size":10.5,"text-anchor":"end"});
+
+  data.forEach((d,i)=>{
+    const y=padT+i*rowH+rowH/2;
+    const pos=d[1]>0, c=pos?css("--s1"):css("--bad");
+    const sig=d[2]>0&&d[3]>0;
+    // barra de IC
+    const bar=el("line",{x1:sx(d[2]),y1:y,x2:sx(d[3]),y2:y,stroke:c,"stroke-width":2.5,"stroke-linecap":"round",opacity:sig?1:.5});
+    s.appendChild(bar);
+    // topes
+    [d[2],d[3]].forEach(v=>s.appendChild(el("line",{x1:sx(v),y1:y-5,x2:sx(v),y2:y+5,stroke:c,"stroke-width":2,opacity:sig?1:.5})));
+    // punto
+    const dot=el("circle",{cx:sx(d[1]),cy:y,r:5.5,fill:c,stroke:css("--chart-bg"),"stroke-width":2});
+    s.appendChild(dot);
+    hover(dot,`<b>${d[0]}</b><br>Δ AUC &nbsp;${d[1]>0?"+":""}${d[1].toFixed(4)}<br>IC 95 % [${d[2]>0?"+":""}${d[2].toFixed(4)}, ${d[3]>0?"+":""}${d[3].toFixed(4)}]<br>${sig?"significativo":"cruza el cero"}`);
+    hover(bar,`<b>${d[0]}</b><br>IC 95 % [${d[2].toFixed(4)}, ${d[3].toFixed(4)}]`);
+    txt(s,padL-16,y+4,d[0],{fill:sig?css("--ink"):css("--ink-2"),"font-size":11.5,"text-anchor":"end","font-weight":sig?600:400});
+    const lbl=txt(s,W-padR+4,y+4,(d[1]>0?"+":"")+d[1].toFixed(4),{fill:c,"font-size":11,"text-anchor":"start","font-weight":sig?600:400});
+    lbl.setAttribute("opacity",sig?1:.75);
+  });
+  // separadores de familia: los tres escalones donde se puede intervenir
+  [[3,"QUÉ MODELOS ENTRAN","CÓMO SE COMBINAN"],[7,null,"CÓMO SE AGREGAN LOS PARCHES"]].forEach(([row,above,below])=>{
+    const ySep=padT+row*rowH;
+    s.appendChild(el("line",{x1:14,y1:ySep,x2:W-14,y2:ySep,stroke:css("--rule-strong"),"stroke-width":1,"stroke-dasharray":"3 4"}));
+    if(above) txt(s,14,ySep-9,above,{fill:css("--eosin"),"font-size":9.5,"letter-spacing":"0.1em"});
+    if(below) txt(s,14,ySep+18,below,{fill:css("--ink-3"),"font-size":9.5,"letter-spacing":"0.1em"});
+  });
+  host.appendChild(s);
+}
+
+/* ── 7. control negativo: grafo real vs. barajado ─────────────────── */
+function chartShuffle(host){
+  const W=680,padT=44,padB=52,padL=176,padR=96,rowH=44;
+  const data=[
+    ["GNN, grafo real",0.7711,true],
+    ["GNN, grafo barajado",0.7592,false]
+  ];
+  const H=padT+data.length*rowH+padB+34;
+  const x0=0.752,x1=0.782;
+  const sx=v=>padL+(v-x0)/(x1-x0)*(W-padL-padR);
+  const s=svg(W,H);
+
+  for(let t=0.755;t<=0.7801;t+=0.005){
+    const v=Math.round(t*1000)/1000;
+    s.appendChild(el("line",{x1:sx(v),y1:padT-14,x2:sx(v),y2:padT+data.length*rowH,stroke:css("--grid"),"stroke-width":1}));
+    txt(s,sx(v),padT+data.length*rowH+18,v.toFixed(3),{fill:css("--ink-3"),"font-size":11,"text-anchor":"middle"});
+  }
+  txt(s,padL,padT-24,"AUC de test",{fill:css("--ink-3"),"font-size":10.5,"letter-spacing":"0.07em"});
+
+  data.forEach((d,i)=>{
+    const [name,v,real]=d;
+    const y=padT+i*rowH+rowH/2, bh=18;
+    const c=real?css("--s1"):css("--ink-3");
+    const r=el("rect",{x:padL,y:y-bh/2,width:Math.max(2,sx(v)-padL),height:bh,rx:4,fill:c,opacity:real?1:.55});
+    hover(r,`<b>${name}</b><br>AUC ${v.toFixed(4)}`);
+    s.appendChild(r);
+    txt(s,padL-14,y+4,name,{fill:real?css("--ink"):css("--ink-2"),"font-size":11.5,"text-anchor":"end","font-weight":real?600:400});
+    txt(s,sx(v)+9,y+4,v.toFixed(4),{fill:c,"font-size":11.5,"font-weight":real?600:400});
+  });
+
+  // el delta y su intervalo, sobre el eje
+  const yD=padT+data.length*rowH+40;
+  txt(s,padL-14,yD+4,"Δ pareado",{fill:css("--ink-3"),"font-size":10.5,"text-anchor":"end"});
+  const box=el("rect",{x:padL,y:yD-9,width:sx(0.782)-sx(0.7796),height:18,rx:3,fill:css("--s1"),opacity:.18});
+  s.appendChild(box);
+  txt(s,padL+6,yD+4,"+0.0119   IC 95 % [+0.0004, +0.0238]   26/8/16",{fill:css("--ink"),"font-size":11,"font-weight":600});
+  s.appendChild(el("line",{x1:padL,y1:padT+data.length*rowH,x2:W-padR,y2:padT+data.length*rowH,stroke:css("--axis"),"stroke-width":1}));
+  host.appendChild(s);
+}
+
+/* ── 3. brecha in-sample → test, por modelo y del metaclasificador ── */
+function chartLeak(host){
+  // ordenados por AUC de test (descendente): el único orden que importa
+  const data=[
+    ["LogReg (meta)",0.9495,0.7986,true],
+    ["conch_v1_5",0.9493,0.7902,false],
+    ["virchow2",0.9163,0.7771,false],
+    ["uni_v1",0.9432,0.7732,false],
+    ["phikon_v2",0.9580,0.7685,false],
+    ["uni_v2",0.8686,0.7634,false],
+    ["ctranspath",0.8489,0.7571,false],
+    ["virchow_v1",0.7972,0.6823,false]
+  ];
+  const W=700,rowH=34,padT=42,padB=42,padL=142,padR=76;
+  const H=padT+data.length*rowH+padB;
+  const x0=0.66,x1=0.97;
+  const sx=v=>padL+(v-x0)/(x1-x0)*(W-padL-padR);
+  const s=svg(W,H);
+
+  for(let t=0.70;t<=0.9501;t+=0.05){
+    const v=Math.round(t*100)/100;
+    s.appendChild(el("line",{x1:sx(v),y1:padT-14,x2:sx(v),y2:padT+data.length*rowH,stroke:css("--grid"),"stroke-width":1}));
+    txt(s,sx(v),H-padB+18,v.toFixed(2),{fill:css("--ink-3"),"font-size":11,"text-anchor":"middle"});
+  }
+  txt(s,padL,padT-24,"AUC",{fill:css("--ink-3"),"font-size":10.5,"letter-spacing":"0.07em"});
+  txt(s,W-padR+8,padT-24,"brecha",{fill:css("--ink-3"),"font-size":10.5,"letter-spacing":"0.07em"});
+
+  data.forEach((d,i)=>{
+    const [name,ins,tst,isMeta]=d;
+    const y=padT+i*rowH+rowH/2;
+    // línea que une las dos superficies: su longitud ES la brecha
+    s.appendChild(el("line",{x1:sx(tst),y1:y,x2:sx(ins),y2:y,stroke:css("--rule-strong"),"stroke-width":2.5,"stroke-linecap":"round"}));
+    const pi=el("circle",{cx:sx(ins),cy:y,r:5,fill:css("--bad"),stroke:css("--chart-bg"),"stroke-width":2});
+    const pt=el("circle",{cx:sx(tst),cy:y,r:5,fill:css("--s1"),stroke:css("--chart-bg"),"stroke-width":2});
+    const info=`<b>${name}</b><br>in-sample ${ins.toFixed(4)}<br>test &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${tst.toFixed(4)}<br>brecha &nbsp;&nbsp;+${(ins-tst).toFixed(4)}`;
+    hover(pi,info); hover(pt,info);
+    s.appendChild(pi); s.appendChild(pt);
+    txt(s,padL-16,y+4,name,{fill:isMeta?css("--accent"):css("--ink-2"),"font-size":11.5,"text-anchor":"end","font-weight":isMeta?600:400});
+    txt(s,W-padR+8,y+4,"+"+(ins-tst).toFixed(4),{fill:css("--ink-3"),"font-size":11});
+  });
+
+  // separador: el metaclasificador frente a sus entradas
+  const ySep=padT+rowH;
+  s.appendChild(el("line",{x1:14,y1:ySep,x2:W-14,y2:ySep,stroke:css("--rule-strong"),"stroke-width":1,"stroke-dasharray":"3 4"}));
+  s.appendChild(el("line",{x1:padL,y1:padT+data.length*rowH,x2:W-padR,y2:padT+data.length*rowH,stroke:css("--axis"),"stroke-width":1}));
+  host.appendChild(s);
+}
+
+/* ── 4. rendimiento por tamaño k ──────────────────────────────────── */
+function chartSize(host){
+  const best=[0.7902,0.8009,0.8040,0.8054,0.8055,0.8057,0.8054,0.7988];
+  const mean=[0.7571,0.7759,0.7833,0.7883,0.7920,0.7949,0.7970,0.7988];
+  const W=680,padT=40,padB=54,padL=58,padR=74,H=330;
+  const y0=0.75,y1=0.812;
+  const sx=k=>padL+(k-1)/7*(W-padL-padR);
+  const sy=v=>padT+(y1-v)/(y1-y0)*(H-padT-padB);
+  const s=svg(W,H);
+
+  for(let t=0.75;t<=0.8101;t+=0.01){
+    const v=Math.round(t*1000)/1000;
+    s.appendChild(el("line",{x1:padL,y1:sy(v),x2:W-padR,y2:sy(v),stroke:css("--grid"),"stroke-width":1}));
+    txt(s,padL-12,sy(v)+4,v.toFixed(2),{fill:css("--ink-3"),"font-size":11,"text-anchor":"end"});
+  }
+  for(let k=1;k<=8;k++) txt(s,sx(k),H-padB+20,k,{fill:css("--ink-3"),"font-size":11,"text-anchor":"middle"});
+  txt(s,(padL+W-padR)/2,H-padB+40,"número de modelos base",{fill:css("--ink-3"),"font-size":10.5,"text-anchor":"middle"});
+  txt(s,padL-12,padT-14,"AUC",{fill:css("--ink-3"),"font-size":10.5,"text-anchor":"end"});
+
+  [[best,css("--s1"),"Mejor"],[mean,css("--s2"),"Media"]].forEach(([arr,c,name])=>{
+    const d=arr.map((v,i)=>`${i?"L":"M"} ${sx(i+1)} ${sy(v)}`).join(" ");
+    s.appendChild(el("path",{d:d,fill:"none",stroke:c,"stroke-width":2,"stroke-linejoin":"round"}));
+    arr.forEach((v,i)=>{
+      const p=el("circle",{cx:sx(i+1),cy:sy(v),r:4.5,fill:c,stroke:css("--chart-bg"),"stroke-width":2});
+      hover(p,`<b>${name} · k = ${i+1}</b><br>AUC ${v.toFixed(4)}`);
+      s.appendChild(p);
+    });
+    txt(s,sx(8)+12,sy(arr[7])+4,name,{fill:c,"font-size":11.5,"font-weight":600});
+  });
+
+  // marca de saturación
+  s.appendChild(el("line",{x1:sx(3),y1:padT-4,x2:sx(3),y2:H-padB,stroke:css("--eosin"),"stroke-width":1.5,"stroke-dasharray":"4 3"}));
+  txt(s,sx(3)+7,padT+10,"satura aquí",{fill:css("--eosin"),"font-size":10.5});
+  s.appendChild(el("line",{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:css("--axis"),"stroke-width":1}));
+  host.appendChild(s);
+}
+
+/* ── 5. scatter val vs test ───────────────────────────────────────── */
+const SCAT=[[6,0.8535,0.8057],[6,0.8503,0.8056],[5,0.8511,0.8055],[4,0.8538,0.8054],[7,0.8499,0.8054],[4,0.8521,0.8051],[5,0.8526,0.8051],[5,0.8534,0.8051],[5,0.8515,0.8049],[6,0.8515,0.8046],[4,0.8489,0.8043],[6,0.8504,0.8043],[5,0.8517,0.8043],[4,0.8519,0.804],[3,0.851,0.804],[5,0.8514,0.8039],[3,0.8617,0.8038],[6,0.8512,0.8036],[5,0.8534,0.8036],[5,0.8509,0.8036],[4,0.8538,0.8036],[5,0.8507,0.8035],[4,0.8516,0.8035],[3,0.8647,0.8034],[4,0.8643,0.8033],[4,0.8502,0.8033],[4,0.8498,0.8032],[5,0.8637,0.8032],[5,0.8514,0.8031],[5,0.851,0.8031],[5,0.8498,0.8031],[3,0.8511,0.803],[4,0.8506,0.8029],[4,0.8659,0.8029],[3,0.8504,0.8028],[6,0.8523,0.8026],[4,0.8617,0.8024],[4,0.8507,0.802],[4,0.8498,0.8018],[3,0.8504,0.8015],[4,0.851,0.8014],[3,0.8474,0.8014],[4,0.8501,0.8013],[5,0.8506,0.8012],[5,0.8495,0.8012],[3,0.85,0.8011],[2,0.8421,0.8009],[4,0.8469,0.8008],[3,0.8422,0.8008],[3,0.8576,0.8008],[4,0.8476,0.8006],[4,0.8496,0.8005],[2,0.86,0.7999],[3,0.8449,0.7996],[3,0.8467,0.7991],[7,0.8548,0.7989],[2,0.8481,0.7988],[8,0.8549,0.7988],[3,0.8681,0.7986],[4,0.8655,0.7986],[6,0.8548,0.7986],[7,0.8551,0.7981],[6,0.8563,0.798],[6,0.8539,0.7978],[7,0.8563,0.7978],[7,0.8542,0.7977],[6,0.8534,0.7977],[6,0.8568,0.7975],[5,0.8569,0.7975],[6,0.8547,0.7975],[7,0.854,0.7975],[2,0.8632,0.7974],[6,0.8544,0.7971],[5,0.8536,0.7969],[5,0.8544,0.7969],[3,0.8614,0.7969],[6,0.8575,0.7965],[5,0.8565,0.7964],[3,0.8609,0.7964],[6,0.8543,0.7961],[5,0.8567,0.7961],[2,0.8623,0.796],[5,0.8535,0.796],[4,0.8561,0.796],[4,0.8531,0.7959],[5,0.8535,0.7959],[5,0.86,0.7958],[6,0.8526,0.7957],[6,0.86,0.7953],[5,0.8528,0.7953],[6,0.856,0.7946],[6,0.8542,0.7946],[7,0.8534,0.7946],[4,0.857,0.7942],[5,0.8501,0.7941],[5,0.8575,0.7941],[4,0.8502,0.7941],[5,0.8563,0.794],[5,0.8497,0.7939],[4,0.86,0.7936],[4,0.8509,0.7935],[6,0.8513,0.7933],[5,0.8509,0.7932],[6,0.8559,0.7932],[5,0.8586,0.7929],[4,0.8513,0.7927],[4,0.851,0.7927],[5,0.8521,0.7925],[5,0.8547,0.7923],[4,0.8495,0.7923],[5,0.8513,0.7922],[5,0.8514,0.7921],[4,0.8485,0.7916],[3,0.8474,0.7915],[4,0.8504,0.7914],[2,0.8551,0.7912],[3,0.8539,0.7911],[5,0.8282,0.7909],[3,0.8465,0.7909],[4,0.8539,0.7903],[1,0.8536,0.7902],[6,0.8277,0.7902],[4,0.8284,0.7901],[5,0.8299,0.7899],[5,0.8269,0.7897],[4,0.8309,0.7896],[4,0.8275,0.7884],[3,0.8277,0.7884],[5,0.853,0.7881],[4,0.8544,0.7878],[3,0.8245,0.7876],[4,0.8247,0.7875],[4,0.8537,0.7874],[4,0.827,0.7873],[5,0.8273,0.787],[3,0.822,0.787],[5,0.8243,0.787],[3,0.8553,0.7866],[4,0.8496,0.7865],[4,0.8237,0.7865],[2,0.8167,0.7864],[3,0.8498,0.7864],[4,0.8215,0.7863],[7,0.8387,0.7858],[3,0.8207,0.7855],[4,0.8191,0.7853],[5,0.8357,0.785],[6,0.8388,0.7847],[4,0.8354,0.7847],[3,0.8402,0.7845],[6,0.839,0.7845],[4,0.8218,0.7844],[3,0.8227,0.7842],[3,0.817,0.7842],[6,0.8399,0.784],[3,0.8303,0.7837],[5,0.8386,0.7837],[4,0.8294,0.7836],[5,0.8396,0.7835],[3,0.8197,0.7833],[6,0.8374,0.7831],[2,0.8195,0.7831],[5,0.8394,0.783],[6,0.8412,0.7829],[3,0.8342,0.7828],[2,0.8346,0.7827],[4,0.8404,0.7826],[2,0.8369,0.7824],[3,0.8485,0.7822],[5,0.8429,0.782],[5,0.8378,0.7819],[3,0.8223,0.7818],[2,0.823,0.7817],[4,0.8335,0.7815],[4,0.8397,0.7813],[4,0.8404,0.7812],[2,0.85,0.7812],[5,0.8391,0.7811],[5,0.8354,0.781],[4,0.8345,0.7807],[4,0.843,0.7804],[5,0.8368,0.7803],[5,0.8425,0.7803],[4,0.8347,0.7797],[3,0.8349,0.7795],[3,0.8352,0.7795],[4,0.8372,0.7793],[4,0.8369,0.779],[3,0.8397,0.7789],[3,0.8332,0.7784],[6,0.8345,0.7774],[5,0.8337,0.7771],[1,0.8245,0.7771],[4,0.8344,0.7767],[5,0.8335,0.7767],[3,0.8277,0.7763],[4,0.8393,0.7762],[5,0.8395,0.7759],[4,0.8286,0.7759],[2,0.8213,0.7757],[3,0.8364,0.7753],[4,0.8277,0.7752],[5,0.8287,0.7752],[3,0.8188,0.7751],[3,0.8211,0.7748],[3,0.8289,0.7747],[4,0.8356,0.7743],[4,0.8205,0.7742],[4,0.8283,0.7741],[2,0.8186,0.774],[3,0.8132,0.7736],[2,0.811,0.7735],[2,0.8111,0.7734],[2,0.8207,0.7733],[1,0.8011,0.7732],[3,0.8194,0.7727],[3,0.8357,0.7723],[4,0.8421,0.7722],[4,0.837,0.7719],[2,0.8283,0.7712],[5,0.8417,0.7708],[3,0.8353,0.7706],[3,0.8278,0.7705],[2,0.7988,0.7705],[3,0.8108,0.7704],[3,0.839,0.7702],[4,0.8353,0.7693],[2,0.8049,0.7692],[4,0.8397,0.7688],[5,0.8292,0.7687],[4,0.8296,0.7686],[1,0.8093,0.7685],[3,0.8284,0.7665],[3,0.8205,0.766],[4,0.8289,0.766],[3,0.8297,0.7654],[2,0.8224,0.7653],[2,0.8303,0.765],[2,0.8417,0.765],[4,0.8203,0.7645],[1,0.8369,0.7634],[3,0.8215,0.7632],[3,0.8319,0.7628],[3,0.839,0.7616],[4,0.832,0.7608],[2,0.8313,0.7598],[2,0.8193,0.759],[1,0.8117,0.7571],[3,0.8174,0.7567],[2,0.8234,0.7566],[3,0.8233,0.754],[2,0.8014,0.7458],[2,0.8011,0.7455],[1,0.7998,0.745],[1,0.7319,0.6823]];
+// rampa secuencial azul (k es magnitud ordenada, no identidad)
+const RAMP_L=["#cde2fb","#9ec5f4","#6da7ec","#3987e5","#2a78d6","#256abf","#184f95","#0d366b"];
+const RAMP_D=["#0d366b","#184f95","#256abf","#2a78d6","#3987e5","#6da7ec","#9ec5f4","#cde2fb"];
+function isDark(){
+  const t=document.documentElement.getAttribute("data-theme");
+  if(t==="dark")return true; if(t==="light")return false;
+  return matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function chartScatter(host,legendHost){
+  const ramp=isDark()?RAMP_D:RAMP_L;
+  const W=680,padT=30,padB=54,padL=60,padR=28,H=430;
+  const x0=0.725,x1=0.875,y0=0.675,y1=0.812;
+  const sx=v=>padL+(v-x0)/(x1-x0)*(W-padL-padR);
+  const sy=v=>padT+(y1-v)/(y1-y0)*(H-padT-padB);
+  const s=svg(W,H);
+
+  for(let t=0.74;t<=0.8701;t+=0.02){
+    const v=Math.round(t*100)/100;
+    s.appendChild(el("line",{x1:sx(v),y1:padT,x2:sx(v),y2:H-padB,stroke:css("--grid"),"stroke-width":1}));
+    txt(s,sx(v),H-padB+19,v.toFixed(2),{fill:css("--ink-3"),"font-size":11,"text-anchor":"middle"});
+  }
+  for(let t=0.68;t<=0.8101;t+=0.02){
+    const v=Math.round(t*100)/100;
+    s.appendChild(el("line",{x1:padL,y1:sy(v),x2:W-padR,y2:sy(v),stroke:css("--grid"),"stroke-width":1}));
+    txt(s,padL-12,sy(v)+4,v.toFixed(2),{fill:css("--ink-3"),"font-size":11,"text-anchor":"end"});
+  }
+  txt(s,(padL+W-padR)/2,H-padB+40,"AUC de validación  →  (por aquí se elige)",{fill:css("--ink-3"),"font-size":10.5,"text-anchor":"middle"});
+  txt(s,padL-12,padT-10,"AUC test",{fill:css("--ink-3"),"font-size":10.5,"text-anchor":"end"});
+
+  SCAT.forEach(d=>{
+    const c=el("circle",{cx:sx(d[1]),cy:sy(d[2]),r:3.6,fill:ramp[d[0]-1],opacity:.8,stroke:css("--chart-bg"),"stroke-width":1});
+    hover(c,`<b>${d[0]} modelo${d[0]>1?"s":""}</b><br>val &nbsp;${d[1].toFixed(4)}<br>test ${d[2].toFixed(4)}`);
+    s.appendChild(c);
+  });
+
+  // el elegido y el baseline
+  const mark=(vx,vy,lab,col)=>{
+    s.appendChild(el("circle",{cx:sx(vx),cy:sy(vy),r:7.5,fill:"none",stroke:col,"stroke-width":2}));
+    txt(s,sx(vx)+12,sy(vy)+4,lab,{fill:col,"font-size":11,"font-weight":600});
+  };
+  mark(0.8500,0.8011,"elegido por LOFO",css("--eosin"));
+  mark(0.8390,0.7616,"trío histórico",css("--ink-2"));
+
+  s.appendChild(el("line",{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:css("--axis"),"stroke-width":1}));
+  s.appendChild(el("line",{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:css("--axis"),"stroke-width":1}));
+  host.appendChild(s);
+
+  legendHost.innerHTML="";
+  const cap=document.createElement("span");
+  cap.textContent="nº de modelos:";
+  cap.style.color="var(--ink-3)";
+  legendHost.appendChild(cap);
+  for(let k=1;k<=8;k++){
+    const sp=document.createElement("span");
+    const i=document.createElement("i");
+    i.style.background=ramp[k-1];
+    sp.appendChild(i);
+    sp.appendChild(document.createTextNode(k));
+    legendHost.appendChild(sp);
+  }
+}
+
+/* ── 6. las cuatro métricas ───────────────────────────────────────── */
+function chartMetrics(host){
+  const data=[
+    ["macro-OvR AUC",0.7616,0.7986,0.0370,0.0230,0.0514,0.0209],
+    ["bacc",0.6702,0.7302,0.0600,0.0363,0.0838,0.0345],
+    ["macro-F1",0.6687,0.7294,0.0608,0.0362,0.0857,0.0365],
+    ["kappa ponderada",0.3502,0.4629,0.1127,0.0657,0.1601,0.0680]
+  ];
+  const W=700,rowH=54,padT=44,padB=40,padL=134,padR=112;
+  const H=padT+data.length*rowH+padB;
+  const x0=0,x1=0.175;
+  const sx=v=>padL+(v-x0)/(x1-x0)*(W-padL-padR);
+  const s=svg(W,H);
+
+  for(let t=0;t<=0.1751;t+=0.05){
+    const v=Math.round(t*1000)/1000;
+    s.appendChild(el("line",{x1:sx(v),y1:padT-14,x2:sx(v),y2:padT+data.length*rowH,stroke:css("--grid"),"stroke-width":1}));
+    txt(s,sx(v),H-padB+18,"+"+v.toFixed(2),{fill:css("--ink-3"),"font-size":11,"text-anchor":"middle"});
+  }
+  txt(s,padL,padT-26,"Δ pareado (trío ganador − trío histórico)",{fill:css("--ink-3"),"font-size":10.5});
+
+  data.forEach((d,i)=>{
+    const y=padT+i*rowH+rowH/2-6;
+    // MDE como zona sombreada
+    s.appendChild(el("rect",{x:sx(0),y:y-13,width:sx(d[6])-sx(0),height:26,fill:css("--ink-3"),opacity:.11}));
+    // IC
+    s.appendChild(el("line",{x1:sx(d[4]),y1:y,x2:sx(d[5]),y2:y,stroke:css("--s1"),"stroke-width":2.5,"stroke-linecap":"round"}));
+    [d[4],d[5]].forEach(v=>s.appendChild(el("line",{x1:sx(v),y1:y-5,x2:sx(v),y2:y+5,stroke:css("--s1"),"stroke-width":2})));
+    const dot=el("circle",{cx:sx(d[3]),cy:y,r:5.5,fill:css("--s1"),stroke:css("--chart-bg"),"stroke-width":2});
+    hover(dot,`<b>${d[0]}</b><br>${d[1].toFixed(4)} → ${d[2].toFixed(4)}<br>Δ +${d[3].toFixed(4)}<br>IC 95 % [+${d[4].toFixed(4)}, +${d[5].toFixed(4)}]<br>MDE 80 % &nbsp;${d[6].toFixed(4)}`);
+    s.appendChild(dot);
+    txt(s,padL-16,y-1,d[0],{fill:css("--ink"),"font-size":11.5,"text-anchor":"end","font-weight":600});
+    txt(s,padL-16,y+13,`${d[1].toFixed(3)} → ${d[2].toFixed(3)}`,{fill:css("--ink-3"),"font-size":10.5,"text-anchor":"end"});
+    txt(s,W-padR+8,y+4,"+"+d[3].toFixed(4),{fill:css("--s1"),"font-size":11.5,"font-weight":600});
+    txt(s,sx(d[6])+5,y+22,"MDE",{fill:css("--ink-3"),"font-size":9.5});
+  });
+  s.appendChild(el("line",{x1:sx(0),y1:padT-18,x2:sx(0),y2:padT+data.length*rowH,stroke:css("--ink-2"),"stroke-width":1.5}));
+  host.appendChild(s);
+}
+
+/* ── 8. barrido de bag_size contra el suelo de reproducibilidad ───── */
+function chartBag(host){
+  const data=[
+    ["bag 256",0.0014,-0.0115,0.0139,"25/5/20"],
+    ["bag 512",0.0027,-0.0091,0.0144,"25/6/19"],
+    ["bag 1024",0.0077,-0.0043,0.0201,"22/5/23"]
+  ];
+  const FLOOR=0.0040;   // Δ medido al reentrenar la MISMA configuración (§6.4)
+  const W=700,rowH=44,padT=58,padB=46,padL=118,padR=84;
+  const H=padT+data.length*rowH+padB;
+  const x0=-0.016,x1=0.024;
+  const sx=v=>padL+(v-x0)/(x1-x0)*(W-padL-padR);
+  const s=svg(W,H);
+
+  // banda del suelo de reproducibilidad: ±0.0040 alrededor del cero
+  const band=el("rect",{x:sx(-FLOOR),y:padT-16,width:sx(FLOOR)-sx(-FLOOR),
+                        height:data.length*rowH+16,fill:css("--ink-3"),opacity:.13});
+  s.appendChild(band);
+  hover(band,"<b>Suelo de reproducibilidad</b><br>±0.0040 — la diferencia que produce<br>reentrenar la misma configuración");
+
+  for(let t=-0.01;t<=0.0201;t+=0.01){
+    const v=Math.round(t*1000)/1000;
+    s.appendChild(el("line",{x1:sx(v),y1:padT-16,x2:sx(v),y2:padT+data.length*rowH,stroke:css("--grid"),"stroke-width":1}));
+    txt(s,sx(v),H-padB+18,(v>0?"+":"")+v.toFixed(2),{fill:css("--ink-3"),"font-size":11,"text-anchor":"middle"});
+  }
+  s.appendChild(el("line",{x1:sx(0),y1:padT-20,x2:sx(0),y2:padT+data.length*rowH+4,stroke:css("--ink-2"),"stroke-width":1.5}));
+  txt(s,sx(0),padT-42,"sin efecto",{fill:css("--ink-2"),"font-size":10,"text-anchor":"middle"});
+  txt(s,sx(FLOOR)+8,padT-42,"← ruido de reentrenar →",{fill:css("--ink-3"),"font-size":10});
+  txt(s,W-padR,H-padB+18,"Δ AUC",{fill:css("--ink-3"),"font-size":10.5,"text-anchor":"end"});
+
+  data.forEach((d,i)=>{
+    const [name,m,lo,hi,wtl]=d;
+    const y=padT+i*rowH+rowH/2;
+    const c=css("--s1");
+    const bar=el("line",{x1:sx(lo),y1:y,x2:sx(hi),y2:y,stroke:c,"stroke-width":2.5,"stroke-linecap":"round",opacity:.55});
+    s.appendChild(bar);
+    [lo,hi].forEach(v=>s.appendChild(el("line",{x1:sx(v),y1:y-5,x2:sx(v),y2:y+5,stroke:c,"stroke-width":2,opacity:.55})));
+    const dot=el("circle",{cx:sx(m),cy:y,r:5.5,fill:c,stroke:css("--chart-bg"),"stroke-width":2});
+    hover(dot,`<b>${name}</b><br>Δ AUC &nbsp;+${m.toFixed(4)}<br>IC 95 % [${lo>0?"+":""}${lo.toFixed(4)}, +${hi.toFixed(4)}]<br>G/E/P ${wtl}<br>cruza el cero`);
+    s.appendChild(dot);
+    txt(s,padL-16,y+4,name,{fill:css("--ink-2"),"font-size":11.5,"text-anchor":"end"});
+    txt(s,W-padR+8,y+4,"+"+m.toFixed(4),{fill:css("--ink-3"),"font-size":11});
+  });
+  s.appendChild(el("line",{x1:padL,y1:padT+data.length*rowH,x2:W-padR,y2:padT+data.length*rowH,stroke:css("--axis"),"stroke-width":1}));
+  host.appendChild(s);
+}
+
+/* ── render ───────────────────────────────────────────────────────── */
+function renderAll(){
+  const targets=["c-models","c-forest","c-leak","c-size","c-scatter","c-metrics","c-shuffle","c-bag"];
+  targets.forEach(id=>{const n=document.getElementById(id); if(n)n.innerHTML="";});
+  chartModels(document.getElementById("c-models"));
+  chartForest(document.getElementById("c-forest"));
+  chartLeak(document.getElementById("c-leak"));
+  chartSize(document.getElementById("c-size"));
+  chartScatter(document.getElementById("c-scatter"),document.getElementById("l-scatter"));
+  chartMetrics(document.getElementById("c-metrics"));
+  chartShuffle(document.getElementById("c-shuffle"));
+  chartBag(document.getElementById("c-bag"));
+}
+renderAll();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",renderAll);
+new MutationObserver(renderAll).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+/* ── raíl activo ──────────────────────────────────────────────────── */
+const links=[...document.querySelectorAll("nav.rail a")];
+const secs=links.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);
+if(secs.length){
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.toggle("on",l.getAttribute("href")==="#"+e.target.id));
+      }
+    });
+  },{rootMargin:"-15% 0px -75% 0px"});
+  secs.forEach(s=>io.observe(s));
+}
+})();
+</script>
+</body>
+</html>

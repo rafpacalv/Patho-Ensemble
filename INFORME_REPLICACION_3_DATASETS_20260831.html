@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replicación en Tres Datasets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ── Tokens: tema claro completo en :root ─────────────────────────── */
+:root{
+  --ground:      #fbfafc;
+  --surface:     #ffffff;
+  --surface-alt: #f4f1f7;
+  --ink:         #1a1520;
+  --ink-soft:    #4a4256;
+  --ink-mute:    #756c82;
+  --rule:        #e2dce8;
+  --rule-strong: #cdc3d6;
+
+  /* Hematoxilina / eosina — la paleta viene de la tinción H&E */
+  --accent:      #5b3f7a;
+  --accent-soft: #ede6f4;
+  --accent-ink:  #4a3266;
+
+  --neg:         #a8455e;   /* deltas negativos, regresiones */
+  --neg-soft:    #fbeaee;
+  --pos:         #2c6b62;   /* empates favorables, recuperación */
+  --pos-soft:    #e4f1ee;
+  --warn:        #8a6414;
+  --warn-soft:   #f8f0dc;
+
+  --shadow: 0 1px 2px rgba(26,21,32,.05), 0 8px 24px -12px rgba(26,21,32,.12);
+
+  --measure: 68ch;
+  --fs-step: 1.2;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:      #131019;
+    --surface:     #1b1723;
+    --surface-alt: #221d2c;
+    --ink:         #eee9f2;
+    --ink-soft:    #b8b0c4;
+    --ink-mute:    #8b8299;
+    --rule:        #322b3d;
+    --rule-strong: #453d53;
+
+    --accent:      #b79ad6;
+    --accent-soft: #2a2137;
+    --accent-ink:  #cbb4e4;
+
+    --neg:         #e08599;
+    --neg-soft:    #33202a;
+    --pos:         #77bfb2;
+    --pos-soft:    #1c2e2c;
+    --warn:        #d6ab55;
+    --warn-soft:   #2e2718;
+
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+
+:root[data-theme="dark"]{
+  --ground:      #131019;
+  --surface:     #1b1723;
+  --surface-alt: #221d2c;
+  --ink:         #eee9f2;
+  --ink-soft:    #b8b0c4;
+  --ink-mute:    #8b8299;
+  --rule:        #322b3d;
+  --rule-strong: #453d53;
+
+  --accent:      #b79ad6;
+  --accent-soft: #2a2137;
+  --accent-ink:  #cbb4e4;
+
+  --neg:         #e08599;
+  --neg-soft:    #33202a;
+  --pos:         #77bfb2;
+  --pos-soft:    #1c2e2c;
+  --warn:        #d6ab55;
+  --warn-soft:   #2e2718;
+
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+  background: var(--ground);
+  color: var(--ink);
+  font-family:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 clamp(1rem,4vw,3rem) 6rem;
+}
+
+/* prosa estrecha, tablas anchas */
+.col{ max-width:var(--measure); }
+
+/* ── Tipografía ───────────────────────────────────────────────────── */
+h1,h2,h3,h4{
+  font-family:Newsreader,"Iowan Old Style",Georgia,serif;
+  font-weight:500;
+  text-wrap:balance;
+  line-height:1.14;
+  margin:0;
+}
+h1{ font-size:clamp(2.4rem,5.4vw,3.9rem); letter-spacing:-.018em; }
+h2{ font-size:clamp(1.65rem,3vw,2.25rem); letter-spacing:-.012em; }
+h3{ font-size:1.28rem; letter-spacing:-.006em; }
+h4{ font-size:1.06rem; font-weight:600; }
+
+p{ margin:0; }
+strong{ font-weight:600; color:var(--ink); }
+em{ font-style:italic; }
+
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.lede{
+  font-size:1.2rem;
+  line-height:1.55;
+  color:var(--ink-soft);
+}
+.note{
+  font-size:.9rem;
+  line-height:1.55;
+  color:var(--ink-mute);
+}
+code,.mono{
+  font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  font-variant-numeric:tabular-nums;
+}
+p code, li code, td code, th code{
+  font-size:.86em;
+  background:var(--surface-alt);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:.08em .34em;
+}
+
+/* ── Cabecera ─────────────────────────────────────────────────────── */
+header.masthead{
+  display:flex; flex-direction:column; gap:1.4rem;
+  padding:clamp(3rem,8vw,5.5rem) 0 2.5rem;
+  border-bottom:2px solid var(--ink);
+}
+.meta-row{
+  display:flex; flex-wrap:wrap; gap:.5rem 1.6rem;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.76rem;
+  color:var(--ink-mute);
+  font-variant-numeric:tabular-nums;
+}
+.meta-row span b{ color:var(--ink-soft); font-weight:500; }
+
+/* ── Secciones ────────────────────────────────────────────────────── */
+section{
+  display:flex; flex-direction:column; gap:1.35rem;
+  padding-top:clamp(3rem,6vw,4.5rem);
+}
+.sec-head{ display:flex; flex-direction:column; gap:.45rem; }
+
+/* ── Tiles de cifras clave ────────────────────────────────────────── */
+.tiles{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:1px;
+  background:var(--rule);
+  border:1px solid var(--rule);
+  border-radius:10px;
+  overflow:hidden;
+}
+.tile{
+  background:var(--surface);
+  padding:1.15rem 1.25rem 1.25rem;
+  display:flex; flex-direction:column; gap:.3rem;
+}
+.tile .k{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-mute);
+}
+.tile .v{
+  font-family:Newsreader,Georgia,serif;
+  font-size:2.1rem; font-weight:500;
+  font-variant-numeric:tabular-nums;
+  line-height:1.05;
+  color:var(--ink);
+}
+.tile .v.accent{ color:var(--accent); }
+.tile .v.neg{ color:var(--neg); }
+.tile .s{ font-size:.85rem; color:var(--ink-mute); line-height:1.45; }
+
+/* ── Tablas ───────────────────────────────────────────────────────── */
+.tscroll{
+  overflow-x:auto;
+  border:1px solid var(--rule);
+  border-radius:10px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:.88rem;
+  min-width:640px;
+}
+caption{
+  text-align:left;
+  padding:.95rem 1.1rem .7rem;
+  font-size:.8rem;
+  color:var(--ink-mute);
+  border-bottom:1px solid var(--rule);
+}
+caption b{ color:var(--ink-soft); font-weight:600; }
+th,td{
+  padding:.56rem .85rem;
+  text-align:left;
+  border-bottom:1px solid var(--rule);
+  vertical-align:baseline;
+}
+thead th{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem; font-weight:500;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-mute);
+  background:var(--surface-alt);
+  white-space:nowrap;
+  border-bottom:1px solid var(--rule-strong);
+}
+tbody tr:last-child td{ border-bottom:none; }
+td.num,th.num{
+  text-align:right;
+  font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+td.name{ white-space:nowrap; }
+td.name .mono{ font-size:.86rem; }
+tr.base{ background:var(--accent-soft); }
+tr.base td{ font-weight:600; }
+tr.best td.num.hl{ color:var(--pos); font-weight:600; }
+td.d-neg{ color:var(--neg); }
+td.d-pos{ color:var(--pos); }
+td.ci{ font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-mute); white-space:nowrap; }
+
+/* ── Chips de veredicto ───────────────────────────────────────────── */
+.chip{
+  display:inline-block;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.66rem; font-weight:500;
+  letter-spacing:.05em;
+  padding:.16rem .5rem;
+  border-radius:999px;
+  white-space:nowrap;
+  border:1px solid transparent;
+}
+.chip.tie{  background:var(--pos-soft);   color:var(--pos);    border-color:var(--pos); }
+.chip.bad{  background:var(--neg-soft);   color:var(--neg);    border-color:var(--neg); }
+.chip.warn{ background:var(--warn-soft);  color:var(--warn);   border-color:var(--warn); }
+.chip.flat{ background:var(--surface-alt);color:var(--ink-mute);border-color:var(--rule-strong); }
+.sig{ color:var(--neg); font-weight:600; }
+
+/* ── Bloque destacado ─────────────────────────────────────────────── */
+.callout{
+  border-left:3px solid var(--accent);
+  background:var(--surface);
+  border-top:1px solid var(--rule);
+  border-right:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  border-radius:0 10px 10px 0;
+  padding:1.25rem 1.4rem;
+  display:flex; flex-direction:column; gap:.7rem;
+}
+.callout.neg{ border-left-color:var(--neg); }
+.callout h4{ color:var(--accent-ink); }
+.callout.neg h4{ color:var(--neg); }
+
+/* ── Listas ───────────────────────────────────────────────────────── */
+ol.findings{
+  list-style:none;
+  counter-reset:f;
+  margin:0; padding:0;
+  display:flex; flex-direction:column; gap:1.15rem;
+}
+ol.findings > li{
+  counter-increment:f;
+  display:grid;
+  grid-template-columns:2.1rem 1fr;
+  gap:.9rem;
+  align-items:start;
+}
+ol.findings > li::before{
+  content:counter(f);
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem; font-weight:600;
+  color:var(--accent);
+  background:var(--accent-soft);
+  border-radius:6px;
+  height:1.85rem;
+  display:flex; align-items:center; justify-content:center;
+}
+ul.plain{
+  margin:0; padding:0; list-style:none;
+  display:flex; flex-direction:column; gap:.75rem;
+}
+ul.plain > li{
+  padding-left:1.05rem;
+  position:relative;
+}
+ul.plain > li::before{
+  content:"";
+  position:absolute; left:0; top:.66em;
+  width:5px; height:5px; border-radius:50%;
+  background:var(--rule-strong);
+}
+
+/* ── Código ───────────────────────────────────────────────────────── */
+pre{
+  margin:0;
+  background:var(--surface-alt);
+  border:1px solid var(--rule);
+  border-radius:8px;
+  padding:.95rem 1.1rem;
+  overflow-x:auto;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.8rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+pre .c{ color:var(--ink-mute); font-style:italic; }
+pre .f{ color:var(--accent); }
+
+/* ── Diagrama de espacios de features ─────────────────────────────── */
+.spaces{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;
+}
+.space{
+  border:1px solid var(--rule);
+  border-radius:10px;
+  background:var(--surface);
+  padding:1.1rem 1.2rem;
+  display:flex; flex-direction:column; gap:.6rem;
+}
+.space .tag{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent);
+}
+.space .dim{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.78rem;
+  color:var(--ink-mute);
+  font-variant-numeric:tabular-nums;
+}
+
+hr.rule{
+  border:none;
+  border-top:1px solid var(--rule);
+  margin:0;
+}
+
+footer{
+  padding-top:3.5rem;
+  border-top:2px solid var(--ink);
+  margin-top:4rem;
+  display:flex; flex-direction:column; gap:1rem;
+}
+
+a{ color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px; }
+a:focus-visible,
+button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Patho-Ensemble · Replicación</div>
+  <h1>Lo que cambia entre datasets</h1>
+  <p class="lede col">La campaña completa repetida sobre tres datasets nuevos con el trío óptimo
+    <span class="mono">ctranspath + uni_v2 + conch_v1_5</span>. Dos conclusiones del informe anterior
+    se invierten. La causa evidente —el tamaño del entrenamiento— se puso a prueba y resultó ser falsa.</p>
+  <div class="meta-row">
+    <span><b>Fecha</b> 31-ago-2026</span>
+    <span><b>Datasets</b> 4</span>
+    <span><b>Configuraciones</b> 14 por dataset</span>
+    <span><b>Jobs</b> 70495 · 70496 · 70497 · 70501 · 70614</span>
+    <span><b>GPU</b> 22 h 02</span>
+  </div>
+</header>
+
+<!-- ══════════ RESUMEN ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">Resumen</div>
+    <h2>Dos vuelcos y un cierre</h2>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="k">§8.1 · embeddings</div>
+      <div class="v accent">+0.0230</div>
+      <div class="s">AUC sobre probabilidades en <span class="mono">cptac_gbm</span>, significativo. En <span class="mono">cptac_brca</span> perdía −0.0160.</div>
+    </div>
+    <div class="tile">
+      <div class="k">Snapshots base</div>
+      <div class="v accent">5 / 5</div>
+      <div class="s">métricas significativas tras Holm en <span class="mono">cptac_gbm</span>. Antes: «nulo acotado».</div>
+    </div>
+    <div class="tile">
+      <div class="k">LogReg como combinador</div>
+      <div class="v">0 / 4</div>
+      <div class="s">datasets en que alguien lo bate en espacio de probabilidades. Se refuerza.</div>
+    </div>
+    <div class="tile">
+      <div class="k">La causa · hipótesis n</div>
+      <div class="v neg">falsada</div>
+      <div class="s">el Δ es positivo a los 7 tamaños de train probados, incluido n=40. No es el tamaño.</div>
+    </div>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Nota de revisión · 1 de septiembre</h4>
+    <p>La primera versión de este informe atribuía los dos vuelcos al <strong>tamaño del conjunto de
+      entrenamiento</strong>. Esa explicación se sometió a prueba directa (§03) y <strong>quedó
+      falsada</strong>: dentro de <code>cptac_gbm</code>, los embeddings ganan a <em>todos</em> los
+      tamaños de train, incluido n=40.</p>
+    <p><strong>Las mediciones no han cambiado; la interpretación sí.</strong> El signo depende del
+      dataset, no de <em>n</em>. §04 propone un candidato con evidencia.</p>
+  </div>
+</section>
+
+<!-- ══════════ DATASETS ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">01 · Conjuntos</div>
+    <h2>Los cuatro datasets</h2>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <caption>La variable que ordena el informe es <b>train/fold</b>, no el número de slides.</caption>
+      <thead><tr><th>Dataset / tarea</th><th class="num">Slides</th><th class="num">Pacientes</th><th class="num">Folds</th><th class="num">Clases</th><th class="num">Train/fold</th><th class="num">Test/fold</th><th class="num">Positivos</th></tr></thead>
+      <tbody>
+        <tr class="base"><td class="name mono">cptac_brca/TP53_mutation</td><td class="num">112</td><td class="num">103</td><td class="num">50</td><td class="num">2</td><td class="num">75</td><td class="num">21.5</td><td class="num">40.2 %</td></tr>
+        <tr><td class="name mono">bc_therapy/er_status</td><td class="num">166</td><td class="num">166</td><td class="num">50</td><td class="num">2</td><td class="num">113</td><td class="num">33</td><td class="num">69.3 %</td></tr>
+        <tr><td class="name mono">cptac_gbm/TP53_mutation</td><td class="num">243</td><td class="num">99</td><td class="num">50</td><td class="num">2</td><td class="num">164</td><td class="num">45.3</td><td class="num">33.7 %</td></tr>
+        <tr><td class="name mono">cervical_subtype/subtype</td><td class="num">599</td><td class="num">599</td><td class="num">5</td><td class="num">4</td><td class="num">407</td><td class="num">119.8</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="note col">Descartados por no tener el trío completo o ser más pequeños:
+    <code>cptac_ccrcc</code>, <code>cptac_hnsc</code>, <code>cptac_lscc</code> (sólo <code>uni_v2</code>),
+    <code>tcga_brca</code> (sin <code>uni_v2</code>), <code>hancook</code> y <code>crc_outcomes</code>
+    (sin features), <code>cptac_coad</code> (98 slides), <code>imp</code> (un solo fold).</p>
+
+  <h3>Qué es un fold aquí — y una limitación que ningún informe anterior menciona</h3>
+
+  <div class="tscroll">
+    <table>
+      <caption>En un k-fold clásico cada slide cae en test <b>exactamente una vez</b>. Los datasets de 50 folds no hacen eso.</caption>
+      <thead><tr><th>Dataset</th><th class="num">Folds</th><th class="num">Apariciones en test por slide</th><th>Diseño</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">cptac_brca</td><td class="num">50</td><td class="num">9.59 (3–16)</td><td>remuestreo repetido</td></tr>
+        <tr><td class="name mono">cptac_gbm</td><td class="num">50</td><td class="num">9.32 (2–17)</td><td>remuestreo repetido</td></tr>
+        <tr><td class="name mono">bc_therapy</td><td class="num">50</td><td class="num">9.94 (4–17)</td><td>remuestreo repetido</td></tr>
+        <tr><td class="name mono">cervical_subtype</td><td class="num">5</td><td class="num">1.00</td><td><strong>partición real</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Los 50 folds no son 50 experimentos independientes</h4>
+    <p>La suma de los tamaños de test es <strong>9.6 veces</strong> el número de slides. Los folds
+      comparten datos masivamente, así que <strong>los IC por bootstrap sobre folds subestiman la
+      incertidumbre</strong> de generalizar a pacientes nuevos. La unidad realmente independiente es el
+      <strong>paciente</strong>, no el fold.</p>
+    <p>Los contrastes pareados sufren menos —buena parte de la varianza compartida se cancela en la
+      diferencia— pero un IC de este informe es más estrecho de lo que sería con 50 muestras
+      independientes. Léase con esa cautela.</p>
+  </div>
+</section>
+
+<!-- ══════════ VUELCO 1 ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">02 · Vuelco</div>
+    <h2>§8.1 se invierte: los embeddings sí ganan</h2>
+  </div>
+
+  <p class="col"><code>emb:logreg</code> frente a <code>prob:logreg</code>: el mismo metaclasificador
+    sobre embeddings de 1536 D en vez de sobre 6 probabilidades. <strong>Mismo combinador, sólo cambia
+    la entrada.</strong></p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Ordenado por slides de entrenamiento por fold. ✱ = significativo tras Holm.</caption>
+      <thead><tr><th>Dataset</th><th class="num">Train/fold</th><th class="num">Δ AUC</th><th class="num">IC 95 %</th><th class="num">G/E/P</th><th class="num">p Holm</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">cptac_brca</td><td class="num">75</td><td class="num d-neg">−0.0160</td><td class="ci">[−0.0305, −0.0020]</td><td class="num">19/2/29</td><td class="num">0.60</td></tr>
+        <tr><td class="name mono">bc_therapy</td><td class="num">113</td><td class="num d-pos">+0.0296</td><td class="ci">[+0.0073, +0.0530]</td><td class="num">30/1/19</td><td class="num">0.35</td></tr>
+        <tr class="best"><td class="name mono">cptac_gbm</td><td class="num">164</td><td class="num hl">+0.0230</td><td class="ci">[+0.0079, +0.0384]</td><td class="num">34/0/16</td><td class="num hl">0.031 ✱</td></tr>
+        <tr><td class="name mono">cervical_subtype</td><td class="num">407</td><td class="num">−0.0009</td><td class="ci">[−0.0042, +0.0029]</td><td class="num">2/0/3</td><td class="num">1.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">Y <strong>las cinco métricas se mueven en el mismo sentido dentro de cada dataset</strong>,
+    que es el criterio que el informe anterior fijó para distinguir un efecto real de un artefacto:</p>
+
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th class="num">AUC</th><th class="num">AP</th><th class="num">bacc</th><th class="num">macro-F1</th><th class="num">kappa</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">cptac_brca (75)</td><td class="num d-neg">−0.0160</td><td class="num d-neg">−0.0205</td><td class="num d-neg">−0.0123</td><td class="num d-neg">−0.0148</td><td class="num d-neg">−0.0297</td></tr>
+        <tr><td class="name mono">bc_therapy (113)</td><td class="num d-pos">+0.0296</td><td class="num d-pos">+0.0203</td><td class="num d-pos">+0.0163</td><td class="num d-pos">+0.0215</td><td class="num d-pos">+0.0265</td></tr>
+        <tr><td class="name mono">cptac_gbm (164)</td><td class="num d-pos">+0.0230 ✱</td><td class="num d-pos">+0.0235</td><td class="num d-pos">+0.0117</td><td class="num d-pos">+0.0127</td><td class="num d-pos">+0.0275</td></tr>
+        <tr><td class="name mono">cervical (407)</td><td class="num d-neg">−0.0009</td><td class="num d-neg">−0.0056</td><td class="num d-neg">−0.0168</td><td class="num d-neg">−0.0129</td><td class="num d-neg">−0.0215</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout col">
+    <h4>El efecto es real y replicado. Lo que falta es la causa</h4>
+    <p><strong>Confirmación por una vía independiente:</strong> en <code>cptac_gbm</code>, la sonda de
+      atención —que también trabaja en espacio de embeddings— da <code>attn_own:logreg</code> = 0.7787
+      frente a <code>prob:logreg</code> = 0.7556, <strong>Δ = +0.0231, p Holm = 0.030</strong>. Dos rutas
+      de código distintas, el mismo hallazgo.</p>
+    <p>La explicación intuitiva —«con 75 filas una logreg sobre 1536 columnas sobreajusta»— resultó ser
+      <strong>falsa</strong>. Las dos secciones siguientes lo demuestran y proponen qué la sustituye.</p>
+  </div>
+
+  <h3>Por qué <code>cervical_subtype</code> no arbitra</h3>
+  <p class="col">Con 407 slides de entrenamiento debería ser el caso más favorable, y sale ligeramente
+    negativo. <strong>No sirve para decidir</strong>, porque difiere del resto en cuatro cosas a la vez:
+    sólo <strong>5 folds</strong> (el proyecto ya documenta un hallazgo a 5 folds que no replicó y cambió
+    de signo), <strong>4 clases</strong> en vez de 2, un AUC de <strong>0.943</strong> que deja poco
+    margen, y un tejido y una tarea distintos. Es un dato, no un contraejemplo limpio.</p>
+</section>
+
+<!-- ══════════ FALSACIÓN ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">03 · Falsación</div>
+    <h2>No es el tamaño del entrenamiento</h2>
+  </div>
+
+  <p class="col">La lectura evidente era: «una logreg sobre 1536 columnas con 75 filas sobreajusta; con 164
+    no». Se sometió a prueba <strong>dentro de <code>cptac_gbm</code></strong>, recortando las filas de
+    entrenamiento del metaclasificador y dejando fijo todo lo demás — modelos base, folds, val y test.
+    Cinco submuestreos estratificados por fold, promediados.</p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Job 70614. Sólo cambia cuántas filas ve el metaclasificador; el test es idéntico en todas las filas de esta tabla.</caption>
+      <thead><tr><th class="num">n meta-train</th><th class="num">prob:logreg</th><th class="num">emb:logreg</th><th class="num">Δ AUC</th><th class="num">IC 95 %</th><th class="num">G/E/P</th><th class="num">p Holm</th></tr></thead>
+      <tbody>
+        <tr><td class="num">40</td><td class="num">0.7557</td><td class="num">0.7610</td><td class="num d-pos">+0.0053</td><td class="ci">[−0.0037, +0.0138]</td><td class="num">28/0/22</td><td class="num">0.86</td></tr>
+        <tr><td class="num">55</td><td class="num">0.7555</td><td class="num">0.7724</td><td class="num d-pos">+0.0169</td><td class="ci">[+0.0072, +0.0269]</td><td class="num">31/0/19</td><td class="num sig">0.013 ✱</td></tr>
+        <tr style="background:var(--warn-soft)"><td class="num"><strong>75</strong></td><td class="num">0.7558</td><td class="num">0.7694</td><td class="num d-pos"><strong>+0.0137</strong></td><td class="ci">[+0.0018, +0.0254]</td><td class="num"><strong>34/0/16</strong></td><td class="num">0.090</td></tr>
+        <tr><td class="num">95</td><td class="num">0.7545</td><td class="num">0.7746</td><td class="num d-pos">+0.0201</td><td class="ci">[+0.0088, +0.0317]</td><td class="num">34/0/16</td><td class="num sig">0.008 ✱</td></tr>
+        <tr><td class="num">120</td><td class="num">0.7548</td><td class="num">0.7718</td><td class="num d-pos">+0.0170</td><td class="ci">[+0.0042, +0.0297]</td><td class="num">33/0/17</td><td class="num sig">0.047 ✱</td></tr>
+        <tr><td class="num">145</td><td class="num">0.7560</td><td class="num">0.7758</td><td class="num d-pos">+0.0198</td><td class="ci">[+0.0057, +0.0335]</td><td class="num">32/1/17</td><td class="num sig">0.030 ✱</td></tr>
+        <tr class="best"><td class="num">169 (completo)</td><td class="num">0.7556</td><td class="num hl">0.7786</td><td class="num hl">+0.0230</td><td class="ci">[+0.0077, +0.0380]</td><td class="num">34/0/16</td><td class="num sig">0.013 ✱</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout neg col">
+    <h4>El punto decisivo: n = 75</h4>
+    <p>Es exactamente el tamaño de train de <code>cptac_brca</code>. Con esas mismas 75 filas,
+      <code>cptac_gbm</code> da <strong>+0.0137 ganando 34 de 50 folds</strong>, y
+      <code>cptac_brca</code> da <strong>−0.0160 ganando 19 de 50</strong>.</p>
+    <p><strong>Mismo tamaño de train, mismo código, signos opuestos.</strong> El Δ es positivo en los
+      siete tamaños probados, incluido n=40. El tamaño del entrenamiento <em>modula la magnitud</em>
+      (+0.0053 → +0.0230) pero <strong>nunca cambia el signo</strong>. La diferencia es una propiedad del
+      dataset.</p>
+  </div>
+</section>
+
+<!-- ══════════ MECANISMO ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">04 · Mecanismo</div>
+    <h2>Un candidato: la selectividad de la atención</h2>
+  </div>
+
+  <p class="col">Un embedding es <code>z = Σ (a · proj(h))</code>. Si la atención <code>a</code> es plana,
+    <code>z</code> es poco más que la media de los parches; si es selectiva, concentra el tejido que el
+    ABMIL considera informativo. <strong>La utilidad del embedding debería depender de lo selectiva que
+    sea la atención que lo produjo</strong> — y ahí los dos datasets difieren mucho.</p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Entropía 1.0 = uniforme. En <code>cptac_gbm</code> los ABMIL atienden de forma sensiblemente más selectiva y sus proyecciones retienen más estructura entre parches.</caption>
+      <thead><tr><th>Modelo</th><th class="num">entropía brca</th><th class="num">entropía gbm</th><th class="num">logit_sd brca</th><th class="num">logit_sd gbm</th><th class="num">retiene brca</th><th class="num">retiene gbm</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">ctranspath</td><td class="num">0.9282</td><td class="num d-pos">0.7751</td><td class="num">0.98</td><td class="num d-pos">1.74</td><td class="num">66 %</td><td class="num d-pos">78 %</td></tr>
+        <tr><td class="name mono">uni_v2</td><td class="num">0.9942</td><td class="num d-pos">0.9699</td><td class="num">0.30</td><td class="num d-pos">0.70</td><td class="num">66 %</td><td class="num d-pos">79 %</td></tr>
+        <tr><td class="name mono">conch_v1_5</td><td class="num">0.8879</td><td class="num">0.8736</td><td class="num">1.29</td><td class="num">1.23</td><td class="num">58 %</td><td class="num">58 %</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">La predicción que se sigue: <strong>si se aplana la atención, los embeddings deberían
+    perder su ventaja</strong>. Está medido, con el régimen <code>attn_mean</code> de la sonda:</p>
+
+  <div class="tscroll" style="max-width:720px">
+    <table style="min-width:0">
+      <caption>Δ AUC frente a <code>prob:logreg</code>, según qué atención produjo el embedding.</caption>
+      <thead><tr><th>Dataset</th><th class="num">atención propia</th><th class="num">atención plana</th><th class="num">swing</th></tr></thead>
+      <tbody>
+        <tr class="best"><td class="name mono">cptac_gbm</td><td class="num hl">+0.0231 ✱</td><td class="num d-neg">−0.0249</td><td class="num hl">+0.048</td></tr>
+        <tr><td class="name mono">cptac_brca</td><td class="num d-neg">−0.0101</td><td class="num d-neg">−0.0434 ✱</td><td class="num">−0.033</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">En <code>cptac_gbm</code>, aplanar la atención <strong>invierte el signo</strong>: los
+    embeddings pasan de batir a las probabilidades por +0.023 a perder por −0.025. En
+    <code>cptac_brca</code>, donde la atención ya era casi plana de partida, aplanarla del todo sólo
+    profundiza una pérdida que ya existía.</p>
+
+  <div class="callout neg col">
+    <h4>Esto es una hipótesis, no un resultado establecido</h4>
+    <p>La evidencia son <strong>dos datasets y una única manipulación</strong>: el extremo uniforme. Que
+      el signo se mueva en la dirección predicha es consistente con el mecanismo, pero no lo demuestra.</p>
+    <p>El contraste decisivo sería <strong>graduar</strong> la selectividad de la atención —no sólo
+      llevarla al extremo plano— y comprobar si el Δ embeddings-probabilidades la sigue de forma
+      monótona. <strong>No está hecho.</strong></p>
+  </div>
+</section>
+
+<!-- ══════════ VUELCO 2 ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">05 · Vuelco</div>
+    <h2>Los snapshot ensembles sí funcionan</h2>
+  </div>
+
+  <p class="col">El estado del arte cerraba los Snapshot Ensembles como <em>«nulo acotado a ≈ +0.017 de
+    AUC»</em>. Con 164 slides de entrenamiento dejan de ser nulos.</p>
+
+  <div class="tscroll" style="max-width:620px">
+    <table style="min-width:0">
+      <caption><code>fge_trio:logreg</code> vs <code>prob:logreg</code> en <b>cptac_gbm</b> — las cinco métricas significativas tras Holm.</caption>
+      <thead><tr><th>Métrica</th><th class="num">Δ</th><th class="num">p Holm</th></tr></thead>
+      <tbody>
+        <tr><td>AUC</td><td class="num d-pos">+0.0223</td><td class="num hl">✱</td></tr>
+        <tr><td>AP</td><td class="num d-pos">+0.0264</td><td class="num hl">✱</td></tr>
+        <tr><td>bacc</td><td class="num d-pos">+0.0314</td><td class="num hl">✱</td></tr>
+        <tr><td>macro-F1</td><td class="num d-pos">+0.0327</td><td class="num hl">✱</td></tr>
+        <tr class="best"><td><strong>kappa</strong></td><td class="num hl">+0.0653</td><td class="num hl">✱</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">En <code>bc_therapy</code> van en la misma dirección con IC que excluye el cero
+    (<code>fge_trio:logreg</code> +0.0263; <code>se_trio:mlp_snapshot</code> +0.0296, p Holm 0.016) y en
+    <code>cervical_subtype</code> son negativos.</p>
+
+  <div class="callout col">
+    <h4>Por qué el nulo anterior era engañoso</h4>
+    <p>En <code>cptac_brca</code> el MDE de estas comparaciones era de <strong>0.026 de AUC</strong>
+      —unas 4× el de la suite de metaclasificadores— porque las predicciones de los snapshots son mucho
+      más ruidosas fold a fold. Aquel nulo no decía «no hay efecto»: decía <strong>«no puedo ver un
+      efecto menor de 0.026»</strong>. El efecto real ronda +0.022, justo por debajo de esa cota.</p>
+    <p><strong>Era un problema de potencia, no una ausencia.</strong></p>
+  </div>
+</section>
+
+<!-- ══════════ LO QUE SE MANTIENE ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">06 · Estabilidad</div>
+    <h2>LogReg sigue sin ser batido</h2>
+  </div>
+
+  <p class="col">Ningún metaclasificador alternativo <em>en el espacio de probabilidades</em> bate a
+    LogReg en ningún dataset. Y en <code>cptac_gbm</code> el margen se amplía: <strong>SVM y NB, que
+    empataban en <code>cptac_brca</code>, ahora pierden significativamente</strong>.</p>
+
+  <div class="tscroll">
+    <table>
+      <caption>Δ AUC frente a <code>prob:logreg</code>. ✱ = significativo tras Holm.</caption>
+      <thead><tr><th>Brazo</th><th class="num">cptac_brca (75)</th><th class="num">bc_therapy (113)</th><th class="num">cptac_gbm (164)</th><th class="num">cervical (407)</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">prob:svm</td><td class="num">−0.0021</td><td class="num">+0.0000</td><td class="num d-neg">−0.0103 ✱</td><td class="num">−0.0027</td></tr>
+        <tr><td class="name mono">prob:nb</td><td class="num">−0.0031</td><td class="num">−0.0041</td><td class="num d-neg">−0.0119 ✱</td><td class="num">−0.0145</td></tr>
+        <tr><td class="name mono">prob:knn</td><td class="num d-neg">−0.0321 ✱</td><td class="num d-neg">−0.0225 ✱</td><td class="num d-neg">−0.0421 ✱</td><td class="num">−0.0409</td></tr>
+        <tr><td class="name mono">prob:mlp</td><td class="num d-neg">−0.1038 ✱</td><td class="num d-neg">−0.1061 ✱</td><td class="num d-neg">−0.0803 ✱</td><td class="num">−0.0409</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout col">
+    <h4>Todas las ganancias vienen de la entrada, no del combinador</h4>
+    <p>Embeddings y snapshots cambian <strong>qué ve</strong> el metaclasificador; SVM, KNN, NB y MLP
+      cambian <strong>qué hace con lo que ve</strong>. Lo primero funciona, lo segundo no. Es la misma
+      lección que dio el barrido de modelos base, un escalón más arriba.</p>
+  </div>
+</section>
+
+<!-- ══════════ ATENCIÓN ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">07 · Atención</div>
+    <h2>Tres preguntas, tres respuestas</h2>
+  </div>
+
+  <h3>¿Merece la pena promediar las atenciones? — No, confirmado en dos datasets</h3>
+  <div class="tscroll" style="max-width:720px">
+    <table style="min-width:0">
+      <thead><tr><th>Dataset</th><th class="num">Δ AUC</th><th class="num">IC 95 %</th><th class="num">p Holm</th><th class="num">MDE</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">cptac_brca (par)</td><td class="num">−0.0009</td><td class="ci">[−0.0083, +0.0061]</td><td class="num">1.00</td><td class="num">0.0104</td></tr>
+        <tr><td class="name mono">cptac_gbm (trío)</td><td class="num">−0.0061</td><td class="ci">[−0.0157, +0.0029]</td><td class="num">1.00</td><td class="num">0.0143</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note col">Nulos <strong>estrechos</strong>, no ausencia de evidencia: excluyen cualquier
+    mejora por encima de ≈0.010–0.014. Promediar aplana la atención selectiva sin ganar nada.</p>
+
+  <h3 style="padding-top:.8rem">¿Y transferir la atención del mejor modelo? — No replica</h3>
+  <div class="tscroll" style="max-width:760px">
+    <table style="min-width:0">
+      <thead><tr><th>Dataset</th><th class="num">Δ AUC</th><th class="num">Δ AP</th><th class="num">G/E/P (AP)</th><th class="num">p Holm</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">cptac_brca</td><td class="num">+0.0063</td><td class="num d-pos">+0.0145</td><td class="num">31/4/15</td><td class="num">0.13</td></tr>
+        <tr><td class="name mono">cptac_gbm</td><td class="num">+0.0079</td><td class="num">+0.0075</td><td class="num d-neg">25/0/25</td><td class="num">1.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col"><strong>Empate exacto, 25 contra 25.</strong> La dirección se mantiene pero el efecto
+    desaparece. Es el desenlace que el protocolo del proyecto anticipa para un hallazgo marginal en un
+    solo dataset. <strong>Queda cerrado.</strong></p>
+
+  <h3 style="padding-top:.8rem">¿Aporta algo la atención? — Sí, y más cuanto más datos</h3>
+  <div class="tscroll" style="max-width:720px">
+    <table style="min-width:0">
+      <caption>Control negativo: atención uniforme = mean pooling, frente a la atención propia de cada modelo.</caption>
+      <thead><tr><th>Dataset</th><th class="num">Δ AUC</th><th class="num">IC 95 %</th><th class="num">p Holm</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">cptac_brca</td><td class="num d-neg">−0.0333</td><td class="ci">[−0.0460, −0.0205]</td><td class="num sig">0.0005 ✱</td></tr>
+        <tr><td class="name mono">cptac_gbm</td><td class="num d-neg">−0.0479</td><td class="ci">[−0.0699, −0.0260]</td><td class="num sig">0.0009 ✱</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="col">Es el resultado más robusto de toda la sonda. Forzar mean pooling cuesta 0.033 y 0.048 de
+    AUC — del orden del cambio de modelo base (+0.037). La atención aporta, y <strong>aporta más en el
+    dataset con más datos</strong>, lo que encaja con todo lo demás de este informe.</p>
+</section>
+
+<!-- ══════════ UNI_V2 ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">08 · Diagnóstico</div>
+    <h2>Por qué uni_v2 no aprende a atender</h2>
+  </div>
+
+  <p class="col">Su atención tiene entropía normalizada 0.994 — prácticamente mean pooling. La hipótesis
+    natural es que la culpa sea de su dimensión de entrada (1536 D, compresión 3× contra 1.5×).
+    <strong>No lo es.</strong></p>
+
+  <div class="tscroll">
+    <table>
+      <caption>8 modelos, <code>cptac_brca</code>, fold 0. Entropía 1.0 = uniforme. <b>retiene</b> = varianza de coseno entre parches que sobrevive a la proyección.</caption>
+      <thead><tr><th>Modelo</th><th class="num">in_dim</th><th class="num">compr.</th><th class="num">parches</th><th class="num">entropía</th><th class="num">logit_sd</th><th class="num">retiene</th><th class="num">AUC</th></tr></thead>
+      <tbody>
+        <tr class="best"><td class="name mono">conch_v1_5</td><td class="num">768</td><td class="num">1.5×</td><td class="num">3719</td><td class="num hl">0.8879</td><td class="num hl">1.2856</td><td class="num">58 %</td><td class="num hl">0.7902</td></tr>
+        <tr style="background:var(--warn-soft)"><td class="name mono"><strong>hoptimus1</strong></td><td class="num"><strong>1536</strong></td><td class="num"><strong>3.0×</strong></td><td class="num"><strong>6582</strong></td><td class="num"><strong>0.9279</strong></td><td class="num">0.8277</td><td class="num">37 %</td><td class="num">0.7450</td></tr>
+        <tr><td class="name mono">ctranspath</td><td class="num">768</td><td class="num">1.5×</td><td class="num">3719</td><td class="num">0.9282</td><td class="num">0.9797</td><td class="num">66 %</td><td class="num">0.7571</td></tr>
+        <tr><td class="name mono">phikon_v2</td><td class="num">1024</td><td class="num">2.0×</td><td class="num">6582</td><td class="num">0.9764</td><td class="num">0.6196</td><td class="num">71 %</td><td class="num">0.7685</td></tr>
+        <tr style="background:var(--warn-soft)"><td class="name mono"><strong>uni_v2</strong></td><td class="num"><strong>1536</strong></td><td class="num"><strong>3.0×</strong></td><td class="num"><strong>6582</strong></td><td class="num"><strong>0.9942</strong></td><td class="num">0.3000</td><td class="num">66 %</td><td class="num">0.7634</td></tr>
+        <tr><td class="name mono">uni_v1</td><td class="num">1024</td><td class="num">2.0×</td><td class="num">6582</td><td class="num">0.9974</td><td class="num">0.2009</td><td class="num">59 %</td><td class="num">0.7732</td></tr>
+        <tr><td class="name mono">virchow2</td><td class="num">2560</td><td class="num">5.0×</td><td class="num">6582</td><td class="num">0.9981</td><td class="num">0.1755</td><td class="num d-neg">15 %</td><td class="num">0.7771</td></tr>
+        <tr><td class="name mono">virchow_v1</td><td class="num">2560</td><td class="num">5.0×</td><td class="num">3719</td><td class="num">0.9993</td><td class="num">0.1013</td><td class="num d-neg">5 %</td><td class="num d-neg">0.6823</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout col">
+    <h4>El control natural que zanja la hipótesis</h4>
+    <p>Las dos filas resaltadas, <code>hoptimus1</code> y <code>uni_v2</code>, tienen la <strong>misma</strong>
+      <code>in_dim</code> (1536), la <strong>misma</strong> compresión (3×), el <strong>mismo</strong>
+      número de parches (6582) y la misma arquitectura — y entropías de 0.928 frente a 0.994.
+      <strong>Con todo lo demás constante, el comportamiento diverge.</strong> La dimensión no es la causa.</p>
+    <p>Tampoco lo es la compresión: <code>uni_v2</code> <strong>retiene el 66 %</strong> de su estructura
+      entre parches, igual que ctranspath. <strong>Tiene señal disponible y no la usa.</strong> Lo que
+      localiza el fallo es <code>logit_sd</code>: su cabeza emite logits casi constantes (0.30 frente a
+      1.29 de conch). Es un resultado de optimización, no un límite arquitectónico — y añadir capacidad
+      no lo arreglaría, porque su módulo de atención ya tiene los mismos 262 400 parámetros que los
+      demás (opera sobre el espacio proyectado de 512 D, no sobre <code>in_dim</code>) y su proyección ya
+      tiene el doble.</p>
+  </div>
+
+  <div class="callout neg col">
+    <h4>Donde la dimensión sí muerde, y el giro final</h4>
+    <p>Los modelos de 2560 D: <code>virchow_v1</code> retiene un <strong>5 %</strong> de su geometría y
+      <code>virchow2</code> un 15 %. Y <code>virchow_v1</code> —el que menos retiene, el de atención más
+      plana— <strong>es el peor modelo del proyecto (0.6823)</strong>. Es la primera explicación mecánica
+      de por qué es prescindible.</p>
+    <p><strong>Pero atender no predice rendir.</strong> <code>uni_v1</code> (0.9974, casi uniforme) es el
+      3.º mejor y <code>virchow2</code> (0.9981) el 2.º. Ordenados por entropía, los AUC salen 0.7902,
+      0.7450, 0.7571, 0.7685, 0.7634, 0.7732, 0.7771, 0.6823 — sin relación monótona. La atención plana
+      <strong>no es un defecto que arreglar</strong>, salvo cuando va acompañada de una proyección que
+      destruye el 95 % de la geometría.</p>
+  </div>
+</section>
+
+<!-- ══════════ CORRECCIÓN ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">09 · Corrección</div>
+    <h2>Los grupos de coordenadas no son propiedad de los modelos</h2>
+  </div>
+
+  <p class="col">CLAUDE.md presenta los «grupos de coordenadas de parche» como una propiedad de los
+    <strong>modelos</strong>, con cifras fijas (2100 y 4068 parches). <strong>Ambas cosas son falsas.</strong></p>
+
+  <div class="tscroll">
+    <table>
+      <caption>30 slides por dataset, hash MD5 de <code>coords</code>.</caption>
+      <thead><tr><th>Dataset</th><th class="num">ctranspath == conch_v1_5</th><th class="num">los tres iguales</th><th>Ejemplo de parches</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">cptac_brca</td><td class="num">30/30</td><td class="num d-neg">0/30</td><td class="mono note">ct 4101 · conch 4101 · uni_v2 5487</td></tr>
+        <tr><td class="name mono">cptac_gbm</td><td class="num">30/30</td><td class="num d-pos">30/30</td><td class="mono note">los tres 734, los tres 1434</td></tr>
+        <tr><td class="name mono">bc_therapy</td><td class="num">30/30</td><td class="num d-pos">30/30</td><td class="mono note">los tres 1754, los tres 3323</td></tr>
+        <tr><td class="name mono">cervical_subtype</td><td class="num">30/30</td><td class="num d-pos">30/30</td><td class="mono note">los tres 10374, los tres 9027</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="col">Los grupos son una propiedad <strong>del parcheado de cada dataset</strong>, no de los
+    modelos, y los recuentos varían mucho por slide (662, 4087, 4101 dentro de <code>cptac_brca</code>).</p>
+
+  <div class="callout col">
+    <h4>Consecuencia práctica</h4>
+    <p>En <strong>tres de los cuatro datasets se puede fusionar el trío entero a nivel de parche</strong>.
+      La limitación que el informe atribuía a los modelos —«el trío cruza los grupos 1 y 2, así que la
+      fusión temprana sólo puede aplicarse a dos de sus tres miembros»— es específica de
+      <code>cptac_brca</code>. La fusión temprana a tres bandas nunca se ha probado y ahora es posible.</p>
+  </div>
+</section>
+
+<!-- ══════════ QUÉ CAMBIA ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">10 · Consecuencias</div>
+    <h2>Qué hay que dejar de afirmar</h2>
+  </div>
+
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Afirmación anterior</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>«§8.1 cerrada en negativo: los embeddings no baten a las probabilidades»</td><td><span class="chip bad">Acotada a n=75</span> con 164 se invierte y es significativa</td></tr>
+        <tr><td>«Snapshot Ensembles: nulo acotado a ≈+0.017»</td><td><span class="chip bad">Falta de potencia</span> con 164 dan +0.022 en las 5 métricas</td></tr>
+        <tr><td>«El trío cruza grupos de coordenadas; sólo se pueden fusionar dos modelos»</td><td><span class="chip bad">Sólo en cptac_brca</span></td></tr>
+        <tr><td>«<code>emb:mlp_snapshot</code> es la dirección a replicar»</td><td><span class="chip warn">Parcial</span> replica en gbm (+0.0175✱), no en bc_therapy</td></tr>
+        <tr><td>«La transferencia de atención de conch merece réplica»</td><td><span class="chip bad">No replica</span> 25/0/25</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Configuración recomendada, por dataset</h3>
+  <p class="col">Con ≥ 113 slides de entrenamiento, <strong>la configuración por defecto debería dejar de
+    ser <code>prob:logreg</code></strong>.</p>
+
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Dataset</th><th class="num">Train/fold</th><th>Recomendada</th><th class="num">AUC</th><th class="num">vs prob:logreg</th></tr></thead>
+      <tbody>
+        <tr><td class="name mono">cptac_brca</td><td class="num">75</td><td class="mono">prob:logreg</td><td class="num">0.7986</td><td class="num">—</td></tr>
+        <tr><td class="name mono">bc_therapy</td><td class="num">113</td><td class="mono">emb:logreg</td><td class="num">0.6999</td><td class="num d-pos">+0.0296</td></tr>
+        <tr><td class="name mono">cptac_gbm</td><td class="num">164</td><td class="mono">se_trio:logreg</td><td class="num">0.7825</td><td class="num d-pos">+0.0269</td></tr>
+        <tr><td class="name mono">cervical_subtype</td><td class="num">407</td><td class="mono">prob:logreg</td><td class="num">0.9430</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ PENDIENTE ══════════ -->
+<section>
+  <div class="sec-head">
+    <div class="eyebrow">11 · Siguiente</div>
+    <h2>Qué falta</h2>
+  </div>
+
+  <div class="col">
+    <ol class="findings">
+      <li><div><strong>Graduar la selectividad de la atención</strong> y ver si el Δ
+        embeddings-probabilidades la sigue de forma monótona. Es el contraste que decidiría §04, y
+        sustituye a la pregunta por <em>n</em>, ya cerrada en §03.</div></li>
+      <li><div><strong>Fusión temprana a tres bandas</strong> en gbm / bc_therapy / cervical, ahora que se
+        sabe que es posible. El −0.0056 que la cerró se midió sobre dos modelos en
+        <code>cptac_brca</code>, con 75 slides — el mismo régimen en el que los embeddings también
+        parecían no funcionar.</div></li>
+      <li><div><strong>Repetir <code>cervical_subtype</code> con más folds.</strong> Con 5 no arbitra
+        nada. Se pueden generar splits nuevos con <code>create_val_splits.py</code>.</div></li>
+      <li><div><strong>Reevaluar <code>virchow_v1</code> con <code>proj_dim</code> mayor.</strong> Retiene
+        un 5 % de su geometría; es la única hipótesis mecánica que explica su AUC de 0.6823.</div></li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="eyebrow">Patho-Ensemble · 31-ago-2026</div>
+  <p class="note col">Este informe sustituye las conclusiones generales del informe del 22-ago sobre
+    embeddings y snapshot ensembles; aquéllas siguen siendo válidas <em>para <code>cptac_brca</code></em>.
+    Jobs 70495 · 70496 · 70497 · 70501 · 70502. Duraciones: <code>cptac_gbm</code> 4 h 41,
+    <code>cervical_subtype</code> 4 h 10, <code>bc_therapy</code> 13 h 11 — la más cara por parches por
+    slide, no por número de slides.</p>
+</footer>
+
+</div>
+</body>
+</html>

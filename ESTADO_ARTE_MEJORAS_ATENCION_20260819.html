@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado del Arte: Mejoras en Atención y Meta-Ensemble</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --warning: #ea580c;
+            --danger: #dc2626;
+            --bg: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+            --code-bg: #f3f4f6;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #60a5fa;
+                --success: #4ade80;
+                --warning: #fb923c;
+                --danger: #f87171;
+                --bg: #111827;
+                --text: #f3f4f6;
+                --border: #374151;
+                --code-bg: #1f2937;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --primary: #60a5fa;
+            --success: #4ade80;
+            --warning: #fb923c;
+            --danger: #f87171;
+            --bg: #111827;
+            --text: #f3f4f6;
+            --border: #374151;
+            --code-bg: #1f2937;
+        }
+
+        :root[data-theme="light"] {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --warning: #ea580c;
+            --danger: #dc2626;
+            --bg: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+            --code-bg: #f3f4f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 2.5em;
+        }
+
+        .metadata {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9em;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .toc {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.3em;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: var(--text);
+            margin-top: 25px;
+            font-size: 1.3em;
+        }
+
+        h4 {
+            color: var(--text);
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .status-success {
+            background: rgba(22, 163, 74, 0.1);
+            color: var(--success);
+        }
+
+        .status-warning {
+            background: rgba(234, 88, 12, 0.1);
+            color: var(--warning);
+        }
+
+        .status-danger {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+
+        .status-info {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+            color: var(--primary);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:hover {
+            background: var(--code-bg);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 0.9em;
+            color: var(--text);
+        }
+
+        .highlight-box {
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            background: var(--code-bg);
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin: 30px 0 20px 0;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .recommendation {
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            background: rgba(22, 163, 74, 0.05);
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .problem {
+            border-left: 4px solid var(--danger);
+            padding: 15px;
+            background: rgba(220, 38, 38, 0.05);
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .metadata {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧬 ESTADO DEL ARTE: MEJORAS EN ATENCIÓN Y META-ENSEMBLE</h1>
+        <p style="margin: 10px 0 0 0; font-size: 1.1em;">Análisis de Diseño para 3 Ideas de Optimización</p>
+        <div class="metadata">
+            <div><strong>Fecha:</strong> 19 de Agosto de 2026</div>
+            <div><strong>Base:</strong> ESTADO_DEL_ARTE_20260819.md</div>
+            <div><strong>Etapa:</strong> Implementación en Progreso</div>
+        </div>
+
+        <h3 style="margin-top: 20px; color: var(--primary);">🔴 Estado de Implementación</h3>
+        <table style="margin-top: 15px;">
+            <thead>
+                <tr>
+                    <th>Idea</th>
+                    <th>Estado</th>
+                    <th>Job ID</th>
+                    <th>Resultado</th>
+                    <th>Próximo Paso</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Idea 1</strong></td>
+                    <td><span class="status-badge status-danger">✅ COMPLETADA</span></td>
+                    <td>70100</td>
+                    <td>NO mejora significativa (Δ AUC = -0.0004 a -0.0014, ns)</td>
+                    <td><strong>CERRADA</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Idea 3 Fase 1</strong></td>
+                    <td><span class="status-badge status-success">✅ COMPLETADA</span></td>
+                    <td>70101</td>
+                    <td>450 archivos attn_stats.npy generados</td>
+                    <td>Fase 2 en progreso</td>
+                </tr>
+                <tr>
+                    <td><strong>Idea 3 Fase 2</strong></td>
+                    <td><span class="status-badge status-warning">⏳ EN PROGRESO</span></td>
+                    <td>70112</td>
+                    <td>Escalera aditiva con attn features</td>
+                    <td>Esperando resultados</td>
+                </tr>
+                <tr>
+                    <td><strong>Idea 2</strong></td>
+                    <td><span class="status-badge status-info">⏸️ PENDIENTE</span></td>
+                    <td>—</td>
+                    <td>Depende de Idea 3 Fase 2</td>
+                    <td>Piloto si Idea 3 muestra señal</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="toc">
+        <h2>📋 Tabla de Contenidos</h2>
+        <ol>
+            <li><a href="#resumen-ejecutivo">Resumen Ejecutivo</a></li>
+            <li><a href="#contexto">Contexto y Restricciones Compartidas</a></li>
+            <li><a href="#idea-1">Idea 1 — Feature Engineering Meta</a></li>
+            <li><a href="#idea-2">Idea 2 — Multi-head Gated Attention</a></li>
+            <li><a href="#idea-3">Idea 3 — Attention Maps como Meta-Features</a></li>
+            <li><a href="#relacion">Relación y Combinación entre las 3 Ideas</a></li>
+            <li><a href="#priorizacion">Recomendación de Priorización</a></li>
+            <li><a href="#riesgos">Riesgos Transversales</a></li>
+            <li><a href="#apendice">Apéndice — Checklist de Implementación</a></li>
+        </ol>
+    </div>
+
+    <section id="resumen-ejecutivo">
+        <div class="section-title"><span class="emoji">🎯</span> Resumen Ejecutivo</div>
+
+        <h3>Tabla Comparativa de las 3 Ideas</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Idea</th>
+                        <th>Descripción</th>
+                        <th>Coste Cómputo</th>
+                        <th>Reentrenar</th>
+                        <th>Riesgo Estadístico</th>
+                        <th>Prioridad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1: Feature Engineering</strong></td>
+                        <td>Columnas derivadas (entropía, margen, disagreement)</td>
+                        <td>Nulo (minutos)</td>
+                        <td><span class="status-badge status-success">❌ No</span></td>
+                        <td><span class="status-badge status-success">Bajo (1-3 params)</span></td>
+                        <td><span class="status-badge status-success">🥇 Primera</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2: Multi-head Attention</strong></td>
+                        <td>GatedAttention single→multi-head + mean-pool</td>
+                        <td>Alto (GPU-h)</td>
+                        <td><span class="status-badge status-danger">✅ Sí (150 ckpts)</span></td>
+                        <td><span class="status-badge status-warning">Igual (±0.016)</span></td>
+                        <td><span class="status-badge status-danger">🥉 Tercera</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>3: Attention Maps</strong></td>
+                        <td>Persistir y agregar estadísticos de atención</td>
+                        <td>Bajo (inferencia)</td>
+                        <td><span class="status-badge status-success">❌ No</span></td>
+                        <td><span class="status-badge status-warning">Compartido con #1</span></td>
+                        <td><span class="status-badge status-warning">🥈 Segunda</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="highlight-box">
+            <strong>Nota Clave:</strong> Las 3 ideas heredan la misma restricción dominante identificada en ESTADO_DEL_ARTE_20260819.md: <strong>presupuesto muestral de 50 folds, MDE ≈ ±0.016 en AUC</strong>. Cualquier mejora debe superar este umbral para ser estadísticamente detectable.
+        </div>
+    </section>
+
+    <section id="contexto">
+        <div class="section-title"><span class="emoji">🔗</span> Contexto y Restricciones Compartidas</div>
+
+        <h3>El MDE: La Barrera que Vence a Todas las Ideas</h3>
+        <div class="code-block">
+Fórmula MDE (Minimum Detectable Effect):
+MDE = (t_critical + t_power) × σ_diferencia / √n_folds
+    = (1.677 + 0.842) × ~0.025 / √50
+    ≈ ±0.016 en AUC
+
+Interpretación:
+- Δ AUC < 0.016  → Indistinguible del ruido
+- Δ AUC ≈ 0.003  → No detectable (ejemplo: FGE base tuvo +0.003)
+- Δ AUC ≈ +0.010 → Apenas bordeando detectabilidad
+- Δ AUC > 0.020  → Claramente detectable
+        </div>
+
+        <h3>Prior Empírico: 7 Intentos de Subir Capacidad → 7 Fracasos</h3>
+        <p>El proyecto ya evaluó en 50 folds:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li>❌ FGE/Snapshot en modelos base: +0.003 AUC (ns)</li>
+            <li>❌ Out-of-Fold meta-features: -0.077 AUC (p&lt;0.001)</li>
+            <li>❌ Reweighting: -0.010 AUC (p&lt;0.01)</li>
+            <li>❌ MLP simple: -0.135 AUC (overfitting)</li>
+            <li>❌ LightGBM: -0.296 AUC (inestabilidad)</li>
+            <li>❌ Deep MLP: falló por incompatibilidad TabPFN</li>
+            <li>❌ Spatial/GNN: falló por construcción de grafo</li>
+        </ul>
+        <p><strong>Conclusión:</strong> La carga de la prueba es alta. Cualquier nueva idea compite contra evidencia histórica de que la restricción es muestral, no arquitectónica.</p>
+    </section>
+
+    <section id="idea-1">
+        <div class="section-title"><span class="emoji">💡</span> Idea 1 — Feature Engineering Meta</div>
+
+        <h3>¿Qué Es?</h3>
+        <p>Añadir columnas derivadas de las probabilidades ya existentes en X_meta sin requerir nueva inferencia en modelos base. Costo de cómputo: cero reentrenamiento.</p>
+
+        <h3>Catálogo de Features Candidatas</h3>
+
+        <h4>Feature #1 (Prioritaria): Jensen-Gap / Disagreement</h4>
+        <div class="code-block">
+Jensen_gap = H(mean_m p_m) - mean_m H(p_m)
+
+donde:
+- H(p) = -Σ_c p_c log(p_c) = entropía Shannon
+- mean_m p_m = promedio simple de 3 distribuciones softmax
+
+Intuición: Captura la DIVERSIDAD entre modelos de forma teóricamente fundamentada
+(descomposición: incertidumbre total = media + desacuerdo)
+
+Impacto estimado: +0.005–0.010 AUC
+        </div>
+
+        <h4>Feature #2 (Prioritaria): Margen / Entropía por Modelo</h4>
+        <p>Opciones:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li><strong>Margen:</strong> |p_m[1] - 0.5| (rango 0-0.5)</li>
+            <li><strong>Entropía:</strong> -Σ p_m log p_m (rango 0-0.69)</li>
+            <li><strong>Max prob:</strong> max(p_m) (rango 0.5-1)</li>
+        </ul>
+        <p><strong>Implementación:</strong> Calcular 3 entropías por modelo (3 columnas) O promedio de margen (1 columna) como paso inicial.</p>
+        <p><strong>Por qué ayuda:</strong> La entropía es una función simétrica en p[1] — no reconstruible linealmente desde columnas crudas. Permite al LogReg capturar una forma de frontera tipo "V" que es imposible con solo probabilidades.</p>
+        <p><strong>Impacto estimado:</strong> +0.003–0.008 AUC por columna</p>
+
+        <h3>Riesgo de Overfitting: Cuantificado</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Escenario</th>
+                    <th>N Parámetros</th>
+                    <th>Filas/Parámetro</th>
+                    <th>Riesgo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Baseline (6 col crudas)</td>
+                    <td>7</td>
+                    <td>~10.7</td>
+                    <td><span class="status-badge status-success">Bajo</span></td>
+                </tr>
+                <tr>
+                    <td>+1 (disagreement)</td>
+                    <td>8</td>
+                    <td>~9.4</td>
+                    <td><span class="status-badge status-success">Bajo</span></td>
+                </tr>
+                <tr>
+                    <td>+3 (entropía por modelo)</td>
+                    <td>10</td>
+                    <td>~7.5</td>
+                    <td><span class="status-badge status-warning">Aumento (donde falló DeepMLP)</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="recommendation">
+            <strong>Regla Propuesta:</strong> Máximo 1-3 columnas nuevas por ronda, escalera aditiva. Nunca las 6-9 candidatas juntas.
+        </div>
+
+        <h3>Plan de Validación</h3>
+        <ol style="margin-left: 20px;">
+            <li><strong>Fase 1:</strong> Baseline (X_meta = 6 col crudas, AUC 0.7918 ✓)</li>
+            <li><strong>Fase 2:</strong> +1 (disagreement) — 50 folds, bootstrap 1000, Holm-Bonferroni</li>
+            <li><strong>Regla de parada:</strong> Si Δ &lt; +0.008 (mitad MDE), STOP</li>
+            <li><strong>Fase 3:</strong> +1 (margen) — si Fase 2 okays</li>
+            <li><strong>Fase 4:</strong> +3 (entropía) — si Fase 3 okays</li>
+        </ol>
+        <p><strong>Duración estimada:</strong> 2-3 días (cero reentrenamiento ABMIL)</p>
+
+        <h3>🔴 RESULTADOS: Idea 1 No Muestra Mejora Significativa</h3>
+        <p><strong>Experimento completado:</strong> 19 de Agosto de 2026, Job 70100</p>
+
+        <div style="overflow-x: auto; margin: 15px 0;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Escalón</th>
+                        <th>AUC</th>
+                        <th>95% CI</th>
+                        <th>Δ vs Baseline</th>
+                        <th>p-valor</th>
+                        <th>Adj. p (Holm)</th>
+                        <th>Sig.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: var(--code-bg);">
+                        <td><strong>E0 (Baseline)</strong></td>
+                        <td><strong>0.7918</strong></td>
+                        <td>[0.7630, 0.8200]</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>E1 (+disagreement)</td>
+                        <td>0.7914</td>
+                        <td>[0.7630, 0.8197]</td>
+                        <td>-0.0004</td>
+                        <td>0.294</td>
+                        <td>0.294</td>
+                        <td>✗</td>
+                    </tr>
+                    <tr>
+                        <td>E2 (+disagreement+margin)</td>
+                        <td>0.7912</td>
+                        <td>[0.7625, 0.8199]</td>
+                        <td>-0.0006</td>
+                        <td>0.214</td>
+                        <td>0.642</td>
+                        <td>✗</td>
+                    </tr>
+                    <tr>
+                        <td>E3 (+disagreement+margin+entropy)</td>
+                        <td>0.7904</td>
+                        <td>[0.7616, 0.8188]</td>
+                        <td>-0.0014</td>
+                        <td>0.216</td>
+                        <td>0.431</td>
+                        <td>✗</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="problem">
+            <strong>⚠️ Ningún escalón supera el baseline</strong> con significancia estadística (Holm-Bonferroni, α=0.05).
+            Los cambios observados (-0.0004 a -0.0014 AUC) caen dentro del MDE estimado (±0.016). El modelo lineal ya captura eficientemente la información de probabilidades base.
+        </div>
+
+        <h4>Implicaciones</h4>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li><strong>Idea 1 CERRADA:</strong> Feature Engineering Meta no extrae señal nueva</li>
+            <li><strong>Refuerza prior histórico:</strong> 7 intentos previos vs. 7 fracasos sugieren restricción muestral, no arquitectónica</li>
+            <li><strong>Proceder a Idea 3:</strong> Si estadísticos de atención (información completamente nueva) tampoco aportan, será evidencia fuerte del presupuesto muestral como barrera</li>
+        </ul>
+    </section>
+
+    <section id="idea-2">
+        <div class="section-title"><span class="emoji">🧠</span> Idea 2 — Multi-head Gated Attention</div>
+
+        <h3>Mecanismo Propuesto</h3>
+        <p><strong>Cambio único de forma:</strong> `w: Linear(256, 1)` → `Linear(256, n_heads)`</p>
+        <div class="code-block">
+Actual (single-head):
+  w: Linear(hidden_dim=256, 1) → (N, 1) logit
+  softmax(dim=0) → (N, 1) pesos que suman 1
+
+Propuesto (multi-head):
+  w: Linear(hidden_dim=256, n_heads=4) → (N, 4) logits
+  softmax(dim=0) → (N, 4) vectores de pesos, INDEPENDIENTES
+        </div>
+
+        <h3>Tres Estrategias de Combinación</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Opción</th>
+                    <th>Fórmula</th>
+                    <th>Parámetros Clasificador</th>
+                    <th>Recomendación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>(a) Concat</strong></td>
+                    <td>z = [z_1; z_2; ...; z_K] ∈ R^{K×512}</td>
+                    <td>Linear(K×512, C) **Multiplica por K**</td>
+                    <td><span class="status-badge status-danger">❌ No 1ª ronda</span></td>
+                </tr>
+                <tr>
+                    <td><strong>(b) Mean-pool</strong></td>
+                    <td>z = mean_k z_k ∈ R^{512}</td>
+                    <td>Linear(512, C) **FIJO**</td>
+                    <td><span class="status-badge status-success">✅ RECOMENDADA</span></td>
+                </tr>
+                <tr>
+                    <td><strong>(c) Bottleneck</strong></td>
+                    <td>z_concat → Linear(K×512, 512) → z</td>
+                    <td>Linear(512, C)</td>
+                    <td><span class="status-badge status-warning">🔶 2ª ronda si (b) okays</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight-box">
+            <strong>Distinción Crítica:</strong> Presupuesto de datos en atención (abundante: ~7174 parches/slide) ≠ Presupuesto estadístico del AUC final (escaso: 50 folds, MDE ±0.016). Multi-head no cambia el segundo.
+        </div>
+
+        <h3>Compatibilidad de Checkpoints</h3>
+        <p><strong>Problema:</strong> Cambiar w de forma rompe `load_state_dict(strict=True)` en 150 checkpoints existentes.</p>
+        <div class="recommendation">
+            <strong>Solución:</strong> NO tocar 150 ckpts existentes. Crear nuevo módulo `src/mh_abmil.py` con factory `make_mh_model()`. Entrenar con `--arch mh_abmil --arch_tag mh4` → árbol separado. Patrón aditivo, no destructivo.
+        </div>
+
+        <h3>Plan de Validación: Piloto + Escalada Condicional</h3>
+        <ol style="margin-left: 20px;">
+            <li><strong>Piloto (1-2 días):</strong> n_heads ∈ {2,4}, 10-15 folds × 1 modelo</li>
+            <li><strong>Criterio:</strong> ¿Δ AUC > 0 con IC95 sin cruzar cero?</li>
+            <li><strong>Si okays:</strong> Escalar a 50 folds × 3 modelos (10-15 días GPU)</li>
+            <li><strong>Si es plano:</strong> STOP, ahorra 200 GPU-horas</li>
+        </ol>
+    </section>
+
+    <section id="idea-3">
+        <div class="section-title"><span class="emoji">🎭</span> Idea 3 — Attention Maps como Meta-Features</div>
+
+        <h3>¿Qué Son?</h3>
+        <p>Pesos de atención `a` ∈ R^{N} (softmax por patch) que se calculan en cada forward pero se descartan siempre. Nunca se persisten a disco hoy.</p>
+
+        <h3>Estadísticos Propuestos (Normalizados por Tamaño de Bolsa)</h3>
+        <div class="code-block">
+entropy_norm = entropy / log(N)      # Baja = concentrada; alta = diluida
+ess_norm = ess / N                   # Baja = pocos patches dominan; alta = distribuido
+top1pct_mass = suma atención top 1%  # ¿Cuánta en 1% patches?
+top5pct_mass = suma atención top 5%
+p90 = percentil 90 de atención
+max = máximo peso
+std = std de distribución
+        </div>
+
+        <h3>Qué Información Nueva Aporta</h3>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li><strong>Confianza estructural:</strong> Dos slides con [p=0.3, 1-p=0.7] pueden tener atenciones opuestas (concentrada vs. diluida)</li>
+            <li><strong>Detección de casos difíciles:</strong> Atención muy diluida (ESS_norm ≈ 1) indica falta de evidencia clara</li>
+            <li><strong>Riqueza de información por patch:</strong> Slides concentrados: más información focal; slides diluidos: más ruido</li>
+        </ul>
+
+        <h3>Coste: La Ventaja Clave</h3>
+        <div class="recommendation">
+            <strong>NO requiere reentrenamiento.</strong> Los 150 checkpoints ya existen. Solo re-inferencia sobre ellos (forward pass). Costo adicional GPU: esencialmente cero. Duración: 4-6 horas wall-clock.
+        </div>
+
+        <h3>Plan de Validación</h3>
+        <ol style="margin-left: 20px;">
+            <li><strong>Fase 1 (Generación):</strong> Ejecutar en paralelo a piloto de Idea 2 → `attn_stats.npy` para todos (4-6h)</li>
+            <li><strong>Fase 2 (Evaluación):</strong> Misma escalera que Idea 1 → corrección múltiple conjunta</li>
+        </ol>
+    </section>
+
+    <section id="relacion">
+        <div class="section-title"><span class="emoji">🔀</span> Relación y Combinación entre las 3 Ideas</div>
+
+        <h3>Ideas 1 y 3 Son Mecánicamente Idénticas</h3>
+        <p>Ambas agregan columnas a X_meta usando el mismo mecanismo. Comparten restricción, guardia, escalera de validación. <strong>No deben probarse en dos rondas separadas.</strong> Una sola escalera conjunta: disagreement, attn_entropy_norm, attn_ess_norm, margen, entropy_per_model.</p>
+
+        <h3>Idea 2 Es Ortogonal</h3>
+        <p>Cambia arquitectura upstream (modelos base). Genera checkpoints completamente distintos. Puede evaluarse en paralelo. <strong>Depende de resultados de Ideas 1+3 como sonda.</strong></p>
+
+        <div class="highlight-box">
+            <strong>Argumento de Secuenciación:</strong> Si Ideas 1+3 muestran que columnas de atención de una sola cabeza ayudan, es evidencia de que multi-head podría pagar su costo. Si son planas, alerta de que multi-head tampoco pagaría.
+        </div>
+    </section>
+
+    <section id="priorizacion">
+        <div class="section-title"><span class="emoji">📊</span> Recomendación de Priorización</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Orden</th>
+                    <th>Idea</th>
+                    <th>Duración</th>
+                    <th>Por Qué</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>🥇 1ª</strong></td>
+                    <td>Feature Engineering</td>
+                    <td>2-3 días</td>
+                    <td>Cheapest first; falsable rápido</td>
+                </tr>
+                <tr>
+                    <td><strong>🥈 2ª</strong></td>
+                    <td>Attention Maps</td>
+                    <td>4-6 horas (paralelo a Idea 2 piloto)</td>
+                    <td>Ejecutar Fase 1 gratis; Fase 2 en misma escalera que Idea 1</td>
+                </tr>
+                <tr>
+                    <td><strong>🥉 3ª</strong></td>
+                    <td>Multi-head Attention</td>
+                    <td>Piloto 1-2d, escalada 10-15d</td>
+                    <td>Costosa; depende de Ideas 1+3 como evidencia; piloto primero</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Timeline Propuesto</h3>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li><strong>Semana 1:</strong>
+                <ul style="margin-top: 8px;">
+                    <li>Lunes: Ejecutar Idea 1 escalera (baseline → disagreement → margen → entropía)</li>
+                    <li>Martes-miércoles: Generar `attn_stats.npy` (Fase 1 Idea 3); lanzar piloto Idea 2</li>
+                    <li>Viernes: Decidir — ¿Idea 1 muestra señal? → Fase 2 (Ideas 1+3 conjunta)</li>
+                </ul>
+            </li>
+            <li><strong>Semana 2:</strong>
+                <ul style="margin-top: 8px;">
+                    <li>¿Piloto Idea 2 okays? → Escalar a 50 folds × 3 modelos</li>
+                    <li>¿Piloto Idea 2 es plano? → Cerrar, documentar, ahorrar GPU</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section id="riesgos">
+        <div class="section-title"><span class="emoji">⚠️</span> Riesgos Transversales y Mitigaciones</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Riesgo</th>
+                    <th>Ideas</th>
+                    <th>Mitigación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Sobreajuste por columnas extra</td>
+                    <td>1, 3</td>
+                    <td>Escalera aditiva; regla parada (<50% MDE); máx 3-5 cols</td>
+                </tr>
+                <tr>
+                    <td>Ruptura de 150 checkpoints</td>
+                    <td>2</td>
+                    <td>NO tocar; nuevo módulo `mh_abmil.py` con arch_tag</td>
+                </tr>
+                <tr>
+                    <td>Colapso de cabezas redundantes</td>
+                    <td>2</td>
+                    <td>Loggear divergencia pairwise entre `a_k`</td>
+                </tr>
+                <tr>
+                    <td>Confusión cómputo vs. estadística</td>
+                    <td>2</td>
+                    <td>Sección 2.2 explicita: presupuesto atención ≠ MDE final</td>
+                </tr>
+                <tr>
+                    <td>Comparaciones múltiples no coordinadas</td>
+                    <td>1, 3</td>
+                    <td>UNA escalera conjunta, UNA Holm-Bonferroni</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="apendice">
+        <div class="section-title"><span class="emoji">📝</span> Apéndice — Checklist de Implementación</div>
+
+        <h3>Archivos y Funciones Tocados (Por Idea)</h3>
+        <table style="font-size: 0.9em;">
+            <thead>
+                <tr>
+                    <th>Archivo</th>
+                    <th>Función/Clase</th>
+                    <th>Idea(s)</th>
+                    <th>Cambio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ensemble4.py</td>
+                    <td>Ensemble.forward()</td>
+                    <td>1, 3</td>
+                    <td>Insertar bloque extra features</td>
+                </tr>
+                <tr>
+                    <td>ensemble4.py</td>
+                    <td>_compute_extra_features()</td>
+                    <td>1, 3</td>
+                    <td><strong>Nuevo</strong> — calcular disagreement, entropía, etc.</td>
+                </tr>
+                <tr>
+                    <td>ensemble4.py</td>
+                    <td>main()</td>
+                    <td>1, 3</td>
+                    <td>Agregar flag CLI `--extra_features`</td>
+                </tr>
+                <tr>
+                    <td>abmil_engine.py</td>
+                    <td>abmil_predict_with_attention()</td>
+                    <td>3</td>
+                    <td><strong>Nuevo</strong> — extraer atención + stats</td>
+                </tr>
+                <tr>
+                    <td>abmil_engine.py</td>
+                    <td>attention_stats_extended()</td>
+                    <td>3</td>
+                    <td><strong>Nuevo</strong> — calcular entropy_norm, ess_norm, etc.</td>
+                </tr>
+                <tr>
+                    <td>mh_abmil.py</td>
+                    <td>GatedMultiHeadAttention, make_mh_model()</td>
+                    <td>2</td>
+                    <td><strong>Nuevo módulo</strong> — multi-head con mean-pool</td>
+                </tr>
+                <tr>
+                    <td>train_abmil.py</td>
+                    <td>save_fold_outputs_attn()</td>
+                    <td>3</td>
+                    <td><strong>Nuevo</strong> — guardar attn_stats.npy</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="footer">
+        <p><strong>Documento compilado:</strong> 19 de Agosto de 2026</p>
+        <p><strong>Base factual:</strong> Análisis verificado contra src/abmil_engine.py, ensemble4.py, meta_models.py</p>
+        <p><strong>Estado:</strong> Listo para implementación</p>
+    </section>
+</body>
+</html>

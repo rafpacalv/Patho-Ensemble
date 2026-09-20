@@ -369,6 +369,44 @@ def abmil_extract_embeddings(model, feats, stems, device, graphs=None):
     return np.vstack(E)
 
 
+@torch.no_grad()
+def abmil_extract_topk_embeddings(model, feats, stems, device, graphs=None, k=10):
+    """Embedding ponderado usando solo los k parches de mayor atención (pooling duro).
+
+    `abmil_extract_embeddings` agrega con la atención blanda del modelo sobre
+    los N parches de la bolsa (N ~ 3000-5000 en el trío ganador). Aquí se
+    seleccionan los k con mayor peso y se renormaliza su atención para que
+    sume 1 antes de agregarlos — reduce la capacidad efectiva de la
+    agregación a k parches en vez de N, en vez de ampliarla (línea abierta
+    "regularizar la atención" del informe consolidado, sección de vías
+    abiertas de prioridad baja).
+
+    No soporta `graphs` (SpatialABMIL): el grafo indexa los parches por
+    posición y un subconjunto de k invalidaría sus aristas, igual que
+    `bag_size` en `_apply()`.
+
+    Returns:
+        emb: array (N_stems, embedding_dim) de embeddings top-k
+    """
+    if graphs is not None:
+        raise NotImplementedError(
+            "abmil_extract_topk_embeddings no soporta graphs (SpatialABMIL): "
+            "el top-k invalidaría las aristas, igual que bag_size en _apply()."
+        )
+    model.eval()
+    E = []
+    for s in stems:
+        h = model.projection(feats[s].to(device))
+        a = model.attention(h).squeeze(-1)  # (N,), softmax, sum=1
+        kk = min(k, a.shape[0])
+        top_idx = torch.topk(a, kk).indices
+        a_top = a[top_idx]
+        a_top = a_top / a_top.sum()
+        z = (a_top.unsqueeze(-1) * h[top_idx]).sum(0)
+        E.append(z.cpu().numpy())
+    return np.vstack(E)
+
+
 # ──────────────────── Idea 3: Atención Stats para Meta-Features ────────────────
 def attention_stats_extended(a):
     """Calcula estadísticos normalizados de distribución de atención.

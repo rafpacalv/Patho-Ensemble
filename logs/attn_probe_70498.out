@@ -1,0 +1,259 @@
+================================================================================
+SONDA DE ATENCIÓN COMPARTIDA — cptac_brca / TP53_mutation
+Job 70498 en gpu07 — Sun Aug 30 22:44:22 CEST 2026
+================================================================================
+==============================================================================
+SONDA DE ATENCIÓN COMPARTIDA
+==============================================================================
+Par        : ctranspath ⊕ conch_v1_5
+Tarea      : cptac_brca / TP53_mutation
+Folds      : 50   slides: 112
+Regímenes  : ['own', 'avg', 'conch', 'mean']   (atención de 'conch_v1_5' para 'conch')
+Dispositivo: cpu
+  latent_dim auto-detectado: 768  (de features_ctranspath_monai)
+  latent_dim auto-detectado: 768  (de features_conch_v1_5_monai)
+Dims       : {'ctranspath': 768, 'conch_v1_5': 768}
+
+Cargando features y verificando rejilla común...
+  ctranspath: /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_ctranspath_monai
+  conch_v1_5: /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_conch_v1_5_monai
+    25/112 slides
+    50/112 slides
+    75/112 slides
+    100/112 slides
+✓ Rejilla de parches idéntica en todas las slides.
+  fold 5/50
+  fold 10/50
+  fold 15/50
+  fold 20/50
+  fold 25/50
+  fold 30/50
+  fold 35/50
+  fold 40/50
+  fold 45/50
+  fold 50/50
+
+Entropía normalizada de la atención (fold 0, 20 slides; 1.0 = uniforme):
+  ctranspath     0.9216 ± 0.0391
+  conch_v1_5     0.8835 ± 0.0325
+
+✅ Escritos los 4 regímenes. Analizar con:
+
+python src/run_meta_suite.py \
+    --train_source cptac_brca --task_name TP53_mutation \
+    --foundational_models ctranspath conch_v1_5 \
+    --n_folds 50 --baseline attn_own:logreg \
+    --configs prob:logreg attn_own:logreg attn_avg:logreg attn_conch:logreg attn_mean:logreg \
+    --out results_shared_attention_cptac_brca_TP53_mutation.json
+
+
+### Análisis
+========================================================================================================
+SUITE DE METACLASIFICADORES — trío ganador
+========================================================================================================
+Modelos base : ctranspath + conch_v1_5
+Dataset/tarea: cptac_brca / TP53_mutation
+Folds        : 50
+Espacios     : ['attn_avg', 'attn_conch', 'attn_mean', 'attn_own', 'prob']
+Dispositivo  : cpu
+
+Cargando espacio 'attn_avg' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 512, 'conch_v1_5': 512}
+  ✓ filas fold_0: train=75 val=15 test=22
+
+Cargando espacio 'attn_conch' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 512, 'conch_v1_5': 512}
+  ✓ filas fold_0: train=75 val=15 test=22
+
+Cargando espacio 'attn_mean' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 512, 'conch_v1_5': 512}
+  ✓ filas fold_0: train=75 val=15 test=22
+
+Cargando espacio 'attn_own' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 512, 'conch_v1_5': 512}
+  ✓ filas fold_0: train=75 val=15 test=22
+
+Cargando espacio 'prob' ...
+  ✓ alineado. Columnas por modelo: {'ctranspath': 2, 'conch_v1_5': 2}
+  ✓ filas fold_0: train=75 val=15 test=22
+
+✓ Todos los brazos comparten exactamente los mismos folds y filas de train/val/test.
+
+Clases         : K=2 [0, 1] (binaria)
+Reparto en test: {0: 651, 1: 423}  →  mayoritaria=0 (60.6%)
+
+acc=accuracy · bacc=balanced accuracy · macro_f1=F1 macro · f1_pos=F1 de la clase positiva · kappa=Cohen.
+REFERENCIA DEGENERADA (predecir siempre la mayoritaria del train): acc=0.606, bacc=0.500, macro_f1=0.377, kappa=0.000.
+Cualquier accuracy que no supere claramente ese valor no dice nada.
+
+>>> prob:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7974  bacc=0.7310  macro-F1=0.7299
+
+>>> attn_own:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7873  bacc=0.7288  macro-F1=0.7256
+
+>>> attn_avg:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7865  bacc=0.7234  macro-F1=0.7218
+
+>>> attn_conch:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7936  bacc=0.7310  macro-F1=0.7285
+
+>>> attn_mean:logreg
+    fold 10/50
+    fold 20/50
+    fold 30/50
+    fold 40/50
+    fold 50/50
+    AUC=0.7540  bacc=0.6876  macro-F1=0.6843
+
+======================================================
+RESUMEN A — capacidad de ORDENACIÓN (independiente del umbral)
+======================================================
+Configuración                          auc          ap
+------------------------------------------------------
+prob:logreg                         0.7974      0.7517
+attn_own:logreg                     0.7873      0.7344
+attn_avg:logreg                     0.7865      0.7439
+attn_conch:logreg                   0.7936      0.7488
+attn_mean:logreg                    0.7540      0.6979
+------------------------------------------------------
+auc=macro-OvR AUC · ap=average precision (PR-AUC, la métrica de ordenación
+que más pesa bajo desbalance porque ignora los verdaderos negativos)
+
+==========================================================================================
+RESUMEN B — DECISIÓN con umbral 0.5 (argmax; el criterio de ensemble4.py)
+==========================================================================================
+Configuración                          acc        bacc    macro_f1      f1_pos       kappa
+------------------------------------------------------------------------------------------
+prob:logreg                         0.7460      0.7310      0.7299      0.6712      0.4648
+attn_own:logreg                     0.7390      0.7288      0.7256      0.6704      0.4549
+attn_avg:logreg                     0.7368      0.7234      0.7218      0.6622      0.4472
+attn_conch:logreg                   0.7416      0.7310      0.7285      0.6738      0.4599
+attn_mean:logreg                    0.7010      0.6876      0.6843      0.6180      0.3735
+------------------------------------------------------------------------------------------
+acc=accuracy · bacc=balanced accuracy · macro_f1=F1 macro · f1_pos=F1 de la clase positiva · kappa=Cohen.
+REFERENCIA DEGENERADA (predecir siempre la mayoritaria del train): acc=0.606, bacc=0.500, macro_f1=0.377, kappa=0.000.
+Cualquier accuracy que no supere claramente ese valor no dice nada.
+
+==========================================================================================
+RESUMEN C — DECISIÓN con umbral ajustado en VALIDACIÓN (máx. bacc)
+==========================================================================================
+Configuración                        acc_t      bacc_t  macro_f1_t    f1_pos_t     kappa_t
+------------------------------------------------------------------------------------------
+prob:logreg                         0.7329      0.7259      0.7201      0.6734      0.4483
+attn_own:logreg                     0.7045      0.7028      0.6887      0.6469      0.3979
+attn_avg:logreg                     0.7135      0.7103      0.6974      0.6526      0.4129
+attn_conch:logreg                   0.7155      0.7098      0.6988      0.6506      0.4139
+attn_mean:logreg                    0.6658      0.6646      0.6504      0.6016      0.3196
+------------------------------------------------------------------------------------------
+Mismas métricas, con el umbral elegido en val en vez de fijado a 0.5.
+La diferencia B→C separa un fallo de ORDENACIÓN de un fallo de CORTE.
+
+Umbral medio elegido en validación:
+  prob:logreg                    0.432  (mediana 0.462)
+  attn_own:logreg                0.418  (mediana 0.411)
+  attn_avg:logreg                0.401  (mediana 0.405)
+  attn_conch:logreg              0.426  (mediana 0.429)
+  attn_mean:logreg               0.385  (mediana 0.377)
+
+========================================================================================================
+PAREADO: prob:logreg  vs  attn_own:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0100      [-0.0053, +0.0260]     25/2/23   0.3695   1.0000   0.0226
+ap             +0.0174      [-0.0029, +0.0381]     29/0/21   0.0789   0.5520   0.0293
+acc            +0.0070      [-0.0115, +0.0259]    21/10/19   0.5721   1.0000   0.0272
+bacc           +0.0021      [-0.0168, +0.0211]     23/7/20   0.7397   1.0000   0.0272
+macro_f1       +0.0044      [-0.0150, +0.0234]     23/7/20   0.6248   1.0000   0.0282
+f1_pos         +0.0007      [-0.0237, +0.0234]     22/8/20   0.6436   1.0000   0.0344
+kappa          +0.0099      [-0.0282, +0.0471]     23/7/20   0.6163   1.0000   0.0549
+acc_t          +0.0284      [+0.0060, +0.0507]     28/9/13   0.0196   0.2160   0.0325
+bacc_t         +0.0231      [+0.0024, +0.0432]     29/6/15   0.0372   0.3345   0.0298
+macro_f1_t     +0.0314      [+0.0078, +0.0548]     29/7/14   0.0112   0.1347   0.0335
+f1_pos_t       +0.0265      [+0.0021, +0.0520]     25/6/19   0.0388   0.3345   0.0364
+kappa_t        +0.0503      [+0.0080, +0.0932]     29/6/15   0.0222   0.2217   0.0614
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: attn_avg:logreg  vs  attn_own:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0009      [-0.0083, +0.0061]     23/8/19   0.7880   1.0000   0.0104
+ap             +0.0096      [-0.0016, +0.0205]     30/2/18   0.0433   0.5199   0.0159
+acc            -0.0021      [-0.0138, +0.0102]    10/26/14   0.4923   1.0000   0.0174
+bacc           -0.0054      [-0.0180, +0.0067]    12/23/15   0.3423   1.0000   0.0178
+macro_f1       -0.0038      [-0.0163, +0.0090]    12/23/15   0.3612   1.0000   0.0180
+f1_pos         -0.0082      [-0.0239, +0.0071]    12/23/15   0.3244   1.0000   0.0222
+kappa          -0.0078      [-0.0325, +0.0169]    12/23/15   0.3426   1.0000   0.0356
+acc_t          +0.0090      [-0.0072, +0.0254]    15/23/12   0.5969   1.0000   0.0237
+bacc_t         +0.0075      [-0.0074, +0.0231]    17/19/14   0.3619   1.0000   0.0222
+macro_f1_t     +0.0087      [-0.0090, +0.0268]    17/19/14   0.3469   1.0000   0.0258
+f1_pos_t       +0.0057      [-0.0153, +0.0262]    16/20/14   0.2989   1.0000   0.0300
+kappa_t        +0.0150      [-0.0151, +0.0456]    16/19/15   0.3082   1.0000   0.0445
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: attn_conch:logreg  vs  attn_own:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            +0.0063      [-0.0002, +0.0128]     27/9/14   0.0290   0.3185   0.0094
+ap             +0.0145      [+0.0034, +0.0258]     31/4/15   0.0107   0.1289   0.0164
+acc            +0.0026      [-0.0095, +0.0149]    12/28/10   0.7949   1.0000   0.0175
+bacc           +0.0022      [-0.0100, +0.0142]    13/27/10   0.9636   1.0000   0.0173
+macro_f1       +0.0029      [-0.0094, +0.0154]    13/27/10   0.8552   1.0000   0.0180
+f1_pos         +0.0034      [-0.0114, +0.0180]    13/27/10   0.6481   1.0000   0.0212
+kappa          +0.0050      [-0.0202, +0.0291]    13/27/10   0.9032   1.0000   0.0355
+acc_t          +0.0110      [-0.0093, +0.0305]    19/21/10   0.2174   1.0000   0.0288
+bacc_t         +0.0070      [-0.0112, +0.0241]    19/20/11   0.2940   1.0000   0.0258
+macro_f1_t     +0.0101      [-0.0116, +0.0315]    19/20/11   0.2536   1.0000   0.0305
+f1_pos_t       +0.0037      [-0.0192, +0.0251]    18/20/12   0.3820   1.0000   0.0320
+kappa_t        +0.0159      [-0.0213, +0.0516]    19/20/11   0.2536   1.0000   0.0534
+--------------------------------------------------------------------------------------------------------
+
+========================================================================================================
+PAREADO: attn_mean:logreg  vs  attn_own:logreg  (baseline recalculado en esta misma pasada)
+========================================================================================================
+Métrica        Δ medio                  IC 95%       G/E/P        p   p Holm      MDE
+--------------------------------------------------------------------------------------------------------
+auc            -0.0333      [-0.0460, -0.0205]     10/1/39   0.0000   0.0005   0.0183 *
+ap             -0.0365      [-0.0546, -0.0186]     14/1/35   0.0007   0.0026   0.0259 *
+acc            -0.0379      [-0.0552, -0.0209]     6/16/28   0.0002   0.0018   0.0248 *
+bacc           -0.0413      [-0.0591, -0.0236]     7/12/31   0.0001   0.0009   0.0258 *
+macro_f1       -0.0413      [-0.0599, -0.0237]     7/12/31   0.0001   0.0010   0.0262 *
+f1_pos         -0.0525      [-0.0762, -0.0287]    10/12/28   0.0003   0.0018   0.0345 *
+kappa          -0.0814      [-0.1175, -0.0462]     7/12/31   0.0001   0.0011   0.0517 *
+acc_t          -0.0387      [-0.0592, -0.0180]     13/6/31   0.0020   0.0026   0.0296 *
+bacc_t         -0.0382      [-0.0563, -0.0197]     15/4/31   0.0004   0.0019   0.0267 *
+macro_f1_t     -0.0384      [-0.0597, -0.0174]     13/4/33   0.0013   0.0026   0.0307 *
+f1_pos_t       -0.0453      [-0.0686, -0.0219]     14/5/31   0.0006   0.0026   0.0332 *
+kappa_t        -0.0784      [-0.1147, -0.0404]     13/4/33   0.0003   0.0019   0.0537 *
+--------------------------------------------------------------------------------------------------------
+
+✅ Resultados escritos en /home/JKP6679/Patho-Ensemble/results_shared_attention_cptac_brca_TP53_mutation.json
+
+================================================================================
+✅ COMPLETADO — Sun Aug 30 22:50:07 CEST 2026
+================================================================================

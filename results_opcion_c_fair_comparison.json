@@ -1,0 +1,13 @@
+{
+  "method": "early_fusion_3models_vs_late_fusion_3models",
+  "mean_delta_auc": -0.005606952075702078,
+  "ci_lower": -0.025020164644383384,
+  "ci_upper": 0.01236460908882784,
+  "wins_ties_losses": [
+    21,
+    3,
+    26
+  ],
+  "p_value": 0.5524254570395518,
+  "n_folds": 50
+}

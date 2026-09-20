@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble5.py", line 314, in <module>
+    main(**vars(args))
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble5.py", line 290, in main
+    preds, labels = ensemble()
+  File "/home/JKP6679/miniconda3/envs/ensemble/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/JKP6679/miniconda3/envs/ensemble/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 498, in forward
+    raise AssertionError(f"Validation labels mismatch between model 0 and {idx}")
+AssertionError: Validation labels mismatch between model 0 and 1

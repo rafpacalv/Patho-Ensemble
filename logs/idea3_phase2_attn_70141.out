@@ -1,0 +1,97 @@
+============================================================================
+IDEA 3 — FASE 2: EVALUACIÓN CON ESTADÍSTICOS DE ATENCIÓN
+============================================================================
+Fecha: Thu Aug 20 12:27:05 CEST 2026
+Dataset: cptac_brca, Task: TP53_mutation
+Modelos base: ctranspath uni_v2 virchow_v1
+Patching: 20x_224px_0px_overlap
+============================================================================
+
+============================================================================
+ESCALÓN: E0 (Baseline — sin features extras)
+  Extra features: (none — baseline)
+  Results subdir suffix: _idea3_attn_e0
+  Inicio: Thu Aug 20 12:27:05 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_idea3_attn_e0/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ E0 (Baseline — sin features extras) completado exitosamente
+
+============================================================================
+ESCALÓN: E1 (+ attn_entropy_norm)
+  Extra features: attn_entropy_norm
+  Results subdir suffix: _idea3_attn_e1
+  Inicio: Thu Aug 20 12:27:37 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_idea3_attn_e1/
+❌ Error en fold 0: all the input array dimensions except for the concatenation axis must match exactly, but along dimension 0, the array at index 0 has size 75 and the array at index 1 has size 22
+❌ E1 (+ attn_entropy_norm) falló con código 1
+
+============================================================================
+ESCALÓN: E2 (+ attn_entropy_norm + attn_ess_norm)
+  Extra features: attn_entropy_norm attn_ess_norm
+  Results subdir suffix: _idea3_attn_e2
+  Inicio: Thu Aug 20 12:27:41 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_idea3_attn_e2/
+❌ Error en fold 0: all the input array dimensions except for the concatenation axis must match exactly, but along dimension 0, the array at index 0 has size 75 and the array at index 1 has size 22
+❌ E2 (+ attn_entropy_norm + attn_ess_norm) falló con código 1
+
+
+============================================================================
+ANÁLISIS PAREADO CON HOLM-BONFERRONI
+============================================================================
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+✓ E0 (Baseline)                       | n_folds=50 | AUC=0.7918 [0.7630, 0.8200]
+✓ E1 (+disagreement)                  | n_folds=50 | AUC=0.7914 [0.7630, 0.8197]
+✓ E2 (+disagreement+margin)           | n_folds=50 | AUC=0.7912 [0.7625, 0.8199]
+✓ E3 (+disagreement+margin+entropy)   | n_folds=50 | AUC=0.7904 [0.7616, 0.8188]
+
+==========================================================================================
+COMPARACIONES PAREADAS vs BASELINE
+==========================================================================================
+Baseline: E0 (Baseline)
+
+Comparison                          |    Δ AUC |                    95% CI |    p-value |     Adj. p | Sig
+--------------------------------------------------------------------------------------------------------------
+E1 (+disagreement)                  | -0.000381 |         [-0.0011, 0.0003] |   0.294032 |   0.294032 |    
+E2 (+disagreement+margin)           | -0.000568 |         [-0.0015, 0.0003] |   0.213877 |   0.641632 |    
+E3 (+disagreement+margin+entropy)   | -0.001424 |         [-0.0039, 0.0005] |   0.215522 |   0.431043 |    
+
+==========================================================================================
+INTERPRETACIÓN
+==========================================================================================
+⚠️  Ningún escalón es significativamente diferente del baseline (Holm-Bonferroni α=0.05)
+
+   El presupuesto estadístico (MDE ≈ ±0.016) es mayor que cualquier efecto real.
+   Las features extras no capturan señal adicional significativa.
+
+💾 Resultados guardados en: results_ladder_cptac_brca_TP53_mutation.json
+
+
+============================================================================
+FASE 2 COMPLETADA
+Fin: Thu Aug 20 12:27:47 CEST 2026
+============================================================================
+
+Resultados disponibles en:
+  E0: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_idea3_attn_e0/
+  E1: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_idea3_attn_e1/
+  E2: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_idea3_attn_e2/
+
+Comparación pareada guardada en: results_ladder_cptac_brca_TP53_mutation.json
+

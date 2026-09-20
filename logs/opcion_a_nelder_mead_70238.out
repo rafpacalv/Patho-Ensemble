@@ -1,0 +1,661 @@
+============================================================================
+OPCIÓN A: Late Fusion + Nelder-Mead Weight Optimization
+============================================================================
+Dataset: cptac_brca / Task: TP53_mutation
+Models: ctranspath, virchow_v1, conch_v1_5
+Fecha: Fri Aug 21 14:37:30 CEST 2026
+============================================================================
+
+============================================================================
+PILOTO: Nelder-Mead optimization on 5 folds
+============================================================================
+
+================================================================================
+Opción A: Late Fusion + Nelder-Mead Weight Optimization
+================================================================================
+Dataset: cptac_brca / Task: TP53_mutation
+Models: ['ctranspath', 'virchow_v1', 'conch_v1_5']
+Folds: 0..4 (requested), 50 available
+================================================================================
+
+
+============================================================
+Fold 0
+============================================================
+  Train (in-sample): 75 samples
+  Test: 22 samples
+  Weights: ctranspath=0.9486, virchow_v1=0.0513, conch_v1_5=0.0001
+  Train AUC (in-sample): 0.9833
+  Test AUC: 0.6964, Acc: 0.7727, Prec: 0.7143, Rec: 0.6250, F1: 0.6667
+
+============================================================
+Fold 1
+============================================================
+  Train (in-sample): 76 samples
+  Test: 23 samples
+  Weights: ctranspath=0.2423, virchow_v1=0.5091, conch_v1_5=0.2486
+  Train AUC (in-sample): 0.8767
+  Test AUC: 0.8016, Acc: 0.3913, Prec: 0.3913, Rec: 1.0000, F1: 0.5625
+
+============================================================
+Fold 2
+============================================================
+  Train (in-sample): 76 samples
+  Test: 20 samples
+  Weights: ctranspath=0.2522, virchow_v1=0.1505, conch_v1_5=0.5972
+  Train AUC (in-sample): 0.9642
+  Test AUC: 0.7604, Acc: 0.7500, Prec: 0.6667, Rec: 0.7500, F1: 0.7059
+
+============================================================
+Fold 3
+============================================================
+  Train (in-sample): 76 samples
+  Test: 20 samples
+  Weights: ctranspath=0.7852, virchow_v1=0.1017, conch_v1_5=0.1132
+  Train AUC (in-sample): 0.9808
+  Test AUC: 0.8125, Acc: 0.7500, Prec: 0.6364, Rec: 0.8750, F1: 0.7368
+
+============================================================
+Fold 4
+============================================================
+  Train (in-sample): 77 samples
+  Test: 20 samples
+  Weights: ctranspath=0.1573, virchow_v1=0.3012, conch_v1_5=0.5415
+  Train AUC (in-sample): 0.9215
+  Test AUC: 0.6562, Acc: 0.6500, Prec: 0.5556, Rec: 0.6250, F1: 0.5882
+
+================================================================================
+✓ Nelder-Mead optimization complete (5 folds)
+Results saved to: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_nelder_mead_ctranspath_virchow_v1_conch_v1_5
+================================================================================
+
+Summary (Test):
+  Mean AUC: 0.7454 ± 0.0604
+  Min AUC: 0.6562
+  Max AUC: 0.8125
+
+Summary (Train in-sample):
+  Mean AUC: 0.9453 ± 0.0408
+  Mean overfitting: 0.1999
+
+Weight Statistics:
+  ctranspath: 0.4771 ± 0.3241 (range: [0.1573, 0.9486])
+  virchow_v1: 0.2228 ± 0.1658 (range: [0.0513, 0.5091])
+  conch_v1_5: 0.3001 ± 0.2342 (range: [0.0001, 0.5972])
+
+✓ Piloto completado
+
+============================================================================
+ESCALA COMPLETA: Nelder-Mead optimization on 50 folds
+============================================================================
+
+================================================================================
+Opción A: Late Fusion + Nelder-Mead Weight Optimization
+================================================================================
+Dataset: cptac_brca / Task: TP53_mutation
+Models: ['ctranspath', 'virchow_v1', 'conch_v1_5']
+Folds: 0..49 (requested), 50 available
+================================================================================
+
+
+============================================================
+Fold 0
+============================================================
+  Train (in-sample): 75 samples
+  Test: 22 samples
+  Weights: ctranspath=0.9287, virchow_v1=0.0660, conch_v1_5=0.0053
+  Train AUC (in-sample): 0.9833
+  Test AUC: 0.6964, Acc: 0.7727, Prec: 0.7143, Rec: 0.6250, F1: 0.6667
+
+============================================================
+Fold 1
+============================================================
+  Train (in-sample): 76 samples
+  Test: 23 samples
+  Weights: ctranspath=0.8172, virchow_v1=0.0367, conch_v1_5=0.1461
+  Train AUC (in-sample): 0.8846
+  Test AUC: 0.8651, Acc: 0.5652, Prec: 0.4737, Rec: 1.0000, F1: 0.6429
+
+============================================================
+Fold 2
+============================================================
+  Train (in-sample): 76 samples
+  Test: 20 samples
+  Weights: ctranspath=0.2522, virchow_v1=0.1505, conch_v1_5=0.5972
+  Train AUC (in-sample): 0.9642
+  Test AUC: 0.7604, Acc: 0.7500, Prec: 0.6667, Rec: 0.7500, F1: 0.7059
+
+============================================================
+Fold 3
+============================================================
+  Train (in-sample): 76 samples
+  Test: 20 samples
+  Weights: ctranspath=0.7852, virchow_v1=0.1017, conch_v1_5=0.1132
+  Train AUC (in-sample): 0.9808
+  Test AUC: 0.8125, Acc: 0.7500, Prec: 0.6364, Rec: 0.8750, F1: 0.7368
+
+============================================================
+Fold 4
+============================================================
+  Train (in-sample): 77 samples
+  Test: 20 samples
+  Weights: ctranspath=0.0053, virchow_v1=0.0206, conch_v1_5=0.9741
+  Train AUC (in-sample): 0.9340
+  Test AUC: 0.6771, Acc: 0.7000, Prec: 0.6000, Rec: 0.7500, F1: 0.6667
+
+============================================================
+Fold 5
+============================================================
+  Train (in-sample): 76 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0043, virchow_v1=0.0064, conch_v1_5=0.9893
+  Train AUC (in-sample): 0.9688
+  Test AUC: 0.8846, Acc: 0.8095, Prec: 0.7000, Rec: 0.8750, F1: 0.7778
+
+============================================================
+Fold 6
+============================================================
+  Train (in-sample): 74 samples
+  Test: 22 samples
+  Weights: ctranspath=0.1244, virchow_v1=0.1133, conch_v1_5=0.7623
+  Train AUC (in-sample): 0.9818
+  Test AUC: 0.7679, Acc: 0.7273, Prec: 0.6250, Rec: 0.6250, F1: 0.6250
+
+============================================================
+Fold 7
+============================================================
+  Train (in-sample): 78 samples
+  Test: 21 samples
+  Weights: ctranspath=0.4082, virchow_v1=0.0073, conch_v1_5=0.5845
+  Train AUC (in-sample): 0.9565
+  Test AUC: 0.7981, Acc: 0.6667, Prec: 0.5455, Rec: 0.7500, F1: 0.6316
+
+============================================================
+Fold 8
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.1411, virchow_v1=0.0872, conch_v1_5=0.7717
+  Train AUC (in-sample): 0.9972
+  Test AUC: 0.8796, Acc: 0.7143, Prec: 0.6667, Rec: 0.6667, F1: 0.6667
+
+============================================================
+Fold 9
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0046, virchow_v1=0.0043, conch_v1_5=0.9911
+  Train AUC (in-sample): 0.9375
+  Test AUC: 0.8942, Acc: 0.8095, Prec: 0.7000, Rec: 0.8750, F1: 0.7778
+
+============================================================
+Fold 10
+============================================================
+  Train (in-sample): 75 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0816, virchow_v1=0.1243, conch_v1_5=0.7941
+  Train AUC (in-sample): 0.9707
+  Test AUC: 0.8077, Acc: 0.8095, Prec: 0.7500, Rec: 0.7500, F1: 0.7500
+
+============================================================
+Fold 11
+============================================================
+  Train (in-sample): 74 samples
+  Test: 23 samples
+  Weights: ctranspath=0.2909, virchow_v1=0.0241, conch_v1_5=0.6850
+  Train AUC (in-sample): 0.9670
+  Test AUC: 0.7937, Acc: 0.6957, Prec: 0.5714, Rec: 0.8889, F1: 0.6957
+
+============================================================
+Fold 12
+============================================================
+  Train (in-sample): 76 samples
+  Test: 20 samples
+  Weights: ctranspath=0.0001, virchow_v1=0.0002, conch_v1_5=0.9998
+  Train AUC (in-sample): 0.9577
+  Test AUC: 0.7917, Acc: 0.7500, Prec: 0.6667, Rec: 0.7500, F1: 0.7059
+
+============================================================
+Fold 13
+============================================================
+  Train (in-sample): 75 samples
+  Test: 20 samples
+  Weights: ctranspath=0.0901, virchow_v1=0.0132, conch_v1_5=0.8968
+  Train AUC (in-sample): 0.9949
+  Test AUC: 0.7083, Acc: 0.7500, Prec: 0.8000, Rec: 0.5000, F1: 0.6154
+
+============================================================
+Fold 14
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0025, virchow_v1=0.0090, conch_v1_5=0.9885
+  Train AUC (in-sample): 0.9628
+  Test AUC: 0.6019, Acc: 0.5238, Prec: 0.4706, Rec: 0.8889, F1: 0.6154
+
+============================================================
+Fold 15
+============================================================
+  Train (in-sample): 76 samples
+  Test: 22 samples
+  Weights: ctranspath=0.1031, virchow_v1=0.0179, conch_v1_5=0.8790
+  Train AUC (in-sample): 0.8903
+  Test AUC: 0.7778, Acc: 0.7273, Prec: 0.6154, Rec: 0.8889, F1: 0.7273
+
+============================================================
+Fold 16
+============================================================
+  Train (in-sample): 77 samples
+  Test: 22 samples
+  Weights: ctranspath=0.3020, virchow_v1=0.4426, conch_v1_5=0.2554
+  Train AUC (in-sample): 0.8801
+  Test AUC: 0.7521, Acc: 0.4091, Prec: 0.4091, Rec: 1.0000, F1: 0.5806
+
+============================================================
+Fold 17
+============================================================
+  Train (in-sample): 75 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0971, virchow_v1=0.3206, conch_v1_5=0.5823
+  Train AUC (in-sample): 0.8896
+  Test AUC: 0.8750, Acc: 0.6190, Prec: 0.5000, Rec: 1.0000, F1: 0.6667
+
+============================================================
+Fold 18
+============================================================
+  Train (in-sample): 75 samples
+  Test: 21 samples
+  Weights: ctranspath=0.3333, virchow_v1=0.3333, conch_v1_5=0.3333
+  Train AUC (in-sample): 0.9244
+  Test AUC: 0.8462, Acc: 0.4762, Prec: 0.4211, Rec: 1.0000, F1: 0.5926
+
+============================================================
+Fold 19
+============================================================
+  Train (in-sample): 73 samples
+  Test: 23 samples
+  Weights: ctranspath=0.0894, virchow_v1=0.0735, conch_v1_5=0.8371
+  Train AUC (in-sample): 0.9945
+  Test AUC: 0.8615, Acc: 0.8261, Prec: 0.8000, Rec: 0.8000, F1: 0.8000
+
+============================================================
+Fold 20
+============================================================
+  Train (in-sample): 76 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0000, virchow_v1=0.0217, conch_v1_5=0.9783
+  Train AUC (in-sample): 0.9908
+  Test AUC: 0.7885, Acc: 0.6667, Prec: 0.6000, Rec: 0.3750, F1: 0.4615
+
+============================================================
+Fold 21
+============================================================
+  Train (in-sample): 75 samples
+  Test: 24 samples
+  Weights: ctranspath=0.1941, virchow_v1=0.0094, conch_v1_5=0.7964
+  Train AUC (in-sample): 0.9435
+  Test AUC: 0.8444, Acc: 0.8333, Prec: 0.7778, Rec: 0.7778, F1: 0.7778
+
+============================================================
+Fold 22
+============================================================
+  Train (in-sample): 74 samples
+  Test: 23 samples
+  Weights: ctranspath=0.0353, virchow_v1=0.0000, conch_v1_5=0.9647
+  Train AUC (in-sample): 0.9730
+  Test AUC: 0.5583, Acc: 0.5652, Prec: 0.4000, Rec: 0.5000, F1: 0.4444
+
+============================================================
+Fold 23
+============================================================
+  Train (in-sample): 75 samples
+  Test: 22 samples
+  Weights: ctranspath=0.1605, virchow_v1=0.1733, conch_v1_5=0.6662
+  Train AUC (in-sample): 1.0000
+  Test AUC: 0.8000, Acc: 0.6818, Prec: 0.6154, Rec: 0.8000, F1: 0.6957
+
+============================================================
+Fold 24
+============================================================
+  Train (in-sample): 76 samples
+  Test: 22 samples
+  Weights: ctranspath=0.0500, virchow_v1=0.3888, conch_v1_5=0.5611
+  Train AUC (in-sample): 0.9283
+  Test AUC: 0.9018, Acc: 0.7273, Prec: 0.5714, Rec: 1.0000, F1: 0.7273
+
+============================================================
+Fold 25
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.3282, virchow_v1=0.3282, conch_v1_5=0.3436
+  Train AUC (in-sample): 0.9025
+  Test AUC: 0.6944, Acc: 0.7143, Prec: 0.6667, Rec: 0.6667, F1: 0.6667
+
+============================================================
+Fold 26
+============================================================
+  Train (in-sample): 77 samples
+  Test: 22 samples
+  Weights: ctranspath=0.0069, virchow_v1=0.0425, conch_v1_5=0.9506
+  Train AUC (in-sample): 0.9653
+  Test AUC: 0.7321, Acc: 0.6364, Prec: 0.5000, Rec: 0.6250, F1: 0.5556
+
+============================================================
+Fold 27
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.3914, virchow_v1=0.0076, conch_v1_5=0.6010
+  Train AUC (in-sample): 0.9215
+  Test AUC: 0.9074, Acc: 0.8095, Prec: 0.8571, Rec: 0.6667, F1: 0.7500
+
+============================================================
+Fold 28
+============================================================
+  Train (in-sample): 79 samples
+  Test: 20 samples
+  Weights: ctranspath=0.1160, virchow_v1=0.0622, conch_v1_5=0.8218
+  Train AUC (in-sample): 0.9608
+  Test AUC: 0.9062, Acc: 0.6500, Prec: 0.5385, Rec: 0.8750, F1: 0.6667
+
+============================================================
+Fold 29
+============================================================
+  Train (in-sample): 77 samples
+  Test: 22 samples
+  Weights: ctranspath=0.0064, virchow_v1=0.0013, conch_v1_5=0.9923
+  Train AUC (in-sample): 0.9825
+  Test AUC: 0.8376, Acc: 0.7273, Prec: 0.7143, Rec: 0.5556, F1: 0.6250
+
+============================================================
+Fold 30
+============================================================
+  Train (in-sample): 75 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0432, virchow_v1=0.0630, conch_v1_5=0.8938
+  Train AUC (in-sample): 0.9531
+  Test AUC: 0.9038, Acc: 0.9048, Prec: 0.8000, Rec: 1.0000, F1: 0.8889
+
+============================================================
+Fold 31
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0009, virchow_v1=0.0001, conch_v1_5=0.9990
+  Train AUC (in-sample): 0.9116
+  Test AUC: 0.9423, Acc: 0.7143, Prec: 0.5833, Rec: 0.8750, F1: 0.7000
+
+============================================================
+Fold 32
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.3212, virchow_v1=0.3394, conch_v1_5=0.3394
+  Train AUC (in-sample): 0.9102
+  Test AUC: 0.6852, Acc: 0.5238, Prec: 0.4706, Rec: 0.8889, F1: 0.6154
+
+============================================================
+Fold 33
+============================================================
+  Train (in-sample): 74 samples
+  Test: 23 samples
+  Weights: ctranspath=0.0032, virchow_v1=0.0747, conch_v1_5=0.9221
+  Train AUC (in-sample): 0.9705
+  Test AUC: 0.8462, Acc: 0.7391, Prec: 0.6429, Rec: 0.9000, F1: 0.7500
+
+============================================================
+Fold 34
+============================================================
+  Train (in-sample): 75 samples
+  Test: 23 samples
+  Weights: ctranspath=0.0866, virchow_v1=0.0047, conch_v1_5=0.9086
+  Train AUC (in-sample): 0.9881
+  Test AUC: 0.7460, Acc: 0.7826, Prec: 0.8333, Rec: 0.5556, F1: 0.6667
+
+============================================================
+Fold 35
+============================================================
+  Train (in-sample): 75 samples
+  Test: 22 samples
+  Weights: ctranspath=0.0056, virchow_v1=0.0017, conch_v1_5=0.9927
+  Train AUC (in-sample): 0.9868
+  Test AUC: 0.8974, Acc: 0.6818, Prec: 0.5625, Rec: 1.0000, F1: 0.7200
+
+============================================================
+Fold 36
+============================================================
+  Train (in-sample): 78 samples
+  Test: 20 samples
+  Weights: ctranspath=0.0001, virchow_v1=0.0690, conch_v1_5=0.9309
+  Train AUC (in-sample): 1.0000
+  Test AUC: 0.7812, Acc: 0.8000, Prec: 0.7500, Rec: 0.7500, F1: 0.7500
+
+============================================================
+Fold 37
+============================================================
+  Train (in-sample): 75 samples
+  Test: 22 samples
+  Weights: ctranspath=0.4597, virchow_v1=0.3165, conch_v1_5=0.2238
+  Train AUC (in-sample): 0.9201
+  Test AUC: 0.7500, Acc: 0.7273, Prec: 0.6000, Rec: 0.7500, F1: 0.6667
+
+============================================================
+Fold 38
+============================================================
+  Train (in-sample): 76 samples
+  Test: 22 samples
+  Weights: ctranspath=0.3652, virchow_v1=0.2973, conch_v1_5=0.3375
+  Train AUC (in-sample): 0.8875
+  Test AUC: 0.8803, Acc: 0.8182, Prec: 1.0000, Rec: 0.5556, F1: 0.7143
+
+============================================================
+Fold 39
+============================================================
+  Train (in-sample): 75 samples
+  Test: 22 samples
+  Weights: ctranspath=0.3333, virchow_v1=0.3333, conch_v1_5=0.3333
+  Train AUC (in-sample): 0.9875
+  Test AUC: 0.8393, Acc: 0.7273, Prec: 0.6250, Rec: 0.6250, F1: 0.6250
+
+============================================================
+Fold 40
+============================================================
+  Train (in-sample): 77 samples
+  Test: 20 samples
+  Weights: ctranspath=0.0017, virchow_v1=0.0190, conch_v1_5=0.9793
+  Train AUC (in-sample): 0.9611
+  Test AUC: 0.8750, Acc: 0.8000, Prec: 0.7500, Rec: 0.7500, F1: 0.7500
+
+============================================================
+Fold 41
+============================================================
+  Train (in-sample): 74 samples
+  Test: 22 samples
+  Weights: ctranspath=0.1297, virchow_v1=0.2077, conch_v1_5=0.6626
+  Train AUC (in-sample): 0.9348
+  Test AUC: 0.6696, Acc: 0.6364, Prec: 0.5000, Rec: 0.6250, F1: 0.5556
+
+============================================================
+Fold 42
+============================================================
+  Train (in-sample): 76 samples
+  Test: 20 samples
+  Weights: ctranspath=0.0083, virchow_v1=0.0095, conch_v1_5=0.9823
+  Train AUC (in-sample): 0.9713
+  Test AUC: 0.7396, Acc: 0.7000, Prec: 0.5833, Rec: 0.8750, F1: 0.7000
+
+============================================================
+Fold 43
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0227, virchow_v1=0.0003, conch_v1_5=0.9770
+  Train AUC (in-sample): 0.9750
+  Test AUC: 0.7115, Acc: 0.6190, Prec: 0.5000, Rec: 0.6250, F1: 0.5556
+
+============================================================
+Fold 44
+============================================================
+  Train (in-sample): 78 samples
+  Test: 20 samples
+  Weights: ctranspath=0.0018, virchow_v1=0.0008, conch_v1_5=0.9974
+  Train AUC (in-sample): 0.9725
+  Test AUC: 0.9375, Acc: 0.7500, Prec: 0.6364, Rec: 0.8750, F1: 0.7368
+
+============================================================
+Fold 45
+============================================================
+  Train (in-sample): 75 samples
+  Test: 22 samples
+  Weights: ctranspath=0.5246, virchow_v1=0.0402, conch_v1_5=0.4352
+  Train AUC (in-sample): 0.9674
+  Test AUC: 0.8376, Acc: 0.7727, Prec: 0.6429, Rec: 1.0000, F1: 0.7826
+
+============================================================
+Fold 46
+============================================================
+  Train (in-sample): 77 samples
+  Test: 21 samples
+  Weights: ctranspath=0.0000, virchow_v1=0.0061, conch_v1_5=0.9939
+  Train AUC (in-sample): 0.9769
+  Test AUC: 0.7130, Acc: 0.6667, Prec: 0.5833, Rec: 0.7778, F1: 0.6667
+
+============================================================
+Fold 47
+============================================================
+  Train (in-sample): 75 samples
+  Test: 24 samples
+  Weights: ctranspath=0.3333, virchow_v1=0.3333, conch_v1_5=0.3333
+  Train AUC (in-sample): 0.8852
+  Test AUC: 0.7812, Acc: 0.6250, Prec: 0.4667, Rec: 0.8750, F1: 0.6087
+
+============================================================
+Fold 48
+============================================================
+  Train (in-sample): 76 samples
+  Test: 22 samples
+  Weights: ctranspath=0.0032, virchow_v1=0.0060, conch_v1_5=0.9908
+  Train AUC (in-sample): 0.9594
+  Test AUC: 0.9573, Acc: 0.8636, Prec: 0.8000, Rec: 0.8889, F1: 0.8421
+
+============================================================
+Fold 49
+============================================================
+  Train (in-sample): 77 samples
+  Test: 22 samples
+  Weights: ctranspath=0.0166, virchow_v1=0.0907, conch_v1_5=0.8927
+  Train AUC (in-sample): 0.9625
+  Test AUC: 0.7857, Acc: 0.6818, Prec: 0.5385, Rec: 0.8750, F1: 0.6667
+
+================================================================================
+✓ Nelder-Mead optimization complete (50 folds)
+Results saved to: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_nelder_mead_ctranspath_virchow_v1_conch_v1_5
+================================================================================
+
+Summary (Test):
+  Mean AUC: 0.8020 ± 0.0877
+  Min AUC: 0.5583
+  Max AUC: 0.9573
+
+Summary (Train in-sample):
+  Mean AUC: 0.9534 ± 0.0346
+  Mean overfitting: 0.1514
+
+Weight Statistics:
+  ctranspath: 0.1762 ± 0.2238 (range: [0.0000, 0.9287])
+  virchow_v1: 0.1040 ± 0.1296 (range: [0.0000, 0.4426])
+  conch_v1_5: 0.7197 ± 0.2900 (range: [0.0053, 0.9998])
+
+✓ Escala completa completada
+
+============================================================================
+Comparación pareada: Nelder-Mead vs LogReg Baseline
+============================================================================
+✓ Loaded Nelder-Mead AUCs: 50 folds
+✓ Loaded LogReg Baseline AUCs: 50 folds
+
+================================================================================
+COMPARACIÓN PAREADA: Nelder-Mead vs LogReg Baseline
+================================================================================
+
+Fold  0: LogReg=0.7143  Nelder-Mead=0.6964  Δ=-0.0179 ✗
+Fold  1: LogReg=0.8254  Nelder-Mead=0.8651  Δ=+0.0397 ✓
+Fold  2: LogReg=0.7708  Nelder-Mead=0.7604  Δ=-0.0104 ✗
+Fold  3: LogReg=0.7917  Nelder-Mead=0.8125  Δ=+0.0208 ✓
+Fold  4: LogReg=0.6667  Nelder-Mead=0.6771  Δ=+0.0104 ✓
+Fold  5: LogReg=0.8750  Nelder-Mead=0.8846  Δ=+0.0096 ✓
+Fold  6: LogReg=0.7768  Nelder-Mead=0.7679  Δ=-0.0089 ✗
+Fold  7: LogReg=0.8269  Nelder-Mead=0.7981  Δ=-0.0288 ✗
+Fold  8: LogReg=0.8704  Nelder-Mead=0.8796  Δ=+0.0093 ✓
+Fold  9: LogReg=0.8846  Nelder-Mead=0.8942  Δ=+0.0096 ✓
+Fold 10: LogReg=0.8077  Nelder-Mead=0.8077  Δ=+0.0000 =
+Fold 11: LogReg=0.7698  Nelder-Mead=0.7937  Δ=+0.0238 ✓
+Fold 12: LogReg=0.7708  Nelder-Mead=0.7917  Δ=+0.0208 ✓
+Fold 13: LogReg=0.6979  Nelder-Mead=0.7083  Δ=+0.0104 ✓
+Fold 14: LogReg=0.6111  Nelder-Mead=0.6019  Δ=-0.0093 ✗
+Fold 15: LogReg=0.7949  Nelder-Mead=0.7778  Δ=-0.0171 ✗
+Fold 16: LogReg=0.7350  Nelder-Mead=0.7521  Δ=+0.0171 ✓
+Fold 17: LogReg=0.8654  Nelder-Mead=0.8750  Δ=+0.0096 ✓
+Fold 18: LogReg=0.8846  Nelder-Mead=0.8462  Δ=-0.0385 ✗
+Fold 19: LogReg=0.8615  Nelder-Mead=0.8615  Δ=+0.0000 =
+Fold 20: LogReg=0.7788  Nelder-Mead=0.7885  Δ=+0.0096 ✓
+Fold 21: LogReg=0.8444  Nelder-Mead=0.8444  Δ=+0.0000 =
+Fold 22: LogReg=0.5417  Nelder-Mead=0.5583  Δ=+0.0167 ✓
+Fold 23: LogReg=0.7917  Nelder-Mead=0.8000  Δ=+0.0083 ✓
+Fold 24: LogReg=0.9107  Nelder-Mead=0.9018  Δ=-0.0089 ✗
+Fold 25: LogReg=0.6389  Nelder-Mead=0.6944  Δ=+0.0556 ✓
+Fold 26: LogReg=0.7321  Nelder-Mead=0.7321  Δ=+0.0000 =
+Fold 27: LogReg=0.8981  Nelder-Mead=0.9074  Δ=+0.0093 ✓
+Fold 28: LogReg=0.9062  Nelder-Mead=0.9062  Δ=+0.0000 =
+Fold 29: LogReg=0.8120  Nelder-Mead=0.8376  Δ=+0.0256 ✓
+Fold 30: LogReg=0.9038  Nelder-Mead=0.9038  Δ=+0.0000 =
+Fold 31: LogReg=0.9423  Nelder-Mead=0.9423  Δ=+0.0000 =
+Fold 32: LogReg=0.6759  Nelder-Mead=0.6852  Δ=+0.0093 ✓
+Fold 33: LogReg=0.8385  Nelder-Mead=0.8462  Δ=+0.0077 ✓
+Fold 34: LogReg=0.7460  Nelder-Mead=0.7460  Δ=+0.0000 =
+Fold 35: LogReg=0.8803  Nelder-Mead=0.8974  Δ=+0.0171 ✓
+Fold 36: LogReg=0.7708  Nelder-Mead=0.7812  Δ=+0.0104 ✓
+Fold 37: LogReg=0.7589  Nelder-Mead=0.7500  Δ=-0.0089 ✗
+Fold 38: LogReg=0.8803  Nelder-Mead=0.8803  Δ=+0.0000 =
+Fold 39: LogReg=0.8571  Nelder-Mead=0.8393  Δ=-0.0179 ✗
+Fold 40: LogReg=0.8542  Nelder-Mead=0.8750  Δ=+0.0208 ✓
+Fold 41: LogReg=0.6696  Nelder-Mead=0.6696  Δ=+0.0000 =
+Fold 42: LogReg=0.7500  Nelder-Mead=0.7396  Δ=-0.0104 ✗
+Fold 43: LogReg=0.6923  Nelder-Mead=0.7115  Δ=+0.0192 ✓
+Fold 44: LogReg=0.9583  Nelder-Mead=0.9375  Δ=-0.0208 ✗
+Fold 45: LogReg=0.7692  Nelder-Mead=0.8376  Δ=+0.0684 ✓
+Fold 46: LogReg=0.7315  Nelder-Mead=0.7130  Δ=-0.0185 ✗
+Fold 47: LogReg=0.7734  Nelder-Mead=0.7812  Δ=+0.0078 ✓
+Fold 48: LogReg=0.9573  Nelder-Mead=0.9573  Δ=+0.0000 =
+Fold 49: LogReg=0.7768  Nelder-Mead=0.7857  Δ=+0.0089 ✓
+
+================================================================================
+ESTADÍSTICA
+================================================================================
+N folds: 50
+Wins/Ties/Losses: 26/11/13
+Mean Δ AUC: +0.0052
+Median Δ AUC: +0.0078
+Std Δ AUC: 0.0187
+Bootstrap 95% CI: [+0.0007, +0.0106]
+Paired t-test: t=1.9407, p=0.0581
+
+================================================================================
+CONCLUSIÓN
+================================================================================
+✅ MEJORA SIGNIFICATIVA: Nelder-Mead supera LogReg
+Δ AUC: +0.0052 [+0.0007, +0.0106]
+Wins: 26/50
+
+✓ Resultados guardados en results_opcion_a_nelder_mead.json
+
+============================================================================
+TODO COMPLETADO
+Fecha: Fri Aug 21 14:40:16 CEST 2026
+============================================================================
+
+Resultados disponibles:
+  Nelder-Mead: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_nelder_mead_ctranspath_virchow_v1_conch_v1_5/
+  Comparación: results_opcion_a_nelder_mead.json
+

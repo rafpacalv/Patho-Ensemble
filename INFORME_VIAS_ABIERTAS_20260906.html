@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vías abiertas del informe consolidado — resultados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F6F5F8; --surface:#FFFFFF; --surface-sunk:#EEECF2;
+  --ink:#1E1A28; --ink-soft:#4A4458; --ink-mute:#736C82;
+  --rule:#DBD7E2; --rule-soft:#E8E5ED;
+  --indigo:#453D7A; --indigo-soft:#6E66A8;
+  --eosin:#A8385C; --viridian:#2F7A5A; --band:#D9D5E1;
+  --shadow:0 1px 2px rgba(30,26,40,.06),0 8px 24px -12px rgba(30,26,40,.14);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#151320; --surface:#1D1A2A; --surface-sunk:#242032;
+    --ink:#EDEAF3; --ink-soft:#B8B2C6; --ink-mute:#8A8399;
+    --rule:#332E45; --rule-soft:#2A2639;
+    --indigo:#A79EE0; --indigo-soft:#8279C0;
+    --eosin:#E07D9E; --viridian:#5FBC93; --band:#3A3450;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151320; --surface:#1D1A2A; --surface-sunk:#242032;
+  --ink:#EDEAF3; --ink-soft:#B8B2C6; --ink-mute:#8A8399;
+  --rule:#332E45; --rule-soft:#2A2639;
+  --indigo:#A79EE0; --indigo-soft:#8279C0;
+  --eosin:#E07D9E; --viridian:#5FBC93; --band:#3A3450;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 90px}
+.masthead{padding:60px 0 36px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin:0 0 18px}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:clamp(34px,5.8vw,56px);
+  line-height:1.05;letter-spacing:-.018em;margin:0 0 18px;text-wrap:balance}
+.standfirst{font-family:Newsreader,Georgia,serif;font-size:clamp(18px,2.2vw,21px);
+  line-height:1.5;color:var(--ink-soft);max-width:62ch;margin:0}
+.standfirst em{color:var(--ink);font-style:italic}
+.meta{margin-top:26px;font-size:14px;color:var(--ink-mute);
+  font-family:"IBM Plex Mono",monospace;line-height:1.9}
+.tally{display:flex;flex-wrap:wrap;margin-top:26px;border:1px solid var(--rule);
+  border-radius:3px;overflow:hidden;background:var(--surface)}
+.tally div{flex:1 1 130px;padding:13px 17px;border-right:1px solid var(--rule-soft)}
+.tally div:last-child{border-right:0}
+.tally dt{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-mute);margin:0 0 3px}
+.tally dd{margin:0;font-family:"IBM Plex Mono",monospace;font-size:20px;font-weight:500;
+  font-variant-numeric:tabular-nums}
+section{padding-top:52px;scroll-margin-top:16px}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:clamp(25px,3.4vw,33px);
+  line-height:1.15;letter-spacing:-.012em;margin:0 0 8px;text-wrap:balance}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+.sec-note{color:var(--ink-mute);font-size:14.5px;margin:0 0 26px;max-width:66ch}
+p{max-width:66ch;margin:0 0 14px}
+.lead{font-size:17.5px}
+.t{color:inherit;text-decoration:none;border-bottom:1px dotted var(--indigo-soft);
+  cursor:help;position:relative}
+.t:hover,.t:focus-visible{border-bottom-style:solid;color:var(--indigo)}
+.t::after{content:attr(data-def);position:absolute;left:50%;bottom:calc(100% + 9px);
+  transform:translateX(-50%);width:max-content;max-width:300px;background:var(--surface);
+  color:var(--ink-soft);border:1px solid var(--rule);border-radius:4px;padding:9px 12px;
+  font-size:13.5px;line-height:1.45;box-shadow:var(--shadow);opacity:0;visibility:hidden;
+  transition:opacity .12s;pointer-events:none;z-index:40;text-align:left;
+  white-space:normal;font-weight:400}
+.t:hover::after,.t:focus-visible::after{opacity:1;visibility:visible}
+@media (prefers-reduced-motion:reduce){.t::after{transition:none}}
+figure{margin:24px 0 26px;padding:0}
+figure svg{width:100%;height:auto;display:block;color:var(--ink-soft)}
+.figbox{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+  padding:22px 20px 16px;box-shadow:var(--shadow);overflow-x:auto}
+figcaption{font-size:13.5px;color:var(--ink-mute);margin-top:14px;padding-top:12px;
+  border-top:1px solid var(--rule-soft);line-height:1.5}
+figcaption b{color:var(--ink-soft);font-weight:600}
+.fix{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+  padding:22px 24px;margin-bottom:14px;box-shadow:var(--shadow)}
+.fix-head{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;margin-bottom:9px}
+.fix-ref{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  letter-spacing:.07em;color:var(--eosin);border:1px solid currentColor;border-radius:2px;padding:2px 6px}
+.fix-title{font-family:Newsreader,Georgia,serif;font-size:20.5px;font-weight:600;line-height:1.25}
+.fix p{margin:0 0 11px;font-size:15.5px;color:var(--ink-soft)}
+.fix p:last-child{margin-bottom:0}
+.fix ul{margin:0;padding-left:20px;font-size:15.5px;color:var(--ink-soft)}
+.fix li{margin-bottom:7px}
+.swap{display:flex;align-items:center;gap:13px;flex-wrap:wrap;
+  font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;margin:13px 0 4px;
+  padding:12px 14px;background:var(--surface-sunk);border-radius:2px}
+.swap b{font-weight:600;font-size:18px}
+.swap .was{color:var(--ink-mute);text-decoration:line-through;text-decoration-thickness:1px}
+.swap .now{color:var(--eosin)}
+.swap span{font-size:12px;color:var(--ink-mute);letter-spacing:.03em}
+.arrow{color:var(--ink-mute)}
+.hero-find{background:var(--surface);border:1px solid var(--viridian);border-radius:3px;
+  padding:26px;box-shadow:var(--shadow)}
+.hero-find .big{font-family:"IBM Plex Mono",monospace;font-size:clamp(38px,6.6vw,54px);
+  font-weight:600;line-height:1;color:var(--viridian);font-variant-numeric:tabular-nums;
+  letter-spacing:-.02em}
+.hero-find .cap{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-mute);margin-top:8px;line-height:1.7}
+.hero-grid{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:start}
+@media(max-width:620px){.hero-grid{grid-template-columns:1fr;gap:18px}}
+.hero-find p{margin:0 0 12px;font-size:15.5px;color:var(--ink-soft)}
+.hero-find p:last-child{margin-bottom:0}
+.hero-find strong{color:var(--ink);font-weight:600}
+.ledger{border-top:1px solid var(--rule);margin-top:8px}
+.row{display:grid;grid-template-columns:52px 1fr 180px 94px;gap:17px;align-items:center;
+  padding:14px 0;border-bottom:1px solid var(--rule-soft)}
+@media(max-width:760px){
+  .row{grid-template-columns:44px 1fr;gap:6px 14px}
+  .row .mde,.row .dnum{grid-column:2}
+  .row .mde{margin-top:6px}.row .dnum{text-align:left}
+}
+.ref{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  color:var(--indigo);letter-spacing:.03em}
+.what{font-size:14.5px;line-height:1.35}
+.what b{font-weight:600}
+.what i{font-style:normal;color:var(--ink-mute);font-size:13px;display:block;margin-top:2px}
+.mde{position:relative;height:26px}
+.mde-track{position:absolute;inset:8px 0;background:var(--surface-sunk);border-radius:1px}
+.mde-band{position:absolute;top:0;bottom:0;background:var(--band);border-radius:1px;
+  left:calc(50% - (var(--m) * 555.6) * 1%);width:calc((var(--m) * 1111.2) * 1%)}
+.mde-zero{position:absolute;top:-3px;bottom:-3px;left:50%;width:1px;background:var(--ink-mute);opacity:.5}
+.mde-mark{position:absolute;top:-4px;bottom:-4px;width:3px;border-radius:2px;
+  left:calc(50% + (var(--d) * 555.6) * 1% - 1.5px);background:var(--ink-mute)}
+.row[data-v="pos"] .mde-mark{background:var(--viridian);width:4px}
+.row[data-v="neg"] .mde-mark{background:var(--eosin);width:4px}
+.dnum{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-variant-numeric:tabular-nums;
+  text-align:right;color:var(--ink-soft)}
+.row[data-v="pos"] .dnum{color:var(--viridian);font-weight:600}
+.row[data-v="neg"] .dnum{color:var(--eosin);font-weight:600}
+.dnum small{display:block;font-size:10.5px;color:var(--ink-mute);letter-spacing:.03em}
+.legend{display:flex;gap:20px;flex-wrap:wrap;align-items:center;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-mute);
+  letter-spacing:.03em;margin:16px 0 6px}
+.legend i{display:inline-block;width:20px;height:9px;background:var(--band);
+  vertical-align:-1px;margin-right:6px;border-radius:1px}
+.legend b{display:inline-block;width:3px;height:13px;background:var(--ink-mute);
+  vertical-align:-2px;margin-right:6px}
+.howto{background:var(--surface-sunk);border-radius:3px;padding:18px 20px;margin:0 0 22px}
+.howto p{margin:0;font-size:14.5px;color:var(--ink-soft)}
+ol.steps{max-width:66ch;padding-left:22px;margin:0 0 20px}
+ol.steps li{margin-bottom:11px;color:var(--ink-soft)}
+ol.steps li::marker{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--indigo);font-weight:600}
+ol.steps strong{color:var(--ink)}
+.nb{display:block;margin-top:7px;padding:10px 13px;background:var(--surface-sunk);
+  border-left:2px solid var(--indigo-soft);border-radius:0 2px 2px 0;
+  font-size:14px;color:var(--ink-mute);line-height:1.5}
+.nb b{color:var(--ink-soft)}
+ul.rules{max-width:66ch;padding-left:22px;margin:0 0 18px}
+ul.rules li{margin-bottom:9px;color:var(--ink-soft)}
+ul.rules strong{color:var(--ink)}
+.closed{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:1px;
+  background:var(--rule-soft);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.closed div{background:var(--surface);padding:16px 18px}
+.closed h3{margin:0 0 5px;font-size:14px;font-weight:600}
+.closed p{margin:0;font-size:13px;color:var(--ink-mute);line-height:1.45}
+.gloss{border-top:1px solid var(--rule)}
+.gterm{padding:16px 0;border-bottom:1px solid var(--rule-soft);scroll-margin-top:20px}
+.gterm:target{background:var(--surface-sunk);
+  box-shadow:-14px 0 0 var(--surface-sunk),14px 0 0 var(--surface-sunk)}
+.gterm dt{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:600;
+  color:var(--indigo);margin-bottom:5px}
+.gterm dt em{font-style:normal;color:var(--ink-mute);font-weight:400;font-size:12px;
+  margin-left:9px;letter-spacing:.03em}
+.gterm dd{margin:0;font-size:15px;color:var(--ink-soft);max-width:66ch}
+.gterm dd + dd{margin-top:7px;font-size:14px;color:var(--ink-mute)}
+.gterm dd b{color:var(--ink);font-weight:600}
+.method{border-left:2px solid var(--indigo-soft);padding:2px 0 2px 20px;margin-top:14px}
+.method p{font-size:15px;color:var(--ink-soft)}
+code{font-family:"IBM Plex Mono",monospace;font-size:.88em;background:var(--surface-sunk);
+  padding:1px 5px;border-radius:2px;color:var(--ink)}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-mute);
+  letter-spacing:.03em;line-height:1.7}
+a{color:var(--indigo)}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Patho-Ensemble · revisión de las vías abiertas · 6 sep 2026</p>
+  <h1>Las vías abiertas del informe consolidado, puestas a prueba</h1>
+  <p class="standfirst">El informe de 1 de septiembre cerraba con diez líneas de investigación pendientes. Se han ejecutado todas. <em>Una funcionó.</em> Las demás quedan cerradas con su margen de error medido — y varias afirmaciones del informe necesitan revisión.</p>
+  <div class="meta">
+    Documento sobre: INFORME_CONSOLIDADO_TESIS_20260901<br>
+    Conjuntos: cptac_brca · cptac_gbm · bc_therapy · cervical_subtype<br>
+    50 particiones por experimento (5 en cervical, 20 en la partición nueva)
+  </div>
+  <dl class="tally">
+    <div><dt>Vías probadas</dt><dd>10</dd></div>
+    <div><dt>Trabajos lanzados</dt><dd>46</dd></div>
+    <div><dt>Conjuntos</dt><dd>4</dd></div>
+    <div><dt>Funcionaron</dt><dd>1</dd></div>
+    <div><dt>Correcciones</dt><dd>5</dd></div>
+  </dl>
+</header>
+
+<section id="como-funciona">
+  <h2>1 · Cómo funciona el sistema</h2>
+  <p class="sec-note">Los términos subrayados muestran su definición al pasar el ratón por encima; al pulsarlos se salta al glosario del anexo A.</p>
+
+  <p class="lead">El objetivo es mirar la imagen de una biopsia y predecir si el tumor tiene mutado el gen TP53. La imagen es enorme —una <a class="t" href="#g-wsi" data-def="Whole-Slide Image: la digitalización completa de un portaobjetos. Puede ocupar varios gigapíxeles.">WSI</a> tiene miles de millones de píxeles—, así que no se procesa entera: se trocea en miles de cuadraditos llamados <a class="t" href="#g-parche" data-def="Cuadradito de 224x224 píxeles recortado de la imagen completa. Una biopsia da entre 3.700 y 6.600.">parches</a>.</p>
+
+  <p>Cada parche pasa por un <a class="t" href="#g-fundacional" data-def="Red neuronal grande, ya entrenada por otros con millones de imágenes, que convierte un parche en una lista de números que lo describe. En este proyecto hay ocho.">modelo fundacional</a>, que lo convierte en una lista de números o <a class="t" href="#g-embedding" data-def="La lista de números con la que un modelo describe un parche. Entre 768 y 2.560 números según el modelo.">embedding</a>. Después hay que resumir los miles de parches en una sola predicción, y de eso se encarga el <a class="t" href="#g-abmil" data-def="Attention-Based Multiple Instance Learning. Aprende a puntuar cada parche según su importancia y hace una media ponderada con esas puntuaciones.">ABMIL</a>, que aprende a dar más peso a los parches relevantes mediante un mecanismo de <a class="t" href="#g-atencion" data-def="Puntuación que el modelo asigna a cada parche. Suman 1 entre todos. Un parche con mucha atención pesa mucho en la predicción final.">atención</a>.</p>
+
+  <p>Como ningún modelo fundacional es el mejor en todo, se combinan varios. <strong>La pregunta de la que trata casi todo este informe es <em>en qué momento</em> conviene combinarlos.</strong></p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 900 372" role="img" aria-label="Diagrama del proceso: una biopsia se trocea en parches, cada modelo fundacional los convierte en embeddings, un ABMIL los resume en una probabilidad y un metaclasificador combina las tres probabilidades. Se marcan los tres puntos donde se puede combinar: A al nivel de parche, B al nivel de atención y C al nivel de probabilidad.">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor">
+          <g stroke="currentColor" stroke-dasharray="3 4" opacity=".35">
+            <line x1="416" y1="52" x2="416" y2="330"/>
+            <line x1="566" y1="52" x2="566" y2="330"/>
+            <line x1="716" y1="52" x2="716" y2="330"/>
+          </g>
+          <g font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" text-anchor="middle">
+            <text x="416" y="26" fill="#A8385C">A · nivel de parche</text>
+            <text x="416" y="42" fill="#A8385C" font-size="10" font-weight="400">fusión temprana — falla</text>
+            <text x="566" y="26" fill="#2F7A5A">B · nivel de atención</text>
+            <text x="566" y="42" fill="#2F7A5A" font-size="10" font-weight="400">top-k — funciona</text>
+            <text x="716" y="26" fill="currentColor">C · nivel de probabilidad</text>
+            <text x="716" y="42" fill="currentColor" font-size="10" opacity=".7">fusión tardía — la actual</text>
+          </g>
+          <rect x="12" y="152" width="62" height="46" rx="3" fill="none" stroke="currentColor"/>
+          <text x="43" y="172" text-anchor="middle">biopsia</text>
+          <text x="43" y="187" text-anchor="middle" font-size="10" opacity=".7">1 imagen</text>
+          <line x1="76" y1="175" x2="98" y2="175" stroke="currentColor" marker-end="url(#ar)"/>
+          <rect x="100" y="152" width="66" height="46" rx="3" fill="none" stroke="currentColor"/>
+          <text x="133" y="172" text-anchor="middle">parches</text>
+          <text x="133" y="187" text-anchor="middle" font-size="10" opacity=".7">~5.000</text>
+          <g stroke="currentColor" fill="none">
+            <path d="M168,175 C186,175 186,88 204,88" marker-end="url(#ar)"/>
+            <line x1="168" y1="175" x2="204" y2="175" marker-end="url(#ar)"/>
+            <path d="M168,175 C186,175 186,262 204,262" marker-end="url(#ar)"/>
+          </g>
+          <g>
+            <rect x="206" y="66" width="104" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="258" y="84" text-anchor="middle" font-size="11">modelo</text>
+            <text x="258" y="98" text-anchor="middle" font-size="11">fundacional 1</text>
+            <line x1="312" y1="88" x2="332" y2="88" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="334" y="66" width="76" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="372" y="84" text-anchor="middle" font-size="11">embeddings</text>
+            <text x="372" y="98" text-anchor="middle" font-size="10" opacity=".7">por parche</text>
+            <line x1="412" y1="88" x2="458" y2="88" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="460" y="66" width="104" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="512" y="84" text-anchor="middle" font-size="11">ABMIL</text>
+            <text x="512" y="98" text-anchor="middle" font-size="10" opacity=".7">atención</text>
+            <line x1="566" y1="88" x2="606" y2="88" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="608" y="70" width="62" height="36" rx="3" fill="none" stroke="currentColor"/>
+            <text x="639" y="92" text-anchor="middle" font-size="11">prob. 1</text>
+          </g>
+          <g>
+            <rect x="206" y="153" width="104" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="258" y="171" text-anchor="middle" font-size="11">modelo</text>
+            <text x="258" y="185" text-anchor="middle" font-size="11">fundacional 2</text>
+            <line x1="312" y1="175" x2="332" y2="175" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="334" y="153" width="76" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="372" y="171" text-anchor="middle" font-size="11">embeddings</text>
+            <text x="372" y="185" text-anchor="middle" font-size="10" opacity=".7">por parche</text>
+            <line x1="412" y1="175" x2="458" y2="175" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="460" y="153" width="104" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="512" y="171" text-anchor="middle" font-size="11">ABMIL</text>
+            <text x="512" y="185" text-anchor="middle" font-size="10" opacity=".7">atención</text>
+            <line x1="566" y1="175" x2="606" y2="175" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="608" y="157" width="62" height="36" rx="3" fill="none" stroke="currentColor"/>
+            <text x="639" y="179" text-anchor="middle" font-size="11">prob. 2</text>
+          </g>
+          <g>
+            <rect x="206" y="240" width="104" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="258" y="258" text-anchor="middle" font-size="11">modelo</text>
+            <text x="258" y="272" text-anchor="middle" font-size="11">fundacional 3</text>
+            <line x1="312" y1="262" x2="332" y2="262" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="334" y="240" width="76" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="372" y="258" text-anchor="middle" font-size="11">embeddings</text>
+            <text x="372" y="272" text-anchor="middle" font-size="10" opacity=".7">por parche</text>
+            <line x1="412" y1="262" x2="458" y2="262" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="460" y="240" width="104" height="44" rx="3" fill="none" stroke="currentColor"/>
+            <text x="512" y="258" text-anchor="middle" font-size="11">ABMIL</text>
+            <text x="512" y="272" text-anchor="middle" font-size="10" opacity=".7">atención</text>
+            <line x1="566" y1="262" x2="606" y2="262" stroke="currentColor" marker-end="url(#ar)"/>
+            <rect x="608" y="244" width="62" height="36" rx="3" fill="none" stroke="currentColor"/>
+            <text x="639" y="266" text-anchor="middle" font-size="11">prob. 3</text>
+          </g>
+          <g stroke="currentColor" fill="none">
+            <path d="M672,88 C694,88 694,175 712,175" marker-end="url(#ar)"/>
+            <line x1="672" y1="175" x2="712" y2="175" marker-end="url(#ar)"/>
+            <path d="M672,262 C694,262 694,175 712,175" marker-end="url(#ar)"/>
+          </g>
+          <rect x="714" y="152" width="96" height="46" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="762" y="171" text-anchor="middle" font-size="11">meta-</text>
+          <text x="762" y="185" text-anchor="middle" font-size="11">clasificador</text>
+          <line x1="812" y1="175" x2="834" y2="175" stroke="currentColor" marker-end="url(#ar)"/>
+          <text x="866" y="172" text-anchor="middle" font-size="11">TP53</text>
+          <text x="866" y="187" text-anchor="middle" font-size="11">sí / no</text>
+        </g>
+      </svg>
+      <figcaption><b>Los tres momentos en que se pueden combinar los modelos.</b> El sistema actual combina en <b>C</b>: cada modelo trabaja por su cuenta hasta el final y solo se juntan sus tres probabilidades. Combinar antes, en <b>A</b>, pegando los embeddings de cada parche para alimentar un único ABMIL, se probó y no funciona. Intervenir en <b>B</b>, sobre las puntuaciones de atención, es lo único que ha dado resultado.</figcaption>
+    </div>
+  </figure>
+
+  <h3>Qué hace exactamente el hallazgo positivo</h3>
+  <p>El ABMIL reparte el 100 % de la atención entre miles de parches, de modo que a la mayoría le toca una miga. La intervención que funciona consiste en <strong>quedarse solo con los 10 parches más atendidos y descartar el resto</strong> antes de construir el resumen de la biopsia.</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 720 210" role="img" aria-label="Comparación: a la izquierda la atención completa reparte peso entre todos los parches, incluida una cola larga de parches poco relevantes; a la derecha el top-k conserva solo los diez parches más atendidos y descarta la cola.">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor">
+          <text x="10" y="18" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">ATENCIÓN COMPLETA</text>
+          <text x="10" y="34" font-size="11" opacity=".7">todos los parches aportan algo</text>
+          <g fill="currentColor" opacity=".75">
+            <rect x="10" y="70" width="9" height="88"/><rect x="23" y="88" width="9" height="70"/>
+            <rect x="36" y="104" width="9" height="54"/><rect x="49" y="116" width="9" height="42"/>
+            <rect x="62" y="124" width="9" height="34"/><rect x="75" y="130" width="9" height="28"/>
+            <rect x="88" y="134" width="9" height="24"/><rect x="101" y="137" width="9" height="21"/>
+            <rect x="114" y="140" width="9" height="18"/><rect x="127" y="142" width="9" height="16"/>
+          </g>
+          <g fill="currentColor" opacity=".38">
+            <rect x="140" y="145" width="9" height="13"/><rect x="153" y="147" width="9" height="11"/>
+            <rect x="166" y="148" width="9" height="10"/><rect x="179" y="149" width="9" height="9"/>
+            <rect x="192" y="150" width="9" height="8"/><rect x="205" y="151" width="9" height="7"/>
+            <rect x="218" y="151" width="9" height="7"/><rect x="231" y="152" width="9" height="6"/>
+            <rect x="244" y="152" width="9" height="6"/><rect x="257" y="153" width="9" height="5"/>
+            <rect x="270" y="153" width="9" height="5"/><rect x="283" y="153" width="9" height="5"/>
+          </g>
+          <line x1="6" y1="158" x2="300" y2="158" stroke="currentColor"/>
+          <text x="212" y="176" font-size="10.5" opacity=".7" text-anchor="middle">la cola larga: miles de parches</text>
+          <text x="212" y="190" font-size="10.5" opacity=".7" text-anchor="middle">con muy poco peso cada uno</text>
+          <line x1="318" y1="115" x2="368" y2="115" stroke="currentColor" fill="none" marker-end="url(#ar2)"/>
+          <text x="343" y="105" text-anchor="middle" font-size="10.5" opacity=".8">top-k</text>
+          <text x="392" y="18" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#2F7A5A">SOLO LOS 10 PRIMEROS</text>
+          <text x="392" y="34" font-size="11" opacity=".7">la cola se descarta y el peso se reparte de nuevo</text>
+          <g fill="#2F7A5A">
+            <rect x="392" y="62" width="9" height="96"/><rect x="405" y="80" width="9" height="78"/>
+            <rect x="418" y="96" width="9" height="62"/><rect x="431" y="108" width="9" height="50"/>
+            <rect x="444" y="117" width="9" height="41"/><rect x="457" y="123" width="9" height="35"/>
+            <rect x="470" y="127" width="9" height="31"/><rect x="483" y="130" width="9" height="28"/>
+            <rect x="496" y="133" width="9" height="25"/><rect x="509" y="135" width="9" height="23"/>
+          </g>
+          <g stroke="#A8385C" stroke-width="1.3" opacity=".8">
+            <line x1="528" y1="140" x2="668" y2="140"/>
+            <line x1="528" y1="133" x2="535" y2="147"/><line x1="545" y1="133" x2="552" y2="147"/>
+            <line x1="562" y1="133" x2="569" y2="147"/><line x1="579" y1="133" x2="586" y2="147"/>
+            <line x1="596" y1="133" x2="603" y2="147"/><line x1="613" y1="133" x2="620" y2="147"/>
+            <line x1="630" y1="133" x2="637" y2="147"/><line x1="647" y1="133" x2="654" y2="147"/>
+          </g>
+          <line x1="388" y1="158" x2="676" y2="158" stroke="currentColor"/>
+          <text x="598" y="176" font-size="10.5" fill="#A8385C" text-anchor="middle">descartada</text>
+        </g>
+      </svg>
+      <figcaption><b>Truncar la cola es lo que produce la mejora.</b> No es cuestión de que la atención esté más o menos concentrada: a igual grado de concentración, cortar en seco los parches irrelevantes gana +0,0244 de <a class="t" href="#g-auc" data-def="Área bajo la curva ROC: mide si el modelo ordena bien los casos. 0,5 es azar y 1,0 es perfecto.">AUC</a> frente a limitarse a afinar los pesos. Aplicado al predecir mejora; aplicado durante el entrenamiento, perjudica.</figcaption>
+    </div>
+  </figure>
+
+  <h3>El procedimiento, paso a paso</h3>
+  <p>Conviene subrayar que <strong>no se reentrena nada</strong>. Todo ocurre en el momento de predecir, sobre modelos ya entrenados, lo que hace la intervención muy barata de aplicar y de revertir.</p>
+  <ol class="steps">
+    <li><strong>Se cargan los ABMIL ya entrenados y no se tocan.</strong> Sus pesos quedan exactamente como estaban.</li>
+    <li><strong>Se recalculan las puntuaciones de atención</strong> de cada parche, en su forma cruda, antes de normalizarlas.</li>
+    <li><strong>Se recorta la cola.</strong> Se conservan los <em>k</em> parches de puntuación más alta y se reparte entre ellos el peso que tenían, <em>respetando la proporción original</em>. Los demás pasan a pesar cero.
+      <span class="nb">Detalle que importa: <b>no</b> se recalcula la atención desde cero sobre los <em>k</em> supervivientes. Se conserva el reparto relativo que el modelo había aprendido y solo se anula la cola. Recalcularla mezclaría dos manipulaciones —recortar y reescalar— y no se sabría cuál produce el efecto.</span>
+    </li>
+    <li><strong>Se construye el resumen de la biopsia</strong> con esos pesos: una media ponderada de los parches supervivientes, que da un vector de 512 números.</li>
+    <li><strong>Ese resumen alimenta al <a class="t" href="#g-meta" data-def="El modelo pequeño que recibe la salida de los modelos base y produce la predicción final. Aquí, una regresión logística.">metaclasificador</a></strong>, igual que en el procedimiento normal.</li>
+  </ol>
+
+  <h3>Cómo se reparten los datos</h3>
+  <p>Todo se repite sobre 50 <a class="t" href="#g-fold" data-def="Una división concreta de los datos en parte de entrenamiento, validación y test. Se repite 50 veces para que el resultado no dependa de una división afortunada.">particiones</a> distintas. En cada una, las 112 biopsias de <code>cptac_brca</code> se reparten como muestra la figura, y <strong>el recorte se aplica por igual en las tres partes</strong>: si solo se aplicara en test, se estaría evaluando al metaclasificador con una entrada distinta de aquella con la que se entrenó.</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 720 176" role="img" aria-label="Reparto de las 112 biopsias en cada partición: 75 para entrenar el metaclasificador, 15 para elegir el umbral y el valor de k, y 22 para la evaluación final. El recorte top-k se aplica en las tres partes.">
+        <g font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor">
+          <text x="0" y="16" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">UNA PARTICIÓN · 112 BIOPSIAS · 103 PACIENTES</text>
+          <text x="0" y="32" font-size="11" opacity=".7">se repite 50 veces con divisiones distintas</text>
+
+          <rect x="0" y="48" width="429" height="40" fill="currentColor" opacity=".16"/>
+          <rect x="433" y="48" width="86" height="40" fill="currentColor" opacity=".30"/>
+          <rect x="523" y="48" width="126" height="40" fill="#2F7A5A" opacity=".85"/>
+          <g stroke="currentColor" fill="none" opacity=".5">
+            <rect x="0" y="48" width="429" height="40"/><rect x="433" y="48" width="86" height="40"/>
+          </g>
+
+          <text x="214" y="66" text-anchor="middle" font-size="12" font-weight="600">entrenamiento</text>
+          <text x="214" y="80" text-anchor="middle" font-size="11" opacity=".75">75 biopsias</text>
+          <text x="476" y="66" text-anchor="middle" font-size="11" font-weight="600">validación</text>
+          <text x="476" y="80" text-anchor="middle" font-size="11" opacity=".75">15</text>
+          <text x="586" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF">test</text>
+          <text x="586" y="80" text-anchor="middle" font-size="11" fill="#FFFFFF" opacity=".9">22</text>
+
+          <g font-size="11" opacity=".8">
+            <line x1="214" y1="92" x2="214" y2="104" stroke="currentColor"/>
+            <text x="214" y="118" text-anchor="middle">entrena el metaclasificador</text>
+            <line x1="476" y1="92" x2="476" y2="104" stroke="currentColor"/>
+            <text x="476" y="118" text-anchor="middle">elige el umbral y el valor de k</text>
+            <line x1="586" y1="92" x2="586" y2="104" stroke="currentColor"/>
+            <text x="586" y="118" text-anchor="middle" fill="#2F7A5A" font-weight="600">única medida que se reporta</text>
+          </g>
+
+          <line x1="0" y1="138" x2="649" y2="138" stroke="currentColor" opacity=".25"/>
+          <text x="0" y="156" font-size="11" opacity=".8">El recorte top-k se aplica en las TRES partes · ningún paciente cruza de una a otra</text>
+          <text x="0" y="170" font-size="11" opacity=".8">Los modelos base se entrenaron con estas mismas particiones: ninguna biopsia de test se ha visto antes</text>
+        </g>
+      </svg>
+      <figcaption><b>El reparto de cada partición, y para qué sirve cada parte.</b> Las cifras corresponden a <code>cptac_brca</code>; en <code>cptac_gbm</code>, donde se midió el hallazgo, son 164 / 31 / 48 sobre 243 biopsias.</figcaption>
+    </div>
+  </figure>
+
+  <p>Tres reglas gobiernan ese reparto:</p>
+  <ul class="rules">
+    <li><strong>Ningún paciente cruza de una parte a otra.</strong> Todas las biopsias de un mismo paciente van juntas, para que el modelo no pueda acertar reconociendo al paciente en vez de al tumor.</li>
+    <li><strong>El umbral de decisión y el valor de <em>k</em> se eligen en validación, nunca en test.</strong> Validación ya se usa para la parada temprana, así que no añade ninguna fuga nueva; elegirlos en test invalidaría la única medida honesta que queda.</li>
+    <li><strong>Los modelos base se entrenaron con estas mismas particiones</strong>, de modo que el parche que recibe más atención en una biopsia de test nunca se vio durante el entrenamiento.</li>
+  </ul>
+
+  <h3>Dos comprobaciones que el procedimiento debe pasar</h3>
+  <p>Están automatizadas y el programa <strong>se detiene</strong> si alguna falla, porque un recálculo de atención mal hecho produciría una curva perfectamente plausible y completamente falsa:</p>
+  <ul class="rules">
+    <li><strong>Sin recortar nada</strong>, el resultado debe coincidir <em>exactamente</em> con la atención original del modelo. Si no coincide, el recálculo está mal.</li>
+    <li><strong>Con la atención aplanada del todo</strong>, debe coincidir <em>exactamente</em> con el control negativo ya publicado en la ficha P4 del informe consolidado. Eso ancla la medida nueva a una cifra que ya estaba validada.</li>
+  </ul>
+  <p>Y sobre la posibilidad de fuga: <strong>la atención se calcula solo a partir de la imagen</strong>, sin ver en ningún momento la etiqueta. Seleccionar parches por atención no puede, por construcción, filtrar la respuesta.</p>
+</section>
+
+<section id="positivo">
+  <h2>2 · Lo único que funcionó</h2>
+  <p class="sec-note">Vía §4.4 del informe consolidado, la que allí se calificaba de «contraste decisivo pendiente». Solo inferencia: no se reentrenó ningún modelo.</p>
+
+  <div class="hero-find">
+    <div class="hero-grid">
+      <div>
+        <div class="big">+0,0388</div>
+        <div class="cap">mejora de AUC<br>conjunto cptac_gbm<br>p-Holm 0,0046<br>MDE 0,0257<br>gana en 35 de 50</div>
+      </div>
+      <div>
+        <p><strong>Quedarse solo con los 10 parches más atendidos</strong> al construir el resumen de la biopsia mejora la predicción, y la mejora sobrevive a la corrección estadística aplicada sobre <em>las 36 comparaciones de toda la campaña</em>, no solo sobre las suyas.</p>
+        <p><strong>Corrige además una idea previa del informe.</strong> Se suponía que cuanto más concentrada estuviera la atención, mejor. No es así: hay un punto óptimo intermedio. Aplanarla del todo perjudica, y concentrarla en exceso también.</p>
+        <p><strong>Lo que importa es truncar, no concentrar.</strong> Comparando dos intervenciones que dejan la atención igual de concentrada, la que corta en seco la cola gana +0,0244. El beneficio viene de eliminar los parches irrelevantes, no de reajustar sus pesos.</p>
+        <p><strong>Lo que aún no se puede afirmar</strong> es que sirva como criterio para decidir de antemano en qué conjunto aplicarlo: con solo 4 conjuntos la relación es coherente en 3, pero no alcanza significación (ρ = −0,40, p = 0,60).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="method" style="margin-top:20px">
+    <p><strong>Un contraste que conviene no perder.</strong> Hacer lo mismo <em>durante el entrenamiento</em> en vez de al predecir hace daño: el AUC baja de 0,8026 a 0,7695. Seleccionar parches al predecir ayuda; seleccionarlos al aprender perjudica, porque el modelo se queda sin ejemplos con los que aprender a distinguir. Son mecanismos distintos, y la yuxtaposición es en sí un resultado.</p>
+  </div>
+</section>
+
+<section id="correcciones">
+  <h2>3 · Qué habría que revisar del informe consolidado</h2>
+  <p class="sec-note">Cinco afirmaciones que la campaña no sostiene. La primera afecta a un resultado catalogado como positivo.</p>
+
+  <div class="fix">
+    <div class="fix-head">
+      <span class="fix-ref">P5</span>
+      <span class="fix-title">Combinar nunca superó al mejor modelo suelto</span>
+    </div>
+    <p>El informe presenta como logro que el comité de tres modelos gana al mejor modelo por su cuenta (+0,0084, «27 de 50 folds»). La réplica en tres conjuntos <strong>reproduce esa cifra exactamente</strong> —el mismo +0,0084 y las mismas 27 victorias— y precisamente por eso la desmonta: ese valor <strong>ya era menor que el <a class="t" href="#s-mde" data-def="Mínimo efecto detectable: la mejora más pequeña que el experimento podría distinguir del azar.">MDE</a> del propio experimento</strong> (0,0118) cuando se publicó, con p de Wilcoxon 0,128 y p-Holm 1,000.</p>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0;font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-variant-numeric:tabular-nums">
+      <tr style="color:var(--ink-mute);font-size:10px;letter-spacing:.1em;text-transform:uppercase">
+        <th style="text-align:left;padding-bottom:6px;border-bottom:1px solid var(--rule)">Conjunto</th>
+        <th style="text-align:right;padding-bottom:6px;border-bottom:1px solid var(--rule)">Δ AUC</th>
+        <th style="text-align:right;padding-bottom:6px;border-bottom:1px solid var(--rule)">p</th>
+        <th style="text-align:right;padding-bottom:6px;border-bottom:1px solid var(--rule)">p-Holm</th>
+        <th style="text-align:right;padding-bottom:6px;border-bottom:1px solid var(--rule)">MDE</th>
+      </tr>
+      <tr><td style="padding:6px 0;border-bottom:1px solid var(--rule-soft)">cptac_brca</td><td style="text-align:right">+0,0084</td><td style="text-align:right">0,128</td><td style="text-align:right">1,000</td><td style="text-align:right">0,0118</td></tr>
+      <tr><td style="padding:6px 0;border-bottom:1px solid var(--rule-soft)">cptac_gbm</td><td style="text-align:right">−0,0014</td><td style="text-align:right">0,689</td><td style="text-align:right">1,000</td><td style="text-align:right">0,0337</td></tr>
+      <tr><td style="padding:6px 0;border-bottom:1px solid var(--rule-soft)">cervical_subtype</td><td style="text-align:right">+0,0061</td><td style="text-align:right">0,188</td><td style="text-align:right">1,000</td><td style="text-align:right">0,0074</td></tr>
+    </table>
+    <p>El «27 de 50» omite además que hubo <strong>6 empates y 17 derrotas</strong>: entre los 44 casos decididos, 27 a 17 es prácticamente lo que daría una moneda.</p>
+    <p><strong>Y hay una explicación mecánica.</strong> El comité parece aportar si se usa el corte por defecto en 0,5 para decidir sí/no (acierto +0,0370, p = 0,0062). Pero si ese corte se ajusta sobre validación, como debe hacerse, la ventaja se evapora: <strong>+0,0008</strong>. Lo que el comité añade no es ordenar mejor los casos sino compensar un corte mal puesto — y eso se consigue recalibrando un único modelo. Es el mismo diagnóstico que el informe da en las fichas N1–N2 para el hundimiento de los MLP.</p>
+  </div>
+
+  <div class="fix">
+    <div class="fix-head">
+      <span class="fix-ref">§4.1</span>
+      <span class="fix-title">La vía de más prioridad estaba mal planteada</span>
+    </div>
+    <p>El §4.1 pide «entrenar los modelos fundacionales que faltan: UNI2, H-Optimus-0 y Prov-GigaPath», y lo sitúa como la palanca más prometedora del proyecto. Los tres puntos son inexactos:</p>
+    <ul>
+      <li><strong>UNI2 ya estaba entrenado.</strong> Es el modelo que en el informe figura como <code>uni_v2</code> (1.536 dimensiones, que es lo que distingue UNI2 de UNI v1).</li>
+      <li><strong>H-Optimus-0 y Prov-GigaPath no son «modelos sin entrenar», sino modelos sin datos.</strong> No existen sus embeddings para <code>cptac_brca</code> ni <code>bc_therapy</code>. El cuello de botella es la extracción de características, no el entrenamiento — un trabajo de otro orden de magnitud.</li>
+      <li><strong>Donde sí se pueden entrenar, ya están medidos y no aportan.</strong> En <code>cptac_gbm</code>, añadir Prov-GigaPath da +0,0088 con un MDE de 0,0095, y H-Optimus-0 da −0,0057.</li>
+    </ul>
+    <p>La frase «cada uno es una oportunidad del tamaño del cambio <code>virchow_v1 → conch_v1_5</code>» queda por tanto <strong>falsada en los dos conjuntos donde era comprobable</strong>.</p>
+  </div>
+
+  <div class="fix">
+    <div class="fix-head">
+      <span class="fix-ref">§4.8</span>
+      <span class="fix-title">La atención con compuerta sí estaba probada — siempre estuvo activa</span>
+    </div>
+    <p>El informe lista entre las líneas menores pendientes: «<em>gated attention</em>: nunca probada; es un cambio de una línea en la configuración del ABMIL». Es al revés: el código usa atención con compuerta <strong>de forma incondicional</strong>, y no existe ninguna opción para desactivarla.</p>
+    <p>Lo que faltaba era la ablación contraria — quitarla. Hecha: el AUC no cambia (0,8025 frente a 0,8026), aunque <a class="t" href="#g-kappa" data-def="Medida de acuerdo que descuenta los aciertos esperables por azar. Depende de dónde se ponga el corte de decisión.">kappa</a> sí baja de 0,489 a 0,445. La compuerta no aporta capacidad de ordenación.</p>
+  </div>
+
+  <div class="fix">
+    <div class="fix-head">
+      <span class="fix-ref">§2.3</span>
+      <span class="fix-title">La tabla de modelos base es de un solo conjunto y su orden no se traslada</span>
+    </div>
+    <p>La tabla del §2.3 se presenta como el ranking de los ocho modelos fundacionales, pero está medida únicamente sobre <code>cptac_brca</code>. En <code>cptac_gbm</code> el orden es distinto: <code>ctranspath</code> cae del sexto puesto al último (0,7571 → 0,6713) y <code>uni_v2</code> sube del quinto al tercero. Solo <code>conch_v1_5</code> es primero en ambos.</p>
+    <p>Conviene <strong>etiquetar la tabla con su conjunto de datos</strong> y no tratarla como una propiedad general de los modelos. Lo mismo vale para las correlaciones de redundancia del §2.4.</p>
+  </div>
+
+  <div class="fix">
+    <div class="fix-head">
+      <span class="fix-ref">§3.4</span>
+      <span class="fix-title">Más datos no redujeron la brecha entre entrenamiento y test</span>
+    </div>
+    <p>El informe atribuye la brecha train→test a que el cuello de botella es muestral: medio millón de parámetros entrenados con 75 biopsias. Pero en <code>cptac_gbm</code>, <strong>con 164 biopsias de entrenamiento en lugar de 75, la brecha es mayor</strong>, no menor: de +0,21 a +0,30, frente a +0,09 a +0,20 en <code>cptac_brca</code>.</p>
+    <p>No invalida el diagnóstico —el tamaño muestral sigue siendo pequeño en términos absolutos—, pero sí indica que la relación no es tan directa como el §3.4.1 sugiere, y que hay algo más en juego.</p>
+  </div>
+</section>
+
+<section id="libro">
+  <h2>4 · Todos los resultados</h2>
+
+  <div class="howto">
+    <p><strong>Cómo leer cada barra.</strong> La franja gris es el <a class="t" href="#s-mde" data-def="Mínimo efecto detectable: la mejora más pequeña que este experimento podría distinguir del azar, dado cuántos datos tiene.">margen de incertidumbre</a> del experimento: cualquier resultado que caiga dentro es indistinguible del azar. La marca vertical es el efecto medido. <strong>Solo cuando la marca sale claramente de la franja hay hallazgo</strong> — verde si mejora, rojo si empeora. Casi todas caen dentro, y ese es el resumen de la campaña.</p>
+  </div>
+
+  <div class="legend">
+    <span><i></i>margen de incertidumbre (±MDE)</span>
+    <span><b></b>efecto medido</span>
+    <span>escala común: ±0,09 de AUC</span>
+  </div>
+
+  <div class="ledger">
+    <div class="row" data-v="pos">
+      <div class="ref">§4.4</div>
+      <div class="what"><b>Quedarse con los 10 parches más atendidos</b> <i>cptac_gbm · el único hallazgo positivo</i></div>
+      <div class="mde" style="--d:0.0388;--m:0.0257"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">+0,0388<small>MDE 0,026</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">§4.4</div>
+      <div class="what"><b>Quedarse con los 100 más atendidos</b> <i>cptac_brca · el AUC más alto medido (0,8172), pero no afirmable</i></div>
+      <div class="mde" style="--d:0.0186;--m:0.0223"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">+0,0186<small>MDE 0,022</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">§4.1</div>
+      <div class="what"><b>Añadir el modelo Prov-GigaPath al trío</b> <i>cptac_gbm · gana en 33 de 50 y aun así no basta</i></div>
+      <div class="mde" style="--d:0.0088;--m:0.0095"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">+0,0088<small>MDE 0,010</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">P5</div>
+      <div class="what"><b>Comité de 3 vs. mejor modelo suelto</b> <i>cptac_brca · reproduce la cifra publicada y la desmonta</i></div>
+      <div class="mde" style="--d:0.0084;--m:0.0118"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">+0,0084<small>MDE 0,012</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">§4.5</div>
+      <div class="what"><b>Ampliar la compresión interna a 2048</b> <i>virchow_v1 · la hipótesis del «estrangulamiento», refutada</i></div>
+      <div class="mde" style="--d:0.0034;--m:0.0261"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">+0,0034<small>MDE 0,026</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">§4.7</div>
+      <div class="what"><b>Elegir modelos según el órgano</b> <i>9 configuraciones, 4 órganos, todas p-Holm = 1,000</i></div>
+      <div class="mde" style="--d:0.0021;--m:0.0062"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">+0,0021<small>MDE 0,006</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">§4.3</div>
+      <div class="what"><b>Pasar embeddings en vez de probabilidades</b> <i>cervical con 20 particiones nuevas · el nulo mejor acotado</i></div>
+      <div class="mde" style="--d:-0.0013;--m:0.0063"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">−0,0013<small>MDE 0,006</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">+</div>
+      <div class="what"><b>Optimizar los pesos de la mezcla (Nelder-Mead)</b> <i>sobre validación honesta sale peor que una regresión simple</i></div>
+      <div class="mde" style="--d:-0.0038;--m:0.0100"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">−0,0038<small>MDE ≈0,010</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">§4.2</div>
+      <div class="what"><b>Combinar al nivel de parche (punto A)</b> <i>nulo en los tres conjuntos donde es posible</i></div>
+      <div class="mde" style="--d:-0.0086;--m:0.0391"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">−0,0086<small>MDE 0,039</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">§4.6</div>
+      <div class="what"><b>Corregir la fuga de información</b> <a class="t" href="#g-oof" data-def="El metaclasificador se entrena con predicciones que los modelos base hicieron sobre datos que ya habían visto, lo que le da una imagen demasiado optimista. Las predicciones out-of-fold corrigen eso.">(out-of-fold)</a> <i>con regresión logística sigue siendo un empate</i></div>
+      <div class="mde" style="--d:-0.0156;--m:0.0246"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">−0,0156<small>MDE 0,025</small></div>
+    </div>
+    <div class="row" data-v="null">
+      <div class="ref">§4.6</div>
+      <div class="what"><b>Usar LightGBM para combinar</b> <i>primera medida fiable · no supera a la regresión logística</i></div>
+      <div class="mde" style="--d:-0.0281;--m:0.0251"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">−0,0281<small>MDE 0,025</small></div>
+    </div>
+    <div class="row" data-v="neg">
+      <div class="ref">§4.8</div>
+      <div class="what"><b>Quedarse con 64 parches durante el entrenamiento</b> <i>lo contrario del hallazgo positivo</i></div>
+      <div class="mde" style="--d:-0.0331;--m:0.0250"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">−0,0331<small>MDE ≈0,025</small></div>
+    </div>
+    <div class="row" data-v="neg">
+      <div class="ref">§4.5</div>
+      <div class="what"><b>Quitar del todo la compresión interna</b> <i>virchow_v1 · p-Holm 0,042</i></div>
+      <div class="mde" style="--d:-0.0394;--m:0.0405"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">−0,0394<small>MDE 0,041</small></div>
+    </div>
+    <div class="row" data-v="neg">
+      <div class="ref">§4.6</div>
+      <div class="what"><b>Red neuronal + corrección de fuga</b> <i>se esperaba que fuera la combinación ganadora</i></div>
+      <div class="mde" style="--d:-0.0900;--m:0.0913"><div class="mde-track"><div class="mde-band"></div><div class="mde-zero"></div><div class="mde-mark"></div></div></div>
+      <div class="dnum">−0,1692<small>fuera de escala</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="cerradas">
+  <h2>5 · Vías que quedan cerradas</h2>
+  <p class="sec-note">Cerradas con su margen medido, no por falta de resultados. Un nulo acotado es una conclusión; un nulo sin MDE, no.</p>
+  <div class="closed">
+    <div><h3>Fusión temprana · §4.2</h3><p>Nula en los tres conjuntos donde el trío comparte cuadrícula de parches. El −0,0056 previo no era un artefacto del conjunto pequeño: se repite con 164 y 479 biopsias de entrenamiento, y en una tarea de 4 clases.</p></div>
+    <div><h3>Enrutado por órgano · §4.7</h3><p>Nueve configuraciones y cuatro órganos, todas sin efecto. Ni siquiera un selector perfecto, que supiera de antemano la respuesta, pasaría de +0,019.</p></div>
+    <div><h3>Metaclasificadores flexibles · §4.6</h3><p>La hipótesis se cae al revés de lo previsto: al corregir la fuga, los modelos flexibles empeoran en vez de mejorar. LightGBM y TabPFN, medidos por primera vez sobre los checkpoints vigentes, no superan a la regresión logística.</p></div>
+    <div><h3>Proyección mayor · §4.5</h3><p>Ni ampliar la compresión interna a 1024 o 2048, ni quitarla del todo, mejora nada. La hipótesis de que <code>virchow_v1</code> estaba «estrangulado» por la reducción 2560→512 queda descartada.</p></div>
+    <div><h3>Cervical con más particiones · §4.3</h3><p>Con 20 particiones nuevas en vez de 5, los embeddings siguen sin batir a las probabilidades: −0,0013 con un MDE de 0,0063. Es el nulo mejor acotado de la campaña.</p></div>
+    <div><h3>Optimización de pesos</h3><p>La mejora de +0,0052 de la ficha N5 solo aparece optimizando sobre la partición con fuga. Sobre validación retenida, el método queda <em>por debajo</em> de una regresión logística simple.</p></div>
+  </div>
+</section>
+
+<section id="anexo-a">
+  <h2>Anexo A · Glosario</h2>
+  <p class="sec-note">Los términos subrayados del informe enlazan aquí y muestran su definición al pasar el ratón por encima.</p>
+  <dl class="gloss">
+    <div class="gterm" id="g-wsi">
+      <dt>WSI <em>Whole-Slide Image</em></dt>
+      <dd>La digitalización completa de un portaobjetos de biopsia. Son imágenes de varios gigapíxeles, imposibles de meter enteras en una red neuronal.</dd>
+    </div>
+    <div class="gterm" id="g-parche">
+      <dt>Parche <em>patch</em></dt>
+      <dd>Cuadradito de 224×224 píxeles recortado de la WSI. Cada biopsia produce entre 3.700 y 6.600, y es la unidad con la que trabaja el sistema.</dd>
+    </div>
+    <div class="gterm" id="g-fundacional">
+      <dt>Modelo fundacional <em>foundational model</em></dt>
+      <dd>Red neuronal grande que otros ya han entrenado con millones de imágenes de patología, y que aquí se usa tal cual, sin reentrenar. Su trabajo es convertir un parche en números.</dd>
+      <dd>En este proyecto hay ocho: <code>ctranspath</code>, <code>conch_v1_5</code>, <code>uni_v2</code>, <code>virchow_v1</code>, <code>virchow2</code>, <code>uni_v1</code>, <code>phikon_v2</code> y <code>hoptimus1</code>.</dd>
+    </div>
+    <div class="gterm" id="g-embedding">
+      <dt>Embedding</dt>
+      <dd>La lista de números con la que un modelo fundacional describe un parche. Según el modelo son entre 768 y 2.560 números. Dos parches parecidos tienen embeddings parecidos.</dd>
+    </div>
+    <div class="gterm" id="g-abmil">
+      <dt>ABMIL <em>Attention-Based Multiple Instance Learning</em></dt>
+      <dd>La pieza que resume miles de parches en una sola predicción. El problema que resuelve es que la etiqueta («este tumor tiene TP53 mutado») está en la biopsia entera y no en cada parche: nadie ha marcado qué parches concretos son los relevantes. El ABMIL lo deduce solo.</dd>
+    </div>
+    <div class="gterm" id="g-atencion">
+      <dt>Atención <em>attention</em></dt>
+      <dd>La puntuación que el ABMIL da a cada parche según lo importante que le parece. Las puntuaciones suman 1 entre todos los parches, de modo que con miles de parches a la mayoría le toca una miga.</dd>
+      <dd>Todo el hallazgo positivo de esta campaña consiste en quedarse con los parches de puntuación más alta y descartar el resto.</dd>
+    </div>
+    <div class="gterm" id="g-fusion">
+      <dt>Fusión temprana y fusión tardía</dt>
+      <dd><b>Tardía</b> es lo que hace el sistema actual: cada modelo trabaja por separado hasta producir su probabilidad, y solo al final se juntan las tres cifras (punto <b>C</b> del diagrama).</dd>
+      <dd><b>Temprana</b> es juntar los embeddings de cada parche antes de resumirlos, para que un único ABMIL vea toda la información a la vez (punto <b>A</b>). Se probó y no funciona.</dd>
+    </div>
+    <div class="gterm" id="g-meta">
+      <dt>Metaclasificador <em>stacking</em></dt>
+      <dd>El modelo pequeño que recibe las probabilidades de los tres modelos base y produce la predicción final. Aquí suele ser una regresión logística, es decir, poco más que una media ponderada aprendida.</dd>
+    </div>
+    <div class="gterm" id="g-fold">
+      <dt>Fold <em>partición</em></dt>
+      <dd>Una división concreta de los datos en una parte para entrenar y otra para examinar. Todo se repite con 50 divisiones distintas para que el resultado no dependa de haber tenido suerte con una.</dd>
+      <dd>Las biopsias de un mismo paciente van siempre juntas al mismo lado, para que el modelo no pueda hacer trampa reconociendo al paciente.</dd>
+    </div>
+    <div class="gterm" id="g-oof">
+      <dt>Out-of-fold</dt>
+      <dd>El metaclasificador se entrena normalmente con predicciones que los modelos base hicieron sobre datos que ya habían visto, así que le llegan demasiado buenas: aprende a confiar en una calidad que luego no existe.</dd>
+      <dd>Las predicciones <i>out-of-fold</i> se generan siempre sobre datos no vistos, lo que corrige el problema. Se probó y no mejora el resultado.</dd>
+    </div>
+    <div class="gterm" id="g-auc">
+      <dt>AUC <em>Área bajo la curva ROC</em></dt>
+      <dd>La medida principal de este informe. Responde a: si cojo un caso positivo y uno negativo al azar, ¿con qué probabilidad el modelo puntúa más alto al positivo?</dd>
+      <dd><b>0,50</b> es azar puro y <b>1,00</b> es perfecto. Los modelos de aquí se mueven entre 0,68 y 0,82. Su ventaja es que no depende de dónde se ponga el corte para decidir sí o no.</dd>
+    </div>
+    <div class="gterm" id="g-kappa">
+      <dt>Kappa, bacc, F1</dt>
+      <dd>Medidas complementarias que sí dependen del corte elegido. <b>bacc</b> es el acierto equilibrado entre las dos clases; <b>kappa</b> descuenta los aciertos que se habrían obtenido por azar; <b>F1</b> equilibra precisión y cobertura sobre la clase positiva.</dd>
+      <dd>Aparecen porque un modelo puede ordenar bien los casos (buen AUC) y aun así fallar al decidir, si el corte está mal puesto. Distinguir ambas cosas resultó ser clave para desmontar el resultado P5.</dd>
+    </div>
+  </dl>
+</section>
+
+<section id="anexo-b">
+  <h2>Anexo B · Las pruebas estadísticas</h2>
+  <p class="sec-note">Qué se calcula, qué pregunta responde cada cosa y cómo se lee. Se aplica igual en los diez experimentos.</p>
+  <dl class="gloss">
+    <div class="gterm" id="s-pareado">
+      <dt>Comparación pareada</dt>
+      <dd><b>Pregunta:</b> ¿la versión nueva es mejor que la vieja?</dd>
+      <dd>Como las dos versiones se evalúan sobre <em>exactamente las mismas 50 divisiones de datos</em>, se comparan partición a partición en lugar de comparar dos medias sueltas. Esto elimina el ruido de que una división sea más fácil que otra y detecta diferencias mucho más pequeñas.</dd>
+      <dd><b>Por qué importa aquí:</b> el informe consolidado documenta que comparar intervalos independientes ocultó un efecto real en un conjunto de datos. Todas las cifras de este informe son pareadas.</dd>
+    </div>
+    <div class="gterm" id="s-delta">
+      <dt>Δ (delta)</dt>
+      <dd><b>Qué es:</b> la mejora media, en puntos de AUC, de la versión nueva sobre la vieja. Positivo es mejor.</dd>
+      <dd>Un Δ de +0,0388 significa que el AUC sube casi cuatro centésimas. Como referencia, la diferencia entre el mejor y el peor modelo base es de unas diez centésimas.</dd>
+    </div>
+    <div class="gterm" id="s-mde">
+      <dt>MDE <em>mínimo efecto detectable</em></dt>
+      <dd><b>Pregunta:</b> ¿tenía este experimento capacidad de detectar el efecto que busca?</dd>
+      <dd>Es la mejora más pequeña que el experimento podría distinguir del azar con los datos de que dispone. <b>Si Δ es menor que el MDE, no se puede afirmar nada</b>, ni siquiera con un resultado que parezca favorable.</dd>
+      <dd><b>Por qué es la cifra más importante de este informe:</b> permite distinguir «hemos comprobado que no funciona» de «no teníamos datos para saberlo». Un resultado nulo sin su MDE es una frase vacía. Es también lo que desmonta el resultado P5, cuya mejora publicada era menor que su propio MDE.</dd>
+    </div>
+    <div class="gterm" id="s-ic">
+      <dt>IC 95 % <em>intervalo de confianza por bootstrap</em></dt>
+      <dd><b>Pregunta:</b> ¿entre qué valores está razonablemente la mejora real?</dd>
+      <dd>Se calcula remuestreando los resultados 10.000 veces para ver cuánto bailaría la cifra si se repitiera el experimento. Si el intervalo incluye el cero, la mejora podría perfectamente ser nula.</dd>
+    </div>
+    <div class="gterm" id="s-wilcoxon">
+      <dt>Wilcoxon de rangos con signo</dt>
+      <dd><b>Pregunta:</b> ¿la mejora es demasiado consistente para ser casualidad?</dd>
+      <dd>Es la prueba que produce el <b>p-valor</b>. Se usa esta y no la prueba t clásica porque no exige que los datos sigan una campana de Gauss, cosa que aquí no se cumple.</dd>
+      <dd>Un p-valor de 0,03 significa: «si en realidad no hubiera ninguna mejora, vería un resultado así de bueno un 3 % de las veces». Cuanto más bajo, más difícil es atribuirlo al azar.</dd>
+    </div>
+    <div class="gterm" id="s-holm">
+      <dt>Corrección de Holm</dt>
+      <dd><b>Pregunta:</b> ¿el resultado aguanta sabiendo que se han probado muchas cosas a la vez?</dd>
+      <dd>Si se hacen 36 comparaciones, es de esperar que una o dos salgan «significativas» por pura casualidad. Holm endurece el listón en proporción al número de pruebas realizadas.</dd>
+      <dd><b>Cómo leerlo:</b> el <b>p-Holm</b> es la cifra que cuenta, no el p-valor a secas. Por debajo de 0,05 el hallazgo es firme. Varios resultados de esta campaña tenían buen p-valor y se caen al aplicar Holm.</dd>
+    </div>
+    <div class="gterm" id="s-gep">
+      <dt>G/E/P <em>ganados, empatados, perdidos</em></dt>
+      <dd><b>Pregunta:</b> ¿la mejora es constante o viene de unos pocos casos afortunados?</dd>
+      <dd>En cuántas de las 50 divisiones la versión nueva gana, empata o pierde. Un 35/1/14 es una mejora repartida; un 27/6/17 está muy cerca de lo que daría una moneda.</dd>
+      <dd><b>Los empates hay que declararlos siempre.</b> Omitirlos es lo que hacía parecer sólido el resultado P5: «gana en 27 de 50» suena bien hasta que se ve que hubo 6 empates y 17 derrotas.</dd>
+    </div>
+    <div class="gterm" id="s-suelo">
+      <dt>Suelo de reproducibilidad</dt>
+      <dd><b>Pregunta:</b> ¿esta mejora sobreviviría a repetir el experimento?</dd>
+      <dd>Volver a lanzar el mismo entrenamiento produce variaciones de entre 0,004 y 0,010 de AUC solo por el azar interno del proceso. Cualquier mejora de ese tamaño es indistinguible de relanzar el trabajo con otra semilla.</dd>
+      <dd><b>Es lo que hunde la optimización de pesos</b>, cuya mejora de +0,0052 caía justo dentro de ese margen.</dd>
+    </div>
+    <div class="gterm" id="s-baseline">
+      <dt>Recalcular el punto de partida</dt>
+      <dd><b>Regla de trabajo, no una prueba:</b> nunca se compara contra una cifra guardada de otro día. El punto de partida se vuelve a calcular en la misma ejecución que la versión nueva.</dd>
+      <dd><b>Por qué:</b> el propio informe consolidado documenta que las cifras anteriores al 21 de agosto se calcularon contra predicciones que ya no existen en el disco y no reproducen.</dd>
+    </div>
+  </dl>
+</section>
+
+<section id="metodo">
+  <h2>Anexo C · Notas de método</h2>
+  <div class="method">
+    <p><strong>Todo punto de partida se recalculó en la misma ejecución</strong> que la versión con la que se comparaba. No se ha reutilizado ninguna cifra guardada de campañas anteriores.</p>
+    <p><strong>El número de particiones se contó siempre</strong>, nunca se dio por supuesto. Un conjunto tiene 5 y no 50, y darlo por hecho ya había dado por fallido en el pasado un entrenamiento correcto.</p>
+    <p><strong>La partición nueva de <code>cervical_subtype</code></strong> se generó con validación cruzada estratificada agrupando por paciente, y se verificó que ninguna clase falta en ningún bloque y que ningún paciente aparece a ambos lados. Vive en un directorio propio para no alterar la partición de 5 usada por los resultados previos.</p>
+    <p><strong>Dos fallos reales de código encontrados de paso.</strong> La rutina de fusión temprana nunca guardaba su partición de validación, de modo que no tenía con qué ajustar el corte de decisión; y su cargador de datos pedía el doble de memoria de la necesaria. Ambos corregidos.</p>
+    <p><strong>El hallazgo positivo recibió el escrutinio más severo de la campaña:</strong> corrección de Holm sobre las 36 comparaciones completas en vez de solo sobre su familia, descarte explícito de que la selección de parches pudiera estar usando las respuestas, y comparación a igualdad de concentración para separar el efecto de truncar del de afinar.</p>
+    <p><strong>Una cautela honesta:</strong> las cinco correcciones apuntan en la misma dirección —el sistema aporta menos de lo publicado— y todas nacen de controles que la campaña original no llegó a hacer. Eso las hace verosímiles, pero también aconseja que se reproduzcan de forma independiente antes de darlas por definitivas.</p>
+  </div>
+</section>
+
+<footer>
+  10 líneas de investigación · 46 trabajos de cálculo · 4 conjuntos de datos<br>
+  cptac_brca/TP53 · cptac_gbm/TP53 · bc_therapy/estado ER · cervical_subtype/subtipo<br>
+  Estadística: bootstrap de 10.000 repeticiones, Wilcoxon de rangos con signo, corrección de Holm-Bonferroni, MDE al 80 % de potencia<br>
+  Documento generado el 6 de septiembre de 2026 · sobre INFORME_CONSOLIDADO_TESIS_20260901
+</footer>
+
+</div>
+</body>
+</html>

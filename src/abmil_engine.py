@@ -407,6 +407,49 @@ def abmil_extract_topk_embeddings(model, feats, stems, device, graphs=None, k=10
     return np.vstack(E)
 
 
+@torch.no_grad()
+def abmil_extract_adaptive_topk_embeddings(model, feats, stems, device, graphs=None):
+    """Como `abmil_extract_topk_embeddings`, pero K se deriva por slide del
+    propio peso de atención en vez de fijarse a mano — `abmil_extract_topk_embeddings`
+    usa un k global fijo (P7 sólo probó k=10, nunca una curva).
+
+    K_slide = ESS(a) = 1 / Σ aᵢ² (effective sample size / índice de Simpson
+    inverso), la misma cantidad que ya calcula `attention_stats_extended` para
+    usarla como meta-feature (N15/N16); aquí se usa para controlar el pooling
+    en vez de sólo diagnosticarlo. Sin hiperparámetro libre, sin barrido: se
+    computa en el mismo forward pass que ya hace el pooling duro — un ABMIL
+    con atención selectiva (entropía baja) saca un K pequeño solo; uno con
+    atención difusa (p.ej. `virchow_v1`, entropía ~1) saca un K grande solo.
+
+    No soporta `graphs`, por la misma razón que `abmil_extract_topk_embeddings`.
+
+    Returns:
+        emb: array (N_stems, embedding_dim)
+        k_used: array (N_stems,) int — el K efectivo usado por slide
+    """
+    if graphs is not None:
+        raise NotImplementedError(
+            "abmil_extract_adaptive_topk_embeddings no soporta graphs (SpatialABMIL): "
+            "el top-k invalidaría las aristas, igual que abmil_extract_topk_embeddings."
+        )
+    model.eval()
+    E, k_used = [], []
+    for s in stems:
+        h = model.projection(feats[s].to(device))
+        a = model.attention(h).squeeze(-1)  # (N,), softmax, sum=1
+        n = a.shape[0]
+        a_np = a.detach().float().cpu().numpy()
+        ess = 1.0 / np.sum(a_np ** 2)
+        kk = int(max(1, min(n, round(ess))))
+        k_used.append(kk)
+        top_idx = torch.topk(a, kk).indices
+        a_top = a[top_idx]
+        a_top = a_top / a_top.sum()
+        z = (a_top.unsqueeze(-1) * h[top_idx]).sum(0)
+        E.append(z.cpu().numpy())
+    return np.vstack(E), np.array(k_used, dtype=int)
+
+
 # ──────────────────── Idea 3: Atención Stats para Meta-Features ────────────────
 def attention_stats_extended(a):
     """Calcula estadísticos normalizados de distribución de atención.

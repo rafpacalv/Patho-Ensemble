@@ -1,0 +1,92 @@
+{
+  "dataset": "cptac_brca",
+  "task": "TP53_mutation",
+  "n_folds": 50,
+  "models": [
+    "ctranspath",
+    "uni_v2",
+    "virchow_v1",
+    "conch_v1_5",
+    "phikon_v2",
+    "uni_v1",
+    "hoptimus1",
+    "virchow2"
+  ],
+  "baseline": [
+    "ctranspath",
+    "uni_v2",
+    "conch_v1_5"
+  ],
+  "baseline_auc": 0.7986254578754578,
+  "topk": 3,
+  "ranking": [
+    {
+      "model": "phikon_v2",
+      "logme_medio": 18.692080822075766,
+      "auc_solo_medio": 0.768451745014245
+    },
+    {
+      "model": "uni_v1",
+      "logme_medio": 17.19062229884904,
+      "auc_solo_medio": 0.7732198438135938
+    },
+    {
+      "model": "conch_v1_5",
+      "logme_medio": 16.893571394593764,
+      "auc_solo_medio": 0.7901989977614978
+    },
+    {
+      "model": "hoptimus1",
+      "logme_medio": 16.86439226226077,
+      "auc_solo_medio": 0.7449593762718761
+    },
+    {
+      "model": "virchow2",
+      "logme_medio": 15.707136341716575,
+      "auc_solo_medio": 0.7770522995522994
+    },
+    {
+      "model": "virchow_v1",
+      "logme_medio": 15.548394095637644,
+      "auc_solo_medio": 0.6822949862637363
+    },
+    {
+      "model": "uni_v2",
+      "logme_medio": 15.175632090651312,
+      "auc_solo_medio": 0.7634090735653235
+    },
+    {
+      "model": "ctranspath",
+      "logme_medio": 14.720741098191588,
+      "auc_solo_medio": 0.7570637337199837
+    }
+  ],
+  "spearman_agregado": {
+    "rho": 0.4761904761904762,
+    "p": 0.23293553465009798
+  },
+  "spearman_por_fold": {
+    "media": 0.0626172826096047,
+    "mediana": 0.10750036071471059,
+    "desviacion": 0.4502767421147558,
+    "n": 50
+  },
+  "honest_logme_topk": {
+    "auc": 0.7961603963166461,
+    "elegidos": {
+      "phikon_v2+uni_v1+hoptimus1": 16,
+      "phikon_v2+uni_v1+conch_v1_5": 34
+    },
+    "delta_vs_baseline": {
+      "mean_delta": -0.002465061558811559,
+      "ci_95": [
+        -0.022337707315832327,
+        0.017237514626577143
+      ],
+      "wins": 27,
+      "ties": 1,
+      "losses": 22,
+      "p_value": 0.8345245627120258
+    }
+  }
+}

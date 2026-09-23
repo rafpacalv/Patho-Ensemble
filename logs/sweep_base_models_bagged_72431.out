@@ -1,0 +1,63 @@
+============================================================================
+Barrido de modelos base con selección LOFO bagged — cptac_brca / TP53_mutation
+============================================================================
+Inicio:      Sun Sep 20 20:25:54 CEST 2026
+modelos:     ctranspath uni_v2 virchow_v1 conch_v1_5 phikon_v2 uni_v1 hoptimus1 virchow2
+baseline:    ctranspath uni_v2 conch_v1_5
+bootstrap:   2000
+salida:      results_base_model_sweep_bagged_cptac_brca_TP53_mutation.json
+============================================================================
+
+8 modelos, 50 folds
+
+✓ filas alineadas entre todos los modelos en todos los folds
+
+evaluados 255 subconjuntos
+
+subconjunto                                                 AUC test   AUC val
+--------------------------------------------------------------------------------
+ctranspath+uni_v2+virchow_v1+conch_v1_5+phikon_v2+virchow2    0.8057    0.8535
+ctranspath+virchow_v1+conch_v1_5+phikon_v2+uni_v1+virchow2    0.8056    0.8503
+ctranspath+conch_v1_5+phikon_v2+uni_v1+virchow2               0.8055    0.8511
+ctranspath+conch_v1_5+phikon_v2+virchow2                      0.8054    0.8538
+ctranspath+uni_v2+virchow_v1+conch_v1_5+phikon_v2+uni_v1+virchow2    0.8054    0.8499
+conch_v1_5+phikon_v2+uni_v1+virchow2                          0.8051    0.8521
+ctranspath+virchow_v1+conch_v1_5+phikon_v2+virchow2           0.8051    0.8526
+ctranspath+uni_v2+conch_v1_5+phikon_v2+virchow2               0.8051    0.8534
+virchow_v1+conch_v1_5+phikon_v2+uni_v1+virchow2               0.8049    0.8515
+ctranspath+uni_v2+conch_v1_5+phikon_v2+uni_v1+virchow2        0.8046    0.8515
+virchow_v1+conch_v1_5+uni_v1+virchow2                         0.8043    0.8489
+uni_v2+virchow_v1+conch_v1_5+phikon_v2+uni_v1+virchow2        0.8043    0.8504
+ctranspath+virchow_v1+conch_v1_5+uni_v1+virchow2              0.8043    0.8517
+ctranspath+conch_v1_5+uni_v1+virchow2                         0.8040    0.8519
+conch_v1_5+uni_v1+virchow2                                    0.8040    0.8510
+ctranspath+uni_v2+conch_v1_5                                  0.7986    0.8681  <- baseline
+
+================================================================================
+naive  (mejor en test, OPTIMISTA): ctranspath+uni_v2+virchow_v1+conch_v1_5+phikon_v2+virchow2 0.8057
+honesta (selección LOFO por val):                                           0.8011
+baseline:                          ctranspath+uni_v2+conch_v1_5             0.7986
+
+sesgo de selección (naive − honesta): +0.0046
+
+subconjunto elegido por la selección LOFO:
+    49/50  ctranspath+uni_v2+conch_v1_5
+     1/50  ctranspath+virchow_v1+conch_v1_5+virchow2
+
+Δ pareado honesta vs baseline: +0.0025 [+0.0000,+0.0075] W/T/L=1/49/0 p=0.31731
+
+================================================================================
+selección LOFO con bagging (bootstrap=2000)...
+honesta (bagging LOFO):                                                     0.7986
+estabilidad media (voto del ganador): 0.432
+
+subconjunto elegido por bagging LOFO:
+    50/50  ctranspath+uni_v2+conch_v1_5
+
+Δ pareado bagging vs baseline:      +0.0000 [+0.0000,+0.0000] W/T/L=0/50/0 p=1.00000
+Δ pareado bagging vs honesta simple: -0.0025 [-0.0075,+0.0000] W/T/L=0/49/1 p=0.31731
+
+✓ guardado en results_base_model_sweep_bagged_cptac_brca_TP53_mutation.json
+
+Fin: Sun Sep 20 20:28:47 CEST 2026
+============================================================================

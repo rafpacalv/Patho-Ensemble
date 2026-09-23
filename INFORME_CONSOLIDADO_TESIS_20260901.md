@@ -9,7 +9,7 @@
 | **Datasets evaluados** | `cptac_brca`, `cptac_gbm`, `bc_therapy`, `cervical_subtype` (+13 tareas en 3 cohortes para el estudio de enrutado) |
 | **Modelos fundacionales** | 8 entrenados y comparados |
 | **Metaclasificadores** | 15 registrados en el código, 6 evaluados en la campaña vigente |
-| **Experimentos consolidados** | 6 positivos · 18 negativos o nulos · 2 incompletos |
+| **Experimentos consolidados** | 8 positivos · 20 negativos o nulos · 2 incompletos |
 
 > Este documento sustituye a todos los informes parciales previos. Recoge **únicamente
 > resultados vigentes**: donde una medición fue posteriormente corregida o invalidada, aquí
@@ -410,10 +410,11 @@ veredicto y una explicación en lenguaje llano de por qué salió así.
 | **P5** | El stacking bate al mejor modelo suelto | `cptac_brca` | 8 modelos | logreg | — | +0.0084 | ⚠️ Modesto pero real |
 | **P6** | La vecindad espacial lleva señal | `cptac_brca` | uni_v2 | — | GNN vs grafo barajado | +0.0119 | ⚠️ Real pero no rentable |
 | **P7** | Pooling duro top-10 de atención | `cptac_gbm` | trío ganador | logreg | top-K vs blando sobre toda la bolsa | **+0.0388** | ✅ Solo en datasets grandes (repite P2) |
+| **P8** | Pooling duro top-K adaptativo por ESS (sin barrido) | `cptac_gbm` | trío ganador | logreg | K por slide = 1/Σaᵢ² (effective sample size) | **+0.0292** | ✅ Repite P7 sin elegir K a mano |
 
 ### ❌ Lo que no funcionó
 
-Dieciocho experimentos. Las cuatro razones que los explican casi todos están en §3.4.
+Veinte experimentos. Las cuatro razones que los explican casi todos están en §3.4.
 
 | # | Experimento | Dataset | Modelos base | Meta | Extras | Δ AUC | Veredicto |
 |---|---|---|---|---|---|---:|---|
@@ -435,6 +436,8 @@ Dieciocho experimentos. Las cuatro razones que los explican casi todos están en
 | **N16** | Transferir la atención de conch | `cptac_gbm` | trío ganador | logreg | `attn_conch` | +0.0079 | ❌ No replica (25/0/25) |
 | **N17** | FGE / SE en datasets pequeños | `cptac_brca`, `cervical_subtype` | trío | logreg | FGE, SE | +0.002 / −0.010 | ❌ Nulo / negativo |
 | **N18** | Barrido de hiperparámetros del MLP | `cptac_brca` | trío histórico | mlp, mlp_snapshot | 369 + 73 configuraciones | sin contraste pareado | ❌ Ninguna gana en las 3 métricas |
+| **N19** | Selección LOFO con bagging (stability selection) | `cptac_brca` | 255 subconjuntos | logreg | bootstrap=2000 sobre folds != k | −0.0025 vs honesta simple | ❌ Vuelve la selección más conservadora, no más certera |
+| **N20** | CMA-ES para pesos del ensemble | `cptac_brca` | trío ganador + histórico | — | combinación lineal, CMA-ES vs Nelder-Mead vs logreg | ≤ +0.0021 | ❌ Ningún Δ significativo ni por encima del suelo |
 
 ### ⏸️ Incompletos
 
@@ -688,6 +691,55 @@ hay, es la representación (top-K duro), no el combinador.
 
 ⚠️ Igual que P2: es una hipótesis compatible con los datos (dos datasets, un valor de K), no un
 resultado establecido para "el pooling duro ayuda en datasets grandes" en general.
+
+---
+
+### P8 · Pooling duro top-K adaptativo por ESS — repite P7 sin elegir K a mano
+
+| | |
+|---|---|
+| **Dataset** | `cptac_brca` + `cptac_gbm` / TP53_mutation |
+| **Modelos base** | Trío ganador `ctranspath + uni_v2 + conch_v1_5` |
+| **Metaclasificador** | LogReg y `mlp_snapshot`, mismo espacio de entrada que P7 |
+| **Extras** | `abmil_extract_adaptive_topk_embeddings` (nuevo): en vez de un K=10 fijo elegido a mano (P7), K se deriva **por slide** del ESS (effective sample size) de la propia atención — `K = 1/Σaᵢ²`, el mismo índice de Simpson inverso que ya calcula `attention_stats_extended` para N15/N16, aquí usado para controlar el pooling en vez de sólo diagnosticarlo. Sin hiperparámetro libre, sin barrido: se computa en el mismo forward pass que ya hacía el pooling duro |
+
+**K efectivo usado (mediana, agregado sobre folds y splits) — nada de esto se fijó a mano:**
+
+| Modelo | `cptac_brca` | `cptac_gbm` |
+|---|---:|---:|
+| `conch_v1_5` | 200 | **81** |
+| `ctranspath` | 3602 | 318 |
+| `uni_v2` | 6953 | 1274 |
+
+`conch_v1_5` —el mejor modelo individual del trío— es también, en los dos datasets, el que más
+selecciona (K más bajo). Y los tres modelos sacan K más bajo en `cptac_gbm` que en `cptac_brca`: el
+ESS reproduce, como número derivado del propio modelo, la misma "atención más selectiva en datasets
+grandes" que hasta ahora sólo constaba como diagnóstico aparte (entropía de P2/P7).
+
+Baseline recomputado en la misma pasada (`insample:logreg`, 50 folds pareados en cada dataset):
+
+| Dataset | `topk_ess:logreg` Δ AUC | IC 95 % | p Holm | MDE | `topk_ess:mlp_snapshot` Δ AUC | p Holm |
+|---|---:|---|---:|---:|---:|---:|
+| `cptac_brca` | −0.0090 | [−0.0223, +0.0043] | 0.385 (ns) | 0.0191 | +0.0035 | 0.429 (ns) |
+| **`cptac_gbm`** | **+0.0292** | [+0.0151, +0.0432] | **<0.001 ✱** | 0.0201 | +0.0256 | **<0.001 ✱** |
+
+**Veredicto: ✅ Cuarta pieza de evidencia independiente de la selectividad de la atención** (tras
+`attn_mean` en P4, los embeddings en P2 y el top-10 fijo en P7) — **y la primera lograda sin elegir
+ningún hiperparámetro a mano.** Mismo patrón exacto: nulo acotado en `cptac_brca`, significativo y
+por encima del MDE en `cptac_gbm` (+0.0292, 1.45× su MDE, sobrevive Holm).
+
+**Frente a P7:** el K=10 fijo dio +0.0388 en `cptac_gbm`, algo más que el +0.0292 de aquí. Elegir K a
+mano, cuando se acierta, puede superar a un criterio automático — pero P7 nunca demostró que K=10
+fuera una buena elección *a priori*, sólo que funcionó una vez probada. **P8 llega casi al mismo
+sitio sin haber mirado el AUC ni una sola vez para elegir K**, lo que descarta que el resultado de
+P7 fuera fruto de haber acertado con K=10 por azar entre candidatos no probados.
+
+**El metaclasificador tampoco aporta aquí.** `mlp_snapshot` no bate a `logreg` en `cptac_gbm`
+(+0.0256 vs. +0.0292) — confirma N1/N2/P7 con una cuarta entrada distinta: la ganancia, donde la
+hay, es la representación, no el combinador.
+
+⚠️ Mismo caveat que P2 y P7: dos datasets, no una curva graduada de selectividad — sigue siendo la
+vía abierta 4 (sección 4) la que falta para establecer la relación como monótona en vez de puntual.
 
 ---
 
@@ -1120,6 +1172,77 @@ mecanismo es indicativa, no concluyente.
 
 ---
 
+### N19 · Selección LOFO con bagging (stability selection)
+
+| | |
+|---|---|
+| **Dataset** | `cptac_brca` / TP53_mutation, 50 folds |
+| **Modelos base** | 8 modelos, 255 subconjuntos (mismo barrido que N12/N14) |
+| **Método** | Selección honesta LOFO con bagging: bootstrap (2000 remuestreos) de los 49 folds != k antes del argmax, voto mayoritario en vez de un único punto — stability selection (Meinshausen & Bühlmann, 2010) / bagged ensemble selection (Caruana, Munson & Niculescu-Mizil, ICDM 2006) |
+
+**Resultado:**
+
+| | AUC | Subconjunto elegido |
+|---|---:|---|
+| Honesta simple (argmax único) | 0.8011 | trío ganador 49/50, otro (4 modelos) 1/50 |
+| **Honesta con bagging** | **0.7986** | trío ganador **50/50** |
+| Techo (mejor en test, optimista) | 0.8057 | — |
+
+Δ bagging vs honesta simple: **−0.0025** [−0.0075, +0.0000], W/T/L 0/49/1, p=0.317. Δ bagging vs
+baseline (trío ganador): +0.0000 exacto — elige el mismo subconjunto en los 50/50 folds. Estabilidad
+media del voto ganador: **0.432** sobre 255 candidatos.
+
+**Veredicto: ❌ No cierra la brecha — la invierte.**
+
+**Por qué, en llano.** Motivado por el diagnóstico de N14 (Spearman(val,test)=0.75): si la selección
+es ruidosa, remuestrearla debería estabilizarla. Ocurre lo contrario — el bagging vuelve la
+selección **más conservadora, no más certera**: elige siempre el trío ganador (50/50), mientras que
+la selección simple tenía un único fold donde ganaba un subconjunto de 4 modelos que, en ese fold
+concreto, acertaba en test. Al promediar sobre remuestreos se pierde justo ese acierto puntual. La
+estabilidad media de solo 0.432 confirma que hay ambigüedad genuina entre subconjuntos: el bagging
+la resuelve por el lado "seguro" (el subconjunto más frecuente), no por el lado "acertado en ese
+fold". **La varianza residual de la selección honesta no era ruido puro — tenía algo de señal
+fold-específica real —, y suavizarla no ayuda.**
+
+Reutiliza los `(V, T)` ya cacheados en `sweep_base_models.py` (flag `--bagged_boot`); no repite carga
+de datos ni entrena de más. Código en `sweep_base_models_bagged.sbatch` (job 72431).
+
+---
+
+### N20 · CMA-ES para pesos del ensemble — frente a Nelder-Mead y LogReg
+
+| | |
+|---|---|
+| **Dataset** | `cptac_brca` / TP53_mutation, 50 folds |
+| **Modelos base** | Dos tríos, los mismos de P1 y N5: ganador (`ctranspath+uni_v2+conch_v1_5`) e histórico (`ctranspath+virchow_v1+conch_v1_5`) |
+| **Método** | Combinación lineal `P = Σ wᵢPᵢ`, pesos softmax optimizados con CMA-ES (Hansen; paquete `cma==4.5.0`) maximizando AUC in-sample y evaluados en test — mismo objetivo y parametrización que N5, cambiando solo el optimizador. Es el optimizador que usa el post-hoc ensembling de Auto-Sklearn 2.0 para librerías de modelos (Purucker & Beel, arXiv:2307.00286), pensado para objetivos ruidosos y no convexos como este |
+
+**Resultado:**
+
+| Trío | LogReg | Nelder-Mead (N5) | CMA-ES |
+|---|---:|---:|---:|
+| ganador | 0.7986 | 0.7978 | 0.7990 |
+| histórico | 0.7969 | **0.8020** | 0.7990 |
+
+CMA-ES vs LogReg: Δ=+0.0004 [−0.0048,+0.0051] p=0.86 (ganador); Δ=+0.0021 [−0.0023,+0.0059] p=0.48
+(histórico). CMA-ES vs Nelder-Mead: Δ=+0.0012 [−0.0021,+0.0046] p=0.38 (ganador); Δ=−0.0031
+[−0.0077,+0.0009] p=0.20 (histórico).
+
+**Veredicto: ❌ Ningún Δ es significativo, y todos caen bajo el suelo de reproducibilidad**
+(≈0.004–0.01), igual que N5.
+
+**Por qué, en llano.** Dato curioso: CMA-ES converge al **mismo 0.7990** en ambos tríos, poniendo
+~77–78 % del peso en `conch_v1_5` y aplastando al tercer modelo (sea `uni_v2` o `virchow_v1`) a
+<12 %, independientemente de cuál sea. Es la misma conclusión de P1 (`conch_v1_5` es la señal
+fuerte, el resto casi no aporta) redescubierta por un optimizador continuo en vez de por búsqueda
+discreta de subconjuntos — **confirma el diagnóstico, no añade AUC**. Con la elección de modelo base
+ya fijando el techo, ni un optimizador más robusto a ruido que Nelder-Mead (CMA-ES es
+poblacional, diseñado para objetivos no convexos y ruidosos) tiene margen para moverlo.
+
+Código en `src/ensemble_cmaes.py` (job 72432); resultados en `results_opcion_b_cmaes.json`.
+
+---
+
 ### I1–I2 · Los dos experimentos que quedaron incompletos
 
 **I1 · Agregación a nivel de paciente.** En `cptac_brca` hay 9 pacientes con más de una slide. La
@@ -1139,7 +1262,7 @@ la campaña esté completo y no parezca que se omitieron resultados desfavorable
 
 ## 3.4 Las cuatro razones que explican casi todos los fracasos
 
-Dieciocho resultados negativos, cuatro mecanismos:
+Veinte resultados negativos, cuatro mecanismos:
 
 ### 1. El cuello de botella es muestral, no arquitectónico
 
@@ -1174,8 +1297,8 @@ explícitas solo consume grados de libertad.
 
 Reentrenar la configuración idéntica mueve el AUC agregado **±0.004** y cada fold **±0.032**, solo
 por no determinismo de GPU. Este único criterio descarta, sin necesidad de más análisis:
-Nelder-Mead (+0.0052), GNN espacial (+0.0077), augmentación de bolsa (+0.0077) y los snapshots en
-`cptac_brca` (+0.0020).
+Nelder-Mead (+0.0052), GNN espacial (+0.0077), augmentación de bolsa (+0.0077), los snapshots en
+`cptac_brca` (+0.0020) y CMA-ES (N20, ≤+0.0021).
 
 **Regla operativa:** cualquier Δ por debajo de ≈0.01 de AUC es indistinguible de relanzar el mismo
 trabajo. No es un resultado.
@@ -1320,3 +1443,6 @@ produjeron, todos en la raíz del repositorio:
 | Nelder-Mead y fusión temprana (N3, N4, N5) | `results_opcion_{a,c,d}_*.json` |
 | Augmentación de bolsa (N10) | `results_bag_size_sweep_cptac_brca_TP53_mutation.json` |
 | Pooling duro top-K de atención (P7) | `logs/topk10_mlp_snapshot_71206.out` (job 71206); métricas por fold en `{dataset}/TP53_mutation/abmil/ensemble4_topk10/` y `ensemble4_mlp_snapshot_topk10/` bajo `PARADIS/datos/patches` — no hay `results_*.json` en el repo para este bloque, sólo el log y los directorios de resultados |
+| Pooling duro top-K adaptativo por ESS (P8) | `logs/topk_ess_72435.out` (job 72435; job 72434 falló por un bug ya corregido, ver `src/abmil_engine.py::abmil_extract_adaptive_topk_embeddings`); métricas por fold en `{dataset}/TP53_mutation/abmil/ensemble4_topk_ess/` y `ensemble4_mlp_snapshot_topk_ess/` — tampoco hay `results_*.json` para este bloque |
+| Selección LOFO con bagging (N19) | `sweep_base_models_bagged.sbatch` (job 72431) → `results_base_model_sweep_bagged_cptac_brca_TP53_mutation.json` |
+| CMA-ES para pesos del ensemble (N20) | `run_opcion_b_cmaes.sbatch` (job 72432) → `results_opcion_b_cmaes.json` |

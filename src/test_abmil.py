@@ -31,6 +31,7 @@ bolsa; --topk K agrega sólo los K parches de mayor atención, renormalizada
 import argparse
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import torch
 
@@ -47,10 +48,22 @@ from train_abmil_fge import save_fold_outputs_fge
 from utils import resolve_latent_dim
 
 
+def _save_k_used(output_dir, fold_k, n_folds, k_used, split, tag):
+    """Guarda el K efectivo usado por slide (sólo modo --topk_adaptive), junto
+    a labels.npy/preds.npy, con la misma convención de rutas que
+    save_fold_outputs_fge."""
+    if n_folds > 1:
+        p = f"{output_dir}/{split}_outputs_{tag}/fold_{fold_k}"
+    else:
+        p = f"{output_dir}/{split}_outputs_{tag}"
+    Path(p).mkdir(parents=True, exist_ok=True)
+    np.save(f"{p}/k_used.npy", k_used)
+
+
 def abmil_predict_train_fold(
     work_dir, train_source, foundational_model, tissue_patching, task_name,
     fold_k, n_folds, task_col, num_classes, latent_dim, df, feats,
-    arch_tag="", graphs=None, use_embeddings=False, topk=0
+    arch_tag="", graphs=None, use_embeddings=False, topk=0, topk_adaptive=False
 ):
     """Carga el checkpoint del fold_k y predice sobre su propio split de train.
 
@@ -62,15 +75,20 @@ def abmil_predict_train_fold(
             Implica embeddings (ignora `use_embeddings`) y escribe en un árbol
             propio (tag "topk{topk}") para no pisar ni el árbol de
             predicciones de clase ni el de embeddings de atención blanda.
+        topk_adaptive: pooling duro con K derivado por slide del ESS de la
+            propia atención (ver abmil_engine.abmil_extract_adaptive_topk_embeddings)
+            en vez de un K fijo. Alternativo a `topk` y `use_embeddings`;
+            escribe en su propio árbol (tag "topk_ess") y además guarda el K
+            usado por slide (k_used.npy) junto a labels/preds.
 
     Devuelve (labels, preds) o (None, None) si falta el checkpoint o no hay
     datos de train para ese fold.
     """
-    if topk and use_embeddings:
-        raise ValueError("--topk y --use_embeddings son modos de embedding "
-                          "alternativos; usa sólo uno de los dos.")
+    if sum([bool(topk), use_embeddings, topk_adaptive]) > 1:
+        raise ValueError("--topk, --use_embeddings y --topk_adaptive son modos "
+                          "de embedding alternativos; usa sólo uno de los tres.")
     extract_topk = topk > 0
-    embed = use_embeddings or extract_topk
+    embed = use_embeddings or extract_topk or topk_adaptive
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     tag = f"_{arch_tag}" if arch_tag else ""
@@ -130,16 +148,20 @@ def abmil_predict_train_fold(
     # de más peso) conviven sin pisarse. No confundir con `tag` de arriba
     # (línea 69), que namespaces el checkpoint por --arch_tag.
     if extract_topk:
-        extract_fn = lambda stems: abmil_engine.abmil_extract_topk_embeddings(
-            model, feats, stems, device, graphs, k=topk)
+        extract_fn = lambda stems: (abmil_engine.abmil_extract_topk_embeddings(
+            model, feats, stems, device, graphs, k=topk), None)
         embed_tag = f"topk{topk}"
-    elif use_embeddings:
-        extract_fn = lambda stems: abmil_engine.abmil_extract_embeddings(
+    elif topk_adaptive:
+        extract_fn = lambda stems: abmil_engine.abmil_extract_adaptive_topk_embeddings(
             model, feats, stems, device, graphs)
+        embed_tag = "topk_ess"
+    elif use_embeddings:
+        extract_fn = lambda stems: (abmil_engine.abmil_extract_embeddings(
+            model, feats, stems, device, graphs), None)
         embed_tag = "embeddings"
 
     if embed:
-        tr_preds = extract_fn(tr_stems)
+        tr_preds, tr_k_used = extract_fn(tr_stems)
         embedding_dim = model.get_embedding_dim()
         attn_columns = None
     else:
@@ -156,6 +178,8 @@ def abmil_predict_train_fold(
         # Esto genera: {eval_dir}/val_outputs_{embed_tag}/fold_k/
         save_fold_outputs_fge(eval_dir, fold_k, n_folds, tr_y,
                              tr_preds[None, ...], split="val", tag=embed_tag)
+        if tr_k_used is not None:
+            _save_k_used(eval_dir, fold_k, n_folds, tr_k_used, split="val", tag=embed_tag)
     else:
         save_fold_outputs(eval_dir, fold_k, n_folds, tr_y, tr_preds, split="val")
         save_fold_outputs_attn(eval_dir, fold_k, n_folds, tr_attn_stats, attn_columns, split="val")
@@ -173,29 +197,36 @@ def abmil_predict_train_fold(
     if embed:
         # Validación
         if len(va_stems) > 0 and va_y is not None:
-            va_preds = extract_fn(va_stems)
+            va_preds, va_k_used = extract_fn(va_stems)
             # Guardar embeddings de validación en el directorio base con split="val"
             save_fold_outputs_fge(output_dir, fold_k, n_folds, va_y,
                                  va_preds[None, ...], split="val", tag=embed_tag)
+            if va_k_used is not None:
+                _save_k_used(output_dir, fold_k, n_folds, va_k_used, split="val", tag=embed_tag)
 
         # Test
         if len(te_stems) > 0 and te_y is not None:
-            te_preds = extract_fn(te_stems)
+            te_preds, te_k_used = extract_fn(te_stems)
             # Guardar embeddings de test en el directorio base con split="test"
             save_fold_outputs_fge(output_dir, fold_k, n_folds, te_y,
                                  te_preds[None, ...], split="test", tag=embed_tag)
+            if te_k_used is not None:
+                _save_k_used(output_dir, fold_k, n_folds, te_k_used, split="test", tag=embed_tag)
 
     return tr_y, tr_preds
 
 
 def abmil_test(work_dir, train_source, foundational_model, tissue_patching, task_name,
                 latent_dim, epochs=None, arch="abmil", arch_tag="",
-                graph_mode="lattice", shuffle_coords=False, use_embeddings=False, topk=0):
+                graph_mode="lattice", shuffle_coords=False, use_embeddings=False, topk=0,
+                topk_adaptive=False):
     """Recorre todos los folds de k=all.tsv y genera predicciones (o embeddings) de train para cada uno.
 
     Args:
         use_embeddings: si True, extrae embeddings ponderados; si False, predicciones de clase.
         topk: si >0, embeddings top-k (ver abmil_predict_train_fold). Incompatible con use_embeddings.
+        topk_adaptive: embeddings top-k con K adaptativo por ESS (ver
+            abmil_predict_train_fold). Incompatible con topk y use_embeddings.
     """
     config_path = f"{work_dir}/{train_source}/{task_name}/config.yaml"
     task_col, num_classes = load_config_yaml(config_path)
@@ -207,7 +238,9 @@ def abmil_test(work_dir, train_source, foundational_model, tissue_patching, task
     fold_cols = [c for c in df.columns if c.startswith("fold_")]
     n_folds = len(fold_cols)
 
-    output_type = f"embeddings top{topk}" if topk else ("embeddings" if use_embeddings else "predicciones")
+    output_type = (f"embeddings top{topk}" if topk else
+                   "embeddings top-K adaptativo (ESS)" if topk_adaptive else
+                   ("embeddings" if use_embeddings else "predicciones"))
     print(f"\n{'='*60}")
     print(f"ABMIL Test ({output_type} sobre train): {foundational_model}")
     print(f"  Dataset: {train_source}/{task_name}")
@@ -232,7 +265,8 @@ def abmil_test(work_dir, train_source, foundational_model, tissue_patching, task
         labels, preds = abmil_predict_train_fold(
             work_dir, train_source, foundational_model, tissue_patching, task_name,
             fold_k, n_folds, task_col, num_classes, latent_dim, df, feats,
-            arch_tag=arch_tag, graphs=graphs, use_embeddings=use_embeddings, topk=topk
+            arch_tag=arch_tag, graphs=graphs, use_embeddings=use_embeddings, topk=topk,
+            topk_adaptive=topk_adaptive
         )
         if labels is None:
             n_skipped += 1
@@ -277,16 +311,26 @@ def main():
                         help="Si >0, extrae embeddings usando sólo los K parches de mayor "
                              "atención en vez de la bolsa completa (pooling duro). Escribe en "
                              "un árbol propio (val_outputs_topk{K}/...) y es incompatible con "
-                             "--use_embeddings.")
+                             "--use_embeddings y --topk_adaptive.")
+    parser.add_argument("--topk_adaptive", action="store_true", default=False,
+                        help="Pooling duro con K derivado por slide del ESS (effective sample "
+                             "size) de la propia atención, en vez de un K fijo — ver "
+                             "abmil_engine.abmil_extract_adaptive_topk_embeddings. Escribe en su "
+                             "propio árbol (val_outputs_topk_ess/...) y guarda además el K usado "
+                             "por slide (k_used.npy). Incompatible con --topk y --use_embeddings.")
     args = parser.parse_args()
 
     if args.arch != "abmil" and not args.arch_tag:
         parser.error("--arch != abmil requiere --arch_tag (el mismo del entrenamiento)")
-    if args.topk and args.use_embeddings:
-        parser.error("--topk y --use_embeddings son modos de embedding alternativos; usa sólo uno.")
+    if sum([bool(args.topk), args.use_embeddings, args.topk_adaptive]) > 1:
+        parser.error("--topk, --use_embeddings y --topk_adaptive son modos de embedding "
+                      "alternativos; usa sólo uno de los tres.")
     if args.topk and args.arch != "abmil":
         parser.error("--topk no soporta --arch != abmil (SpatialABMIL): ver "
                       "abmil_extract_topk_embeddings en abmil_engine.py.")
+    if args.topk_adaptive and args.arch != "abmil":
+        parser.error("--topk_adaptive no soporta --arch != abmil (SpatialABMIL), por la misma "
+                      "razón que --topk.")
 
     latent_dim = resolve_latent_dim(
         args.work_dir, args.train_source, args.foundational_model, args.latent_dim
@@ -306,6 +350,7 @@ def main():
         shuffle_coords=args.shuffle_coords,
         use_embeddings=args.use_embeddings,
         topk=args.topk,
+        topk_adaptive=args.topk_adaptive,
     )
 
 

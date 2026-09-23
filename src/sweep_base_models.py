@@ -19,6 +19,12 @@ Dos estimaciones, y la diferencia entre ellas importa:
     reporta su AUC de test en el fold k. Estima el rendimiento del
     procedimiento completo (elegir + aplicar), que es lo que se desplegaría.
 
+`--bagged_boot N` añade una tercera estimación: la misma selección honesta,
+pero con bagging (bootstrap de los folds != k, voto mayoritario) en vez de un
+único argmax sobre su media — ataca la varianza del criterio, no su fórmula
+(ver `bagged_lofo`). Reutiliza los mismos (V, T) ya cargados; no repite carga
+de datos ni entrena de más.
+
 Uso:
     python src/sweep_base_models.py \
         --work_dir /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches \
@@ -100,6 +106,36 @@ def eval_subset(P, subset, n_folds):
     return np.array(av), np.array(at)
 
 
+def bagged_lofo(V, T, subsets, n_folds, n_boot, rng):
+    """Selección LOFO con bagging del criterio de validación (stability
+    selection, Meinshausen & Bühlmann 2010; bagged ensemble selection,
+    Caruana, Munson & Niculescu-Mizil, ICDM 2006).
+
+    La selección honesta actual promedia el AUC de validación de los 49 folds
+    != k y hace un único argmax. Aquí, en su lugar, se remuestrean esos 49
+    folds con reemplazo n_boot veces, se hace el argmax en cada remuestreo, y
+    se elige el subconjunto más votado. Esto ataca directamente la brecha
+    diagnosticada en N14 (Spearman(val, test) = 0.75 sobre los 255
+    subconjuntos): no cambia el criterio, reduce la varianza de aplicarlo.
+    No usa las etiquetas de test en ningún punto de la selección.
+    """
+    V_mat = np.stack([V[c] for c in subsets])  # (n_subsets, n_folds)
+    T_mat = np.stack([T[c] for c in subsets])
+    honest, chosen, stability = [], [], []
+    for k in range(n_folds):
+        others = np.array([i for i in range(n_folds) if i != k])
+        counts = np.zeros(len(subsets), dtype=int)
+        for _ in range(n_boot):
+            boot = rng.choice(others, size=len(others), replace=True)
+            means = V_mat[:, boot].mean(axis=1)
+            counts[int(np.argmax(means))] += 1
+        pick_idx = int(np.argmax(counts))
+        honest.append(T_mat[pick_idx, k])
+        chosen.append("+".join(subsets[pick_idx]))
+        stability.append(counts[pick_idx] / n_boot)
+    return np.array(honest), chosen, stability
+
+
 def paired(delta, rng):
     """Δ medio, IC95% bootstrap, W/T/L y p de Wilcoxon."""
     if np.allclose(delta, 0):
@@ -126,6 +162,10 @@ def main():
                     help="subconjunto de referencia para el Δ pareado")
     ap.add_argument("--max_subset", type=int, default=None,
                     help="tamaño máximo de subconjunto (por defecto, todos)")
+    ap.add_argument("--bagged_boot", type=int, default=0,
+                    help="si > 0, añade selección LOFO con bagging (bootstrap "
+                         "sobre los folds != k, voto mayoritario) con este nº "
+                         "de remuestreos; 0 desactiva esta comprobación")
     ap.add_argument("--out", default=None, help="fichero JSON de salida")
     args = ap.parse_args()
 
@@ -192,6 +232,31 @@ def main():
           f'W/T/L={d_honest["wins"]}/{d_honest["ties"]}/{d_honest["losses"]} '
           f'p={d_honest["p_value"]:.5f}')
 
+    # --- estimación honesta con bagging: stability selection sobre los folds != k ---
+    honest_bagged = chosen_bagged = freq_bagged = stability = None
+    d_bagged_vs_base = d_bagged_vs_single = None
+    if args.bagged_boot:
+        print(f'\n{"="*80}')
+        print(f'selección LOFO con bagging (bootstrap={args.bagged_boot})...')
+        honest_bagged, chosen_bagged, stability = bagged_lofo(
+            V, T, subsets, n_folds, args.bagged_boot, rng)
+        freq_bagged = {s: chosen_bagged.count(s) for s in set(chosen_bagged)}
+        print(f'honesta (bagging LOFO):            {"":40} {honest_bagged.mean():.4f}')
+        print(f'estabilidad media (voto del ganador): {np.mean(stability):.3f}')
+        print("\nsubconjunto elegido por bagging LOFO:")
+        for s, n in sorted(freq_bagged.items(), key=lambda kv: -kv[1]):
+            print(f"   {n:3}/{n_folds}  {s}")
+        d_bagged_vs_base = paired(honest_bagged - T[base], rng)
+        d_bagged_vs_single = paired(honest_bagged - honest, rng)
+        print(f'\nΔ pareado bagging vs baseline:      {d_bagged_vs_base["mean_delta"]:+.4f} '
+              f'[{d_bagged_vs_base["ci_95"][0]:+.4f},{d_bagged_vs_base["ci_95"][1]:+.4f}] '
+              f'W/T/L={d_bagged_vs_base["wins"]}/{d_bagged_vs_base["ties"]}/{d_bagged_vs_base["losses"]} '
+              f'p={d_bagged_vs_base["p_value"]:.5f}')
+        print(f'Δ pareado bagging vs honesta simple: {d_bagged_vs_single["mean_delta"]:+.4f} '
+              f'[{d_bagged_vs_single["ci_95"][0]:+.4f},{d_bagged_vs_single["ci_95"][1]:+.4f}] '
+              f'W/T/L={d_bagged_vs_single["wins"]}/{d_bagged_vs_single["ties"]}/{d_bagged_vs_single["losses"]} '
+              f'p={d_bagged_vs_single["p_value"]:.5f}')
+
     if args.out:
         res = dict(
             dataset=args.train_source, task=args.task_name, n_folds=n_folds,
@@ -207,6 +272,16 @@ def main():
                           delta_vs_baseline=paired(T[c] - T[base], rng))
                      for c in ranking],
         )
+        if args.bagged_boot:
+            res["honest_bagged"] = dict(
+                auc=float(honest_bagged.mean()),
+                n_bootstrap=args.bagged_boot,
+                seleccion="stability selection: bootstrap sobre folds != k, voto mayoritario",
+                estabilidad_media=float(np.mean(stability)),
+                elegidos=freq_bagged,
+                delta_vs_baseline=d_bagged_vs_base,
+                delta_vs_honesta_simple=d_bagged_vs_single,
+            )
         Path(args.out).write_text(json.dumps(res, indent=2, ensure_ascii=False))
         print(f"\n✓ guardado en {args.out}")
 

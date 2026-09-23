@@ -16,6 +16,8 @@ suma 1), subir capacidad ha sido sistemáticamente contraproducente.
   - FGEMLPMetaClassifier: ciclos cortos piecewise-linear (Garipov et al., ICLR 2018)
   - DeepEnsembleMLPMetaClassifier: k MLPs con semillas independientes
   - GatingMLPMetaClassifier: pesos por muestra sobre los modelos base
+  - DESOLAMetaClassifier: Dynamic Ensemble Selection clásico (k-NN, no
+        paramétrico), Overall Local Accuracy (Ko et al. 2008) sobre DSEL OOF
 
 Los cuatro basados en MLP comparten la arquitectura _TinyMLP
 (Linear-ReLU-Dropout-Linear) y la receta de entrenamiento (AdamW,
@@ -28,6 +30,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from sklearn.metrics import roc_auc_score
+from sklearn.neighbors import NearestNeighbors
 
 from fge_utils import fge_cycle_lr, set_lr
 
@@ -1144,3 +1147,199 @@ class SnapshotTabPFNMetaClassifier:
             return np.ones((len(X), len(self.classes_))) / len(self.classes_)
 
         return np.mean(probs_list, axis=0)
+
+
+class DESOLAMetaClassifier:
+    """
+    Dynamic Ensemble Selection (DES) clásico vía Overall Local Accuracy (OLA).
+
+    Referencias: Ko, Sabourin & Britto, "From dynamic classifier selection to
+    dynamic ensemble selection" (Pattern Recognition, 2008) — define OLA/LCA;
+    Cruz, Sabourin & Cavalcanti, "META-DES: a dynamic ensemble selection
+    framework using meta-learning" (arXiv:1810.01270); librería `deslib`
+    (implementa OLA, LCA, META-DES).
+
+    Motivación del proyecto: todos los demás meta-learners de este módulo
+    (LogitAveragingMetaClassifier, GatingMLPMetaClassifier, los *MLP*) o bien
+    aprenden un peso GLOBAL por modelo, o entrenan una función paramétrica por
+    descenso de gradiente sobre la totalidad del meta-train. DES-OLA es la
+    tercera familia, no ensayada aquí todavía: no hay entrenamiento por
+    gradiente y no hay parámetros que ajustar — la competencia de cada modelo
+    base se estima de forma perezosa ("lazy"), en el momento de predecir, a
+    partir de sus k vecinos más cercanos en un pool de selección dinámica
+    (DSEL).
+
+    Pipeline (idéntico al OLA original, adaptado a lo que expone la interfaz
+    de meta-learner de `ensemble4.py`):
+
+      1. DSEL = las features de meta-train que le pasa `Ensemble.forward()`
+         (mismas que ve cualquier otro meta-learner: `_fit_meta_model` llama
+         a `.fit(X_train, y_train, X_val, y_val)` igual que con LogisticRegression).
+         **Con --meta_features oof son out-of-fold; ES OBLIGATORIO usar ese
+         régimen aquí.** El AUC in-sample de los modelos base (~0.94) frente
+         al de test (~0.77) — ver CLAUDE.md, "Meta-features: in-sample vs
+         out-of-fold" — significa que estimar competencia local sobre
+         features in-sample describe una vecindad donde casi todos los
+         modelos aciertan casi siempre: la estimación sale inflada y sin
+         poder discriminar qué modelo confiar, exactamente el mismo fallo de
+         stacking que ya resolvió `build_oof_features.py` para el ajuste de
+         coeficientes. Esta clase NO fuerza el régimen (no tiene forma de
+         verlo: `ensemble4.py` decide qué árbol de predicciones carga como
+         xdirs/vdirs/tdirs vía --meta_features); es responsabilidad de quien
+         lo invoca pasar --meta_features con un --oof_tag.
+
+      2. Región de competencia: k vecinos más cercanos en DSEL de cada
+         instancia de consulta (val o test), por distancia euclídea sobre el
+         "output profile" — el vector de predicciones concatenado de los
+         modelos base ([n_models*C], las mismas columnas que ve cualquier
+         otro meta-learner de este módulo). No se usa el espacio de features
+         original de las instancias (embeddings de parche/slide) porque la
+         interfaz de meta-learner de `ensemble4.py` sólo expone las
+         probabilidades de los modelos base, nunca los embeddings — el mismo
+         régimen de "output profile" k-NN descrito en Woloszynski & Kurzynski
+         (2011) y disponible en `deslib`.
+
+      3. Competencia por modelo = Overall Local Accuracy: entre esos k
+         vecinos, la fracción en la que el modelo m acierta (argmax de su
+         bloque de probabilidades == etiqueta verdadera), con suavizado de
+         Laplace (`smoothing`, pseudo-cuenta por resultado) para que un
+         modelo que acierta 0/k en una vecindad diminuta no quede exactamente
+         en competencia 0 — con k tan pequeño como 5-10 (ver más abajo) eso
+         pasaría a menudo por ruido, no por incompetencia real.
+
+      4. Combinación SOFT, no hard-select: p_ens(x) = Σ_m w_m(x) · p_m(x),
+         con w_m(x) = competencia_m(x) normalizada para sumar 1 entre los
+         n_models. La predicción nunca sale del envolvente convexo de las
+         predicciones base, igual que GatingMLPMetaClassifier. Se eligió la
+         variante SOFT y no HARD (seleccionar un único modelo por instancia)
+         porque el DSEL de este proyecto tiene ~75 filas por fold (ver
+         CLAUDE.md, sección "Meta-features"): con k=5-10 sobre un pool así de
+         pequeño, la selección dura conmutaría de forma inestable entre folds
+         y vecindarios por ruido de muestreo, no por señal; ponderar es la
+         variante de OLA más robusta a ese régimen.
+
+    Diferencia con `GatingMLPMetaClassifier` (que ya vive en este módulo y en
+    `ensemble4.py --meta_model gating`, sólo tiene sentido con
+    --meta_features oof por la misma razón): gating es un mixture-of-experts
+    PARAMÉTRICO — una MLP pequeña que aprende, por descenso de gradiente sobre
+    TODO el meta-train, una función continua features→pesos, sin usar nunca
+    explícitamente "qué modelo acertó en qué instancias". DES-OLA es NO
+    paramétrico: no hay red, no hay pérdida, no hay `.backward()` — sólo un
+    k-NN (`sklearn.neighbors.NearestNeighbors`) sobre el DSEL y una fórmula
+    fija (accuracy local suavizada). Son familias distintas de la literatura
+    de selección dinámica/mixture-of-experts, no el mismo método con otro
+    nombre.
+
+    Restricciones (ver el guard correspondiente en ensemble4.py):
+      - Incompatible con --drop_redundant_class: necesita el bloque completo
+        de C columnas por modelo para poder tomar argmax por modelo (con una
+        sola columna por modelo, el argmax es trivialmente constante).
+      - Incompatible con --feature_space logit: la combinación final
+        (paso 4) es una suma ponderada directa de los bloques de X, válida
+        sólo si cada bloque es una distribución de probabilidad que suma 1.
+        El espacio "logit" de este proyecto aplica log-odds columna a columna
+        (no log-softmax), así que un bloque transformado ya no suma 1 y la
+        combinación dejaría de ser una probabilidad válida.
+
+    Args:
+        n_models (int): número de modelos base concatenados en las features.
+        input_is_prob (bool): debe ser True (--feature_space prob); se
+            conserva como argumento, en el mismo estilo que
+            LogitAveragingMetaClassifier/GatingMLPMetaClassifier, para que
+            ensemble4.py pueda pasarlo de forma uniforme, pero fit() lanza
+            si es False — ver "Restricciones" arriba.
+        k (int): vecinos del DSEL usados para estimar competencia local.
+            Default 10 (conservador; se recorta a min(k, len(DSEL)) si el
+            DSEL de un fold tiene menos filas).
+        smoothing (float): pseudo-cuenta de Laplace por resultado
+            (acierto/fallo) en la estimación de accuracy local de cada
+            modelo. Default 1.0.
+        metric (str): métrica de distancia del k-NN sobre el output profile.
+            Default 'euclidean'.
+    """
+
+    def __init__(self, n_models, input_is_prob=True, k=10, smoothing=1.0,
+                 metric="euclidean"):
+        self.n_models = n_models
+        self.input_is_prob = input_is_prob
+        self.k = k
+        self.smoothing = smoothing
+        self.metric = metric
+        self.classes_ = None
+        self._nn = None
+        self._k_eff = None
+        self._correct_dsel = None  # [N_dsel, n_models] bool
+
+    @staticmethod
+    def _reshape_probs(X, n_models):
+        """[N, n_models*C] -> [N, n_models, C]."""
+        X = np.asarray(X, dtype=np.float64)
+        if X.shape[1] % n_models:
+            raise ValueError(
+                f"{X.shape[1]} features no es múltiplo de n_models={n_models}: "
+                f"DES-OLA necesita el bloque completo de C columnas por "
+                f"modelo (incompatible con --drop_redundant_class)."
+            )
+        return X.reshape(len(X), n_models, X.shape[1] // n_models)
+
+    def fit(self, X_train, y_train, X_val=None, y_val=None):
+        """"Entrena" DES-OLA: no hay gradiente, sólo guardar el DSEL.
+
+        X_train/y_train son el DSEL (dynamic selection pool) — con
+        --meta_features oof, out-of-fold, como exige la motivación de arriba.
+        X_val/y_val se aceptan por uniformidad de interfaz con
+        `_fit_meta_model` (que inspecciona la firma de `fit`) pero no se usan:
+        no hay early stopping que hacer sobre un método perezoso sin pérdida.
+        """
+        if not self.input_is_prob:
+            raise ValueError(
+                "DESOLAMetaClassifier requiere --feature_space prob "
+                "(input_is_prob=True): la combinación final suma bloques de "
+                "X directamente como si fuesen probabilidades, y el espacio "
+                "'logit' de este proyecto no produce bloques que sumen 1 "
+                "(log-odds columna a columna, no log-softmax)."
+            )
+        X_train = np.asarray(X_train, dtype=np.float64)
+        y_train = np.asarray(y_train)
+
+        n_dsel = len(X_train)
+        self._k_eff = max(1, min(self.k, n_dsel))
+        self._nn = NearestNeighbors(n_neighbors=self._k_eff, metric=self.metric)
+        self._nn.fit(X_train)
+
+        Z = self._reshape_probs(X_train, self.n_models)  # [N_dsel, n_models, C]
+        preds = Z.argmax(axis=2)  # [N_dsel, n_models]
+        self._correct_dsel = (preds == y_train[:, None])  # [N_dsel, n_models] bool
+
+        self.classes_ = np.unique(y_train)
+        return self
+
+    def _competence_weights(self, X):
+        """Pesos por muestra [N, n_models], normalizados a sumar 1.
+
+        OLA suavizada con Laplace: para cada instancia de consulta, mira sus
+        k_eff vecinos en el DSEL y cuenta en cuántos acertó cada modelo base.
+        add-alpha (alpha=self.smoothing) sobre un resultado binario
+        (acierto/fallo por vecino) da (aciertos + alpha) / (k + 2*alpha),
+        que evita competencia exactamente 0 o 1 por ruido de vecindarios
+        pequeños sin distorsionar mucho vecindarios grandes.
+        """
+        X = np.asarray(X, dtype=np.float64)
+        _, idx = self._nn.kneighbors(X, n_neighbors=self._k_eff)  # [N, k_eff]
+        correct_neighbors = self._correct_dsel[idx]  # [N, k_eff, n_models]
+        n_correct = correct_neighbors.sum(axis=1).astype(np.float64)  # [N, n_models]
+        comp = (n_correct + self.smoothing) / (self._k_eff + 2.0 * self.smoothing)
+        w = comp / comp.sum(axis=1, keepdims=True)
+        return w
+
+    def predict_proba(self, X):
+        """Mezcla convexa de las predicciones base, pesos = competencia local OLA."""
+        Z = self._reshape_probs(X, self.n_models)  # [N, n_models, C]
+        w = self._competence_weights(X)  # [N, n_models]
+        return np.einsum('nm,nmc->nc', w, Z)
+
+    def competence_weights(self, X):
+        """Pesos por muestra [N, n_models] — para inspeccionar qué modelo
+        domina localmente en cada instancia (análogo a
+        GatingMLPMetaClassifier.gate_weights)."""
+        return self._competence_weights(X)

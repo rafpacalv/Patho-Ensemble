@@ -16,7 +16,7 @@ from meta_models import (MLPMetaClassifier, SnapshotMLPMetaClassifier, FGEMLPMet
                          LogitAveragingMetaClassifier, DeepEnsembleMLPMetaClassifier,
                          GatingMLPMetaClassifier, DeepMLPMetaClassifier,
                          SnapshotDeepMLPMetaClassifier, TabPFNMetaClassifier,
-                         SnapshotTabPFNMetaClassifier)
+                         SnapshotTabPFNMetaClassifier, DESOLAMetaClassifier)
 
 
 def _fit_meta_model(meta_model, X_train, y_train, X_val=None, y_val=None):
@@ -684,9 +684,10 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
          fge_n_cycles=6, fge_cycle_length=3, fge_lr_1=1e-3, fge_lr_2=1e-5,
          fge_cycle_patience=2, meta_features="insample", feature_space="prob",
          drop_redundant_class=False, n_members=6, meta_svm_c=1.0, meta_svm_kernel="linear",
-         meta_l1_c=1.0,
+         meta_l1_c=1.0, meta_l1_ratio=0.5,
          meta_knn_k=5, reweight_by_model_importance=False, reweight_temperature=1.0,
-         reweight_method="norm_ratio", extra_features=None, patient_level=False):
+         reweight_method="norm_ratio", extra_features=None, patient_level=False,
+         meta_des_k=10, meta_des_smoothing=1.0):
     """
     Ejecuta ensamble meta-learner para múltiples folds.
 
@@ -697,7 +698,7 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
         tissue_patching (str): Estrategia de patching (ej: '20x_224px_0px_overlap')
         task_name (str): Tarea de clasificación (ej: 'TP53_mutation')
         meta_model (str): Tipo de meta-learner ('logreg', 'mlp', 'mlp_snapshot', 'mlp_fge',
-            'tabpfn'). Default: 'logreg'
+            'tabpfn', 'des_ola', ...). Default: 'logreg'
         meta_hidden_dim (int): Ancho capa oculta (MLP). Default: 16
         meta_dropout (float): Dropout (MLP). Default: 0.1
         meta_epochs (int): Épocas (None=auto: 100 mlp, 120 mlp_snapshot). Default: None
@@ -727,13 +728,24 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
     # valor (fge, fge_wbase, fge_lowlr...) es la etiqueta de una variante FGE y
     # debe coincidir con el --fge_tag usado en train/test_abmil_fge.py.
     assert base_source, "base_source no puede estar vacío"
-    # logit_avg y gating tratan cada bloque de columnas como una distribución
-    # completa sobre clases (la reconstruyen con _as_log_probs). Quitar una
-    # clase rompe esa semántica en silencio en vez de fallar.
-    if drop_redundant_class and meta_model in ("logit_avg", "gating"):
+    # logit_avg, gating y des_ola tratan cada bloque de columnas como una
+    # distribución completa sobre clases (la reconstruyen con _as_log_probs o,
+    # en des_ola, con argmax por bloque). Quitar una clase rompe esa semántica
+    # en silencio en vez de fallar.
+    if drop_redundant_class and meta_model in ("logit_avg", "gating", "des_ola"):
         raise ValueError(
             f"--drop_redundant_class es incompatible con --meta_model {meta_model}: "
             f"necesita la distribución completa sobre clases de cada modelo base."
+        )
+    # des_ola combina bloques de X sumándolos directamente como si fuesen
+    # probabilidades (ver DESOLAMetaClassifier.predict_proba); el espacio
+    # 'logit' de este proyecto es log-odds columna a columna (no
+    # log-softmax), así que un bloque transformado ya no suma 1 y la mezcla
+    # dejaría de ser una probabilidad válida.
+    if meta_model == "des_ola" and feature_space != "prob":
+        raise ValueError(
+            f"--meta_model des_ola requiere --feature_space prob (recibido "
+            f"{feature_space!r}): ver DESOLAMetaClassifier en meta_models.py."
         )
 
     # Sufijo de rutas: bases FGE se guardan en árboles paralelos
@@ -788,10 +800,22 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
             tdirs.append(os.path.join(d, f'patient_outputs'))
         else:
             xdirs.append(os.path.join(f'{d}_train_eval{xsuffix}', f'val_outputs{xsuffix}'))
-            # Cuando meta_features != "insample" (ej. embeddings), validación y test también usan el sufijo
-            # porque test_abmil.py genera val_outputs_embeddings y test_outputs_embeddings
-            vdirs.append(os.path.join(d, f'val_outputs{xsuffix if xsuffix else suffix}'))
-            tdirs.append(os.path.join(d, f'test_outputs{xsuffix if xsuffix else suffix}'))
+            # Sólo "embeddings" tiene árboles val_outputs_embeddings/test_outputs_embeddings
+            # separados (test_abmil.py los genera aparte porque son embeddings de slide,
+            # no probabilidades). Un --oof_tag de build_oof_features.py (oof, oof5,
+            # oof10...) NUNCA escribe val_outputs_{tag}/test_outputs_{tag}: sólo produce
+            # el árbol train_eval_{tag}/val_outputs_{tag} (meta-train OOF) — ver
+            # build_oof_features.py, que sólo llama a save_fold_outputs_fge() sobre
+            # eval_dir, nunca sobre val_outputs/test_outputs. Val/test ya son
+            # out-of-sample por construcción (el modelo base nunca los vio entrenar),
+            # así que no necesitan una versión "des-leaked": usan el árbol base sin
+            # sufijo. Aplicar el sufijo también ahí (como se hacía antes de este fix)
+            # rompía con FileNotFoundError en cuanto se pedía --meta_features oof,
+            # que nunca se había probado end-to-end en este repo.
+            vdirs_suffix = xsuffix if meta_features == "embeddings" else suffix
+            tdirs_suffix = xsuffix if meta_features == "embeddings" else suffix
+            vdirs.append(os.path.join(d, f'val_outputs{vdirs_suffix}'))
+            tdirs.append(os.path.join(d, f'test_outputs{tdirs_suffix}'))
 
     assert len(set(folds)) == 1, f"Mismatch in number of folds: {set(folds)}"
 
@@ -802,6 +826,7 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
     results_subdir_map = {
         "logreg": "ensemble4",
         "logreg_l1": "ensemble4_logreg_l1",
+        "logreg_en": "ensemble4_logreg_en",
         "mlp": "ensemble4_mlp",
         "mlp_snapshot": "ensemble4_mlp_snapshot",
         "mlp_fge": "ensemble4_mlp_fge",
@@ -812,6 +837,7 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
         "logit_avg": "ensemble4_logit_avg",
         "mlp_deepens": "ensemble4_mlp_deepens",
         "gating": "ensemble4_gating",
+        "des_ola": "ensemble4_des_ola",
         "lightgbm": "ensemble4_lightgbm",
         "svm": "ensemble4_svm",
         "knn": "ensemble4_knn",
@@ -876,6 +902,17 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
                     # esparsifica columnas sueltas, no modelos enteros.
                     meta_learner = LogisticRegression(
                         penalty="l1", solver="liblinear", C=meta_l1_c, max_iter=1000
+                    )
+                elif meta_model == "logreg_en":
+                    # Elastic net: mezcla L1 (selección de vista/modelo, como
+                    # logreg_l1) con L2 (estabiliza cuando dos modelos base
+                    # están correlacionados, donde L1 puro elige uno
+                    # arbitrariamente). --meta_l1_ratio=1.0 == L1 puro,
+                    # 0.0 == L2 puro (ridge). 'saga' es el único solver de
+                    # sklearn que soporta penalty='elasticnet'.
+                    meta_learner = LogisticRegression(
+                        penalty="elasticnet", solver="saga", C=meta_l1_c,
+                        l1_ratio=meta_l1_ratio, max_iter=5000
                     )
                 elif meta_model == "mlp":
                     meta_learner = MLPMetaClassifier(
@@ -948,6 +985,15 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
                         patience=meta_patience,
                         device=device,
                         seed=42 + f
+                    )
+                elif meta_model == "des_ola":
+                    # No paramétrico: sin seed de inicialización de red (no
+                    # hay red). k-NN determinista dado el DSEL.
+                    meta_learner = DESOLAMetaClassifier(
+                        n_models=len(foundational_models),
+                        input_is_prob=(feature_space == "prob"),
+                        k=meta_des_k,
+                        smoothing=meta_des_smoothing,
                     )
                 elif meta_model == "lightgbm":
                     # Import local, igual que tabpfn: no rompe entornos sin la librería.
@@ -1064,9 +1110,9 @@ if __name__ == "__main__":
 
     # Meta-learner selection and hyperparameters
     parser.add_argument("--meta_model", type=str,
-                       choices=["logreg", "logreg_l1", "mlp", "mlp_snapshot", "mlp_fge",
+                       choices=["logreg", "logreg_l1", "logreg_en", "mlp", "mlp_snapshot", "mlp_fge",
                                 "deep_mlp", "deep_mlp_snapshot", "tabpfn", "tabpfn_snapshot",
-                                "logit_avg", "mlp_deepens", "gating", "lightgbm",
+                                "logit_avg", "mlp_deepens", "gating", "des_ola", "lightgbm",
                                 "svm", "knn", "nb"],
                        default="logreg",
                        help="Meta-learner type. Default: logreg (for backward compatibility)")
@@ -1124,12 +1170,23 @@ if __name__ == "__main__":
                        help="Inverso de la fuerza de regularización L1 (logreg_l1 only). Más bajo "
                             "= más esparsidad = más modelos base apagados. Barrer sobre validación, "
                             "nunca sobre test. Default: 1.0")
+    parser.add_argument("--meta_l1_ratio", type=float, default=0.5,
+                       help="Mezcla L1/L2 para elastic net (logreg_en only). 1.0=L1 puro "
+                            "(como logreg_l1), 0.0=L2 puro (ridge), 0.5=mitad y mitad. Default: 0.5")
     parser.add_argument("--meta_svm_c", type=float, default=1.0,
                        help="Regularization parameter C for SVM (svm only). Default: 1.0")
     parser.add_argument("--meta_svm_kernel", type=str, choices=["linear", "rbf"], default="linear",
                        help="Kernel type for SVM (svm only). Default: linear")
     parser.add_argument("--meta_knn_k", type=int, default=5,
                        help="Number of neighbors for KNN (knn only). Default: 5")
+    parser.add_argument("--meta_des_k", type=int, default=10,
+                       help="Vecinos del DSEL usados para estimar competencia local "
+                            "(des_ola only). Conservador por defecto: el DSEL de este "
+                            "proyecto tiene ~75 filas por fold. Default: 10")
+    parser.add_argument("--meta_des_smoothing", type=float, default=1.0,
+                       help="Pseudo-cuenta de Laplace por resultado (acierto/fallo) al "
+                            "estimar la accuracy local de cada modelo (des_ola only). "
+                            "Default: 1.0")
     parser.add_argument("--reweight_by_model_importance", action="store_true",
                        help="Reweight features by model importance (via auxiliary LogisticRegression). Default: False")
     parser.add_argument("--reweight_temperature", type=float, default=1.0,

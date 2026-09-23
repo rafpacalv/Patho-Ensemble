@@ -1,0 +1,65 @@
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+✓ E0 (Baseline)                       | n_folds=50 | AUC=0.7616 [0.7304, 0.7888]
+✓ E1 (+disagreement)                  | n_folds=50 | AUC=0.7618 [0.7307, 0.7890]
+✓ E2 (+disagreement+margin)           | n_folds=50 | AUC=0.7611 [0.7298, 0.7881]
+✓ E3 (+disagreement+margin+entropy)   | n_folds=50 | AUC=0.7602 [0.7287, 0.7869]
+
+==========================================================================================
+COMPARACIONES PAREADAS vs BASELINE
+==========================================================================================
+Baseline: E0 (Baseline)
+
+Comparison                          |    Δ AUC |                    95% CI |    p-value |     Adj. p | Sig
+--------------------------------------------------------------------------------------------------------------
+E1 (+disagreement)                  | +0.000171 |          [0.0000, 0.0005] |   0.322223 |   0.322223 |    
+E2 (+disagreement+margin)           | -0.000546 |         [-0.0012, 0.0000] |   0.085196 |   0.170392 |    
+E3 (+disagreement+margin+entropy)   | -0.001462 |        [-0.0027, -0.0004] |   0.019644 |   0.058931 |   *
+
+==========================================================================================
+INTERPRETACIÓN
+==========================================================================================
+⚠️  Ningún escalón es significativamente diferente del baseline (Holm-Bonferroni α=0.05)
+
+   El presupuesto estadístico (MDE ≈ ±0.016) es mayor que cualquier efecto real.
+   Las features extras no capturan señal adicional significativa.
+
+   (1 escalón(es) marginal(es), 0.05 ≤ adj. p < 0.10 — no cruzan α=0.05):
+     - E3 (+disagreement+margin+entropy): Δ=-0.001462 (empeora)
+
+💾 Resultados guardados en: /home/JKP6679/Patho-Ensemble/results_ladder_cptac_brca_TP53_mutation.json
+
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+✓ E0 (Baseline)                       | n_folds=50 | AUC=0.7986 [0.7731, 0.8237]
+✓ E1 (+disagreement)                  | n_folds=50 | AUC=0.7988 [0.7730, 0.8233]
+✓ E2 (+disagreement+margin)           | n_folds=50 | AUC=0.7991 [0.7732, 0.8237]
+✓ E3 (+disagreement+margin+entropy)   | n_folds=50 | AUC=0.7978 [0.7719, 0.8230]
+
+==========================================================================================
+COMPARACIONES PAREADAS vs BASELINE
+==========================================================================================
+Baseline: E0 (Baseline)
+
+Comparison                          |    Δ AUC |                    95% CI |    p-value |     Adj. p | Sig
+--------------------------------------------------------------------------------------------------------------
+E1 (+disagreement)                  | +0.000132 |         [-0.0008, 0.0010] |   0.782021 |   0.782021 |    
+E2 (+disagreement+margin)           | +0.000519 |         [-0.0006, 0.0018] |   0.429730 |   1.000000 |    
+E3 (+disagreement+margin+entropy)   | -0.000855 |         [-0.0032, 0.0013] |   0.472731 |   0.945462 |    
+
+==========================================================================================
+INTERPRETACIÓN
+==========================================================================================
+⚠️  Ningún escalón es significativamente diferente del baseline (Holm-Bonferroni α=0.05)
+
+   El presupuesto estadístico (MDE ≈ ±0.016) es mayor que cualquier efecto real.
+   Las features extras no capturan señal adicional significativa.
+
+💾 Resultados guardados en: /home/JKP6679/Patho-Ensemble/results_ladder_conch_cptac_brca_TP53_mutation.json
+

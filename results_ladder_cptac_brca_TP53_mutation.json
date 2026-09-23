@@ -4,59 +4,62 @@
   "baseline": "E0 (Baseline)",
   "escalones": {
     "E0 (Baseline)": {
-      "mean_auc": 0.7917843152218151,
-      "std_auc": 0.10798530080537992,
+      "mean_auc": 0.7616233719983719,
+      "std_auc": 0.10229967032298608,
       "n_folds": 50
     },
     "E1 (+disagreement)": {
-      "mean_auc": 0.7914036172161173,
-      "std_auc": 0.10789397560889073,
+      "mean_auc": 0.7617943121693123,
+      "std_auc": 0.10217648766852981,
       "n_folds": 50
     },
     "E2 (+disagreement+margin)": {
-      "mean_auc": 0.7912162062474561,
-      "std_auc": 0.10787703211239233,
+      "mean_auc": 0.7610777370777371,
+      "std_auc": 0.10250645213715538,
       "n_folds": 50
     },
     "E3 (+disagreement+margin+entropy)": {
-      "mean_auc": 0.7903601317663816,
-      "std_auc": 0.10831098086867907,
+      "mean_auc": 0.7601618716931214,
+      "std_auc": 0.10229155134898546,
       "n_folds": 50
     }
   },
   "comparisons": [
     {
       "comparison": "E1 (+disagreement)",
-      "mean_delta": -0.0003806980056980058,
+      "mean_delta": 0.00017094017094017257,
       "ci_95": [
-        -0.0010947293447293438,
-        0.0003148148148148122
+        0.0,
+        0.0005128205128205177
       ],
-      "p_value": 0.2940316159441239,
-      "adjusted_p_value": 0.2940316159441239,
-      "significant": false
+      "p_value": 0.32222340595067556,
+      "adjusted_p_value": 0.32222340595067556,
+      "significant": false,
+      "marginal": false
     },
     {
       "comparison": "E2 (+disagreement+margin)",
-      "mean_delta": -0.000568108974358974,
+      "mean_delta": -0.0005456349206349187,
       "ci_95": [
-        -0.0015480769230769198,
-        0.0002604166666666652
+        -0.0012202380952380909,
+        0.0
       ],
-      "p_value": 0.21387729421911275,
-      "adjusted_p_value": 0.6416318826573383,
-      "significant": false
+      "p_value": 0.08519612702834484,
+      "adjusted_p_value": 0.17039225405668967,
+      "significant": false,
+      "marginal": false
     },
     {
       "comparison": "E3 (+disagreement+margin+entropy)",
-      "mean_delta": -0.0014241834554334564,
+      "mean_delta": -0.0014615003052503028,
       "ci_95": [
-        -0.003864271723646726,
-        0.0005383492953805263
+        -0.0027423315399877812,
+        -0.00037031440781440877
       ],
-      "p_value": 0.21552170139355376,
-      "adjusted_p_value": 0.4310434027871075,
-      "significant": false
+      "p_value": 0.01964362171000401,
+      "adjusted_p_value": 0.05893086513001203,
+      "significant": false,
+      "marginal": true
     }
   ]
 }

@@ -103,6 +103,182 @@ Two consequences:
   for early fusion. **Check which base models go in before tuning how they are
   combined.**
 
+### Feature engineering ladder: the null generalises across base-model strength
+
+Re-measured 2026-09-22 (job 72573) after the "stale results" fix below. The
+ladder adds derived meta-features on top of raw base-model probabilities
+before the `logreg` meta-learner: E0 baseline → E1 `+disagreement` (Jensen-gap)
+→ E2 `+margin_avg` → E3 `+entropy_per_model`. Run on **both** trios in one
+pass so each is internally paired:
+
+| Trio | E0 (baseline) | E1 | E2 | E3 | Any step significant (Holm)? |
+|---|---:|---:|---:|---:|---|
+| `ctranspath+uni_v2+virchow_v1` (historical) | 0.7616 | 0.7618 | 0.7611 | 0.7602 | No — E3 Δ=−0.0015, adj. p=0.059 (misses α=0.05) |
+| `ctranspath+uni_v2+conch_v1_5` (winning) | 0.7986 | 0.7988 | 0.7991 | 0.7978 | No — all adj. p ≥ 0.17, MDE ≈ ±0.016 |
+
+Results in `results_ladder_cptac_brca_TP53_mutation.json` (historical) and
+`results_ladder_conch_cptac_brca_TP53_mutation.json` (winning).
+
+**The null was not an artefact of the historical trio being weak.** It holds
+on the winning trio too, and in both trios E3 (all three extra features) is
+the worst point estimate, same sign. This extends "the gain is the base
+model, not the combiner" (above): it is not only that swapping the meta-model
+family doesn't help (`ensemble4 --meta_model`, see the metaclassifier suite),
+but enriching the meta-learner's *input features* doesn't either, on the weak
+trio or the strong one. Check which base models go in; don't spend time
+engineering what the combiner sees.
+
+> `src/analyze_feature_engineering_ladder_v2.py`'s significance summary used
+> to conflate the marginal band (0.05≤adj.p<0.10) with α=0.05 and label any
+> significant change "mejora" regardless of sign — E3's significant
+> *degradation* on the historical trio printed as "1 escalón muestra mejora
+> significativa." Fixed 2026-09-22 (job 72575 regenerated both
+> `results_ladder_*.json`): `significant` now means adj.p<0.05 only, a
+> separate `marginal` field carries the 0.05–0.10 band, and the printed
+> summary states "mejora"/"empeora" per the sign of Δ.
+
+### View selection for the meta-learner (L1 / elastic net): null on AUC, but mechanistically informative
+
+Measured 2026-09-23 (jobs 72576, 72582) on `cptac_brca/TP53_mutation`, both
+trios, `--feature_space logit --drop_redundant_class`. In this binary task
+that leaves exactly **one log-odds column per base model**, so an L1 penalty
+on the meta-learner is view/model-level sparsity, not arbitrary-column
+sparsity — the closest thing this codebase has to Sylvain et al.'s "view
+selection in multi-view stacking" (lasso/elastic-net meta-learners for
+choosing which base learner to keep). `logreg_l1` already existed but had
+never been run cleanly; `logreg_en` (elastic net, `--meta_l1_ratio`) is new.
+
+| Trio | Baseline (logreg) | L1 C=0.01 | L1 C=0.1 | L1 C=1.0 | L1 C=10.0 | EN (l1_ratio 0.2/0.5/0.8, C=1.0) |
+|---|---:|---:|---:|---:|---:|---|
+| Historical | 0.7655 | **0.5000**\*\* | 0.7574 (ns) | 0.7679 (ns) | 0.7718 (ns) | 0.7666–0.7671 (ns) |
+| Winning | 0.7980 | **0.5289**\*\* | 0.7911 (ns) | 0.7975 (ns) | 0.7932 (ns) | 0.7978–0.7984 (ns) |
+
+Results in `results_meta_view_selection_hist_cptac_brca_TP53_mutation.json`
+and `results_meta_view_selection_win_cptac_brca_TP53_mutation.json`. C=0.01
+collapses the meta-learner to a trivial classifier (Holm p<0.001, both
+trios) — destructive, not informative about whether selection helps. Every
+other regularisation strength (weak-to-moderate L1, any elastic-net mix) is
+statistically indistinguishable from the unpenalised baseline.
+
+**The interesting result isn't the AUC, it's what the L1 zeroes out.**
+Reading `coefs.npy` fold-by-fold: on the historical trio at C=0.1, virchow_v1
+is zeroed in 100% of folds, ctranspath in 88%, uni_v2 in 10%. On the winning
+trio at C=1.0, conch_v1_5 is zeroed in only 8% of folds vs ctranspath 70% /
+uni_v2 66%. **L1 sparsity independently rediscovers the same ranking as the
+base-model subset sweep** (virchow_v1 dispensable, AUC alone 0.6823;
+conch_v1_5 dominant, AUC alone 0.7902) — two unrelated methods triangulating
+on the same answer, even though the L1 never beats the unpenalised baseline
+on AUC. Confirms the base-model finding rather than adding a new lever.
+
+### Dynamic Ensemble Selection (DES-OLA): null, extends to a third combiner family
+
+Measured 2026-09-23 (job 72586). New `--meta_model des_ola`
+(`DESOLAMetaClassifier` in `src/meta_models.py`): classic non-parametric/lazy
+DES — Overall Local Accuracy (Ko et al. 2008; Cruz et al. META-DES,
+arXiv:1810.01270). For each query, a k-NN region of competence (default
+k=10, `--meta_des_k`) is found over the base-models' output-probability
+profile within the DSEL; each base model's Laplace-smoothed local accuracy in
+that neighbourhood becomes its weight in a **soft** convex combination (soft,
+not hard-select, because the DSEL is only ~75 rows/fold — hard selection at
+k=5–10 there would thrash on sampling noise). Incompatible with
+`--drop_redundant_class` and `--feature_space logit` (guarded, raises
+`ValueError`). Differs from the existing `--meta_model gating`: gating is a
+parametric mixture-of-experts trained by gradient descent; DES-OLA is
+lazy/non-parametric, no network, no backward pass.
+
+Competence **must** be estimated out-of-fold (`--meta_features oof`) — using
+in-sample predictions here would hit the same optimism this file already
+documents (0.94 in-sample vs 0.77 test). This is the first time
+`--meta_features oof` was ever run end-to-end in this repo, and doing so
+exposed a real, general bug in `ensemble4.py`: the val/test directory
+resolution assumed any non-`"insample"` `--meta_features` value needs
+suffixed `val_outputs_{tag}`/`test_outputs_{tag}` dirs. True for
+`--meta_features embeddings` (what every existing `.sbatch` actually uses);
+**false** for an `--oof_tag` from `build_oof_features.py`, which only ever
+writes the suffixed *meta-train* tree — val/test are already out-of-sample by
+construction and were never written with a suffix. Fixed by branching
+specifically on `meta_features == "embeddings"`. Anyone using a `--oof_tag`
+for the first time should be aware this was silently broken until now.
+
+| Trio | logreg (OOF baseline) | des_ola (k=10) | Δ AUC | 95% CI | p | MDE@80% |
+|---|---:|---:|---:|---|---:|---:|
+| Historical | 0.7571 | 0.7555 | −0.0016 | [−0.0091, +0.0062] | 0.69 | 0.0115 |
+| Winning | 0.7830 | 0.7946 | +0.0116 | [+0.0008, +0.0278] | 0.11–0.14 | 0.0201 |
+
+Results in `results_des_ola_hist_cptac_brca_TP53_mutation.json`,
+`results_des_ola_win_cptac_brca_TP53_mutation.json`,
+`results_des_ola_wtl_cptac_brca_TP53_mutation.json`. Launcher:
+`run_des_ola.sbatch`. Both OOF baselines (0.757/0.783) sit visibly below the
+in-sample figures above (0.7616/0.7986) — expected, and confirms the OOF
+pathway was genuinely exercised rather than silently falling back to
+in-sample data.
+
+Historical trio: indistinguishable from noise. Winning trio: a positive
+trend (+0.012 AUC, wins 24/50 vs losses 18/50) that neither the paired
+t-test nor Wilcoxon confirms (p=0.11–0.14, MDE=0.020 exceeds the observed
+effect) — a bounded null, not an indeterminate one. **Per-instance competence
+estimation does not recover anything the global logreg combiner was
+missing**, extending "the gain is the base model, not the combiner" to a
+*third* structurally distinct combiner family (non-parametric/lazy, vs.
+gating's parametric-gradient MoE, vs. linear stacking) — this strengthens the
+conclusion rather than merely repeating it.
+
+Caveat carried over from the run: OOF freshness for ctranspath was 45/50
+folds postdating its checkpoint, 5/50 inverted by hours — traced to
+`build_oof_features.py` training independent nested-CV models that never
+touch the outer `checkpoints/` dir, with its real dependencies (`k=all.tsv`,
+feature `.h5`s) unchanged since Sept 2025; judged consistent with parallel
+job scheduling, not a later retrain invalidating the OOF, but recorded here
+as a judgment call rather than a clean pass.
+
+### Correlation-pruned embedding fusion: the first non-null signal this campaign
+
+Measured 2026-09-23 (job 72588). Prior early-fusion attempts concatenated
+embeddings **naively** — `ensemble5.py` at the patch level (Δ AUC = −0.0056,
+see "Early Fusion Mechanism") and, separately, `run_meta_suite.py`'s `emb:*`
+arms at the slide level (each model's 512-D ABMIL-collapsed embedding,
+1536-D concatenated, no selection). Neither pruned redundancy first. This
+experiment adds that: rank the 1536 embedding columns by univariate AUC on
+the meta-train pool (never val/test), then greedily drop any column whose
+`|Pearson r|` with an already-kept, higher-ranked column exceeds θ — the
+mechanism from *Information-Driven Fusion of Pathology Foundation Models*
+(arXiv:2512.11104), adapted to slide embeddings instead of tile embeddings.
+New configs `emb_corr{0.3,0.5,0.7}:logreg` in `src/run_meta_suite.py`.
+
+| Trio | `emb:logreg` (naive, baseline) | `emb_corr0.3` (~2% kept) | `emb_corr0.5` (~11% kept) | `emb_corr0.7` (~47% kept) |
+|---|---:|---:|---:|---:|
+| Historical | 0.7647 | 0.7425 | **0.7727** | 0.7697 |
+| Winning | 0.7826 | 0.7931 | **0.7974** | 0.7846 |
+
+θ=0.5 wins in both trios and is the only threshold that beats the
+*probability*-space baseline too (historical 0.7616, winning 0.7986 — ties
+within noise). Results in `results_corr_prune_hist_cptac_brca_TP53_mutation.json`
+/ `..._win_...json`. Paired vs `emb:logreg`, θ=0.5, Holm-corrected **within
+each metric across the 3 θ values** (3 comparisons, not the full metric ×
+θ grid — a narrower family than this file's other tables; treat the p-values
+below as suggestive, not as confirmatory as the rest of this campaign):
+
+| Trio | AUC Δ (p, Holm) | bacc Δ (p, Holm) | kappa Δ (p, Holm) | macro-F1 Δ (p, Holm) |
+|---|---|---|---|---|
+| Historical | +0.008 (p=0.13, Holm=0.37) | **+0.029 (p=0.002, Holm=0.022)** | **+0.065 (p=0.001, Holm=0.012)** | **+0.033 (p=0.001, Holm=0.014)** |
+| Winning | +0.015 (p=0.047, Holm=0.41) | +0.017 (p=0.046, Holm=0.41) | +0.041 (p=0.029, Holm=0.32) | +0.021 (p=0.034, Holm=0.34) |
+
+**First result in this campaign where something survives Holm correction on
+any metric.** On the historical trio, θ=0.5 pruning improves balanced
+accuracy, kappa and macro-F1 significantly over naive embedding
+concatenation — AUC itself doesn't clear the bar, and the winning trio's
+pattern is the same direction but only nominal (p<0.05 uncorrected, not
+after Holm). Before treating this as confirmed: (1) the correction family
+here is narrower than elsewhere in this file — a proper test would
+Holm-correct across all 4 metrics × 3 θ at once, or better, pre-register
+θ=0.5 alone and run it as a single confirmatory comparison rather than
+reading off the best of a 3-point sweep; (2) `emb_corr0.3` (heaviest
+pruning) is *worse* than baseline on the historical trio (0.7425 vs 0.7647)
+— the effect is not monotonic in θ, consistent with a real optimum but also
+with sampling noise at these fold counts. **Not yet a fourth confirmed
+positive finding — the one open thread worth a proper confirmatory rerun
+before the next combiner-side idea.**
+
 ### Patch coordinate groups
 
 Models with byte-identical `coords` can be fused, compared per patch, or share

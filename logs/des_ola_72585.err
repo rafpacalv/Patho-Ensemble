@@ -1,0 +1,56 @@
+  0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]                                                              Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]
+Traceback (most recent call last):
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 1206, in <module>
+    main(**vars(args))
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 1039, in main
+    preds, labels = Ensemble(
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 109, in __init__
+    self._validate_directories()
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 310, in _validate_directories
+    raise FileNotFoundError(f"Directory not found: {d}")
+FileNotFoundError: Directory not found: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/val_outputs_oof/fold_0
+  0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]                                                              Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]
+Traceback (most recent call last):
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 1206, in <module>
+    main(**vars(args))
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 1039, in main
+    preds, labels = Ensemble(
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 109, in __init__
+    self._validate_directories()
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 310, in _validate_directories
+    raise FileNotFoundError(f"Directory not found: {d}")
+FileNotFoundError: Directory not found: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/val_outputs_oof/fold_0
+  0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]                                                              Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]
+Traceback (most recent call last):
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 1206, in <module>
+    main(**vars(args))
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 1039, in main
+    preds, labels = Ensemble(
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 109, in __init__
+    self._validate_directories()
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 310, in _validate_directories
+    raise FileNotFoundError(f"Directory not found: {d}")
+FileNotFoundError: Directory not found: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/val_outputs_oof/fold_0
+  0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]                                                              Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]Evaluating fold 1/50:   0%|          | 0/50 [00:00<?, ?fold/s]
+Traceback (most recent call last):
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 1206, in <module>
+    main(**vars(args))
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 1039, in main
+    preds, labels = Ensemble(
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 109, in __init__
+    self._validate_directories()
+  File "/shared/home/JKP6679/Patho-Ensemble/src/ensemble4.py", line 310, in _validate_directories
+    raise FileNotFoundError(f"Directory not found: {d}")
+FileNotFoundError: Directory not found: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/val_outputs_oof/fold_0
+Traceback (most recent call last):
+  File "/shared/home/JKP6679/Patho-Ensemble/src/analyze_feature_engineering_ladder_v2.py", line 325, in <module>
+    main()
+  File "/shared/home/JKP6679/Patho-Ensemble/src/analyze_feature_engineering_ladder_v2.py", line 177, in main
+    raise FileNotFoundError(
+FileNotFoundError: Escalón 'logreg baseline (oof)': no existe /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_oof_hist. ¿Coincide --subdirs con lo que escribió el .sbatch?
+Traceback (most recent call last):
+  File "/shared/home/JKP6679/Patho-Ensemble/src/analyze_feature_engineering_ladder_v2.py", line 325, in <module>
+    main()
+  File "/shared/home/JKP6679/Patho-Ensemble/src/analyze_feature_engineering_ladder_v2.py", line 177, in main
+    raise FileNotFoundError(
+FileNotFoundError: Escalón 'logreg baseline (oof)': no existe /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_oof_win. ¿Coincide --subdirs con lo que escribió el .sbatch?

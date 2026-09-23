@@ -172,6 +172,87 @@ def check_spaces_aligned(spaces, models, n_folds):
                     )
 
 
+def parse_space(space):
+    """'emb_corr0.3' -> ('emb', 0.3) — cualquier otro nombre -> (space, None).
+
+    Convención de nombrado para el brazo de poda por correlación (arXiv
+    2512.11104, "Information-Driven Fusion of Pathology Foundation Models"):
+    el espacio subyacente que hay que cargar de disco sigue siendo 'emb'
+    (embedding de slide, 512-D/modelo); 'corrTHETA' sólo marca que, tras
+    construir Xtr/Xva/Xte, hay que podar columnas antes de pasarlas al
+    metaclasificador. Así 'emb_corr0.3:logreg' reutiliza exactamente los
+    mismos ficheros en disco que 'emb:logreg'.
+    """
+    if space.startswith("emb_corr"):
+        return "emb", float(space[len("emb_corr"):])
+    return space, None
+
+
+def rankdata_cols(X):
+    """Rango (1..n) de cada columna de X, sin promediar empates.
+
+    Evita depender de la versión de scipy (rankdata con `axis` es reciente) y
+    de un bucle por columna en Python: se hace con un solo argsort vectorizado.
+    Los empates exactos son extremadamente improbables en embeddings de punto
+    flotante, así que no promediarlos no sesga el resultado en la práctica.
+    """
+    order = np.argsort(X, axis=0, kind="mergesort")
+    ranks = np.empty_like(order, dtype=float)
+    rows = np.arange(1, X.shape[0] + 1, dtype=float)
+    np.put_along_axis(ranks, order, rows[:, None], axis=0)
+    return ranks
+
+
+def rank_by_separation(Xtr, ytr):
+    """Puntúa cada columna por separación de clase: |AUC univariante − 0.5|.
+
+    AUC de Mann-Whitney vectorizado sobre TODAS las columnas a la vez (suma de
+    rangos de la clase positiva), no un `roc_auc_score` por columna — con 1536
+    columnas y 50 folds, un bucle con sklearn sería el cuello de botella.
+    Se calcula SIEMPRE sobre el pool de meta-train del fold (Xtr/ytr), nunca
+    sobre val/test — misma disciplina in-sample-vs-OOF que rige el resto del
+    proyecto (ver CLAUDE.md, "Meta-features: in-sample vs out-of-fold").
+    """
+    n = len(ytr)
+    n_pos = int((ytr == 1).sum())
+    n_neg = n - n_pos
+    if n_pos == 0 or n_neg == 0:
+        return np.zeros(Xtr.shape[1])
+    ranks = rankdata_cols(Xtr)
+    sum_rank_pos = ranks[ytr == 1].sum(axis=0)
+    auc = (sum_rank_pos - n_pos * (n_pos + 1) / 2.0) / (n_pos * n_neg)
+    return np.abs(auc - 0.5)
+
+
+def prune_correlated(Xtr, ytr, theta):
+    """Poda por correlación al estilo arXiv 2512.11104.
+
+    1) Rankea las columnas de Xtr por separación de clase (AUC univariante,
+       `rank_by_separation`, ajustado solo en Xtr/ytr).
+    2) Recorre las columnas en ese orden (de más a menos separadora) y
+       descarta cualquiera cuyo |Pearson| con una columna de MAYOR rango YA
+       seleccionada supere `theta` — selección voraz, igual que el paper.
+
+    La matriz de correlación se calcula una sola vez por fold (barata: 1536×
+    1536 sobre ~75 filas), no columna a columna. Columnas constantes dan
+    correlación NaN con todo; se tratan como correlación 0 (no bloquean nada,
+    pero tampoco aportan separación así que rara vez se seleccionan primero).
+
+    Devuelve los índices de columna seleccionados (en el orden en que se
+    fueron aceptando, es decir, de rango más alto a más bajo).
+    """
+    score = rank_by_separation(Xtr, ytr)
+    order = np.argsort(-score)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        C = np.corrcoef(Xtr, rowvar=False)
+    C = np.nan_to_num(C, nan=0.0)
+    selected = []
+    for j in order:
+        if not selected or np.all(np.abs(C[j, selected]) <= theta):
+            selected.append(int(j))
+    return np.asarray(selected, dtype=int)
+
+
 def build_xy(P, models, k):
     """Concatena los bloques por modelo igual que ensemble4.py (model-major)."""
     Xtr = np.concatenate([P[m][k][0] for m in models], axis=1)
@@ -333,9 +414,11 @@ def degenerate_baseline(ref, n_folds, classes):
 
 def run_config(spaces, models, n_folds, space, meta_name, device, classes, verbose=True):
     """Entrena y evalúa una configuración en los n_folds. Devuelve dict de arrays."""
-    P = spaces[space]
+    base_space, prune_theta = parse_space(space)
+    P = spaces[base_space]
     per_fold = {m: [] for m in METRICS}
     thresholds = []
+    n_kept = []
     binary = len(classes) == 2
 
     def _proba(meta, X):
@@ -358,6 +441,12 @@ def run_config(spaces, models, n_folds, space, meta_name, device, classes, verbo
 
     for k in range(n_folds):
         Xtr, ytr, Xva, yva, Xte, yte = build_xy(P, models, k)
+        if prune_theta is not None:
+            # Ajustado SOLO en el pool de meta-train (Xtr/ytr) del fold; los
+            # mismos índices se aplican a val y test, nunca al revés.
+            idx = prune_correlated(Xtr, ytr, prune_theta)
+            Xtr, Xva, Xte = Xtr[:, idx], Xva[:, idx], Xte[:, idx]
+            n_kept.append(len(idx))
         meta = make_meta(meta_name, k, device)
         fit_meta(meta, Xtr, ytr, Xva, yva)
         thr = pick_threshold(yva, _proba(meta, Xva)[:, 1]) if binary else float("nan")
@@ -369,6 +458,8 @@ def run_config(spaces, models, n_folds, space, meta_name, device, classes, verbo
             print(f"    fold {k + 1}/{n_folds}", flush=True)
     res = {m: np.asarray(per_fold[m], dtype=float) for m in METRICS}
     res["_thresholds"] = np.asarray(thresholds, dtype=float)
+    if n_kept:
+        res["_n_kept"] = np.asarray(n_kept, dtype=int)
     return res
 
 
@@ -511,7 +602,10 @@ def main():
     if args.baseline not in [c[0] for c in configs]:
         raise SystemExit(f"el baseline {args.baseline} no está en --configs")
 
-    needed_spaces = sorted({s for _, s, _ in configs})
+    # 'emb_corr0.3' etc. se resuelven al mismo espacio en disco que 'emb'
+    # (parse_space); lo que cambia es la poda aplicada dentro de run_config,
+    # no qué ficheros hay que cargar.
+    needed_spaces = sorted({parse_space(s)[0] for _, s, _ in configs})
 
     print("=" * 104)
     print("SUITE DE METACLASIFICADORES — trío ganador")
@@ -524,12 +618,14 @@ def main():
 
     # ---- carga y verificación de alineamiento --------------------------------
     spaces = {}
+    space_total_dims = {}
     for space in needed_spaces:
         print(f"\nCargando espacio '{space}' ...", flush=True)
         P = {m: load_space(abmil_dir, m, args.tissue_patching, args.n_folds, space)
              for m in models}
         check_alignment(P, models, args.n_folds, space)
         shapes = {m: P[m][0][0].shape[1] for m in models}
+        space_total_dims[space] = sum(shapes.values())
         print(f"  ✓ alineado. Columnas por modelo: {shapes}")
         print(f"  ✓ filas fold_0: train={len(P[models[0]][0][1])} "
               f"val={len(P[models[0]][0][3])} test={len(P[models[0]][0][5])}")
@@ -577,6 +673,11 @@ def main():
         print(f"    AUC={np.nanmean(results[name]['auc']):.4f}  "
               f"bacc={np.nanmean(results[name]['bacc']):.4f}  "
               f"macro-F1={np.nanmean(results[name]['macro_f1']):.4f}")
+        if "_n_kept" in results[name]:
+            nk = results[name]["_n_kept"]
+            total = space_total_dims.get(parse_space(space)[0], nk.max())
+            print(f"    columnas retenidas tras poda: media={nk.mean():.1f} "
+                  f"(min {nk.min()}, max {nk.max()}) de {total}")
 
     order = [c[0] for c in configs]
     print_summary_table(results, order, degenerate_note, binary)
@@ -621,6 +722,10 @@ def main():
         },
         "val_thresholds": {
             name: results[name]["_thresholds"].tolist() for name in order
+        },
+        "n_kept_features": {
+            name: results[name]["_n_kept"].tolist()
+            for name in order if "_n_kept" in results[name]
         },
         "paired_vs_baseline": comparisons,
     }

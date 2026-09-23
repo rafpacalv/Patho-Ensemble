@@ -1,0 +1,234 @@
+============================================================================
+VIEW SELECTION (L1 / elastic net) PARA STACKING — cptac_brca / TP53_mutation
+Fecha: Tue Sep 22 22:33:12 CEST 2026
+============================================================================
+============================================================================
+CONFIG: logreg (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg | extra:  | suffix: _hist
+  Inicio: Tue Sep 22 22:33:12 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_logit_dropc_hist/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg (hist) completado
+
+============================================================================
+CONFIG: logreg_l1 C=0.01 (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg_l1 | extra: --meta_l1_c 0.01 | suffix: _c001_hist
+  Inicio: Tue Sep 22 22:34:49 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_l1
+Results will be saved to: .../ensemble4_logreg_l1_logit_dropc_c001_hist/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_l1 C=0.01 (hist) completado
+
+============================================================================
+CONFIG: logreg_l1 C=0.1 (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg_l1 | extra: --meta_l1_c 0.1 | suffix: _c01_hist
+  Inicio: Tue Sep 22 22:35:47 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_l1
+Results will be saved to: .../ensemble4_logreg_l1_logit_dropc_c01_hist/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_l1 C=0.1 (hist) completado
+
+============================================================================
+CONFIG: logreg_l1 C=1.0 (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg_l1 | extra: --meta_l1_c 1.0 | suffix: _c1_hist
+  Inicio: Tue Sep 22 22:36:27 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_l1
+Results will be saved to: .../ensemble4_logreg_l1_logit_dropc_c1_hist/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_l1 C=1.0 (hist) completado
+
+============================================================================
+CONFIG: logreg_l1 C=10.0 (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg_l1 | extra: --meta_l1_c 10.0 | suffix: _c10_hist
+  Inicio: Tue Sep 22 22:36:52 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_l1
+Results will be saved to: .../ensemble4_logreg_l1_logit_dropc_c10_hist/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_l1 C=10.0 (hist) completado
+
+============================================================================
+CONFIG: logreg_en l1_ratio=0.2 (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg_en | extra: --meta_l1_ratio 0.2 --meta_l1_c 1.0 | suffix: _l02_c1_hist
+  Inicio: Tue Sep 22 22:37:21 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_en
+Results will be saved to: .../ensemble4_logreg_en_logit_dropc_l02_c1_hist/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_en l1_ratio=0.2 (hist) completado
+
+============================================================================
+CONFIG: logreg_en l1_ratio=0.5 (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg_en | extra: --meta_l1_ratio 0.5 --meta_l1_c 1.0 | suffix: _l05_c1_hist
+  Inicio: Tue Sep 22 22:38:55 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_en
+Results will be saved to: .../ensemble4_logreg_en_logit_dropc_l05_c1_hist/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_en l1_ratio=0.5 (hist) completado
+
+============================================================================
+CONFIG: logreg_en l1_ratio=0.8 (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg_en | extra: --meta_l1_ratio 0.8 --meta_l1_c 1.0 | suffix: _l08_c1_hist
+  Inicio: Tue Sep 22 22:39:44 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_en
+Results will be saved to: .../ensemble4_logreg_en_logit_dropc_l08_c1_hist/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_en l1_ratio=0.8 (hist) completado
+
+============================================================================
+CONFIG: logreg (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg | extra:  | suffix: _win
+  Inicio: Tue Sep 22 22:40:13 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_logit_dropc_win/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg (win) completado
+
+============================================================================
+CONFIG: logreg_l1 C=0.01 (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg_l1 | extra: --meta_l1_c 0.01 | suffix: _c001_win
+  Inicio: Tue Sep 22 22:40:46 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_l1
+Results will be saved to: .../ensemble4_logreg_l1_logit_dropc_c001_win/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_l1 C=0.01 (win) completado
+
+============================================================================
+CONFIG: logreg_l1 C=0.1 (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg_l1 | extra: --meta_l1_c 0.1 | suffix: _c01_win
+  Inicio: Tue Sep 22 22:42:15 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_l1
+Results will be saved to: .../ensemble4_logreg_l1_logit_dropc_c01_win/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_l1 C=0.1 (win) completado
+
+============================================================================
+CONFIG: logreg_l1 C=1.0 (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg_l1 | extra: --meta_l1_c 1.0 | suffix: _c1_win
+  Inicio: Tue Sep 22 22:43:00 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_l1
+Results will be saved to: .../ensemble4_logreg_l1_logit_dropc_c1_win/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_l1 C=1.0 (win) completado
+
+============================================================================
+CONFIG: logreg_l1 C=10.0 (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg_l1 | extra: --meta_l1_c 10.0 | suffix: _c10_win
+  Inicio: Tue Sep 22 22:43:35 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_l1
+Results will be saved to: .../ensemble4_logreg_l1_logit_dropc_c10_win/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_l1 C=10.0 (win) completado
+
+============================================================================
+CONFIG: logreg_en l1_ratio=0.2 (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg_en | extra: --meta_l1_ratio 0.2 --meta_l1_c 1.0 | suffix: _l02_c1_win
+  Inicio: Tue Sep 22 22:44:00 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_en
+Results will be saved to: .../ensemble4_logreg_en_logit_dropc_l02_c1_win/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_en l1_ratio=0.2 (win) completado
+
+============================================================================
+CONFIG: logreg_en l1_ratio=0.5 (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg_en | extra: --meta_l1_ratio 0.5 --meta_l1_c 1.0 | suffix: _l05_c1_win
+  Inicio: Tue Sep 22 22:44:32 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_en
+Results will be saved to: .../ensemble4_logreg_en_logit_dropc_l05_c1_win/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_en l1_ratio=0.5 (win) completado
+
+============================================================================
+CONFIG: logreg_en l1_ratio=0.8 (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg_en | extra: --meta_l1_ratio 0.8 --meta_l1_c 1.0 | suffix: _l08_c1_win
+  Inicio: Tue Sep 22 22:45:46 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg_en
+Results will be saved to: .../ensemble4_logreg_en_logit_dropc_l08_c1_win/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ logreg_en l1_ratio=0.8 (win) completado
+
+============================================================================
+ANÁLISIS PAREADO
+============================================================================
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+✓ Baseline logreg                     | n_folds=50 | AUC=0.7655 [0.7354, 0.7916]
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+✓ Baseline logreg                     | n_folds=50 | AUC=0.7980 [0.7711, 0.8221]
+============================================================================
+COMPLETADO — Fin: Tue Sep 22 22:46:47 CEST 2026
+============================================================================
+
+Resultados:
+  /home/JKP6679/Patho-Ensemble/results_meta_view_selection_hist_cptac_brca_TP53_mutation.json
+  /home/JKP6679/Patho-Ensemble/results_meta_view_selection_win_cptac_brca_TP53_mutation.json

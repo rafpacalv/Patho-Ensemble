@@ -1,0 +1,31 @@
+{
+  "dataset": "cptac_brca",
+  "task": "TP53_mutation",
+  "baseline": "logreg baseline (oof)",
+  "escalones": {
+    "logreg baseline (oof)": {
+      "mean_auc": 0.7830089031339031,
+      "std_auc": 0.10513834650093387,
+      "n_folds": 50
+    },
+    "des_ola k:10 (oof)": {
+      "mean_auc": 0.7946373117623118,
+      "std_auc": 0.09447913450287686,
+      "n_folds": 50
+    }
+  },
+  "comparisons": [
+    {
+      "comparison": "des_ola k:10 (oof)",
+      "mean_delta": 0.01162840862840863,
+      "ci_95": [
+        0.0007509946072446008,
+        0.027763204619454623
+      ],
+      "p_value": 0.11159666934992352,
+      "adjusted_p_value": 0.11159666934992352,
+      "significant": false,
+      "marginal": false
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+============================================================================
+DES-OLA (Dynamic Ensemble Selection) vs logreg — cptac_brca / TP53_mutation
+Fecha: Wed Sep 23 11:34:12 CEST 2026
+============================================================================
+============================================================================
+CONFIG: logreg oof (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: logreg | extra: --meta_features oof | suffix: _hist
+  Inicio: Wed Sep 23 11:34:12 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_oof_hist/
+❌ Error en fold 0: Directory not found: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/val_outputs_oof/fold_0
+❌ logreg oof (hist) falló con código 1
+
+============================================================================
+CONFIG: des_ola oof (hist)
+  Modelos: ctranspath uni_v2 virchow_v1 | meta_model: des_ola | extra: --meta_features oof --meta_des_k 10 --meta_des_smoothing 1.0 | suffix: _hist
+  Inicio: Wed Sep 23 11:34:36 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: des_ola
+Results will be saved to: .../ensemble4_des_ola_oof_hist/
+❌ Error en fold 0: Directory not found: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/val_outputs_oof/fold_0
+❌ des_ola oof (hist) falló con código 1
+
+============================================================================
+CONFIG: logreg oof (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: logreg | extra: --meta_features oof | suffix: _win
+  Inicio: Wed Sep 23 11:34:39 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_oof_win/
+❌ Error en fold 0: Directory not found: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/val_outputs_oof/fold_0
+❌ logreg oof (win) falló con código 1
+
+============================================================================
+CONFIG: des_ola oof (win)
+  Modelos: ctranspath uni_v2 conch_v1_5 | meta_model: des_ola | extra: --meta_features oof --meta_des_k 10 --meta_des_smoothing 1.0 | suffix: _win
+  Inicio: Wed Sep 23 11:34:42 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: des_ola
+Results will be saved to: .../ensemble4_des_ola_oof_win/
+❌ Error en fold 0: Directory not found: /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ctranspath_20x_224px_0px_overlap/val_outputs_oof/fold_0
+❌ des_ola oof (win) falló con código 1
+
+============================================================================
+ANÁLISIS PAREADO (AUC, vía analyze_feature_engineering_ladder_v2.py)
+============================================================================
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+============================================================================
+W/T/L + MDE (protocolo completo, misma fórmula que src/run_meta_suite.py)
+============================================================================
+
+=== historico (ctranspath+uni_v2+virchow_v1) ===
+  logreg  AUC = nan (n=0)
+  des_ola AUC = nan (n=0)
+  Delta AUC (des_ola - logreg) = +nan [+nan, +nan]
+  W/T/L = 0/0/0  p(Wilcoxon) = 1.0000  MDE(80% power) = nan
+
+=== ganador (ctranspath+uni_v2+conch_v1_5) ===
+  logreg  AUC = nan (n=0)
+  des_ola AUC = nan (n=0)
+  Delta AUC (des_ola - logreg) = +nan [+nan, +nan]
+  W/T/L = 0/0/0  p(Wilcoxon) = 1.0000  MDE(80% power) = nan
+
+Guardado: /home/JKP6679/Patho-Ensemble/results_des_ola_wtl_cptac_brca_TP53_mutation.json
+============================================================================
+COMPLETADO — Fin: Wed Sep 23 11:34:47 CEST 2026
+============================================================================
+
+Resultados:
+  /home/JKP6679/Patho-Ensemble/results_des_ola_hist_cptac_brca_TP53_mutation.json
+  /home/JKP6679/Patho-Ensemble/results_des_ola_win_cptac_brca_TP53_mutation.json
+  /home/JKP6679/Patho-Ensemble/results_des_ola_wtl_cptac_brca_TP53_mutation.json

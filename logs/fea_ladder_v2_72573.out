@@ -1,0 +1,502 @@
+============================================================================
+ESCALERA DE FEATURE ENGINEERING v2 — cptac_brca / TP53_mutation
+Fecha: Tue Sep 22 21:13:10 CEST 2026
+Trío histórico: ctranspath uni_v2 virchow_v1
+Trío ganador:   ctranspath uni_v2 conch_v1_5
+============================================================================
+
+✓ [histórico] bases estándar disponibles (ctranspath uni_v2 virchow_v1)
+✓ [ganador] bases estándar disponibles (ctranspath uni_v2 conch_v1_5)
+
+============================================================================
+ESCALÓN: A-E0 histórico (Baseline)
+  Modelos: ctranspath uni_v2 virchow_v1
+  Extra features: (none — baseline)
+  Results subdir suffix: _fea_e0
+  Inicio: Tue Sep 22 21:13:10 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_fea_e0/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ A-E0 histórico (Baseline) completado exitosamente
+
+============================================================================
+ESCALÓN: A-E1 histórico (+ disagreement)
+  Modelos: ctranspath uni_v2 virchow_v1
+  Extra features: disagreement
+  Results subdir suffix: _fea_e1
+  Inicio: Tue Sep 22 21:15:53 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_fea_e1/
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ A-E1 histórico (+ disagreement) completado exitosamente
+
+============================================================================
+ESCALÓN: A-E2 histórico (+ disagreement + margin_avg)
+  Modelos: ctranspath uni_v2 virchow_v1
+  Extra features: disagreement margin_avg
+  Results subdir suffix: _fea_e2
+  Inicio: Tue Sep 22 21:16:43 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_fea_e2/
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ A-E2 histórico (+ disagreement + margin_avg) completado exitosamente
+
+============================================================================
+ESCALÓN: A-E3 histórico (+ disagreement + margin_avg + entropy)
+  Modelos: ctranspath uni_v2 virchow_v1
+  Extra features: disagreement margin_avg entropy_per_model
+  Results subdir suffix: _fea_e3
+  Inicio: Tue Sep 22 21:17:28 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_fea_e3/
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ A-E3 histórico (+ disagreement + margin_avg + entropy) completado exitosamente
+
+============================================================================
+ESCALÓN: B-E0 ganador (Baseline)
+  Modelos: ctranspath uni_v2 conch_v1_5
+  Extra features: (none — baseline)
+  Results subdir suffix: _fea_conch_e0
+  Inicio: Tue Sep 22 21:18:04 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_fea_conch_e0/
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ B-E0 ganador (Baseline) completado exitosamente
+
+============================================================================
+ESCALÓN: B-E1 ganador (+ disagreement)
+  Modelos: ctranspath uni_v2 conch_v1_5
+  Extra features: disagreement
+  Results subdir suffix: _fea_conch_e1
+  Inicio: Tue Sep 22 21:19:42 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_fea_conch_e1/
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+✓ Agregadas 1 features extras: ['disagreement']
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ B-E1 ganador (+ disagreement) completado exitosamente
+
+============================================================================
+ESCALÓN: B-E2 ganador (+ disagreement + margin_avg)
+  Modelos: ctranspath uni_v2 conch_v1_5
+  Extra features: disagreement margin_avg
+  Results subdir suffix: _fea_conch_e2
+  Inicio: Tue Sep 22 21:20:27 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_fea_conch_e2/
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+✓ Agregadas 2 features extras: ['disagreement', 'margin_avg']
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ B-E2 ganador (+ disagreement + margin_avg) completado exitosamente
+
+============================================================================
+ESCALÓN: B-E3 ganador (+ disagreement + margin_avg + entropy)
+  Modelos: ctranspath uni_v2 conch_v1_5
+  Extra features: disagreement margin_avg entropy_per_model
+  Results subdir suffix: _fea_conch_e3
+  Inicio: Tue Sep 22 21:20:54 CEST 2026
+============================================================================
+
+
+Evaluating ensemble with meta-model: logreg
+Results will be saved to: .../ensemble4_fea_conch_e3/
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+✓ Agregadas 5 features extras: ['disagreement', 'entropy_m0', 'entropy_m1', 'entropy_m2', 'margin_avg']
+🔎 Computing metrics across all folds...
+✅ Metrics computation finished.
+✓ B-E3 ganador (+ disagreement + margin_avg + entropy) completado exitosamente
+
+============================================================================
+ANÁLISIS PAREADO
+============================================================================
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+✓ E0 (Baseline)                       | n_folds=50 | AUC=0.7616 [0.7304, 0.7888]
+✓ E1 (+disagreement)                  | n_folds=50 | AUC=0.7618 [0.7307, 0.7890]
+✓ E2 (+disagreement+margin)           | n_folds=50 | AUC=0.7611 [0.7298, 0.7881]
+✓ E3 (+disagreement+margin+entropy)   | n_folds=50 | AUC=0.7602 [0.7287, 0.7869]
+
+==========================================================================================
+COMPARACIONES PAREADAS vs BASELINE
+==========================================================================================
+Baseline: E0 (Baseline)
+
+Comparison                          |    Δ AUC |                    95% CI |    p-value |     Adj. p | Sig
+--------------------------------------------------------------------------------------------------------------
+E1 (+disagreement)                  | +0.000171 |          [0.0000, 0.0005] |   0.322223 |   0.322223 |    
+E2 (+disagreement+margin)           | -0.000546 |         [-0.0012, 0.0000] |   0.085196 |   0.170392 |    
+E3 (+disagreement+margin+entropy)   | -0.001462 |        [-0.0027, -0.0004] |   0.019644 |   0.058931 |   *
+
+==========================================================================================
+INTERPRETACIÓN
+==========================================================================================
+✓ 1 escalones muestran mejora significativa (α=0.05):
+  - E3 (+disagreement+margin+entropy): Δ=-0.001462
+
+💾 Resultados guardados en: /home/JKP6679/Patho-Ensemble/results_ladder_cptac_brca_TP53_mutation.json
+
+==========================================================================================
+ANÁLISIS: Feature Engineering Ladder (Idea 1)
+Dataset: cptac_brca, Task: TP53_mutation
+==========================================================================================
+
+✓ E0 (Baseline)                       | n_folds=50 | AUC=0.7986 [0.7731, 0.8237]
+✓ E1 (+disagreement)                  | n_folds=50 | AUC=0.7988 [0.7730, 0.8233]
+✓ E2 (+disagreement+margin)           | n_folds=50 | AUC=0.7991 [0.7732, 0.8237]
+✓ E3 (+disagreement+margin+entropy)   | n_folds=50 | AUC=0.7978 [0.7719, 0.8230]
+
+==========================================================================================
+COMPARACIONES PAREADAS vs BASELINE
+==========================================================================================
+Baseline: E0 (Baseline)
+
+Comparison                          |    Δ AUC |                    95% CI |    p-value |     Adj. p | Sig
+--------------------------------------------------------------------------------------------------------------
+E1 (+disagreement)                  | +0.000132 |         [-0.0008, 0.0010] |   0.782021 |   0.782021 |    
+E2 (+disagreement+margin)           | +0.000519 |         [-0.0006, 0.0018] |   0.429730 |   1.000000 |    
+E3 (+disagreement+margin+entropy)   | -0.000855 |         [-0.0032, 0.0013] |   0.472731 |   0.945462 |    
+
+==========================================================================================
+INTERPRETACIÓN
+==========================================================================================
+⚠️  Ningún escalón es significativamente diferente del baseline (Holm-Bonferroni α=0.05)
+
+   El presupuesto estadístico (MDE ≈ ±0.016) es mayor que cualquier efecto real.
+   Las features extras no capturan señal adicional significativa.
+
+💾 Resultados guardados en: /home/JKP6679/Patho-Ensemble/results_ladder_conch_cptac_brca_TP53_mutation.json
+
+============================================================================
+ESCALERA v2 COMPLETADA — Fin: Tue Sep 22 21:21:57 CEST 2026
+============================================================================
+
+Resultados:
+  Histórico (A): /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_fea_e{0..3}/
+                 /home/JKP6679/Patho-Ensemble/results_ladder_cptac_brca_TP53_mutation.json
+  Ganador   (B): /home/JKP6679/Patho-Ensemble/PARADIS/datos/patches/cptac_brca/TP53_mutation/abmil/ensemble4_fea_conch_e{0..3}/
+                 /home/JKP6679/Patho-Ensemble/results_ladder_conch_cptac_brca_TP53_mutation.json

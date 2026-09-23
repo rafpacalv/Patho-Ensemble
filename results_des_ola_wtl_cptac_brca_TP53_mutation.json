@@ -1,0 +1,38 @@
+{
+  "hist": {
+    "n": 50,
+    "mean_delta": -0.001631295787545799,
+    "ci_95": [
+      -0.009749422568172603,
+      0.006166801167582409
+    ],
+    "wins": 20,
+    "ties": 7,
+    "losses": 23,
+    "p_value": 0.5993422609042411,
+    "mde": 0.011464518712229713,
+    "trio": "historico (ctranspath+uni_v2+virchow_v1)",
+    "n_folds_logreg": 50,
+    "n_folds_des_ola": 50,
+    "mean_auc_logreg": 0.7570915623728124,
+    "mean_auc_des_ola": 0.7554602665852667
+  },
+  "win": {
+    "n": 50,
+    "mean_delta": 0.01162840862840863,
+    "ci_95": [
+      0.0005118971306471436,
+      0.02796033017908017
+    ],
+    "wins": 24,
+    "ties": 8,
+    "losses": 18,
+    "p_value": 0.1383318480504515,
+    "mde": 0.020109699319926056,
+    "trio": "ganador (ctranspath+uni_v2+conch_v1_5)",
+    "n_folds_logreg": 50,
+    "n_folds_des_ola": 50,
+    "mean_auc_logreg": 0.7830089031339031,
+    "mean_auc_des_ola": 0.7946373117623118
+  }
+}

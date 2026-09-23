@@ -141,12 +141,24 @@ def main():
     # se ejecuta escribe en `ensemble4_idea3_attn_e*` y aquí se leía siempre
     # `ensemble4_fea_e*`, el script no fallaba — imprimía la tabla de la escalera
     # anterior y la guardaba como si fuese la nueva (jobs 70119 y 70169).
+    # Una LABEL repetida (p.ej. porque contiene su propio '=' y el split se
+    # comió parte del valor, como "L1 C=0.01" -> label="L1 C") sobreescribe en
+    # silencio la entrada anterior: sin este chequeo, 3 de 4 escalones L1
+    # desaparecían del análisis sin ningún error (job 72576).
     escalones = {}
     for item in args.subdirs:
         if "=" not in item:
             parser.error(f"--subdirs espera 'LABEL=SUBDIR', recibido: {item!r}")
         label, subdir = item.split("=", 1)
-        escalones[label.strip()] = subdir.strip()
+        label = label.strip()
+        if label in escalones:
+            parser.error(
+                f"--subdirs tiene la etiqueta {label!r} repetida (antes apuntaba a "
+                f"{escalones[label]!r}, ahora a {subdir.strip()!r}). Si la etiqueta "
+                f"contiene '=' (p.ej. 'C=0.01'), usa otro separador como 'C:0.01' — "
+                f"split('=', 1) corta en el primer '=' y se come el resto de la etiqueta."
+            )
+        escalones[label] = subdir.strip()
 
     print("=" * 90)
     print(f"ANÁLISIS: Feature Engineering Ladder (Idea 1)")
@@ -247,18 +259,30 @@ def main():
     print("=" * 90)
     print("INTERPRETACIÓN")
     print("=" * 90)
-    sig_count = sum(1 for c in comparisons if c['significance'] != "")
-    if sig_count == 0:
+    # '**' = adj. p < 0.05 (el α declarado abajo); '*' = 0.05 <= adj. p < 0.10,
+    # marginal, no cuenta como significativo a ese α. Antes este bloque trataba
+    # cualquier marca no vacía como "significativo (α=0.05)" y además llamaba
+    # "mejora" a cualquier cambio significativo sin mirar el signo de Δ — un
+    # escalón que empeora significativamente se imprimía como mejora.
+    sig_005 = [c for c in comparisons if c['significance'] == "**"]
+    marginal = [c for c in comparisons if c['significance'] == "*"]
+    if not sig_005:
         print("⚠️  Ningún escalón es significativamente diferente del baseline (Holm-Bonferroni α=0.05)")
         print()
         print("   El presupuesto estadístico (MDE ≈ ±0.016) es mayor que cualquier efecto real.")
         print("   Las features extras no capturan señal adicional significativa.")
+        if marginal:
+            print()
+            print(f"   ({len(marginal)} escalón(es) marginal(es), 0.05 ≤ adj. p < 0.10 — no cruzan α=0.05):")
+            for comp in marginal:
+                direction = "mejora" if comp['mean_delta'] > 0 else "empeora"
+                print(f"     - {comp['comparison']}: Δ={comp['mean_delta']:+.6f} ({direction})")
         print()
     else:
-        print(f"✓ {sig_count} escalones muestran mejora significativa (α=0.05):")
-        for comp in comparisons:
-            if comp['significance'] != "":
-                print(f"  - {comp['comparison']}: Δ={comp['mean_delta']:+.6f}")
+        print(f"✓ {len(sig_005)} escalón(es) significativamente distinto(s) del baseline (α=0.05):")
+        for comp in sig_005:
+            direction = "mejora" if comp['mean_delta'] > 0 else "empeora"
+            print(f"  - {comp['comparison']}: Δ={comp['mean_delta']:+.6f} ({direction})")
         print()
 
     # 6. Guardar resultados
@@ -281,7 +305,10 @@ def main():
                 'ci_95': [float(c['ci_lower']), float(c['ci_upper'])],
                 'p_value': float(c['p_value']),
                 'adjusted_p_value': float(c['adjusted_p_value']),
-                'significant': c['significance'] != "",
+                # '**' = adj. p < 0.05 only. '*' (0.05<=adj. p<0.10) is marginal,
+                # not significant at the declared alpha — see 'marginal' below.
+                'significant': c['significance'] == "**",
+                'marginal': c['significance'] == "*",
             }
             for c in comparisons
         ],

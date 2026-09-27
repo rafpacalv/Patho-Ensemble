@@ -51,9 +51,9 @@ no suffix).
    meta-features.
 5. **Ensemble combination**:
    - `ensemble.py` — weighted averaging, weights from validation metrics.
-   - `ensemble4.py` — stacking with any of nine meta-learners
-     (`src/meta_models.py`).
-5. **Metrics** — `utils.Metrics` computes per-fold and aggregate stats.
+   - `ensemble4.py` — stacking with any of 18 `--meta_model` choices
+     (`src/meta_models.py`; the list is at `ensemble4.py:1113`).
+6. **Metrics** — `utils.Metrics` computes per-fold and aggregate stats.
 
 ### Meta-features: in-sample vs out-of-fold
 
@@ -451,16 +451,36 @@ src/
 ├── fge_utils.py            # fge_cycle_lr / se_cycle_lr / cycle_lr dispatcher
 │
 ├── ensemble.py             # Weighted averaging
-├── ensemble4.py            # Stacking; 9 meta-learners
+├── ensemble4.py            # Stacking; 18 --meta_model choices
 ├── ensemble5.py            # Early fusion at patch level; measured −0.0056 AUC (does not work)
 ├── meta_models.py          # The meta-learner implementations
 ├── ensemble_nm.py, ensemble_nm_advanced.py   # Nelder-Mead weight optimisation
+├── ensemble_nelder_mead.py, ensemble_cmaes.py # Late-fusion weight search (Opción A / B)
+├── ensemble_weighted_early_fusion.py         # Opción D; measured −0.0182 AUC
+├── ensemble_single_model.py # LogReg on one model's meta-features (early-fusion hybrid)
+│
+├── run_meta_suite.py       # All meta-learners in one pass, incl. emb:* and emb_corr* configs
+├── sweep_base_models.py    # Base-model subset sweep over ensemble4 stacking
+├── logme_criterion.py, logme_utils.py        # LogME as a base-model selection criterion
+├── spatial_abmil.py, graph_utils.py          # ABMIL + message passing on the tile coords graph
+├── attention_diagnostics.py, shared_attention_probe.py   # Attention analyses
+├── train_size_curve.py     # Embeddings vs probabilities as train size varies
+├── aggregate_to_patient.py # Slide → patient prediction aggregation (Opción B)
+├── analyze_feature_engineering_ladder_v2.py  # Ladder analysis (v1 is superseded)
 │
 ├── experiment_config.py    # Reads experiments.yaml, emits shell vars
 ├── utils.py                # Metrics, path/dimension resolution, weighting
 ├── grid_search_mlp.py, ablation_study_mlp.py, format_metrics.py
 └── create_val_splits.py, run_trident.py
+scripts/
+└── routing_ceiling.py, selector_search.py    # Per-task committee routing / selector criteria
 ```
+
+There is no test suite, test runner or linter. The `test_*.py` files in the
+repo root are standalone scripts (`python test_x.py`), and some re-implement
+the code under test instead of importing it — `test_ensemble4_simple.py`
+carries its own copy of `Ensemble` — so passing them does not show that
+`src/` works.
 
 Launchers in the repo root:
 
@@ -477,21 +497,26 @@ experiments.yaml                      # the experiment matrix
 > `src/ensemble4 copy.py` and `src/train_abmil copy.py` are stale duplicates,
 > and `run_3_experiments.sbatch`, `run_3_experiments_v2.sbatch` and
 > `train_base_models_fge.sbatch` are superseded launchers that still point at
-> the test tree. Do not use them as references.
+> the test tree. Likewise `ensemble4_improved.py` in the repo root and
+> `run_extended_models{,_fixed,_fixed_v2…_v7}.sbatch` (successive iterations of
+> the embeddings experiment, see `README_EMBEDDINGS_ENSEMBLE.md`) are not part
+> of the pipeline. Do not use any of them as references.
 
 ## Important Implementation Details
 
 ### ABMIL Model Configuration
 
-The model architecture is fixed in `train_abmil.py` (lines 42-48):
-- Input feature dimension: `--latent_dim` (e.g., 768 for most models, 2560 for Virchow)
-- Attention heads: 1
-- Head dimension: 512
-- Dropout: 0.25
-- Gated: False
+The architecture is defined in `abmil_engine.py`; `train_abmil.py` sets its
+hyperparameters in the engine call around `train_abmil.py:324-338`:
+- Input dimension: auto-detected from the `.h5` (768 for most models, 2560 for Virchow)
+- Attention: **gated** (`tanh(V h) * sigmoid(U h)`, `abmil_engine.py:61`)
+- Heads: 1 by default; `--multi_head_attention` enables `--n_attention_heads`
+  (default 4) gated branches combined by mean-pooling
+- Projection dimension: 512
+- Dropout: 0.25, weight decay 1e-4, early-stopping patience 8
 - Bag size: **the full bag by default** (`--bag_size` is opt-in)
 
-To modify architecture, edit these parameters in `train_abmil.py` before training.
+To modify the architecture, edit these parameters in `train_abmil.py` before training.
 
 > An earlier version of this file claimed "Bag size: 2048". That was **false**:
 > `_apply` passed *every* patch on each forward and bag sampling did not exist
@@ -694,8 +719,8 @@ They run under `set -euo pipefail`, where two patterns bite:
 
 ## References
 
-- **INFORME_CONSOLIDADO_TESIS_20260901.md** (and `.html`) — **the single source
-  of truth for results.** Consolidates the whole 11-aug → 1-sep campaign: the
+- **INFORME_CONSOLIDADO_TESIS_20260901.md** (and `.html`) — **the source of
+  truth for results up to 1 September 2026.** Consolidates the whole 11-aug → 1-sep campaign: the
   metric definitions and their degenerate baselines, the statistical protocol
   (MDE, reproducibility floor, the fact that 50 folds are *not* 50 independent
   experiments), the two uses of entropy, all 6 positive / 18 negative /
@@ -704,6 +729,10 @@ They run under `set -euo pipefail`, where two patterns bite:
   — every superseded or invalidated number was dropped. Prefer it over any
   individual `INFORME_*` / `ESTADO_*` file, which are kept only as the long-form
   record of a single session and may quote baselines that no longer reproduce.
+- **EXPERIMENTAL_SESSION_SUMMARY_20260922_20260923.md** — the results after the
+  consolidated report: the re-run feature ladder, L1 / elastic-net view
+  selection, DES-OLA and correlation-pruned embedding fusion. These are not in
+  the consolidated report yet.
 - **README.md** — full reference documentation
 - **PARADIS_DATA_REFERENCE.md** — data tree, datasets, tasks, fold counts
 - **`results_*.json`** — the raw paired statistics behind every figure in the

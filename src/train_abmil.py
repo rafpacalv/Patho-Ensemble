@@ -57,7 +57,7 @@ def load_features_cached(work_dir, train_source, foundational_model, slide_ids, 
 
 
 def load_graphs_cached(work_dir, train_source, foundational_model, slide_ids,
-                       mode="lattice", shuffle=False):
+                       mode="lattice", shuffle=False, infer_stride=False):
     """Construye un grafo espacial por slide desde los `coords` del MISMO .h5.
 
     Se deja aparte de load_features_cached en vez de engordar su valor de
@@ -69,6 +69,11 @@ def load_graphs_cached(work_dir, train_source, foundational_model, slide_ids,
     Los coords vienen alineados fila a fila con las features en el propio .h5, y
     nada del pipeline reordena ni submuestrea parches, así que el grafo
     construido aquí sigue siendo válido en train, val, test y OOF.
+
+    `infer_stride=True` deduce el paso por slide del MCD de los coords cuando
+    el .h5 no trae `patch_size_level0` (ver graph_utils.infer_stride). Es
+    opt-in para no cambiar los grafos del brazo espacial ya medido (P6); lo
+    usa `test_abmil.py --topk_ctx`.
     """
     import graph_utils
 
@@ -82,7 +87,13 @@ def load_graphs_cached(work_dir, train_source, foundational_model, slide_ids,
             # ctranspath_monai no trae attrs en coords; el default de 448 es el
             # que corresponde a 20x_224px sobre slides de 40x, y se verifica
             # abajo mirando cuántas slides caen en retícula.
-            stride = int(h["coords"].attrs.get("patch_size_level0", 448))
+            attr = h["coords"].attrs.get("patch_size_level0", None)
+        if attr is not None:
+            stride = int(attr)
+        elif infer_stride:
+            stride = graph_utils.infer_stride(coords) or 448
+        else:
+            stride = 448
 
         # Semilla derivada del slide_id por sha256: fija por slide e idéntica
         # entre folds y entre splits. Con hash() de Python cambiaría por
@@ -90,6 +101,7 @@ def load_graphs_cached(work_dir, train_source, foundational_model, slide_ids,
         seed = graph_utils.seed_from_slide_id(slide_id) if shuffle else None
         g, info = graph_utils.slide_graph(coords, stride, mode=mode, shuffle_seed=seed)
         graphs[slide_id] = g
+        info["stride"] = stride
         infos.append(info)
 
     n_tiles = sum(i["n"] for i in infos)
@@ -100,6 +112,8 @@ def load_graphs_cached(work_dir, train_source, foundational_model, slide_ids,
     print(f"  {len(graphs)} grafos, grado medio {mean_deg:.2f}, "
           f"aislados {n_iso}/{n_tiles} ({100 * n_iso / n_tiles:.2f} %), "
           f"fallback k-NN en {n_fb} slides")
+    strides, counts = np.unique([i["stride"] for i in infos], return_counts=True)
+    print("  pasos de retícula: " + ", ".join(f"{s}×{c}" for s, c in zip(strides, counts)))
 
     # La guarda va sobre lo que de verdad indica que el grafo está ROTO, no
     # sobre una banda de grado calibrada con un solo modelo. El grado medio

@@ -52,7 +52,11 @@ no suffix).
 5. **Ensemble combination**:
    - `ensemble.py` — weighted averaging, weights from validation metrics.
    - `ensemble4.py` — stacking with any of 18 `--meta_model` choices
-     (`src/meta_models.py`; the list is at `ensemble4.py:1113`).
+     (`src/meta_models.py`; the list is in `ensemble4.py`'s argparse).
+   - `run_meta_suite.py` — many `space:meta` configs (`prob:logreg`,
+     `emb:mlp`, `emb_corr0.5:logreg`, …) in **one process**, with paired
+     contrasts against `--baseline`. Prefer it over separate `ensemble4.py`
+     runs for any new contrast (see "Stored `ensemble4_*` results go stale").
 6. **Metrics** — `utils.Metrics` computes per-fold and aggregate stats.
 
 ### Meta-features: in-sample vs out-of-fold
@@ -200,6 +204,14 @@ construction and were never written with a suffix. Fixed by branching
 specifically on `meta_features == "embeddings"`. Anyone using a `--oof_tag`
 for the first time should be aware this was silently broken until now.
 
+> That fix was itself too narrow: every `test_abmil.py` embedding mode
+> (`topk{K}`, `topk_ess`, `topk{K}_{ctx,shuffle,match}`) also writes its own
+> `val_outputs_{tag}`/`test_outputs_{tag}`, and after 23-sep they read val/test
+> from the *probability* tree instead (dimension-mismatch crash, not a silent
+> number). Fixed 2026-09-27: `ensemble4.py` now picks the suffixed val/test
+> tree **if it exists** — `test_abmil.py` always writes it, `build_oof_features.py`
+> never does. P7/P8 figures predate the 23-sep change and are unaffected.
+
 | Trio | logreg (OOF baseline) | des_ola (k=10) | Δ AUC | 95% CI | p | MDE@80% |
 |---|---:|---:|---:|---|---:|---:|
 | Historical | 0.7571 | 0.7555 | −0.0016 | [−0.0091, +0.0062] | 0.69 | 0.0115 |
@@ -279,6 +291,49 @@ with sampling noise at these fold counts. **Not yet a fourth confirmed
 positive finding — the one open thread worth a proper confirmatory rerun
 before the next combiner-side idea.**
 
+### Spatial 3×3 context around the top-10 attention patches: null / harmful
+
+Measured 2026-09-27 (job 72690), winning trio, 50 folds, `logreg`, both
+datasets in one pass. New `test_abmil.py --topk 10 --topk_ctx {ctx,shuffle,match}`
+(`abmil_engine.abmil_extract_topk_ctx_embeddings`). Idea: keep P7's top-10
+centres but replace each by the **uniform mean of its 3×3 window** (itself +
+Moore-8 lattice neighbours) — a parameter-free CNN-style average pool, i.e.
+P6's spatial signal without P6's 1.05 M parameters. No retraining.
+Pre-registered: one point (K=10, 3×3, uniform), primary contrast
+`topk10_ctx` vs `topk10`, attributed to space only if it also beats both
+controls — `shuffle` (same centres, **same neighbour count per centre**, random
+patches) and `match` (top-M by attention, M = ctx's region size per slide).
+
+| Config | `cptac_brca` AUC | `cptac_gbm` AUC |
+|---|---:|---:|
+| insample (baseline) | 0.7986 | 0.7556 |
+| `topk10` (P7) | 0.8127 | **0.7945** |
+| **`topk10_ctx`** | 0.8106 | 0.7551 |
+| `topk10_shuffle` | 0.7780 | 0.7539 |
+| `topk10_match` | 0.8159 | 0.7925 |
+
+Primary, ctx vs topk10: brca Δ −0.0020 [−0.011, +0.007], MDE 0.013 —
+**bounded null**; gbm Δ **−0.0393** [−0.056, −0.023], W/T/L 10/0/40, Holm
+✱ on all four metrics — **destroys P7's gain**, back to baseline.
+`topk10` vs insample reproduces P7 exactly (+0.0140 / +0.0388), so the run
+is sound. Results in `results_topk_ctx_TP53_mutation.json`.
+
+Mechanism, from the controls: not "more patches" — `match` uses the same
+~75–80 patches, attention-weighted, and keeps the gain (0.7925). It is
+**diluting the centres**: a uniform 3×3 gives each chosen patch 1/9 of its
+slot and its neighbours 8/9, and in gbm real neighbours hurt exactly as much
+as random ones (ctx vs shuffle +0.001). In brca ctx beats shuffle (+0.033 ✱)
+only because random neighbours *hurt* top-10 and real ones (similar to their
+centre) don't — harmless, not informative. Diagnostic (`ctx_stats.npy`):
+top-attention patches sit on tissue borders (~5 neighbours vs ~7.7 average in
+brca) and only 2.5–7 % of their neighbours are other centres, so the window
+did add genuinely new patches.
+
+**Reading:** consistent with P2/P7/P8 — what helps is attention
+*selectivity*; spatial smoothing is anti-selectivity. With P6 this closes
+spatial context both ways (with parameters, without them). A centre-heavy
+kernel would be a new, post-hoc contrast, not a rescue of this one.
+
 ### Patch coordinate groups
 
 Models with byte-identical `coords` can be fused, compared per patch, or share
@@ -303,6 +358,19 @@ hoptimus1/phikon_v2/uni_v1/uni_v2/virchow2, 2100 for conch_v1_5/ctranspath/
 virchow_v1). Both the grouping-by-model and the patch counts are **false in
 general** — they described `cptac_brca` only. Always recompute a `coords` hash
 per model *per dataset*; never assume.
+
+**The lattice stride is not always 448 either.** `ctranspath` and `conch_v1_5`
+`.h5`s carry no `coords.attrs['patch_size_level0']`, and
+`load_graphs_cached` defaulted to 448 — true only for 40x slides. Measured
+(jobs 72687/72688, 20 slides each): `cptac_gbm` and `bc_therapy` are **224**
+(so with 448 every slide fell back to k-NN), `tcga_brca` 443/444/451 per slide,
+`cptac_brca` mixes 224/227 and 448. `graph_utils.infer_stride` (GCD of the
+coords) fixes it, opt-in via `load_graphs_cached(infer_stride=True)` so P6's
+graphs are unchanged; `--topk_ctx` uses it. With it, every dataset that has
+trio embeddings has a usable lattice (`run_coords_lattice_survey.sbatch`);
+`cptac_brca` ctranspath/conch and `tcga_brca` are the weakest (~5 neighbours,
+1.2–1.6 % isolated). Any new spatial work on ctranspath/conch must pass
+`infer_stride=True`.
 
 ### Key Dependencies
 
@@ -442,7 +510,8 @@ The `environment.yml` pins specific versions of all dependencies including PyTor
 src/
 ├── abmil_engine.py         # ABMIL architecture + training loop (the engine)
 ├── train_abmil.py          # Base training, all folds
-├── test_abmil.py           # Meta-features, in-sample
+├── test_abmil.py           # Meta-features, in-sample; --topk / --topk_adaptive /
+│                           #   --topk_ctx embedding modes (own val/test trees)
 ├── build_oof_features.py   # Meta-features, out-of-fold (nested CV)
 │
 ├── abmil_fge.py            # Snapshot cycles on a converged model (FGE and SE)
@@ -455,32 +524,37 @@ src/
 ├── ensemble5.py            # Early fusion at patch level; measured −0.0056 AUC (does not work)
 ├── meta_models.py          # The meta-learner implementations
 ├── ensemble_nm.py, ensemble_nm_advanced.py   # Nelder-Mead weight optimisation
-├── ensemble_nelder_mead.py, ensemble_cmaes.py # Late-fusion weight search (Opción A / B)
-├── ensemble_weighted_early_fusion.py         # Opción D; measured −0.0182 AUC
-├── ensemble_single_model.py # LogReg on one model's meta-features (early-fusion hybrid)
-│
-├── run_meta_suite.py       # All meta-learners in one pass, incl. emb:* and emb_corr* configs
-├── sweep_base_models.py    # Base-model subset sweep over ensemble4 stacking
-├── logme_criterion.py, logme_utils.py        # LogME as a base-model selection criterion
-├── spatial_abmil.py, graph_utils.py          # ABMIL + message passing on the tile coords graph
-├── attention_diagnostics.py, shared_attention_probe.py   # Attention analyses
-├── train_size_curve.py     # Embeddings vs probabilities as train size varies
-├── aggregate_to_patient.py # Slide → patient prediction aggregation (Opción B)
+├── ensemble_nelder_mead.py # "Option A": late fusion + Nelder-Mead weights (+0.0052)
+├── ensemble_cmaes.py       # Same problem, CMA-ES optimiser
+├── ensemble_weighted_early_fusion.py  # "Option D": weights applied to embeddings (−0.0182)
+├── ensemble_single_model.py  # LogReg on one (fused) model's meta-features, used by ensemble5
+├── aggregate_to_patient.py # "Option B": slide → patient averaging, no retraining
+├── run_meta_suite.py       # Many meta configs in ONE pass, paired contrasts (preferred)
+├── sweep_base_models.py    # Base-model subset sweep: naive vs honest (LOFO) selection,
+│                           #   --bagged_boot N for bagged LOFO
 ├── analyze_feature_engineering_ladder_v2.py  # Ladder analysis (v1 is superseded)
+├── analyze_meta_importance.py  # Per-base-model weight from saved ensemble4 coefs
+│
+├── spatial_abmil.py, graph_utils.py   # Tile-graph message passing before attention
+├── attention_diagnostics.py  # Why uni_v2's attention is ~uniform (entropy 0.994)
+├── shared_attention_probe.py # One shared attention vector across models (needs equal coords)
+├── logme_criterion.py, logme_utils.py # LogME: a-priori base-model selection, no ABMIL training
+├── train_size_curve.py     # Subsampling test: does train size decide emb vs prob? (falsified)
 │
 ├── experiment_config.py    # Reads experiments.yaml, emits shell vars
 ├── utils.py                # Metrics, path/dimension resolution, weighting
 ├── grid_search_mlp.py, ablation_study_mlp.py, format_metrics.py
 └── create_val_splits.py, run_trident.py
+
 scripts/
-└── routing_ceiling.py, selector_search.py    # Per-task committee routing / selector criteria
+├── routing_ceiling.py      # Upper bound of per-task committee choice (fixed/honest/oracle)
+└── selector_search.py      # Label-free criteria to rank committees vs val AUC (Spearman +0.75)
 ```
 
-There is no test suite, test runner or linter. The `test_*.py` files in the
-repo root are standalone scripts (`python test_x.py`), and some re-implement
-the code under test instead of importing it — `test_ensemble4_simple.py`
-carries its own copy of `Ensemble` — so passing them does not show that
-`src/` works.
+`sweep_base_models.py` reports two estimates and they must not be confused:
+**naive** (best subset by mean test AUC — biased upward, the subset was chosen
+on the same test it is reported on) and **honest** (leave-one-fold-out: pick by
+*validation* AUC on folds ≠ k, report test on fold k). Quote the honest one.
 
 Launchers in the repo root:
 
@@ -494,29 +568,85 @@ run_3_experiments_v2_improved.sbatch  # stage 3: meta-learners + paired comparis
 experiments.yaml                      # the experiment matrix
 ```
 
-> `src/ensemble4 copy.py` and `src/train_abmil copy.py` are stale duplicates,
-> and `run_3_experiments.sbatch`, `run_3_experiments_v2.sbatch` and
-> `train_base_models_fge.sbatch` are superseded launchers that still point at
-> the test tree. Likewise `ensemble4_improved.py` in the repo root and
-> `run_extended_models{,_fixed,_fixed_v2…_v7}.sbatch` (successive iterations of
-> the embeddings experiment, see `README_EMBEDDINGS_ENSEMBLE.md`) are not part
-> of the pipeline. Do not use any of them as references.
+> `src/ensemble4 copy.py`, `src/train_abmil copy.py` and the root-level
+> `ensemble4_improved.py` are stale duplicates, and `run_3_experiments.sbatch`,
+> `run_3_experiments_v2.sbatch` and `train_base_models_fge.sbatch` are
+> superseded launchers. `run_3_experiments_v2.sbatch`,
+> `train_base_models_fge.sbatch`, `copia*.sbatch` and `examples_paradis.sh`
+> still hardcode the other user's test tree (`/shared/home/PARADIS`). Do not use
+> them as references; `grep -l /shared/home/PARADIS` before reusing any launcher.
+> Likewise `run_extended_models{,_fixed,_fixed_v2…_v7}.sbatch` (successive
+> iterations of the embeddings experiment, see `README_EMBEDDINGS_ENSEMBLE.md`)
+> are not part of the pipeline.
+
+### Running jobs (SLURM)
+
+**Never run computation on `ctl01`** — it is the login node. Everything,
+including small tests and quick analyses, goes through `sbatch` to a compute
+node. Follow the existing launcher template (e.g. `run_des_ola.sbatch`):
+
+```bash
+#SBATCH --partition=main          # all launchers use main; add --gres=gpu:1 for ABMIL training
+#SBATCH --output=logs/<name>_%j.out
+#SBATCH --error=logs/<name>_%j.err
+source $(conda info --base)/etc/profile.d/conda.sh
+conda activate ensemble
+```
+
+Launchers open with a comment block recording *why* the job exists, the
+hypothesis, and any freshness check done before launching (see
+`run_des_ola.sbatch`). Keep that convention: it is how results are traced back
+to their reasoning.
+
+The experiment-matrix launchers read `experiments.yaml` through
+`experiment_config.py` rather than parsing YAML in bash:
+
+```bash
+python src/experiment_config.py --list-active          # "dataset<TAB>task" per enabled row
+eval "$(python src/experiment_config.py --emit-shell --dataset cptac_brca --task TP53_mutation)"
+echo "$WORK_DIR $MODELS $TISSUE_PATCHING"
+```
+
+### Tests
+
+There is no test suite and **pytest is not installed** in the `ensemble` env.
+The root-level `test_*.py` files are standalone scripts with a `__main__`
+block; run them through `sbatch` like anything else:
+
+```bash
+python test_early_stopping.py      # MLP / SnapshotMLP early stopping, synthetic data
+sbatch test_spatial_gnn.sbatch     # stage-1 gate of the spatial arm: builds tile graphs
+                                   #   on REAL .h5 (min/median/max slides of cptac_brca)
+```
+
+Two of them do **not** test the current code:
+- `test_ensemble4_simple.py` tests a *copy* of the `Ensemble` class embedded in
+  the test file, not `src/ensemble4.py`.
+- `test_ensemble4_neural.py` imports `ensemble4_test_wrapper` from a
+  hardcoded, long-gone Claude scratchpad path under `/tmp`; it fails on import.
 
 ## Important Implementation Details
 
 ### ABMIL Model Configuration
 
-The architecture is defined in `abmil_engine.py`; `train_abmil.py` sets its
-hyperparameters in the engine call around `train_abmil.py:324-338`:
+The architecture is `abmil_engine.ABMIL` (`abmil_engine.py:80`);
+`train_abmil.py` passes its hyperparameters in the `abmil_engine.train_abmil(...)`
+call:
 - Input dimension: auto-detected from the `.h5` (768 for most models, 2560 for Virchow)
-- Attention: **gated** (`tanh(V h) * sigmoid(U h)`, `abmil_engine.py:61`)
-- Heads: 1 by default; `--multi_head_attention` enables `--n_attention_heads`
-  (default 4) gated branches combined by mean-pooling
-- Projection dimension: 512
-- Dropout: 0.25, weight decay 1e-4, early-stopping patience 8
+- Projection: `Linear(in_dim, 512) → LayerNorm → GELU` (`proj_dim=512`)
+- Attention: **gated** (tanh branch × sigmoid branch), `hidden_dim=256`,
+  1 head by default; `multi_head_attention` / `n_attention_heads=4` is opt-in
+- Dropout 0.25, weight decay 1e-4, early stopping with patience 8, seed `42 + fold`
 - Bag size: **the full bag by default** (`--bag_size` is opt-in)
 
-To modify the architecture, edit these parameters in `train_abmil.py` before training.
+To change the architecture, edit the `train_abmil(...)` call in `train_abmil.py`
+or the defaults in `abmil_engine.py`. `spatial_abmil.py` adds message passing
+over the tile graph *before* attention pooling without modifying
+`abmil_engine.ABMIL`, so existing checkpoints still load.
+
+> An earlier version of this section said "Gated: False" and pointed at
+> `train_abmil.py` lines 42-48. Both were wrong: the attention has always been
+> gated, and those lines are the feature loader.
 
 > An earlier version of this file claimed "Bag size: 2048". That was **false**:
 > `_apply` passed *every* patch on each forward and bag sampling did not exist
@@ -729,10 +859,11 @@ They run under `set -euo pipefail`, where two patterns bite:
   — every superseded or invalidated number was dropped. Prefer it over any
   individual `INFORME_*` / `ESTADO_*` file, which are kept only as the long-form
   record of a single session and may quote baselines that no longer reproduce.
-- **EXPERIMENTAL_SESSION_SUMMARY_20260922_20260923.md** — the results after the
-  consolidated report: the re-run feature ladder, L1 / elastic-net view
-  selection, DES-OLA and correlation-pruned embedding fusion. These are not in
-  the consolidated report yet.
+  **It stops at 1-sep.** Later results (feature ladder re-run, L1/elastic-net
+  view selection, DES-OLA, correlation-pruned fusion — 22/23-sep) are only in
+  **EXPERIMENTAL_SESSION_SUMMARY_20260922_20260923.md** and in the sections
+  above; read both until the consolidated report is updated. The 3×3 spatial
+  context on top-10 (27-sep) is only in the section above.
 - **README.md** — full reference documentation
 - **PARADIS_DATA_REFERENCE.md** — data tree, datasets, tasks, fold counts
 - **`results_*.json`** — the raw paired statistics behind every figure in the

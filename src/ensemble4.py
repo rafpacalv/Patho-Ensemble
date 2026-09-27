@@ -812,8 +812,20 @@ def main(foundational_models, work_dir, train_source, tissue_patching, task_name
             # sufijo. Aplicar el sufijo también ahí (como se hacía antes de este fix)
             # rompía con FileNotFoundError en cuanto se pedía --meta_features oof,
             # que nunca se había probado end-to-end en este repo.
-            vdirs_suffix = xsuffix if meta_features == "embeddings" else suffix
-            tdirs_suffix = xsuffix if meta_features == "embeddings" else suffix
+            #
+            # Pero "embeddings" no es el único árbol con val/test propios: TODOS
+            # los modos de embedding de test_abmil.py los escriben (topk{K},
+            # topk_ess, topk{K}_{ctx,shuffle,match}). Ramificar sólo en
+            # "embeddings" hacía que esos modos leyeran val/test del árbol de
+            # PROBABILIDADES (C columnas) contra un meta-train de 512·M. Se
+            # decide por existencia del árbol: test_abmil lo escribe siempre y
+            # build_oof_features nunca, que es exactamente la distinción.
+            has_own_vt = os.path.isdir(os.path.join(d, f'val_outputs{xsuffix}'))
+            vdirs_suffix = xsuffix if has_own_vt else suffix
+            tdirs_suffix = xsuffix if has_own_vt else suffix
+            if idx == 0 and meta_features != "insample":
+                print(f"  val/test de --meta_features {meta_features}: "
+                      f"{'árbol propio val_outputs' + xsuffix if has_own_vt else 'árbol base (out-of-sample por construcción)'}")
             vdirs.append(os.path.join(d, f'val_outputs{vdirs_suffix}'))
             tdirs.append(os.path.join(d, f'test_outputs{tdirs_suffix}'))
 

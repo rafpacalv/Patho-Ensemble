@@ -450,6 +450,106 @@ def abmil_extract_adaptive_topk_embeddings(model, feats, stems, device, graphs=N
     return np.vstack(E), np.array(k_used, dtype=int)
 
 
+@torch.no_grad()
+def abmil_extract_topk_ctx_embeddings(model, feats, stems, device, neighbours, k=10,
+                                      mode="ctx"):
+    """Top-k de atención con contexto espacial 3×3 alrededor de cada parche elegido.
+
+    Los CENTROS son exactamente los de `abmil_extract_topk_embeddings` (los k
+    de más atención, pesos renormalizados), así que el contraste frente a
+    `topk{k}` aísla qué representa cada centro, no cuáles se eligen:
+
+      mode="ctx":   cada centro c se sustituye por la media UNIFORME de
+                    {c} ∪ vecinos(c) — un average-pooling 3×3 de CNN, sin
+                    parámetros — y luego z = Σ_c ã_c · media_c. Los vecinos
+                    van con peso fijo, no con su propia atención: con ella
+                    (casi siempre baja) el contexto se anularía solo.
+      mode="shuffle": CONTROL de posición. Mismos centros y MISMO nº de
+                    vecinos por centro que en "ctx", pero los vecinos son
+                    parches al azar de la slide (semilla fija por slide_id).
+                    No se usa el grafo barajado de P6: ese relabelado sólo
+                    conserva el grado GLOBAL, y los top-k resultan estar en
+                    bordes de tejido (4.8 vecinos/centro frente a 7.7 de
+                    media, medido en cptac_brca/uni_v2), así que con él el
+                    control promediaba ~60 % más parches que "ctx".
+      mode="match": CONTROL de tamaño. Mismo nº de parches M que la región
+                    {centros ∪ vecinos} de "ctx" en esa slide, pero elegidos
+                    como top-M por atención sin restricción espacial. Separa
+                    "contexto espacial" de "simplemente más parches" (P7/P8 ya
+                    muestran que K importa). `neighbours` debe ser el grafo
+                    REAL: sólo se usa para calcular M.
+
+    Args:
+        neighbours: dict {slide_id: SlideGraph} REAL (sin barajar) de
+            train_abmil.load_graphs_cached, en los tres modos; sólo se usa su
+            edge_index [src, dst]. Los nodos aislados traen
+            self-loop, que aquí es inocuo (el centro ya está en su región).
+
+    Returns:
+        emb: (N_stems, embedding_dim)
+        stats: (N_stems, 3) float — [M = tamaño de la región centros∪vecinos,
+            fracción de pares (centro, vecino) cuyo vecino es también centro,
+            nº medio de vecinos por centro]. La fracción es el diagnóstico de
+            solapamiento: si los top-k ya forman una mancha contigua, el 3×3
+            añade poco sobre `topk{k}`.
+    """
+    if mode not in ("ctx", "shuffle", "match"):
+        raise ValueError(f"mode debe ser 'ctx', 'shuffle' o 'match', recibido {mode!r}")
+    import graph_utils
+    model.eval()
+    E, stats = [], []
+    for s in stems:
+        h = model.projection(feats[s].to(device))
+        a = model.attention(h).squeeze(-1)  # (N,), softmax, sum=1
+        n = a.shape[0]
+        kk = min(k, n)
+        top_idx = torch.topk(a, kk).indices
+
+        src, dst = neighbours[s].edge_index.to(device)
+        sel = torch.isin(dst, top_idx)
+        pair_c, pair_nb = dst[sel], src[sel]
+        not_self = pair_nb != pair_c
+        pair_c, pair_nb = pair_c[not_self], pair_nb[not_self]
+
+        if mode == "shuffle" and pair_nb.numel():
+            # Mismo nº de vecinos por centro, elegidos al azar entre los
+            # parches que no son centros, sin repetir dentro de la slide.
+            rng = np.random.default_rng(graph_utils.seed_from_slide_id(s))
+            is_top = np.zeros(n, dtype=bool); is_top[top_idx.cpu().numpy()] = True
+            pool = np.flatnonzero(~is_top)
+            take = min(pair_nb.numel(), len(pool))
+            rnd = torch.as_tensor(rng.choice(pool, size=take, replace=False),
+                                  device=pair_nb.device)
+            pair_c, pair_nb = pair_c[:take], rnd
+
+        region = torch.unique(torch.cat([top_idx, pair_nb]))
+        m = int(region.numel())
+        frac_in_top = (float(torch.isin(pair_nb, top_idx).float().mean())
+                       if pair_nb.numel() else float("nan"))
+        stats.append([m, frac_in_top, pair_nb.numel() / kk])
+
+        if mode in ("ctx", "shuffle"):
+            # Media 3×3 por centro: suma del propio centro + sus vecinos,
+            # dividida por (1 + nº de vecinos de ese centro).
+            pos = torch.full((n,), -1, dtype=torch.long, device=h.device)
+            pos[top_idx] = torch.arange(kk, device=h.device)
+            slot = pos[pair_c]
+            acc = h[top_idx].clone()
+            acc.index_add_(0, slot, h[pair_nb])
+            cnt = torch.ones(kk, device=h.device).index_add_(
+                0, slot, torch.ones_like(slot, dtype=h.dtype))
+            ctx = acc / cnt.unsqueeze(-1)
+            a_top = a[top_idx] / a[top_idx].sum()
+            z = (a_top.unsqueeze(-1) * ctx).sum(0)
+        else:
+            mm = min(m, n)
+            idx = torch.topk(a, mm).indices
+            a_m = a[idx] / a[idx].sum()
+            z = (a_m.unsqueeze(-1) * h[idx]).sum(0)
+        E.append(z.cpu().numpy())
+    return np.vstack(E), np.asarray(stats, dtype=float)
+
+
 # ──────────────────── Idea 3: Atención Stats para Meta-Features ────────────────
 def attention_stats_extended(a):
     """Calcula estadísticos normalizados de distribución de atención.

@@ -1,0 +1,44 @@
+dataset           modelo         n  coords  alin.  stride  retíc.  aisl.%   deg  veredicto
+bc_therapy        ctranspath    20      20     20    448?       0     0.0  8.53  ❌ NO
+bc_therapy        uni_v2        20      20     20     224      20     0.0  7.25  ✅ UTILIZABLE
+bc_therapy        conch_v1_5    20      20     20    448?       0     0.0  8.53  ❌ NO
+cervical_subtype  ctranspath    20      20     20    448?      20     0.0  7.76  ✅ UTILIZABLE
+cervical_subtype  uni_v2        20      20     20     448      20     0.0  7.76  ✅ UTILIZABLE
+cervical_subtype  conch_v1_5    20      20     20    448?      20     0.0  7.76  ✅ UTILIZABLE
+cptac_brca        ctranspath    20      20     20    448?      12     0.9  6.85  ✅ UTILIZABLE
+cptac_brca        uni_v2        20      20     20 224,448      20     0.0  7.07  ✅ UTILIZABLE
+cptac_brca        conch_v1_5    20      20     20    448?      12     0.9  6.85  ✅ UTILIZABLE
+cptac_ccrcc       ctranspath     -  (sin features)
+cptac_ccrcc       uni_v2        20      20     20     224      20     0.0  7.73  ✅ UTILIZABLE
+cptac_ccrcc       conch_v1_5     -  (sin features)
+cptac_coad        ctranspath    20      20     20    448?      20     0.0  7.64  ✅ UTILIZABLE
+cptac_coad        uni_v2        20      20     20     448      20     0.0  7.64  ✅ UTILIZABLE
+cptac_coad        conch_v1_5    20      20     20    448?      20     0.0  7.64  ✅ UTILIZABLE
+cptac_gbm         ctranspath    20      20     20    448?       0     0.0  8.46  ❌ NO
+cptac_gbm         uni_v2        20      20     20     224      20     0.0  7.35  ✅ UTILIZABLE
+cptac_gbm         conch_v1_5    20      20     20    448?       0     0.0  8.46  ❌ NO
+cptac_hnsc        ctranspath     -  (sin features)
+cptac_hnsc        uni_v2        20      20     20     224      20     0.0  7.79  ✅ UTILIZABLE
+cptac_hnsc        conch_v1_5     -  (sin features)
+cptac_lscc        ctranspath     -  (sin features)
+cptac_lscc        uni_v2        20      20     20     224      20     0.0  7.59  ✅ UTILIZABLE
+cptac_lscc        conch_v1_5     -  (sin features)
+cptac_luad        ctranspath     -  (sin features)
+cptac_luad        uni_v2         -  (sin features)
+cptac_luad        conch_v1_5     -  (sin features)
+crc_outcomes      ctranspath     -  (sin features)
+crc_outcomes      uni_v2         -  (sin features)
+crc_outcomes      conch_v1_5     -  (sin features)
+hancook           ctranspath     -  (sin features)
+hancook           uni_v2         -  (sin features)
+hancook           conch_v1_5     -  (sin features)
+imp               ctranspath    20      20     20    448?      20     0.0  7.05  ✅ UTILIZABLE
+imp               uni_v2        20      20     20     448      20     0.0  7.05  ✅ UTILIZABLE
+imp               conch_v1_5    20      20     20    448?      20     0.0  7.05  ✅ UTILIZABLE
+shared_bags       ctranspath     -  (sin features)
+shared_bags       uni_v2         -  (sin features)
+shared_bags       conch_v1_5     -  (sin features)
+tcga_brca         ctranspath    20      20     20    448?       0     0.0  9.12  ❌ NO
+tcga_brca         uni_v2         -  (sin features)
+tcga_brca         conch_v1_5    20      20     20    448?       0     0.0  9.12  ❌ NO
+✅ Sun Sep 27 20:58:24 CEST 2026

@@ -142,6 +142,30 @@ def self_loop_edges(n):
     return np.stack([i, i])
 
 
+def infer_stride(coords):
+    """Paso de la retícula deducido de los propios coords: MCD de los
+    desplazamientos respecto al mínimo. Devuelve None si no hay dos posiciones
+    distintas.
+
+    Hace falta porque `patch_size_level0` falta en las extracciones de
+    ctranspath y conch_v1_5, y el 448 por defecto sólo es cierto en slides
+    escaneadas a 40x. Medido (job 72687, 20 slides por dataset): cptac_gbm y
+    bc_therapy son 224 en todas; tcga_brca 443/444/451 según la slide;
+    cptac_brca mezcla 224/227 y 448. Con 448 fijo, gbm y bc_therapy caían al
+    fallback k-NN en el 100 % de las slides.
+
+    Un solo coord desalineado hunde el MCD y deja casi todos los nodos
+    aislados; eso lo detecta la guarda de aislados de load_graphs_cached, no
+    esta función.
+    """
+    rel = np.asarray(coords, dtype=np.int64)
+    rel = rel - rel.min(0)
+    v = np.unique(rel[rel > 0])
+    if len(v) == 0:
+        return None
+    return int(np.gcd.reduce(v))
+
+
 # ───────────────────────────── control negativo ─────────────────────────────
 def seed_from_slide_id(slide_id):
     """Semilla estable derivada del slide_id, vía sha256.

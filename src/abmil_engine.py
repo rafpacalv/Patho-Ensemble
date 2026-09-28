@@ -452,7 +452,7 @@ def abmil_extract_adaptive_topk_embeddings(model, feats, stems, device, graphs=N
 
 @torch.no_grad()
 def abmil_extract_topk_ctx_embeddings(model, feats, stems, device, neighbours, k=10,
-                                      mode="ctx"):
+                                      mode="ctx", centre_weight=None):
     """Top-k de atención con contexto espacial 3×3 alrededor de cada parche elegido.
 
     Los CENTROS son exactamente los de `abmil_extract_topk_embeddings` (los k
@@ -472,6 +472,14 @@ def abmil_extract_topk_ctx_embeddings(model, feats, stems, device, neighbours, k
                     bordes de tejido (4.8 vecinos/centro frente a 7.7 de
                     media, medido en cptac_brca/uni_v2), así que con él el
                     control promediaba ~60 % más parches que "ctx".
+      mode="sim":   como "ctx", pero cada vecino j entra con peso
+                    w_j = max(0, corr(h_j, h_c)) — coseno tras centrar por la
+                    media de la slide — y el centro con peso 1 (filtro
+                    bilateral). Sin parámetros. Sin centrar, los h post-GELU
+                    tienen coseno ~0.8+ entre casi cualquier par y el peso
+                    degeneraría en la media uniforme. Motivo: los top-k están
+                    en bordes de tejido, y sólo deberían sumar los vecinos del
+                    mismo lado del borde.
       mode="match": CONTROL de tamaño. Mismo nº de parches M que la región
                     {centros ∪ vecinos} de "ctx" en esa slide, pero elegidos
                     como top-M por atención sin restricción espacial. Separa
@@ -480,6 +488,10 @@ def abmil_extract_topk_ctx_embeddings(model, feats, stems, device, neighbours, k
                     REAL: sólo se usa para calcular M.
 
     Args:
+        centre_weight: sólo con mode="ctx". None = media uniforme 3×3 (el
+            centro pesa 1/(1+d)). Un λ en (0, 1] da λ·h_c + (1−λ)·media(vecinos):
+            λ=1 reproduce topk{k}; la curva de λ mide si hay un peso
+            intermedio mejor que los dos extremos (job 72690 midió el uniforme).
         neighbours: dict {slide_id: SlideGraph} REAL (sin barajar) de
             train_abmil.load_graphs_cached, en los tres modos; sólo se usa su
             edge_index [src, dst]. Los nodos aislados traen
@@ -493,8 +505,10 @@ def abmil_extract_topk_ctx_embeddings(model, feats, stems, device, neighbours, k
             solapamiento: si los top-k ya forman una mancha contigua, el 3×3
             añade poco sobre `topk{k}`.
     """
-    if mode not in ("ctx", "shuffle", "match"):
-        raise ValueError(f"mode debe ser 'ctx', 'shuffle' o 'match', recibido {mode!r}")
+    if mode not in ("ctx", "shuffle", "match", "sim"):
+        raise ValueError(f"mode debe ser 'ctx', 'shuffle', 'match' o 'sim', recibido {mode!r}")
+    if centre_weight is not None and (mode != "ctx" or not 0 < centre_weight <= 1):
+        raise ValueError("centre_weight sólo con mode='ctx' y en (0, 1]")
     import graph_utils
     model.eval()
     E, stats = [], []
@@ -528,17 +542,29 @@ def abmil_extract_topk_ctx_embeddings(model, feats, stems, device, neighbours, k
                        if pair_nb.numel() else float("nan"))
         stats.append([m, frac_in_top, pair_nb.numel() / kk])
 
-        if mode in ("ctx", "shuffle"):
-            # Media 3×3 por centro: suma del propio centro + sus vecinos,
-            # dividida por (1 + nº de vecinos de ese centro).
+        if mode in ("ctx", "shuffle", "sim"):
             pos = torch.full((n,), -1, dtype=torch.long, device=h.device)
             pos[top_idx] = torch.arange(kk, device=h.device)
             slot = pos[pair_c]
-            acc = h[top_idx].clone()
-            acc.index_add_(0, slot, h[pair_nb])
-            cnt = torch.ones(kk, device=h.device).index_add_(
-                0, slot, torch.ones_like(slot, dtype=h.dtype))
-            ctx = acc / cnt.unsqueeze(-1)
+            if mode == "sim":
+                hc = h - h.mean(0, keepdim=True)
+                w = torch.nn.functional.cosine_similarity(
+                    hc[pair_nb], hc[pair_c], dim=-1).clamp(min=0)
+            else:
+                w = torch.ones_like(slot, dtype=h.dtype)
+            # Suma ponderada de vecinos y su masa, por centro.
+            nb_sum = torch.zeros_like(h[top_idx]).index_add_(
+                0, slot, w.unsqueeze(-1) * h[pair_nb])
+            nb_w = torch.zeros(kk, device=h.device, dtype=h.dtype).index_add_(0, slot, w)
+            if centre_weight is not None:
+                # λ·centro + (1−λ)·media de vecinos; sin vecinos, el centro solo.
+                has = (nb_w > 0).unsqueeze(-1)
+                nb_mean = nb_sum / nb_w.clamp(min=1e-12).unsqueeze(-1)
+                ctx = torch.where(has, centre_weight * h[top_idx]
+                                  + (1 - centre_weight) * nb_mean, h[top_idx])
+            else:
+                # Centro con peso 1 + vecinos con peso w (1 = media 3×3 uniforme).
+                ctx = (h[top_idx] + nb_sum) / (1 + nb_w).unsqueeze(-1)
             a_top = a[top_idx] / a[top_idx].sum()
             z = (a_top.unsqueeze(-1) * ctx).sum(0)
         else:

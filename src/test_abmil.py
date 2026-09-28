@@ -74,7 +74,7 @@ def abmil_predict_train_fold(
     work_dir, train_source, foundational_model, tissue_patching, task_name,
     fold_k, n_folds, task_col, num_classes, latent_dim, df, feats,
     arch_tag="", graphs=None, use_embeddings=False, topk=0, topk_adaptive=False,
-    topk_ctx="", neighbours=None
+    topk_ctx="", neighbours=None, ctx_centre_weight=None
 ):
     """Carga el checkpoint del fold_k y predice sobre su propio split de train.
 
@@ -167,8 +167,10 @@ def abmil_predict_train_fold(
     # (línea 69), que namespaces el checkpoint por --arch_tag.
     if topk_ctx:
         extract_fn = lambda stems: abmil_engine.abmil_extract_topk_ctx_embeddings(
-            model, feats, stems, device, neighbours, k=topk, mode=topk_ctx)
-        embed_tag = f"topk{topk}_{topk_ctx}"
+            model, feats, stems, device, neighbours, k=topk, mode=topk_ctx,
+            centre_weight=ctx_centre_weight)
+        embed_tag = (f"topk{topk}_lam{round(ctx_centre_weight * 100):03d}"
+                     if ctx_centre_weight is not None else f"topk{topk}_{topk_ctx}")
     elif extract_topk:
         extract_fn = lambda stems: (abmil_engine.abmil_extract_topk_embeddings(
             model, feats, stems, device, graphs, k=topk), None)
@@ -245,7 +247,7 @@ def abmil_predict_train_fold(
 def abmil_test(work_dir, train_source, foundational_model, tissue_patching, task_name,
                 latent_dim, epochs=None, arch="abmil", arch_tag="",
                 graph_mode="lattice", shuffle_coords=False, use_embeddings=False, topk=0,
-                topk_adaptive=False, topk_ctx=""):
+                topk_adaptive=False, topk_ctx="", ctx_centre_weight=None):
     """Recorre todos los folds de k=all.tsv y genera predicciones (o embeddings) de train para cada uno.
 
     Args:
@@ -312,7 +314,8 @@ def abmil_test(work_dir, train_source, foundational_model, tissue_patching, task
             work_dir, train_source, foundational_model, tissue_patching, task_name,
             fold_k, n_folds, task_col, num_classes, latent_dim, df, feats,
             arch_tag=arch_tag, graphs=graphs, use_embeddings=use_embeddings, topk=topk,
-            topk_adaptive=topk_adaptive, topk_ctx=topk_ctx, neighbours=neighbours
+            topk_adaptive=topk_adaptive, topk_ctx=topk_ctx, neighbours=neighbours,
+            ctx_centre_weight=ctx_centre_weight
         )
         if labels is None:
             n_skipped += 1
@@ -365,12 +368,16 @@ def main():
                              "propio árbol (val_outputs_topk_ess/...) y guarda además el K usado "
                              "por slide (k_used.npy). Incompatible con --topk y --use_embeddings.")
     parser.add_argument("--topk_ctx", type=str, default="",
-                        choices=["", "ctx", "shuffle", "match"],
+                        choices=["", "ctx", "shuffle", "match", "sim"],
                         help="Con --topk K: contexto 3×3 sobre los K centros. 'ctx' promedia "
                              "cada centro con sus vecinos de retícula; 'shuffle' con vecinos "
                              "al azar del mismo grado (control de posición); 'match' top-M "
                              "con M = tamaño de la región de 'ctx' (control de tamaño). "
+                             "'sim' pondera cada vecino por su correlación con el centro. "
                              "Requiere coords en retícula. Escribe val_outputs_topk{K}_{modo}.")
+    parser.add_argument("--ctx_centre_weight", type=float, default=None,
+                        help="Con --topk_ctx ctx: peso λ del centro, λ·centro + (1−λ)·media "
+                             "de vecinos (λ=1 == --topk). Escribe val_outputs_topk{K}_lam{100λ:03d}.")
     args = parser.parse_args()
 
     if args.arch != "abmil" and not args.arch_tag:
@@ -381,6 +388,8 @@ def main():
     if args.topk and args.arch != "abmil":
         parser.error("--topk no soporta --arch != abmil (SpatialABMIL): ver "
                       "abmil_extract_topk_embeddings en abmil_engine.py.")
+    if args.ctx_centre_weight is not None and args.topk_ctx != "ctx":
+        parser.error("--ctx_centre_weight sólo con --topk_ctx ctx.")
     if args.topk_ctx and not args.topk:
         parser.error("--topk_ctx requiere --topk K (el número de centros).")
     if args.topk_adaptive and args.arch != "abmil":
@@ -407,6 +416,7 @@ def main():
         topk=args.topk,
         topk_adaptive=args.topk_adaptive,
         topk_ctx=args.topk_ctx,
+        ctx_centre_weight=args.ctx_centre_weight,
     )
 
 

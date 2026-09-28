@@ -1,0 +1,28 @@
+  latent_dim auto-detectado: 1536  (de features_uni_v2)
+Cargando features de /home/JKP6679/Patho-Ensemble/PARADIS/datos/features/cptac_brca/features_uni_v2...
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  4 grafos, grado medio 7.74, aislados 0/20173 (0.00 %), fallback k-NN en 0 slides
+  pasos de retícula: 448×4
+shapes (4, 512) (4, 512) (4, 512) (4, 512)
+ctx_stats real   [M, frac_en_top, vec/centro]:
+ [[5.20e+01 4.20e-02 4.80e+00]
+ [5.30e+01 4.10e-02 4.90e+00]
+ [4.50e+01 5.00e-02 4.00e+00]
+ [5.00e+01 2.25e-01 8.00e+00]]
+ctx_stats barajado:
+ [[58.   0.   4.8]
+ [59.   0.   4.9]
+ [50.   0.   4. ]
+ [90.   0.   8. ]]
+✓ 1. self-loops: ctx == topk
+✓ 2. match con M=k == topk
+✓ 3. media 3×3 == cálculo a mano
+✓ 4. shuffle: mismo nº de vecinos por centro, determinista, distinto de ctx
+Construyendo grafos espaciales (mode=lattice, shuffle=False)...
+  5 grafos, grado medio 7.63, aislados 0/27472 (0.00 %), fallback k-NN en 0 slides
+  pasos de retícula: 224×5
+✓ 5. cptac_gbm/ctranspath con paso deducido: grafos construidos
+✓ 6. λ=1 == topk; λ=0.5 entre ambos extremos
+✓ 7. sim OK — peso medio de vecino 0.453, fracción con peso 0: 0.15
+diferencia relativa ||ctx-topk||/||topk|| = [0.571 0.5   0.502 0.388]
+OK

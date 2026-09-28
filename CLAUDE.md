@@ -334,6 +334,27 @@ did add genuinely new patches.
 spatial context both ways (with parameters, without them). A centre-heavy
 kernel would be a new, post-hoc contrast, not a rescue of this one.
 
+**Centre-heavy follow-up (job 72693, 2026-09-28) — closes it.** Two ways to
+give the centre more weight, same pass, same folds:
+`--ctx_centre_weight λ` (λ·centre + (1−λ)·neighbour mean) and
+`--topk_ctx sim` (bilateral: each neighbour weighted by
+max(0, corr(h_j, h_c)) after slide-mean centring, centre weight 1;
+pre-registered vs topk10).
+
+| AUC | uniform | λ 0.50 | λ 0.75 | λ 0.90 | λ 1 = topk10 | sim |
+|---|---:|---:|---:|---:|---:|---:|
+| `cptac_brca` | 0.8104 | 0.8146 | 0.8154 | 0.8125 | 0.8127 | 0.8168 |
+| `cptac_gbm` | 0.7551 | 0.7815 | 0.7915 | 0.7935 | **0.7945** | 0.7809 |
+
+gbm is a clean **monotone dose-response**: every step of weight moved to the
+neighbours costs AUC, max at λ=1 (λ0.5 −0.013 ✱; λ0.75/0.9 ns with MDE
+0.005/0.0025). `sim` limits the damage (+0.026 ✱ over uniform) but is still
+**worse than topk10** (−0.0136 ✱, all four metrics). brca is flat: every
+point within noise of topk10 (sim +0.004, MDE 0.011; λ0.75 +0.0027, MDE
+0.005). No interior optimum anywhere. **The neighbourhood carries nothing the
+top-10 patches don't already have; stop spending on spatial context around
+selected patches.** Results in `results_topk_ctx_weighted_TP53_mutation.json`.
+
 ### Patch coordinate groups
 
 Models with byte-identical `coords` can be fused, compared per patch, or share
@@ -863,7 +884,8 @@ They run under `set -euo pipefail`, where two patterns bite:
   view selection, DES-OLA, correlation-pruned fusion — 22/23-sep) are only in
   **EXPERIMENTAL_SESSION_SUMMARY_20260922_20260923.md** and in the sections
   above; read both until the consolidated report is updated. The 3×3 spatial
-  context on top-10 (27-sep) is only in the section above.
+  context on top-10 and its centre-weighted follow-up (27/28-sep) are only in
+  the section above.
 - **README.md** — full reference documentation
 - **PARADIS_DATA_REFERENCE.md** — data tree, datasets, tasks, fold counts
 - **`results_*.json`** — the raw paired statistics behind every figure in the

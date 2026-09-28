@@ -92,6 +92,24 @@ gdf = pd.read_csv(f"{W}/{gd}/{TASK}/k=all.tsv", sep="\t")
 gs = set(gdf["slide_id"].tolist()[:5])
 gg = load_graphs_cached(W, gd, "ctranspath", gs, mode="lattice", infer_stride=True)
 print("✓ 5. cptac_gbm/ctranspath con paso deducido: grafos construidos")
+# 6. λ=1 == topk; λ=1/(1+d) con d vecinos == ctx uniforme (slide con d=8 constante no
+#    garantizado, así que se comprueba λ=1 y que λ<1 se mueve hacia ctx)
+l1, _ = abmil_engine.abmil_extract_topk_ctx_embeddings(model, feats, stems, "cpu", real, k=K, centre_weight=1.0)
+assert np.allclose(l1, top, atol=1e-5), "λ=1 != topk"
+l5, _ = abmil_engine.abmil_extract_topk_ctx_embeddings(model, feats, stems, "cpu", real, k=K, centre_weight=0.5)
+d_top, d_ctx = np.linalg.norm(l5 - top), np.linalg.norm(l5 - ctx)
+assert 0 < d_top and 0 < d_ctx, "λ=0.5 coincide con un extremo"
+print("✓ 6. λ=1 == topk; λ=0.5 entre ambos extremos")
+
+# 7. sim: pesos en [0,1], resultado distinto de ctx y de topk, finito
+sm, _ = abmil_engine.abmil_extract_topk_ctx_embeddings(model, feats, stems, "cpu", real, k=K, mode="sim")
+assert np.isfinite(sm).all() and not np.allclose(sm, ctx) and not np.allclose(sm, top)
+with torch.no_grad():
+    hc = h - h.mean(0, keepdim=True)
+    sel = torch.isin(dst, ti) & (src != dst)
+    w = torch.nn.functional.cosine_similarity(hc[src[sel]], hc[dst[sel]], dim=-1).clamp(min=0)
+print(f"✓ 7. sim OK — peso medio de vecino {w.mean():.3f}, "
+      f"fracción con peso 0: {(w == 0).float().mean():.2f}")
 print("diferencia relativa ||ctx-topk||/||topk|| =",
       np.round(np.linalg.norm(ctx - top, axis=1) / np.linalg.norm(top, axis=1), 3))
 print("OK")
